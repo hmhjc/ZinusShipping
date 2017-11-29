@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="slidingitemlistview">
+        <attr name="right_width" format="dimension"></attr>
+    </declare-styleable>
+    <declare-styleable name="ImageButtonWithText">
+        <attr name="picture" format="reference"/>
+    </declare-styleable>
+</resources>

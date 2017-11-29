@@ -1,0 +1,368 @@
+<resources>
+
+    <string-array name="arrayPower" translatable="false">
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+        <item>16</item>
+        <item>17</item>
+        <item>18</item>
+        <item>19</item>
+        <item>20</item>
+        <item>21</item>
+        <item>22</item>
+        <item>23</item>
+        <item>24</item>
+        <item>25</item>
+        <item>26</item>
+        <item>27</item>
+        <item>28</item>
+        <item>29</item>
+        <item>30</item>
+    </string-array>
+
+    <string-array name="arrayPower2" translatable="false">
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+        <item>16</item>
+        <item>17</item>
+        <item>18</item>
+        <item>19</item>
+        <item>20</item>
+        <item>21</item>
+        <item>22</item>
+        <item>23</item>
+        <item>24</item>
+    </string-array>
+    <string name="app_name">出货用</string>
+    <string name="title_activity_main_navi">MainNaviActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="action_settings">Settings</string>
+
+
+    <!--MenuName-->
+    <string name="StandardMgnt">Standard Mgnt</string>
+    <string name="RegisterTag">Register Tag</string>
+    <string name="Conversionitem">Conversion Item</string>
+    <string name="Setting">设置</string>
+
+    <string name="MaterialStockIn">Stock In</string>
+    <string name="Receipt">Receipt</string>
+    <string name="Import">Import</string>
+
+    <string name="MaterialStockOut">Stock Out</string>
+    <string name="Export">Export</string>
+    <string name="StockMove">Change Location</string>
+    <string name="MaterialDiscard">Discard</string>
+    <string name="MaterialReturn">Return</string>
+
+    <string name="InventoryMgnt">Inventory Mgnt</string>
+    <string name="Location">Location</string>
+    <string name="Count">Count</string>
+    <string name="Repack">Repack</string>
+
+    <string name="InformationSearch">Information Search</string>
+    <string name="LocationSearch">Location Search</string>
+    <string name="StockStatus">Stock Status</string>
+    <string name="StockSafety">Stock Level</string>
+
+    <string name="apply">Apply</string>
+    <string name="save">Save</string>
+
+    <string name="Date">Date</string>
+    <string name="Vendor">Vendor</string>
+    <string name="etOrderNo">Please scan Order No</string>
+    <string name="Item">Item</string>
+    <string name="QTY">Qty</string>
+    <string name="OrderNo">Order No</string>
+    <string name="fixQty">Modify</string>
+    <string name="ok">OK</string>
+    <string name="TagID">Tag ID</string>
+    <string name="title_activity_login">ZINUS</string>
+    <string name="search">Search</string>
+    <string name="State">State</string>
+    <string name="action_ClearAll">Clear All</string>
+    <string name="delete">Delete</string>
+    <string name="Single">Single</string>
+    <string name="Auto">Auto</string>
+    <string name="Interval">Interval</string>
+    <string name="Start">Start</string>
+    <string name="Stop"/>
+    <string name="Qty">Qty</string>
+    <string name="rfid_title_single">Tab1</string>
+    <string name="rfid_title_Mult">Tab2</string>
+    <string name="FromDate">From Date</string>
+    <string name="ToDate">To Date</string>
+    <string name="WEBURL">http://192.168.1.68:7010/do</string>
+    <string name="WEBURLend">:5010/do</string>
+    <string name="SpinnerDefault">Please Choose</string>
+    <string name="From">From</string>
+    <string name="To">To</string>
+    <string name="planNO">Plan NO</string>
+    <string name="WareHouse">Warehouse</string>
+    <string name="ItemID">Item ID</string>
+    <string name="Unit">Unit</string>
+    <string name="ItemName">Item Name</string>
+    <string name="PlanQty">Plan Qty</string>
+    <string name="RealQty">Real Qty</string>
+    <string name="OrderQty">Order Qty</string>
+    <string name="ScanQty">Scan Qty</string>
+    <string name="ItemCount">Item Count</string>
+    <string name="Order">Order</string>
+    <string name="Customer">Customer</string>
+    <string name="SaveAndExit">Save and Exit</string>
+    <string name="NoSave">No Save</string>
+    <string name="Cancel">Cancel</string>
+    <string name="prompt">Prompt</string>
+    <string name="confirm">Confirm</string>
+    <string name="errorQty">Error Qty</string>
+    <string name="ArrangeLocation">Arrange Location</string>
+
+    <!-- Strings related to login -->
+    <string name="UserID">User ID</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_login">Sign in</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="shared">Shared</string>
+    <string name="Bulk">Bulk</string>
+    <string name="LOCSUMQTY">Location Qty</string>
+    <string name="TagCnt">Tag Count</string>
+    <string name="LocationList">Location List</string>
+    <string name="TagList">Tag List</string>
+    <string name="ItemList">Item List</string>
+    <string name="SearchInfo">Search Info</string>
+    <string name="Description">Description</string>
+    <string name="MaxQty">Max. Qty</string>
+    <string name="MinQty">Min. Qty</string>
+    <string name="CodeID">Code ID</string>
+    <string name="CheckYM">Check Order</string>
+    <string name="startData">Start Data</string>
+    <string name="EndData">End Data</string>
+    <string name="OriQty">Origin Qty</string>
+    <string name="OriUnit">Origin Unit</string>
+    <string name="OriLocation">Origin Location</string>
+    <string name="ChkQty">Chk Qty</string>
+    <string name="ChkUnit">Chk Unit</string>
+    <string name="ChkLocation">Chk Location</string>
+    <string name="CountOrder">Check Order</string>
+    <string name="Check">Check</string>
+    <string name="Origin">Origin</string>
+    <string name="uhf_msg_inventory_fail">Error on update inventory.</string>
+    <string name="menu">Menu</string>
+    <string name="MainMenu">Main Menu</string>
+    <string name="Scaning">Scanning</string>
+    <string name="Message">Message</string>
+    <string name="IP">IP</string>
+    <string name="URI">URI</string>
+    <string name="ExportNo">Export No</string>
+    <string name="SystemVolume">System Volume</string>
+    <string name="NotificationVolume">Notification Volume</string>
+    <string name="Antenna">Antenna</string>
+    <string name="dbm">dbm</string>
+    <string name="SetPower">Set Power</string>
+    <string name="getPower">Get Power</string>
+    <string name="NetWorkError">Network Error</string>
+    <string name="ExitAccount">Exit Account</string>
+    <string name="RememberUserID">RememberUser ID</string>
+    <string name="ImportTempNo">ImportTempNo</string>
+    <string name="ImportOrderNo">ImportOrderNo</string>
+    <string name="TempSave">TempSave</string>
+
+
+    <!--SpinnerQuery-->
+    <string name="codeSpinner">SELECT * FROM SF_CODE WHERE CODECLASSID = \'%1$s\' and LANGUAGETYPE = \'%2$s\'</string>
+    <string name="WarehouseSpinner">SELECT * FROM SF_WAREHOUSE \n ORDER BY WAREHOUSEID</string>
+    <string name="AreaSpinner">SELECT AREAID,AREANAME FROM SF_AREA \n ORDER BY AREAID</string>
+    <string name="ConsumabledefIDSpinner">SELECT distinct CONSUMABLEDEFID FROM SF_CONSUMABLEDEFINITION ORDER BY CONSUMABLEDEFID</string>
+
+    <!--StockCheck-->
+    <string name="GetStockCheckQuery">SELECT * FROM SF_STOCKCHECK \n WHERE 1=1 \n AND CHECKMONTH  = \'%1$s\' \n</string>
+    <string name="gscConditionWarehouse">AND WAREHOUSEID = \'%1$s\' \n</string>
+    <string name="gscConditionState">AND STATE = \'%1$s\' \n</string>
+    <string name="gscOrderBy">ORDER BY CHECKMONTH,WAREHOUSEID,STATE</string>
+
+    <string name="GetStockCheckDetailQuery">SELECT SC.WAREHOUSEID, SC.UNIT, SC.QTY, SC.CHECKQTY, CD.CONSUMABLEDEFNAME \n
+                                            FROM SF_STOCKCHECKDETAIL SC \n
+                                            INNER JOIN SF_CONSUMABLEDEFINITION CD ON CD.CONSUMABLEDEFID = SC.CONSUMABLEDEFID \n
+                                                                                 AND CD.CONSUMABLEDEFVERSION = SC.CONSUMABLEDEFVERSION \n
+                                            WHERE 1=1 AND CHECKMONTH = \'%1$s\' AND WAREHOUSEID = \'%2$s\'
+    </string>
+
+    <string name="GetStockLotCheckDetailQuery">SELECT SLC.WAREHOUSEID, SLC.CONSUMABLELOTID, SLC.UNIT, SLC.QTY, SLC.CHECKQTY, CD.CONSUMABLEDEFNAME \n
+                                               FROM SF_STOCKLOTCHECKDETAIL SLC \n
+                                               INNER JOIN SF_CONSUMABLEDEFINITION CD ON CD.CONSUMABLEDEFID = SLC.CONSUMABLEDEFID \n
+                                                                                    AND CD.CONSUMABLEDEFVERSION = SLC.CONSUMABLEDEFVERSION \n
+                                            WHERE 1=1 AND CHECKMONTH = \'%1$s\' AND WAREHOUSEID = \'%2$s\'
+    </string>
+
+    <!--Inbound-->
+    <string name="GetInboundOrderQuery">SELECT * FROM SF_INBOUNDORDER \n WHERE 1=1 \n AND SCHEDULEDATE  &gt; \'%1$s\' AND SCHEDULEDATE &lt;  \'%2$s\' \n</string>
+    <string name="gioConditionConsumabledefId">AND WAREHOUSEID = \'%1$s\' \n</string>
+    <string name="gioConditionState">AND INBOUNDSTATE = \'%1$s\' \n</string>
+    <string name="gioOrderBy">ORDER BY INBOUNDNO,WAREHOUSEID,INBOUNDSTATE</string>
+
+    <string name="GetConsumeLotInboundQuery">SELECT CLI.PLANQTY,CLI.INQTY,CLI.UNIT,CLI.CONSUMABLELOTID,CD.CONSUMABLEDEFNAME \n
+                                            FROM SF_CONSUMELOTINBOUND CLI \n
+                                            INNER JOIN SF_CONSUMABLEDEFINITION CD ON CD.CONSUMABLEDEFID = CLI.CONSUMABLEDEFID \n
+                                                                                 AND CD.CONSUMABLEDEFVERSION = CLI.CONSUMABLEDEFVERSION  \n
+                                            WHERE 1=1 AND INBOUNDNO = \'%1$s\'
+                                            ORDER BY CD.CONSUMABLEDEFNAME,CLI.CONSUMABLELOTID
+    </string>
+
+    <string name="GetConsumeInboundQuery">SELECT CI.PLANQTY,CI.INQTY,CI.UNIT,CD.CONSUMABLEDEFNAME \n
+                                            FROM SF_CONSUMEINBOUND CI                             \n
+                                            INNER JOIN SF_CONSUMABLEDEFINITION CD                 \n
+                                            ON CD.CONSUMABLEDEFID = CI.CONSUMABLEDEFID            \n
+                                            AND CD.CONSUMABLEDEFVERSION = CI.CONSUMABLEDEFVERSION \n
+                                            WHERE 1=1 AND INBOUNDNO = \'%1$s\'                    \n
+                                            ORDER BY CD.CONSUMABLEDEFNAME
+    </string>
+    <!--ConsumeRequest-->
+    <string name="GetConsumeRequestQuery">SELECT * FROM SF_CONSUMEREQUEST \n WHERE 1=1 \n AND REQUESTDATE  &gt; \'%1$s\' AND REQUESTDATE &lt;  \'%2$s\' \n</string>
+    <string name="gcrConditionAreaId">AND AREAID = \'%1$s\' \n</string>
+    <string name="gcrConditionState">AND OUTBOUNDSTATE = \'%1$s\' \n</string>
+    <string name="gcrOrderBy">ORDER BY CONSUMEREQNO,AREAID,OUTBOUNDSTATE</string>
+
+    <string name="GetConsumeLotOutboundQuery">SELECT CLO.REQUESTQTY,CLO.OUTQTY,CLO.UNIT,CLO.CONSUMABLELOTID,CD.CONSUMABLEDEFNAME \n
+                                            FROM SF_CONSUMELOTOUTBOUND CLO \n
+                                            INNER JOIN SF_CONSUMABLEDEFINITION CD ON CD.CONSUMABLEDEFID = CLO.CONSUMABLEDEFID \n
+                                                                                 AND CD.CONSUMABLEDEFVERSION = CLO.CONSUMABLEDEFVERSION \n
+                                            WHERE 1=1 AND CONSUMEREQNO = \'%1$s\'
+                                            ORDER BY CD.CONSUMABLEDEFNAME,CLO.CONSUMABLELOTID
+    </string>
+
+    <string name="GetConsumeOutboundQuery"> SELECT CO.REQUESTQTY,CO.OUTQTY,CO.UNIT,CD.CONSUMABLEDEFNAME \n
+                                            FROM SF_CONSUMEOUTBOUND CO \n
+                                            INNER JOIN SF_CONSUMABLEDEFINITION CD ON CD.CONSUMABLEDEFID = CO.CONSUMABLEDEFID \n
+                                                                                 AND CD.CONSUMABLEDEFVERSION = CO.CONSUMABLEDEFVERSION \n
+                                            WHERE 1=1 AND CONSUMEREQNO = \'%1$s\'
+                                            ORDER BY CD.CONSUMABLEDEFNAME
+    </string>
+
+    <!--Shipping-->
+    <string name="GetShippingPlanQuery"> SELECT SP.SHIPPINGPLANNO,SP.PRODUCTIONORDERNAME,         \n
+                                                SP.CUSTOMERID,SP.PRODUCTDEFID,SP.PLANQTY,         \n
+                                                SP.CONTAINERSPEC,SP.PLANSTARTTIME,                \n
+                                                SP.PLANENDTIME,SP.STATE                           \n
+                                         FROM SF_SHIPPINGPLAN SP                                  \n
+                                         WHERE 1=1                                                \n
+                                         AND SP.PLANSTARTTIME &gt; \'%1$s\'                        \n
+                                         AND SP.PLANSTARTTIME &lt; \'%2$s\'                        \n
+
+    </string>
+    <string name="gspState">AND SP.STATE = \'%1$s\' \n</string>
+    <string name="gspOrderBy">ORDER BY SP.SHIPPINGPLANNO</string>
+
+    <string name="GetlOTShippingQuery">SELECT  A.LOTID ,B.CONTAINERNO ,                           \n
+                                               B.SEALNO ,A.QTY,B.VALIDSTATE                       \n
+                                           FROM SF_LOT A                                          \n
+                                        LEFT JOIN SF_LOTSHIPPING B on B.LOTID = A.LOTID           \n
+                                        WHERE 1=1                                                 \n
+                                        AND A.SALESORDERID = \'%1$s\'                             \n
+                                        AND A.PROCESSSEGMENTID = \'PACKING_01\'                   \n
+                                        AND A.LOTSTATE = \'Finished\'                             \n
+                                        ORDER BY A.LOTID                                          \n
+    </string>
+
+    <string name="GetlOTQtyQuery"> SELECT  A.LOTID ,A.QTY                                         \n
+                                       FROM SF_LOT A                                              \n
+                                    WHERE 1=1                                                     \n
+                                    AND A.SALESORDERID = \'%1$s\'                                 \n
+                                    AND A.PROCESSSEGMENTID = \'PACKING_01\'                       \n
+                                    AND A.LOTSTATE = \'Finished\'                                 \n
+                                    AND A.RFID = \'%2$s\'                                         \n
+                                    ORDER BY A.LOTID                                              \n
+    </string>
+
+    <string name="GetUploadShipplanQuery"> SELECT  SHIPPINGPLANNO ,STATE             \n
+                                                 FROM SF_SHIPPINGPLAN A                           \n
+                                           WHERE 1=1                                              \n
+                                           AND ISPDASHIPPING = \'Y\'
+    </string>
+
+    <string name="GetUploadlOTShipQuery"> SELECT LS.*,L.QTY FROM                                  \n
+                                          SF_LOTSHIPPING LS                                       \n
+                                          INNER JOIN SF_SHIPPINGPLAN SP                           \n
+                                          ON SP.SHIPPINGPLANNO = LS.SHIPPINGPLANNO                \n
+                                          INNER JOIN SF_LOT L ON L.LOTID = LS.LOTID               \n
+                                          WHERE 1=1                                               \n
+                                          AND SP.ISPDASHIPPING = \'Y\'                            \n
+    </string>
+
+    <string name="ChangeLanguage">ChangeLanguage</string>
+    <string name="ZH_CN">Chinese</string>
+    <string name="EN_US">EN_US</string>
+    <string name="KO_KR">KO_KR</string>
+    <string name="ChooseLanguage">ChooseLanguage</string>
+    <string name="ConsumeInboundState">暂入库状态</string>
+    <string name="Inboundno">Inboundno</string>
+    <string name="InboundDate">InboundDate</string>
+    <string name="InboundState">InboundState</string>
+    <string name="Inspectionresult">Inspectionresult</string>
+    <string name="Urgencytype">Urgencytype</string>
+    <string name="consumabledefid">consumabledefid</string>
+    <string name="consumabledefversion">consumabledefversion</string>
+    <string name="inqty">inqty</string>
+    <string name="consumabledefname">consumabledefname</string>
+    <string name="consumablelotid">consumablelotid</string>
+    <string name="consumablelot">LOT</string>
+    <string name="ConsumeOutboundState">ConsumeOutboundState</string>
+    <string name="consumeRequestNo">consumeRequestNo</string>
+    <string name="Area">Area</string>
+    <string name="requestData">requestData</string>
+    <string name="Outboundno">Outboundno</string>
+    <string name="StockCheckState">StockCheckState</string>
+    <string name="CheckMonth">CheckMonth</string>
+    <string name="CheckQty">CheckQty</string>
+    <string name="stockSearch">stockSearch</string>
+    <string name="ConsumabledefId">ConsumabledefId</string>
+    <string name="WarehousType">WarehousType</string>
+    <string name="LocationId">LocationId</string>
+    <string name="ConsumbleType">ConsumbleType</string>
+    <string name="TempInboundDate">TempInboundDate</string>
+    <string name="ScheduleDate">ScheduleDate</string>
+    <string name="ShippingPlan">ShippingPlan</string>
+    <string name="lotShipping">lotShipping</string>
+    <string name="ShippingPlanState">ShippingPlanState</string>
+    <string name="ShippingPlanNo">ShippingPlanNo</string>
+    <string name="SoNo">SoNo</string>
+    <string name="PoNo">PoNo</string>
+    <string name="ContainerSpec">ContainerSpec</string>
+    <string name="PlanStartTime"/>
+    <string name="PlanEndTime">PlanEndTime</string>
+    <string name="Shipping">Shipping</string>
+    <string name="MianMenu">MianMenu</string>
+    <string name="PlanDataOfShipping">Data</string>
+    <string name="LotNo">LotNo</string>
+    <string name="product">product</string>
+    <string name="ContainerNo">ContainerNo</string>
+    <string name="SealNo">SealNo</string>
+    <string name="LotQty">LotQty</string>
+    <string name="TagQty">TagQty</string>
+    <string name="noContainerAndSealNo"/>
+    <string name="removeshipping">removeshipping</string>
+
+
+</resources>

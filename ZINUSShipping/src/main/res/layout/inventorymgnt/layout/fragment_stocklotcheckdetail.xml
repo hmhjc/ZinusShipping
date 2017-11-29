@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <LinearLayout
+        style="@style/frag_topconditions">
+        <!--add 添加条件的地方-->
+        <LinearLayout
+            style="@style/frag_tcline"
+            android:layout_height="wrap_content">
+
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:id="@+id/etTagID"
+                style="@style/etTag"
+                android:hint="@string/TagID"
+                app:met_clearButton="true"
+                app:met_floatingLabel="normal"
+                app:met_singleLineEllipsis="true"/>
+
+            <ImageView
+                android:id="@+id/iv_choose"
+                style="@style/ivBorR"
+                android:src="@drawable/rfidicon"/>
+        </LinearLayout>
+
+        <RadioGroup
+            android:id="@+id/rgRfidScan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="5dp"
+            android:visibility="visible"
+            >
+
+            <RadioButton
+                android:id="@+id/rbSingle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/Single"
+                android:textColor="@color/micubegray"
+                android:textSize="15sp"
+                />
+
+            <RadioButton
+                android:id="@+id/rbAuto"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:checked="true"
+                android:text="@string/Auto"
+                android:textColor="@color/micubegray"
+                android:textSize="15sp"
+                />
+        </RadioGroup>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/micubegray"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="6dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/CheckMonth"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" : "/>
+
+        <TextView
+            android:id="@+id/CheckMonth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="right">
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Qty"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" : "/>
+
+        <TextView
+            android:id="@+id/tvtagqty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+    <com.micube.control.controlUtil.CustomHorizontalScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:scrollbars="horizontal">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical">
+
+            <!--标题(Caption)-->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="70px"
+                >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/zinusdarkblue">
+
+                    <View
+                        style="@style/listviewverticalsplit"/>
+
+                    <TextView
+                        style="@style/listviewcaption"
+                        android:layout_width="350px"
+                        android:text="@string/consumabledefname"/>
+
+                    <View
+                        style="@style/listviewverticalsplit"/>
+
+                    <TextView
+                        style="@style/listviewcaption"
+                        android:layout_width="150px"
+                        android:text="@string/WareHouse"/>
+
+                    <View
+                        style="@style/listviewverticalsplit"/>
+
+                    <TextView
+                        style="@style/listviewcaption"
+                        android:layout_width="350px"
+                        android:text="@string/consumablelotid"/>
+
+                    <View
+                        style="@style/listviewverticalsplit"/>
+
+                    <TextView
+                        style="@style/listviewcaption"
+                        android:layout_width="50px"
+                        android:text="@string/Unit"/>
+
+                    <View
+                        style="@style/listviewverticalsplit"/>
+
+                    <TextView
+                        style="@style/listviewcaption"
+                        android:layout_width="150px"
+                        android:text="@string/Qty"/>
+
+                    <View
+                        style="@style/listviewverticalsplit"/>
+
+                    <TextView
+                        style="@style/listviewcaption"
+                        android:layout_width="150px"
+                        android:text="@string/CheckQty"/>
+
+                    <View
+                        style="@style/listviewverticalsplit"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <ListView
+                android:id="@+id/lv_StockLotCheckDetail"
+                style="@style/mainListViewStyle"/>
+
+        </LinearLayout>
+
+    </com.micube.control.controlUtil.CustomHorizontalScrollView>
+
+</LinearLayout>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              style="@style/listviewitem">
+
+    <TextView
+        android:id="@+id/tv_LotID"
+        style="@style/listviewcontext"
+        android:layout_width="180px"/>
+
+    <View
+        style="@style/listviewverticalsplit"/>
+
+    <TextView
+        android:id="@+id/tv_ContainerNo"
+        style="@style/listviewcontext"
+        android:layout_width="100px"/>
+
+    <View
+        style="@style/listviewverticalsplit"/>
+
+    <TextView
+        android:id="@+id/tv_SealNo"
+        style="@style/listviewcontext"
+        android:layout_width="100px"/>
+
+    <View
+        style="@style/listviewverticalsplit"/>
+
+    <TextView
+        android:id="@+id/tv_inqty"
+        style="@style/listviewcontext"
+        android:layout_width="80px"/>
+
+</LinearLayout>

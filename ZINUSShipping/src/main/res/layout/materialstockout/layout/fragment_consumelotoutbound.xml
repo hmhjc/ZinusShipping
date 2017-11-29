@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <LinearLayout style="@style/MessageMarginTopLayout"/>
+
+    <LinearLayout
+        style="@style/frag_topconditions">
+        <!--add 添加条件的地方-->
+        <LinearLayout
+            style="@style/frag_tcline"
+            android:layout_height="wrap_content">
+
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:id="@+id/etTagID"
+                style="@style/etTag"
+                android:hint="@string/TagID"
+                app:met_clearButton="true"
+                app:met_floatingLabel="normal"
+                app:met_singleLineEllipsis="true"/>
+
+            <ImageView
+                android:id="@+id/iv_choose"
+                style="@style/ivBorR"
+                android:src="@drawable/rfidicon"/>
+        </LinearLayout>
+
+        <LinearLayout style="@style/MessageMarginTopLayout"/>
+
+        <RadioGroup
+            android:id="@+id/rgRfidScan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="5dp"
+            android:visibility="visible"
+            >
+
+            <RadioButton
+                android:id="@+id/rbSingle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/Single"
+                android:textColor="@color/micubegray"
+                android:textSize="15sp"
+                />
+
+            <RadioButton
+                android:id="@+id/rbAuto"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:checked="true"
+                android:text="@string/Auto"
+                android:textColor="@color/micubegray"
+                android:textSize="15sp"
+                />
+        </RadioGroup>
+
+        <LinearLayout style="@style/MessageMarginTopLayout"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="6dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Outboundno"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" : "/>
+
+        <TextView
+            android:id="@+id/ConsumeRequestNo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="right">
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Qty"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" : "/>
+
+        <TextView
+            android:id="@+id/tvtagqty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+    <com.micube.control.controlUtil.CustomHorizontalScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:scrollbars="horizontal">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical">
+
+            <!--标题(Caption)-->
+            <LinearLayout
+                style="@style/GridCaption">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/zinusdarkblue">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/listviewcaption"
+                            android:layout_width="350px"
+                            android:text="@string/consumabledefname"/>
+
+                        <LinearLayout
+                            style="@style/border_bottom_style"/>
+
+                    </LinearLayout>
+
+                    <View
+                        style="@style/listviewverticalsplit"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/listviewcaption"
+                            android:layout_width="350px"
+                            android:text="@string/consumablelotid"/>
+
+                        <LinearLayout
+                            style="@style/border_bottom_style"/>
+
+                    </LinearLayout>
+
+                    <View
+                        style="@style/listviewverticalsplit"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/listviewcaption"
+                            android:layout_width="50px"
+                            android:text="@string/Unit"/>
+
+                        <LinearLayout
+                            style="@style/border_bottom_style"/>
+
+                    </LinearLayout>
+
+                    <View
+                        style="@style/listviewverticalsplit"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/listviewcaption"
+                            android:layout_width="150px"
+                            android:text="@string/inqty"/>
+
+                        <LinearLayout
+                            style="@style/border_bottom_style"/>
+
+                    </LinearLayout>
+
+                    <View
+                        style="@style/listviewverticalsplit"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/listviewcaption"
+                            android:layout_width="150px"
+                            android:text="@string/PlanQty"/>
+
+                        <LinearLayout
+                            style="@style/border_bottom_style"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <ListView
+                android:id="@+id/lv_consumeLotOutbound"
+                style="@style/mainListViewStyle"/>
+
+        </LinearLayout>
+
+    </com.micube.control.controlUtil.CustomHorizontalScrollView>
+
+</LinearLayout>

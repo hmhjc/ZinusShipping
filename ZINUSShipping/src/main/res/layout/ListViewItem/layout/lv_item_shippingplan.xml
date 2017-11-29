@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              style="@style/listviewitem">
+
+    <TextView
+        android:id="@+id/tv_ShipplanNo"
+        style="@style/listviewcontext"/>
+
+    <View
+        style="@style/listviewverticalsplit"/>
+
+    <TextView
+        android:id="@+id/tv_ProductionOrderName"
+        style="@style/listviewcontext"/>
+
+    <View
+        style="@style/listviewverticalsplit"/>
+
+    <TextView
+        android:id="@+id/tv_PoNo"
+        style="@style/listviewcontext"/>
+
+    <View
+        style="@style/listviewverticalsplit"/>
+
+    <TextView
+        android:id="@+id/tv_Customer"
+        style="@style/listviewcontext"/>
+
+    <View
+        style="@style/listviewverticalsplit"/>
+
+    <TextView
+        android:id="@+id/tv_Product"
+        style="@style/listviewcontext"/>
+
+    <View
+        style="@style/listviewverticalsplit"/>
+
+    <TextView
+        android:id="@+id/tv_PlanQty"
+        style="@style/listviewcontext"/>
+
+    <View
+        style="@style/listviewverticalsplit"/>
+
+    <TextView
+        android:id="@+id/tv_ContainerSpec"
+        style="@style/listviewcontext"/>
+
+    <View
+        style="@style/listviewverticalsplit"/>
+
+    <TextView
+        android:id="@+id/tv_PlanStartTime"
+        style="@style/listviewcontext"/>
+
+    <View
+        style="@style/listviewverticalsplit"/>
+
+    <TextView
+        android:id="@+id/tv_PlanEndTime"
+        style="@style/listviewcontext"/>
+
+    <View
+        style="@style/listviewverticalsplit"/>
+
+    <TextView
+        android:id="@+id/tv_ShippingState"
+        style="@style/listviewcontext"/>
+
+</LinearLayout>
+
+
+
+
+
+
+
+

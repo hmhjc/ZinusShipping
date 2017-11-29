@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/../NewUHF/NewUHF.iml" filepath="$PROJECT_DIR$/../NewUHF/NewUHF.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../UsbSocketPDA.iml" filepath="$PROJECT_DIR$/../UsbSocketPDA.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ZINUSApp.iml" filepath="$PROJECT_DIR$/ZINUSApp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../languagedemo/languagedemo.iml" filepath="$PROJECT_DIR$/../languagedemo/languagedemo.iml" />
+    </modules>
+  </component>
+</project>

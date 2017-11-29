@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="cw-deviceapi(20170825)">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../NewUHF/libs/cw-deviceapi(20170825).jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
