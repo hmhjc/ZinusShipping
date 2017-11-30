@@ -186,6 +186,7 @@ public class SyncPC implements Runnable {
             try {
                 if (client != null) {
                     client.close();
+                    Log.e("shipping","结束关闭client");
                 }
             } catch (IOException e) {
                 e.printStackTrace();

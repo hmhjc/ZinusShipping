@@ -47,7 +47,7 @@ public class LoginActivity extends BaseActivity {
     public static final int RULEREQUEST = 1;
     public static final int VERSIONREQUEST = 2;
     ServerSocket serverSocket = null;
-    final int SERVER_PORT = 10086;
+    final int SERVER_PORT = 10087;
     ArrayList<String> list;
 
     BufferedOutputStream out;

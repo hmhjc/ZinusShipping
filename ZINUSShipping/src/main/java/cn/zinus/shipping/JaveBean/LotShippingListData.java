@@ -16,6 +16,18 @@ public class LotShippingListData implements Serializable {
     private String TAGID;
     private String VALIDSTATE;
 
+    @Override
+    public String toString() {
+        return "LotShippingListData{" +
+                "LOTID='" + LOTID + '\'' +
+                ", CONTAINER='" + CONTAINER + '\'' +
+                ", INQTY='" + INQTY + '\'' +
+                ", SEALNO='" + SEALNO + '\'' +
+                ", TAGID='" + TAGID + '\'' +
+                ", VALIDSTATE='" + VALIDSTATE + '\'' +
+                '}';
+    }
+
     public String getVALIDSTATE() {
         return VALIDSTATE;
     }

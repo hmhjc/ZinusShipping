@@ -71,7 +71,6 @@ public class LotShippingFragment extends KeyDownFragment implements View.OnClick
     private ListView mlvLotShhipping;
     private LotShippingListViewAdapter mLotShippingListViewAdapter;
     private ArrayList<LotShippingListData> mLotShippingDataList;
-    private ArrayList<String> IDlist;
     //condition
     private TextView tvtagqty;
     private TextView tvlotshippingqty;
@@ -258,7 +257,6 @@ public class LotShippingFragment extends KeyDownFragment implements View.OnClick
     //region initData
     private void initData() {
         mLotShippingDataList = new ArrayList<>();
-        IDlist = new ArrayList<>();
         PoNo = "";
     }
     //endregion
@@ -301,13 +299,13 @@ public class LotShippingFragment extends KeyDownFragment implements View.OnClick
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     /**
-                                     * 移除装车,把对应位置的
+                                     * 移除装车
                                      */
                                     LotShippingListData data = new LotShippingListData();
                                     data.setLOTID(mLotShippingDataList.get(position).getLOTID());
+                                    data.setTAGID(mLotShippingDataList.get(position).getTAGID());
                                     data.setVALIDSTATE(Constant.INVALID);
                                     mLotShippingDataList.set(position, data);
-                                    IDlist.remove(position);
                                     mLotShippingListViewAdapter.notifyDataSetChanged();
                                     Message message = new Message();
                                     message.what = UPDATEUI;
@@ -340,13 +338,14 @@ public class LotShippingFragment extends KeyDownFragment implements View.OnClick
             while (cursorDatalist.moveToNext()) {
                 LotShippingListData lotShippingListData = new LotShippingListData();
                 lotShippingListData.setLOTID(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.LOTID)));
+                lotShippingListData.setTAGID(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.RFID)));
                 lotShippingListData.setVALIDSTATE(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.VALIDSTATE)));
                 if (lotShippingListData.getVALIDSTATE() != null && lotShippingListData.getVALIDSTATE().equals(Constant.VALID)) {
-                    IDlist.add(lotShippingListData.getLOTID());
                     lotShippingListData.setINQTY(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.QTY)));
                     lotShippingListData.setCONTAINER(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.CONTAINERNO)));
                     lotShippingListData.setSEALNO(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.SEALNO)));
                 }
+                Log.e("lotShipping数据", lotShippingListData.toString());
                 mLotShippingDataList.add(lotShippingListData);
             }
         }
@@ -360,17 +359,15 @@ public class LotShippingFragment extends KeyDownFragment implements View.OnClick
     //endregion
 
     //region checkIsExist
-    private boolean checkIsExist(String tagid) {
-        int returnint = -1;
-        for (int i = 0; i < IDlist.size(); i++)
-            if (IDlist.get(i).equals(tagid)) {
-                returnint = i;
+    private int checkIsExist(String tagid) {
+        int TagLocation = -1;
+        for (int i = 0; i < mLotShippingDataList.size(); i++)
+            if (mLotShippingDataList.get(i).getTAGID().equals(tagid) &&
+                    mLotShippingDataList.get(i).getCONTAINER()!=null &&
+                    mLotShippingDataList.get(i).getSEALNO()!=null) {
+                TagLocation = i;
             }
-        if (returnint == -1) {
-            return false;
-        } else {
-            return true;
-        }
+        return TagLocation;
     }
     //endregion
 
@@ -449,8 +446,8 @@ public class LotShippingFragment extends KeyDownFragment implements View.OnClick
 
     //region checkAndSearchWeb
     private void checkAndSearchWeb(String tagID) {
-        if (tvlotshippingqty.getText().toString().equals(tvtagqty.getText().toString())){
-            Log.e("全部完成","全部完成");
+        if (tvlotshippingqty.getText().toString().equals(tvtagqty.getText().toString())) {
+            Log.e("全部完成", "全部完成");
             if (dismessDialogFlag) {
                 dismessDialogFlag = false;
                 stopInventory();
@@ -464,11 +461,10 @@ public class LotShippingFragment extends KeyDownFragment implements View.OnClick
             showToast(mContext, getString(R.string.noContainerAndSealNo), 0);
             return;
         }
-        if (checkIsExist(tagID)) {
+        if (checkIsExist(tagID)==-1) {
             Log.e("indexhand", "列表里存在" + tagID + "修改货柜号和封箱号");
         } else {
             Log.e("indexhand", "列表里不存在" + tagID + "查询数据库");
-            IDlist.add(tagID);
             SoundUtil.play(R.raw.pegconn, 0);
         }
         searchSqlite(tagID);
@@ -495,7 +491,7 @@ public class LotShippingFragment extends KeyDownFragment implements View.OnClick
                         mLotShippingDataList.set(i, data);
                         mLotShippingListViewAdapter.notifyDataSetChanged();
                         tvlotshippingqty.setText(getShippingQty() + "");
-                       // mlvLotShhipping.setSelection(0);
+                        // mlvLotShhipping.setSelection(0);
 //                        Message message = new Message();
 //                        message.what = UPDATEUI;
 //                        message.obj = 0;
@@ -519,7 +515,6 @@ public class LotShippingFragment extends KeyDownFragment implements View.OnClick
             mLotShippingDataList.clear();
         }
         mLotShippingListViewAdapter.notifyDataSetChanged();
-        IDlist.clear();
         etTagID.setText("");
         tvtagqty.setText("0");
         tvlotshippingqty.setText("0");
@@ -580,13 +575,13 @@ public class LotShippingFragment extends KeyDownFragment implements View.OnClick
 
         ContentValues values = new ContentValues();
         values.put(Constant.ISPDASHIPPING, "Y");
-        if (tvlotshippingqty.getText().toString().equals(tvtagqty.getText().toString())){
+        if (tvlotshippingqty.getText().toString().equals(tvtagqty.getText().toString())) {
             values.put(Constant.STATE, "Finished");
-        }else {
+        } else {
             values.put(Constant.STATE, "Run");
         }
 
-        db.update(Constant.SF_SHIPPINGPLAN, values, "SHIPPINGPLANNO = ?", new String[] { tvshippingPlanNo.getText().toString() });
+        db.update(Constant.SF_SHIPPINGPLAN, values, "SHIPPINGPLANNO = ?", new String[]{tvshippingPlanNo.getText().toString()});
 //        StringBuffer Shipplan_insert = new StringBuffer();
 //
 //        //SET column1 = value1, column2 = value2...., columnN = valueN

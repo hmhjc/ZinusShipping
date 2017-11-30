@@ -43,9 +43,9 @@ public class ShippingService extends Service {
         try {
             serverSocket = new ServerSocket(SERVER_PORT);
             while (mainThreadFlag) {
-                Log.e("chl1aaa", "doListen() 3");
+                Log.e("shipping", "doListen() 3");
                 Socket socket = serverSocket.accept();
-                Log.e("chl1aaa", "doListen() 4");
+                Log.e("shipping", "doListen() 4");
                 new Thread(new SyncPC(socket, list, ShippingService.this)).start();
             }
         } catch (IOException e) {

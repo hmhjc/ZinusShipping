@@ -275,7 +275,7 @@
     <string name="gspState">AND SP.STATE = \'%1$s\' \n</string>
     <string name="gspOrderBy">ORDER BY SP.SHIPPINGPLANNO</string>
 
-    <string name="GetlOTShippingQuery">SELECT  A.LOTID ,B.CONTAINERNO ,                           \n
+    <string name="GetlOTShippingQuery">SELECT  A.LOTID,A.RFID ,B.CONTAINERNO ,                      \n
                                                B.SEALNO ,A.QTY,B.VALIDSTATE                       \n
                                            FROM SF_LOT A                                          \n
                                         LEFT JOIN SF_LOTSHIPPING B on B.LOTID = A.LOTID           \n
