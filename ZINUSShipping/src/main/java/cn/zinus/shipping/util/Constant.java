@@ -153,6 +153,7 @@ public class Constant {
     //public static final String  AREAID= "AREAID";
     //public static final String  STATE= "STATE";
     public static final String ISPDASHIPPING = "ISPDASHIPPING";
+    public static final String ISOISAVE = "ISOISAVE";
     //SF_CONSUMESTOCK
     public static final String SF_CONSUMESTOCK = "SF_CONSUMESTOCK";
 
@@ -209,6 +210,7 @@ public class Constant {
     public static final String UPLOADSTOCKCHECKSTART = "888";
     public static final String UPLOADEXIT = "889";
     public static final String UPDATEEXIT = "890";
+    public static final String RETURNSHIPPINGSAVESTART = "891";
 
     public static final String SYNCSF_CODE = "801";
     public static final String SYNCSF_INBOUNDORDER = "802";
@@ -228,6 +230,7 @@ public class Constant {
     public static final String SYNCSF_AREA = "816";
     public static final String SYNCSF_WAREHOUSE = "817";
     public static final String SYNCSF_LOT = "818";
+    public static final String SYNCSHIPPINGSAVE = "819";
 
     public static final String IYNCSF_CODE = "701";
     public static final String IYNCSF_INBOUNDORDER = "702";
@@ -247,6 +250,7 @@ public class Constant {
     public static final String IYNCSF_AREA = "716";
     public static final String IYNCSF_WAREHOUSE = "717";
     public static final String IYNCSF_LOT = "718";
+    public static final String IYNCSHIPPINGSAVE = "719";
 
     public static final String UPLOADSHIPPINGPLANINFO = "601";
     public static final String UPLOADLOTSHIPPINGINFO = "602";

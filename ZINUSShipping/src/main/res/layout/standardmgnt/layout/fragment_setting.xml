@@ -165,44 +165,11 @@
         android:layout_height="1dp"
         android:background="@color/black"></LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
-
-        <Button
-            android:id="@+id/btntestquery"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="测试Query"
-            />
-
-        <Button
-            android:id="@+id/btntestrule"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="测试Rule"
-            />
-
-    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1">
-
-        <Button
-            android:id="@+id/btntestprocedure"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="更新本地数据库"
-            />
-
-        <Button
-            android:id="@+id/btnChangeLanguage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/ChangeLanguage"/>
 
     </LinearLayout>
 

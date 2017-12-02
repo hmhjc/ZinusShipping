@@ -235,9 +235,14 @@ public class ShippingPlanFragment extends KeyDownFragment {
 
     public void getShippingPlan(String shippingPlanState, String orderFromDate, String orderToDate) {
         SQLiteDatabase db = mHelper.getWritableDatabase();
-        String selectDataListsql = String.format(getString(R.string.GetShippingPlanQuery),orderFromDate,orderToDate);
-        if (!shippingPlanState.equals("")) {
-            selectDataListsql =selectDataListsql + String.format(getString(R.string.gspState), shippingPlanState);
+        String selectDataListsql;
+      //  String selectDataListsql = String.format(getString(R.string.GetShippingPlanQuery),orderFromDate,orderToDate);
+        if (shippingPlanState.equals("")) {
+            selectDataListsql = String.format(getString(R.string.GetShippingPlanQueryAll),orderFromDate,orderToDate);
+        }else if (shippingPlanState.equals("Finished")){
+            selectDataListsql = String.format(getString(R.string.GetShippingPlanQueryFinished),orderFromDate,orderToDate);
+        }else {
+        selectDataListsql =String.format(getString(R.string.GetShippingPlanQueryNormal),orderFromDate,orderToDate,shippingPlanState);
         }
         selectDataListsql = selectDataListsql+getString(R.string.gspOrderBy);
         Log.e("ShippingPlan语句", selectDataListsql);

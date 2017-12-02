@@ -262,18 +262,52 @@
     </string>
 
     <!--Shipping-->
-    <string name="GetShippingPlanQuery"> SELECT SP.SHIPPINGPLANNO,SP.PRODUCTIONORDERNAME,         \n
-                                                SP.CUSTOMERID,SP.PRODUCTDEFID,SP.PLANQTY,         \n
-                                                SP.CONTAINERSPEC,SP.PLANSTARTTIME,                \n
-                                                SP.PLANENDTIME,SP.STATE                           \n
-                                         FROM SF_SHIPPINGPLAN SP                                  \n
-                                         WHERE 1=1                                                \n
-                                         AND SP.PLANSTARTTIME &gt; \'%1$s\'                        \n
-                                         AND SP.PLANSTARTTIME &lt; \'%2$s\'                        \n
-
+    <string name="GetShippingPlanQueryAll"> SELECT SHIPPINGPLANNO,PRODUCTIONORDERNAME,      \n
+                                                   CUSTOMERID,PRODUCTDEFID,PLANQTY,      \n
+                                                   CONTAINERSPEC,PLANSTARTTIME,             \n
+                                                   PLANENDTIME,STATE                        \n
+                                            FROM SF_SHIPPINGPLAN                                \n
+                                            WHERE 1=1                                             \n
+                                            AND ISOISAVE IS NOT \'Y\'                          \n
+                                            AND PLANSTARTTIME &gt; \'%1$s\'                     \n
+                                            AND PLANSTARTTIME &lt; \'%2$s\'                     \n
+                                            UNION                                                 \n
+                                            SELECT SHIPPINGPLANNO,PRODUCTIONORDERNAME,      \n
+                                                   CUSTOMERID,PRODUCTDEFID,PLANQTY,      \n
+                                                   CONTAINERSPEC,PLANSTARTTIME,             \n
+                                                   PLANENDTIME,STATE                        \n
+                                            FROM SF_SHIPPINGPLAN                                \n
+                                            WHERE 1=1                                             \n
+                                            AND STATE IS NOT \'Finished\'                          \n
+                                            AND ISOISAVE = \'Y\'                                 \n
+                                            AND PLANSTARTTIME &gt; \'%1$s\'                     \n
+                                            AND PLANSTARTTIME &lt; \'%2$s\'                     \n
     </string>
-    <string name="gspState">AND SP.STATE = \'%1$s\' \n</string>
-    <string name="gspOrderBy">ORDER BY SP.SHIPPINGPLANNO</string>
+
+    <string name="GetShippingPlanQueryFinished">
+                                            SELECT SP.SHIPPINGPLANNO,SP.PRODUCTIONORDERNAME,      \n
+                                                   SP.CUSTOMERID,SP.PRODUCTDEFID,SP.PLANQTY,      \n
+                                                   SP.CONTAINERSPEC,SP.PLANSTARTTIME,             \n
+                                                   SP.PLANENDTIME,SP.STATE                        \n
+                                            FROM SF_SHIPPINGPLAN SP                               \n
+                                            WHERE 1=1                                             \n
+                                            AND SP.STATE = \'Finished\'                               \n
+                                            AND SP.ISOISAVE IS NOT \'Y\'                            \n
+                                            AND SP.PLANSTARTTIME &gt; \'%1$s\'                     \n
+                                            AND SP.PLANSTARTTIME &lt; \'%2$s\'                     \n
+    </string>
+    <string name="GetShippingPlanQueryNormal">
+                                            SELECT SP.SHIPPINGPLANNO,SP.PRODUCTIONORDERNAME,      \n
+                                                   SP.CUSTOMERID,SP.PRODUCTDEFID,SP.PLANQTY,      \n
+                                                   SP.CONTAINERSPEC,SP.PLANSTARTTIME,             \n
+                                                   SP.PLANENDTIME,SP.STATE                        \n
+                                            FROM SF_SHIPPINGPLAN SP                               \n
+                                            WHERE 1=1                                             \n
+                                            AND SP.PLANSTARTTIME &gt; \'%1$s\'                     \n
+                                            AND SP.PLANSTARTTIME &lt; \'%2$s\'                     \n
+                                            AND SP.STATE = \'%3$s\'                           \n
+    </string>
+    <string name="gspOrderBy">ORDER BY SHIPPINGPLANNO</string>
 
     <string name="GetlOTShippingQuery">SELECT  A.LOTID,A.RFID ,B.CONTAINERNO ,                      \n
                                                B.SEALNO ,A.QTY,B.VALIDSTATE                       \n

@@ -171,6 +171,25 @@ public class SyncPC implements Runnable {
                                 out.flush();
                                 break;
                             //endregion
+
+                            //region 返回出货保存的plan号,修改状态
+                            case Constant.RETURNSHIPPINGSAVESTART:
+                                //先给pc端传需要更新的表的标志
+                                out.write(Constant.SYNCSHIPPINGSAVE.getBytes());
+                                out.flush();
+                                break;
+                            case Constant.SYNCSHIPPINGSAVE:
+                                int lengthSHIPPINGSAVE = Integer.parseInt(resultStr);
+                                out.write(Constant.IYNCSHIPPINGSAVE.getBytes());
+                                out.flush();
+                                Log.e("更新SHIPPINGSAVE", resultStr);
+                                String strSHIPPINGSAVE = receiveFileFromSocket(in, out, lengthSHIPPINGSAVE);
+                                Log.e("更新SHIPPINGSAVE", strSHIPPINGSAVE.length() + ":" + strSHIPPINGSAVE);
+                                mUpdateSqlite.updateSHIPPINGSAVE(strSHIPPINGSAVE);
+                                out.write(Constant.UPDATEEXIT.getBytes());
+                                out.flush();
+                                break;
+                            //endregion
                         }
                     }
                 } catch (Exception e) {

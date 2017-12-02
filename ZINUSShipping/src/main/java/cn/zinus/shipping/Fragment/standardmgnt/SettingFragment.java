@@ -8,7 +8,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.media.AudioManager;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -67,12 +66,6 @@ public class SettingFragment extends KeyDownFragment implements View.OnClickList
     private Button mbtnGetPower;
     //Exit
     private Button mbtnExitAccount;
-    //测试按钮
-    private Button mbtnTestQuery;
-    private Button mbtntestrule;
-    private Button mbtntestProcedure;
-    private Button mbtnChangeLanguage;
-    private Handler handler = null;
     //语言选择
     private int yourChoice;
     //sqlite
@@ -222,18 +215,6 @@ public class SettingFragment extends KeyDownFragment implements View.OnClickList
                 mContext.freeUHF();
                 mContext.finish();
                 break;
-            case R.id.btnChangeLanguage:
-                changeLanguage();
-                break;
-            case R.id.btntestquery:
-                //requestQuery();
-                break;
-            case R.id.btntestrule:
-                // requestRule();
-                break;
-            case R.id.btntestprocedure:
-                //updateSqlite();
-                break;
         }
     }
 
@@ -319,10 +300,6 @@ public class SettingFragment extends KeyDownFragment implements View.OnClickList
         mbtnGetPower = (Button) getView().findViewById(R.id.btnGetPower);
         mBtnChangeIP = (Button) getView().findViewById(R.id.btnChangeIP);
         mbtnExitAccount = (Button) getView().findViewById(R.id.btnExit);
-        mbtnTestQuery = (Button) getView().findViewById(R.id.btntestquery);
-        mbtntestrule = (Button) getView().findViewById(R.id.btntestrule);
-        mbtntestProcedure = (Button) getView().findViewById(R.id.btntestprocedure);
-        mbtnChangeLanguage = (Button) getView().findViewById(R.id.btnChangeLanguage);
     }
 
     private void initListener() {
@@ -330,10 +307,6 @@ public class SettingFragment extends KeyDownFragment implements View.OnClickList
         mbtnGetPower.setOnClickListener(this);
         mBtnChangeIP.setOnClickListener(this);
         mbtnExitAccount.setOnClickListener(this);
-        mbtnTestQuery.setOnClickListener(this);
-        mbtntestrule.setOnClickListener(this);
-        mbtntestProcedure.setOnClickListener(this);
-        mbtnChangeLanguage.setOnClickListener(this);
     }
 
     private void initSharedPreferences() {

@@ -1,5 +1,6 @@
 package cn.zinus.shipping.SocketConnect;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
@@ -1001,5 +1002,21 @@ public class UpdateSqlite {
             Log.e("LOT更新出错", e.getMessage().toString());
         }
     }
+
     //endregion
+
+    public void updateSHIPPINGSAVE(String resultStr) {
+        Log.e("更新SHIPPINGSAVE", resultStr);
+        try {
+            JSONArray array = new JSONArray(resultStr);
+            for (int i = 0; i < array.length(); i++) {
+                JSONObject jsonObject = array.getJSONObject(i);
+                ContentValues values = new ContentValues();
+                values.put(Constant.ISOISAVE, "Y");
+                db.update(Constant.SF_SHIPPINGPLAN, values, "SHIPPINGPLANNO = ?", new String[]{jsonObject.getString(Constant.SHIPPINGPLANNO)});
+            }
+        } catch (JSONException e) {
+            Log.e("SHIPPINGSAVE更新出错", e.getMessage().toString());
+        }
+    }
 }
