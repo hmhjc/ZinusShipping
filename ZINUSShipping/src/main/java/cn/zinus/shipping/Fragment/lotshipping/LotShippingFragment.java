@@ -373,7 +373,7 @@ public class LotShippingFragment extends KeyDownFragment implements View.OnClick
 
     //region TagScan
     private void TagScan() {
-        if (etContainerNo.getText().toString().equals("") &&
+        if (etContainerNo.getText().toString().equals("") ||
                 etSealNo.getText().toString().equals("")) {
             showToast(mContext, getString(R.string.noContainerAndSealNo), 0);
             return;

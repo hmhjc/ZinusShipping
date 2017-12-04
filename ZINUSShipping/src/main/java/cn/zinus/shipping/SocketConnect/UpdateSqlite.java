@@ -32,6 +32,8 @@ import cn.zinus.shipping.util.Constant;
 import cn.zinus.shipping.util.DBManger;
 import cn.zinus.shipping.util.MyDateBaseHelper;
 
+import static cn.zinus.shipping.util.Constant.ISOISAVE;
+
 /**
  * Developer:Spring
  * DataTime :2017/9/15 09:20
@@ -864,8 +866,9 @@ public class UpdateSqlite {
                     + Constant.WORKINGSHIFT + ","
                     + Constant.AREAID + ","
                     + Constant.STATE + ","
+                    + Constant.ISOISAVE + ","
                     + Constant.VALIDSTATE + ")");
-            SHIPPINGPLAN_insert.append(" VALUES( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            SHIPPINGPLAN_insert.append(" VALUES( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)");
             for (int i = 0; i < array.length(); i++) {
                 ShippingPlanData shippingPlanData = new ShippingPlanData();
                 JSONObject jsonObject = array.getJSONObject(i);
@@ -903,7 +906,8 @@ public class UpdateSqlite {
         statement.bindString(10, shippingPlanData.getWORKINGSHIFT());
         statement.bindString(11, shippingPlanData.getAREAID());
         statement.bindString(12, shippingPlanData.getSTATE());
-        statement.bindString(13, shippingPlanData.getVALIDSTATE());
+        statement.bindString(13, "N");
+        statement.bindString(14, shippingPlanData.getVALIDSTATE());
         try {
             statement.executeInsert();
         } catch (Exception e) {
@@ -1012,7 +1016,7 @@ public class UpdateSqlite {
             for (int i = 0; i < array.length(); i++) {
                 JSONObject jsonObject = array.getJSONObject(i);
                 ContentValues values = new ContentValues();
-                values.put(Constant.ISOISAVE, "Y");
+                values.put(ISOISAVE, "Y");
                 db.update(Constant.SF_SHIPPINGPLAN, values, "SHIPPINGPLANNO = ?", new String[]{jsonObject.getString(Constant.SHIPPINGPLANNO)});
             }
         } catch (JSONException e) {

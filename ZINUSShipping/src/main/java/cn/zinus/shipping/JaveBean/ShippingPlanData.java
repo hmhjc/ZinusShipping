@@ -23,17 +23,7 @@ public class ShippingPlanData implements Serializable {
     private String WORKINGSHIFT;
     private String AREAID;
     private String STATE;
-    private String DESCRIPTION;
-    private String CREATOR;
-    private String CREATEDTIME;
-    private String MODIFIER;
-    private String MODIFIEDTIME;
-    private String LASTTXNID;
-    private String LASTTXNUSER;
-    private String LASTTXNTIME;
-    private String LASTTXNCOMMENT;
-    private String LASTTXNHISTKEY;
-    private String LASTGROUPHISTKEY;
+    private String ISOISAVE;
     private String VALIDSTATE;
 
     @Override
@@ -52,17 +42,6 @@ public class ShippingPlanData implements Serializable {
                 ", WORKINGSHIFT='" + WORKINGSHIFT + '\'' +
                 ", AREAID='" + AREAID + '\'' +
                 ", STATE='" + STATE + '\'' +
-                ", DESCRIPTION='" + DESCRIPTION + '\'' +
-                ", CREATOR='" + CREATOR + '\'' +
-                ", CREATEDTIME='" + CREATEDTIME + '\'' +
-                ", MODIFIER='" + MODIFIER + '\'' +
-                ", MODIFIEDTIME='" + MODIFIEDTIME + '\'' +
-                ", LASTTXNID='" + LASTTXNID + '\'' +
-                ", LASTTXNUSER='" + LASTTXNUSER + '\'' +
-                ", LASTTXNTIME='" + LASTTXNTIME + '\'' +
-                ", LASTTXNCOMMENT='" + LASTTXNCOMMENT + '\'' +
-                ", LASTTXNHISTKEY='" + LASTTXNHISTKEY + '\'' +
-                ", LASTGROUPHISTKEY='" + LASTGROUPHISTKEY + '\'' +
                 ", VALIDSTATE='" + VALIDSTATE + '\'' +
                 '}';
     }
@@ -171,92 +150,12 @@ public class ShippingPlanData implements Serializable {
         this.STATE = STATE;
     }
 
-    public String getDESCRIPTION() {
-        return DESCRIPTION;
+    public String getISOISAVE() {
+        return ISOISAVE;
     }
 
-    public void setDESCRIPTION(String DESCRIPTION) {
-        this.DESCRIPTION = DESCRIPTION;
-    }
-
-    public String getCREATOR() {
-        return CREATOR;
-    }
-
-    public void setCREATOR(String CREATOR) {
-        this.CREATOR = CREATOR;
-    }
-
-    public String getCREATEDTIME() {
-        return CREATEDTIME;
-    }
-
-    public void setCREATEDTIME(String CREATEDTIME) {
-        this.CREATEDTIME = CREATEDTIME;
-    }
-
-    public String getMODIFIER() {
-        return MODIFIER;
-    }
-
-    public void setMODIFIER(String MODIFIER) {
-        this.MODIFIER = MODIFIER;
-    }
-
-    public String getMODIFIEDTIME() {
-        return MODIFIEDTIME;
-    }
-
-    public void setMODIFIEDTIME(String MODIFIEDTIME) {
-        this.MODIFIEDTIME = MODIFIEDTIME;
-    }
-
-    public String getLASTTXNID() {
-        return LASTTXNID;
-    }
-
-    public void setLASTTXNID(String LASTTXNID) {
-        this.LASTTXNID = LASTTXNID;
-    }
-
-    public String getLASTTXNUSER() {
-        return LASTTXNUSER;
-    }
-
-    public void setLASTTXNUSER(String LASTTXNUSER) {
-        this.LASTTXNUSER = LASTTXNUSER;
-    }
-
-    public String getLASTTXNTIME() {
-        return LASTTXNTIME;
-    }
-
-    public void setLASTTXNTIME(String LASTTXNTIME) {
-        this.LASTTXNTIME = LASTTXNTIME;
-    }
-
-    public String getLASTTXNCOMMENT() {
-        return LASTTXNCOMMENT;
-    }
-
-    public void setLASTTXNCOMMENT(String LASTTXNCOMMENT) {
-        this.LASTTXNCOMMENT = LASTTXNCOMMENT;
-    }
-
-    public String getLASTTXNHISTKEY() {
-        return LASTTXNHISTKEY;
-    }
-
-    public void setLASTTXNHISTKEY(String LASTTXNHISTKEY) {
-        this.LASTTXNHISTKEY = LASTTXNHISTKEY;
-    }
-
-    public String getLASTGROUPHISTKEY() {
-        return LASTGROUPHISTKEY;
-    }
-
-    public void setLASTGROUPHISTKEY(String LASTGROUPHISTKEY) {
-        this.LASTGROUPHISTKEY = LASTGROUPHISTKEY;
+    public void setISOISAVE(String ISOISAVE) {
+        this.ISOISAVE = ISOISAVE;
     }
 
     public String getVALIDSTATE() {

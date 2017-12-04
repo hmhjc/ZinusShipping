@@ -74,8 +74,8 @@ public class MainNaviActivity extends BaseActivity
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_navi);
-        //initBarCode();
-        //initUHF();
+        initBarCode();
+        initUHF();
         initToolbar();
         initFragment(savedInstanceState);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
