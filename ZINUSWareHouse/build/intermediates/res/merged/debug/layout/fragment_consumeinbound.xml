@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <LinearLayout style="@style/MessageMarginTopLayout"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="6dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Inboundno"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" : "/>
+
+        <TextView
+            android:id="@+id/InboundOrderNo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="right">
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Qty"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" : "/>
+
+        <TextView
+            android:id="@+id/tvtagqty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+    <LinearLayout style="@style/GridMarginTopLayout"/>
+
+    <com.micube.control.controlUtil.CustomHorizontalScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:scrollbars="horizontal">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical">
+
+            <!--标题(Caption)-->
+            <LinearLayout
+                style="@style/GridCaption">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/zinusdarkblue">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/listviewcaption"
+                            android:layout_width="200px"
+                            android:text="@string/consumabledefname"/>
+
+                        <LinearLayout
+                            style="@style/border_bottom_style"/>
+
+                    </LinearLayout>
+
+                    <View
+                        style="@style/listviewverticalsplit"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/listviewcaption"
+                            android:layout_width="50px"
+                            android:text="@string/Unit"/>
+
+                        <LinearLayout
+                            style="@style/border_bottom_style"/>
+
+                    </LinearLayout>
+
+                    <View
+                        style="@style/listviewverticalsplit"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/listviewcaption"
+                            android:layout_width="100px"
+                            android:text="@string/inqty"/>
+
+                        <LinearLayout
+                            style="@style/border_bottom_style"/>
+
+                    </LinearLayout>
+
+                    <View
+                        style="@style/listviewverticalsplit"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/listviewcaption"
+                            android:layout_width="100px"
+                            android:text="@string/PlanQty"/>
+
+                        <LinearLayout
+                            style="@style/border_bottom_style"/>
+
+                    </LinearLayout>
+
+                    <View
+                        style="@style/listviewverticalsplit"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <ListView
+                android:id="@+id/lv_consumeInbound"
+                style="@style/mainListViewStyle"/>
+
+        </LinearLayout>
+
+    </com.micube.control.controlUtil.CustomHorizontalScrollView>
+
+</LinearLayout>

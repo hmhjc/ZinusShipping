@@ -10,6 +10,7 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/Common-1.2.4" />
             <option value="$PROJECT_DIR$/ZINUSShipping" />
+            <option value="$PROJECT_DIR$/ZINUSWareHouse" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

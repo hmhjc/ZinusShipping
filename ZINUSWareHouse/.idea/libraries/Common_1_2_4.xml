@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="Common-1.2.4">
+    <CLASSES>
+      <root url="jar://D:/Android/AVDs/.android/build-cache/fb4c8567f1f5e8e777c754371379a908b3bdd16d/output/jars/libs/cw-deviceapi(20170825).jar!/" />
+      <root url="jar://D:/Android/AVDs/.android/build-cache/fb4c8567f1f5e8e777c754371379a908b3bdd16d/output/jars/libs/ksoap2-3.3.0.jar!/" />
+      <root url="file://D:/Android/AVDs/.android/build-cache/fb4c8567f1f5e8e777c754371379a908b3bdd16d/output/res" />
+      <root url="jar://D:/Android/AVDs/.android/build-cache/fb4c8567f1f5e8e777c754371379a908b3bdd16d/output/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

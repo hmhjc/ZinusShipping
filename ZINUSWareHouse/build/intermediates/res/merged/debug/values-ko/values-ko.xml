@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="Antenna">안테나</string>
+    <string name="Area">Area</string>
+    <string name="ArrangeLocation">위치지정</string>
+    <string name="Auto">다중</string>
+    <string name="Bulk">Bulk</string>
+    <string name="Cancel">취소</string>
+    <string name="ChangeLanguage">ChangeLanguage_kr</string>
+    <string name="Check">실사</string>
+    <string name="CheckMonth">CheckMonth</string>
+    <string name="CheckQty">CheckQty</string>
+    <string name="CheckYM">실사번호</string>
+    <string name="ChkLocation">실위치</string>
+    <string name="ChkQty">실수량</string>
+    <string name="ChkUnit">실단위</string>
+    <string name="ChooseLanguage">ChooseLanguage</string>
+    <string name="CodeID">Code ID</string>
+    <string name="ConsumabledefId">ConsumabledefId</string>
+    <string name="ConsumbleType">ConsumbleType</string>
+    <string name="ConsumeInboundState">ConsumeInboundState_ko</string>
+    <string name="ConsumeOutboundState">ConsumeOutboundState</string>
+    <string name="ContainerNo">ContainerNo</string>
+    <string name="ContainerSpec">ContainerSpec</string>
+    <string name="Conversionitem">품목전환</string>
+    <string name="Count">실사</string>
+    <string name="CountOrder">실사지시</string>
+    <string name="Customer">고객사</string>
+    <string name="Date">일자</string>
+    <string name="Description">Description</string>
+    <string name="EN_US">EN_US</string>
+    <string name="EndData">종료Data</string>
+    <string name="ExitAccount">나가기</string>
+    <string name="Export">출고</string>
+    <string name="ExportNo">출고번호</string>
+    <string name="From">시작</string>
+    <string name="FromDate">시작일</string>
+    <string name="IP">IP</string>
+    <string name="Import">입고</string>
+    <string name="ImportOrderNo">ImportOrderNo</string>
+    <string name="ImportTempNo">ImportTempNo</string>
+    <string name="InboundDate">InboundDate</string>
+    <string name="InboundState">InboundState</string>
+    <string name="Inboundno">Inboundno</string>
+    <string name="InformationSearch">정보조회</string>
+    <string name="Inspectionresult">Inspectionresult</string>
+    <string name="Interval">Interval</string>
+    <string name="InventoryMgnt">재고관리</string>
+    <string name="Item">품목</string>
+    <string name="ItemCount">품목수</string>
+    <string name="ItemID">품목</string>
+    <string name="ItemList">품목List</string>
+    <string name="ItemName">품명</string>
+    <string name="KO_KR">KO_KR</string>
+    <string name="LOCSUMQTY">총위치수량</string>
+    <string name="Location">위치등록</string>
+    <string name="LocationId">LocationId</string>
+    <string name="LocationList">위치List</string>
+    <string name="LocationSearch">위치검색</string>
+    <string name="LotNo">LotNo</string>
+    <string name="MainMenu">MainMenu</string>
+    <string name="MaterialDiscard">폐기</string>
+    <string name="MaterialReturn">반품</string>
+    <string name="MaterialStockIn">입고관리</string>
+    <string name="MaterialStockOut">출고관리</string>
+    <string name="MaxQty">상한</string>
+    <string name="Message">메시지</string>
+    <string name="MianMenu">android:id=\"@+id/item_MianMenu\"</string>
+    <string name="MinQty">하한</string>
+    <string name="NetWorkError">네트워크 오류</string>
+    <string name="NoSave">저장안함</string>
+    <string name="NotificationVolume">알림 소리</string>
+    <string name="Order">지시</string>
+    <string name="OrderNo">지시번호</string>
+    <string name="OrderQty">지시수량</string>
+    <string name="OriLocation">원위치</string>
+    <string name="OriQty">원수량</string>
+    <string name="OriUnit">원단위</string>
+    <string name="Origin">Origin</string>
+    <string name="Outboundno">Outboundno</string>
+    <string name="PlanDataOfShipping">PlanDataOfShipping</string>
+    <string name="PlanEndTime">PlanEndTime</string>
+    <string name="PlanQty">계획수량</string>
+    <string name="PlanStartTime"/>
+    <string name="PoNo">PoNo</string>
+    <string name="QTY">수량</string>
+    <string name="Qty">수량</string>
+    <string name="RealQty">실수량</string>
+    <string name="Receipt">가입고</string>
+    <string name="RegisterTag">Tag등록</string>
+    <string name="RememberUserID">ID저장</string>
+    <string name="Repack">재포장</string>
+    <string name="SaveAndExit">저장 후 종료</string>
+    <string name="ScanQty">인식수량</string>
+    <string name="Scaning">스캔중</string>
+    <string name="ScheduleDate">ScheduleDate</string>
+    <string name="SealNo">SealNo</string>
+    <string name="SearchInfo">조회</string>
+    <string name="SetPower">안테나 설정</string>
+    <string name="Setting">설정</string>
+    <string name="Shipping">Shipping</string>
+    <string name="ShippingPlan">ShippingPlan</string>
+    <string name="ShippingPlanNo">ShippingPlanNo</string>
+    <string name="ShippingPlanState">ShippingPlanState</string>
+    <string name="Single">개별</string>
+    <string name="SoNo">SoNo</string>
+    <string name="SpinnerDefault">선택</string>
+    <string name="StandardMgnt">기준정보</string>
+    <string name="Start">시작</string>
+    <string name="State">상태</string>
+    <string name="StockCheckState">StockCheckState</string>
+    <string name="StockMove">위치변경</string>
+    <string name="StockSafety">안전재고</string>
+    <string name="StockStatus">재고조회</string>
+    <string name="Stop">정지</string>
+    <string name="SystemVolume">System 소리</string>
+    <string name="TagCnt">TAG수</string>
+    <string name="TagID">Tag ID</string>
+    <string name="TagList">Tag List</string>
+    <string name="TempInboundDate">TempInboundDate</string>
+    <string name="TempSave">TempSave</string>
+    <string name="To">-</string>
+    <string name="ToDate">종료일</string>
+    <string name="URI">URI</string>
+    <string name="Unit">단위</string>
+    <string name="Urgencytype">Urgencytype</string>
+    <string name="UserID">사용자ID</string>
+    <string name="Vendor">공급사</string>
+    <string name="WEBURL">http://192.168.1.68:8002/MESService.svc</string>
+    <string name="WEBURLend">:5010/do</string>
+    <string name="WareHouse">창고</string>
+    <string name="WarehousType">WarehousType</string>
+    <string name="ZH_CN">ZH_CN</string>
+    <string msgid="4600421777120114993" name="abc_action_bar_home_description">"홈 탐색"</string>
+    <string msgid="1397052879051804371" name="abc_action_bar_home_description_format">"%1$s, %2$s"</string>
+    <string msgid="6623331958280229229" name="abc_action_bar_home_subtitle_description_format">"%1$s, %2$s, %3$s"</string>
+    <string msgid="1594238315039666878" name="abc_action_bar_up_description">"위로 탐색"</string>
+    <string msgid="3588849162933574182" name="abc_action_menu_overflow_description">"옵션 더보기"</string>
+    <string msgid="4076576682505996667" name="abc_action_mode_done">"완료"</string>
+    <string msgid="7468859129482906941" name="abc_activity_chooser_view_see_all">"전체 보기"</string>
+    <string msgid="2031811694353399454" name="abc_activitychooserview_choose_application">"앱 선택"</string>
+    <string msgid="121134116657445385" name="abc_capital_off">"사용 안함"</string>
+    <string msgid="3405795526292276155" name="abc_capital_on">"사용"</string>
+    <string msgid="7723749260725869598" name="abc_search_hint">"검색..."</string>
+    <string msgid="3691816814315814921" name="abc_searchview_description_clear">"검색어 삭제"</string>
+    <string msgid="2550479030709304392" name="abc_searchview_description_query">"검색어"</string>
+    <string msgid="8264924765203268293" name="abc_searchview_description_search">"검색"</string>
+    <string msgid="8928215447528550784" name="abc_searchview_description_submit">"검색어 보내기"</string>
+    <string msgid="893419373245838918" name="abc_searchview_description_voice">"음성 검색"</string>
+    <string msgid="3421042268587513524" name="abc_shareactionprovider_share_with">"공유 대상"</string>
+    <string msgid="7165123711973476752" name="abc_shareactionprovider_share_with_application">"%s와(과) 공유"</string>
+    <string msgid="1603543279005712093" name="abc_toolbar_collapse_description">"접기"</string>
+    <string name="action_ClearAll">초기화</string>
+    <string name="action_login">로그인</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_sign_in_short">로그인</string>
+    <string name="app_name">ZINUS</string>
+    <string name="apply">적용</string>
+    <string name="confirm">확정</string>
+    <string name="consumabledefid">consumabledefid</string>
+    <string name="consumabledefname">consumabledefname</string>
+    <string name="consumabledefversion">consumabledefversion</string>
+    <string name="consumablelot">LOT</string>
+    <string name="consumablelotid">consumablelotid</string>
+    <string name="consumeRequestNo">consumeRequestNo</string>
+    <string name="dbm">dbm</string>
+    <string name="delete">삭제</string>
+    <string name="errorQty">오류수량</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="etOrderNo">Order No 를 입력하세요.</string>
+    <string name="fixQty">수정</string>
+    <string name="getPower">설정 가져오기</string>
+    <string name="inqty">inqty</string>
+    <string name="lotShipping">lotShipping</string>
+    <string name="menu">메뉴</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="ok">OK</string>
+    <string name="planNO">계획번호</string>
+    <string name="product">product</string>
+    <string name="prompt">prompt</string>
+    <string name="prompt_password">비밀번호</string>
+    <string name="requestData">requestData</string>
+    <string name="rfid_title_Mult">Tab2</string>
+    <string name="rfid_title_single">Tab1</string>
+    <string name="save">저장</string>
+    <string name="search">조회</string>
+    <string msgid="146198913615257606" name="search_menu_title">"검색"</string>
+    <string name="shared">shared</string>
+    <string name="startData">시작Data</string>
+    <string msgid="2869576371154716097" name="status_bar_notification_info_overflow">"999+"</string>
+    <string name="stockSearch">stockSearch</string>
+    <string name="title_activity_login">ZINUS</string>
+    <string name="title_activity_main_navi">MainNaviActivity</string>
+    <string name="uhf_msg_inventory_fail">재고 처리중 오류.</string>
+</resources>

@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Common-1.2.4/Common-1.2.4.iml" filepath="$PROJECT_DIR$/Common-1.2.4/Common-1.2.4.iml" />
       <module fileurl="file://$PROJECT_DIR$/ZINUSShipping/ZINUSShipping.iml" filepath="$PROJECT_DIR$/ZINUSShipping/ZINUSShipping.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ZINUSWareHouse/ZINUSWareHouse.iml" filepath="$PROJECT_DIR$/ZINUSWareHouse/ZINUSWareHouse.iml" />
       <module fileurl="file://$PROJECT_DIR$/ZinusShipping.iml" filepath="$PROJECT_DIR$/ZinusShipping.iml" />
     </modules>
   </component>

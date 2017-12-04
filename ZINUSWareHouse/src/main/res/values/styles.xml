@@ -1,0 +1,271 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/zinusdarkblue</item>
+        <item name="colorPrimaryDark">@color/micubegray</item>
+        <item name="colorAccent">@color/InputBoxColor</item>
+        <item name="android:actionBarSize">60dp</item>
+        <!--<item name="actionBarStyle">@style/AppTheme.ActionBar</item>-->
+        <item name="actionBarSize">60dp</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+
+    <style name="Item_Title">
+        <item name="android:layout_width">50dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/micubegray</item>
+    </style>
+
+    <style name="Item_Data">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="Item_Info">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">75dp</item>
+        <item name="android:layout_alignParentLeft">true</item>
+        <item name="android:layout_alignParentStart">true</item>
+        <item name="android:layout_alignParentTop">true</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="Item_Line">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">25dp</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <style name="Item_fixbtn">
+        <item name="android:layout_width">80dp</item>
+        <item name="android:layout_height">60dp</item>
+        <item name="android:layout_alignParentEnd">true</item>
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:layout_marginRight">10dp</item>
+        <item name="android:layout_centerVertical">true</item>
+    </style>
+
+    <style name="frag_topconditions">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">top</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="frag_tcline">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">60px</item>
+        <item name="android:gravity">left</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">10dp</item>
+    </style>
+
+    <style name="ivBorR">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">80px</item>
+        <item name="android:layout_weight">0.2</item>
+        <item name="android:layout_gravity">center_vertical</item>
+    </style>
+
+    <style name="etTag">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="tvSelectStyle">
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:textColor">@drawable/list_item_text_color</item>
+    </style>
+
+    <style name="SlidingItem_ImageView">
+        <item name="android:layout_width">30dp</item>
+        <item name="android:layout_height">30dp</item>
+        <item name="android:scaleType">fitXY</item>
+        <item name="android:clickable">false</item>
+    </style>
+
+    <style name="SlidingItem_TextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">#fff</item>
+        <item name="android:clickable">false</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="SlidingItem_LLModify">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">#FED33F</item>
+        <item name="android:gravity">center</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:padding">5dp</item>
+    </style>
+
+    <style name="SlidingItem_LLDelete">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">#F77D48</item>
+        <item name="android:gravity">center</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:padding">5dp</item>
+    </style>
+
+    <style name="MenuImageView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:scaleType">fitXY</item>
+        <item name="android:background">@color/white</item>
+        <item name="android:clickable">false</item>
+    </style>
+
+    <style name="MenuTextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">30px</item>
+    </style>
+
+    <style name="MenuLL">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:layout_gravity">center_vertical</item>
+    </style>
+
+    <style name="TitleBarStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">60px</item>
+        <item name="android:background">@color/zinusdarkblue</item>
+    </style>
+
+    <style name="listviewverticalsplit">
+        <item name="android:layout_width">1sp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@color/ContentBorderColor</item>
+    </style>
+
+    <style name="listviewcaption">
+        <item name="android:layout_width">150px</item>
+        <item name="android:layout_height">60px</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="listviewcontext">
+        <item name="android:layout_width">150px</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="TableLayoutTab">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">80px</item>
+        <item name="android:layout_marginLeft">-11px</item>
+    </style>
+
+    <style name="TableLayoutViewPager">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:background">#ffffff</item>
+    </style>
+
+    <style name="listviewitem">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:minHeight">60px</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+
+    <style name="mainListViewStyle">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">fill_parent</item>
+        <item name="android:dividerHeight">0.0dip</item>
+        <item name="android:fadingEdge">none</item>
+        <item name="android:scrollbars">vertical</item>
+        <item name="android:scrollingCache">false</item>
+        <item name="android:transcriptMode">alwaysScroll</item>
+    </style>
+
+    <style name="EtCommonStyle">
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:layout_width">400px</item>
+        <item name="android:layout_height">60px</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
+    <style name="GridMarginTopLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">8px</item>
+        <item name="android:background">@color/ContentBorderColor</item>
+    </style>
+
+    <style name="border_bottom_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">4px</item>
+        <item name="android:background">@color/border_bottom_color</item>
+    </style>
+
+    <style name="MessageMarginTopLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">2px</item>
+        <item name="android:background">@color/ContentBorderColor</item>
+    </style>
+
+    <style name="ItemHeight">
+        <item name="android:listPreferredItemHeightSmall">80px</item>
+    </style>
+
+    <style name="GridCaption">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">64px</item>
+        <item name="android:background">@color/zinusdarkblue</item>
+    </style>
+
+    <style name="ll_Condition_line">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">80px</item>
+        <item name="android:gravity">left</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+
+    <style name="Condition_InputBox">
+        <item name="android:layout_width">294px</item>
+        <item name="android:layout_height">60px</item>
+        <item name="android:layout_gravity">center_vertical</item>
+    </style>
+
+    <style name="ConditionInputLabel">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">0.3</item>
+        <item name="android:gravity">center|left</item>
+        <item name="android:paddingLeft">10px</item>
+        <item name="android:textSize">@dimen/data_text</item>
+    </style>
+</resources>

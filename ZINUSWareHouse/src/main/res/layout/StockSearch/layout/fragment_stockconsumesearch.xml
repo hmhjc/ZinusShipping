@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              android:tag="receipttab1">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="top"
+        android:orientation="vertical"
+        >
+        <!--add 添加条件的地方-->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="left"
+            android:orientation="horizontal"
+            android:paddingLeft="10dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                android:gravity="center|left"
+                android:text="@string/WarehousType"
+                android:textSize="@dimen/data_text"/>
+
+            <Spinner
+                android:id="@+id/sp_WarehousType"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="left"
+            android:orientation="horizontal"
+            android:paddingLeft="10dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                android:gravity="center|left"
+                android:text="@string/ConsumabledefId"
+                android:textSize="@dimen/data_text"/>
+
+            <Spinner
+                android:id="@+id/sp_ConsumabledefId"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="left"
+            android:orientation="horizontal"
+            android:paddingLeft="10dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                android:gravity="center|left"
+                android:text="@string/LocationId"
+                android:textSize="@dimen/data_text"/>
+
+            <Spinner
+                android:id="@+id/sp_LocationId"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="left"
+            android:orientation="horizontal"
+            android:paddingLeft="10dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                android:gravity="center|left"
+                android:text="@string/ConsumbleType"
+                android:textSize="@dimen/data_text"/>
+
+            <Spinner
+                android:id="@+id/sp_ConsumbleType"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <com.micube.control.controlUtil.CustomHorizontalScrollView
+        android:scrollbars="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical">
+
+            <!--标题(Caption)-->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="70px"
+                >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:background="@color/zinusdarkblue"
+                    android:layout_height="match_parent">
+
+                    <View
+                        style="@style/listviewverticalsplit"/>
+
+                    <TextView
+                        android:text="@string/CheckMonth"
+                        android:layout_width="150px"
+                        style="@style/listviewcaption"/>
+
+                    <View
+                        style="@style/listviewverticalsplit"/>
+
+                    <TextView
+                        android:text="@string/WareHouse"
+                        android:layout_width="150px"
+                        style="@style/listviewcaption"
+                        />
+
+                    <View
+                        style="@style/listviewverticalsplit"/>
+
+                    <TextView
+                        android:text="@string/startData"
+                        android:layout_width="150px"
+                        style="@style/listviewcaption"/>
+
+                    <View
+                        style="@style/listviewverticalsplit"/>
+
+                    <TextView
+                        android:text="@string/EndData"
+                        android:layout_width="150px"
+                        style="@style/listviewcaption"/>
+
+                    <View
+                        style="@style/listviewverticalsplit"/>
+
+                    <TextView
+                        android:text="@string/StockCheckState"
+                        android:layout_width="150px"
+                        style="@style/listviewcaption"/>
+
+                    <View
+                        style="@style/listviewverticalsplit"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <ListView
+                android:id="@+id/lv_StockConsumeSearch"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:scrollbars="vertical"
+                android:dividerHeight="0.0dip"
+                android:scrollingCache="false"
+                android:transcriptMode="alwaysScroll"
+                android:fadingEdge="none"/>
+
+        </LinearLayout>
+
+    </com.micube.control.controlUtil.CustomHorizontalScrollView>
+
+</LinearLayout>

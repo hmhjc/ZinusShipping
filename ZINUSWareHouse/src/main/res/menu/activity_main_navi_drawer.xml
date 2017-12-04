@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <group
+        android:id="@+id/group_StockChec113421k">
+        <item
+            android:id="@+id/item_MianMenu"
+            android:icon="@drawable/ic_tag_add"
+            android:title="@string/MianMenu"/>
+    </group>
+
+    <group
+        android:id="@+id/group_Receipt">
+        <item
+            android:id="@+id/item_Receipt"
+            android:icon="@drawable/pdamenutemporarystorage_s"
+            android:title="@string/Receipt"/>
+
+    </group>
+
+    <!--<group-->
+        <!--android:id="@+id/group_Import">-->
+        <!--<item-->
+            <!--android:id="@+id/item_Import"-->
+            <!--android:icon="@drawable/pdamenuwarehousing_s"-->
+            <!--android:title="@string/Import"/>-->
+
+    <!--</group>-->
+    <group
+        android:id="@+id/group_Export">
+        <item
+            android:id="@+id/item_Export"
+            android:icon="@drawable/pdamenurelease_s"
+            android:title="@string/Export"/>
+    </group>
+
+    <group
+        android:id="@+id/group_StockCheck">
+        <item
+            android:id="@+id/item_StockCheck"
+            android:icon="@drawable/pdamenuinvestigation_s"
+            android:title="@string/Count"/>
+    </group>
+
+    <!--<group-->
+        <!--android:id="@+id/group_Shipping">-->
+        <!--<item-->
+            <!--android:id="@+id/item_Shipping"-->
+            <!--android:icon="@drawable/pdamenuphasedifference_s"-->
+            <!--android:title="@string/Shipping"/>-->
+    <!--</group>-->
+
+    <group
+        android:id="@+id/group_StockChec11k">
+        <item
+            android:id="@+id/item_setting"
+            android:icon="@drawable/pdamenusetting_s"
+            android:title="@string/Setting"/>
+    </group>
+
+
+    <group
+        android:id="@+id/group_registtag">
+        <item
+            android:id="@+id/item_registtag"
+            android:icon="@drawable/ic_mobile_gear"
+            android:title="写标签"/>
+    </group>
+
+    <!--<group-->
+        <!--android:id="@+id/group_StockSearch">-->
+        <!--<item-->
+            <!--android:id="@+id/item_StockSearch"-->
+            <!--android:icon="@drawable/ic_location_zoom"-->
+            <!--android:title="@string/LocationSearch"/>-->
+    <!--</group>-->
+
+
+</menu>

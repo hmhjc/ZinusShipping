@@ -1,1 +1,1 @@
-include ':ZINUSShipping', ':Common-1.2.4'
+include ':ZINUSShipping', ':Common-1.2.4', ':ZINUSWareHouse'

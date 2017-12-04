@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#000000</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="white">#fafafa</color>
+    <color name="red">#FF0000</color>
+    <color name="blue">#4944dc</color>
+    <color name="zinusdarkblue">#02413e</color>
+    <color name="micubemint">#83cfca</color>
+    <color name="micubedarkmint">#00aaa6</color>
+    <color name="micubedarkgreen">#00a160</color>
+    <color name="micubegray">#728179</color>
+    <color name="qtyless">#ff0400</color>
+    <color name="qtymore">#fff700</color>
+    <color name="qtymatch">#000000</color>
+    <color name="ContentBorderColor">#e5e2dc</color>
+    <color name="ContentColor">#ffffff</color>
+    <color name="InputBoxColor">#00b183</color>
+    <color name="border_bottom_color">#00b183</color>
+</resources>

@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="Antenna">天线</string>
+    <string name="Area">车间</string>
+    <string name="ArrangeLocation">安排位置 </string>
+    <string name="Auto">多个自动</string>
+    <string name="Bulk">容量</string>
+    <string name="Cancel">取消</string>
+    <string name="ChangeLanguage">切换语言</string>
+    <string name="Check">确认</string>
+    <string name="CheckMonth">盘点月份</string>
+    <string name="CheckQty">确认数量</string>
+    <string name="ChkLocation">确认位置</string>
+    <string name="ChkQty">确认数量</string>
+    <string name="ChkUnit">确认单位</string>
+    <string name="ChooseLanguage">更改语言</string>
+    <string name="CodeID">代码ID</string>
+    <string name="ConsumabledefId">材料定义ID</string>
+    <string name="ConsumbleType">材料类型</string>
+    <string name="ConsumeInboundState">待入库状态</string>
+    <string name="ConsumeOutboundState">出库状态</string>
+    <string name="ContainerNo">货柜No</string>
+    <string name="ContainerSpec">货柜规格</string>
+    <string name="Conversionitem">品种转换</string>
+    <string name="Count">盘点</string>
+    <string name="CountOrder">计划编号</string>
+    <string name="Customer">客户</string>
+    <string name="Date">日期</string>
+    <string name="Description">描述</string>
+    <string name="EN_US">英文</string>
+    <string name="EndData">结束日期</string>
+    <string name="ExitAccount">退出帐号</string>
+    <string name="Export">出库</string>
+    <string name="ExportNo">ExportNo</string>
+    <string name="From">From</string>
+    <string name="FromDate">FromDate</string>
+    <string name="Import">入库</string>
+    <string name="ImportOrderNo">入库指示号</string>
+    <string name="ImportTempNo">待入库号</string>
+    <string name="InboundDate">入库日期</string>
+    <string name="InboundState">入库状态</string>
+    <string name="Inboundno">入库编号</string>
+    <string name="InformationSearch">信息搜索</string>
+    <string name="Inspectionresult">检查结果</string>
+    <string name="Interval">执行间隔</string>
+    <string name="InventoryMgnt">库存管理</string>
+    <string name="Item">品种</string>
+    <string name="ItemCount">品目数量</string>
+    <string name="ItemID">品种ID</string>
+    <string name="ItemList">品种清单</string>
+    <string name="ItemName">品种名</string>
+    <string name="KO_KR">韩文</string>
+    <string name="LOCSUMQTY">SUMQTY</string>
+    <string name="Location">安排位置</string>
+    <string name="LocationId">位置ID</string>
+    <string name="LocationList">位置列表</string>
+    <string name="LocationSearch">位置搜索</string>
+    <string name="LotNo">Lot No</string>
+    <string name="MainMenu">菜单</string>
+    <string name="MaterialDiscard">材料废弃</string>
+    <string name="MaterialReturn">材料退回</string>
+    <string name="MaterialStockIn">材料入库</string>
+    <string name="MaterialStockOut">材料出库</string>
+    <string name="MaxQty">最大数量</string>
+    <string name="Message">消息</string>
+    <string name="MianMenu">首页</string>
+    <string name="MinQty">最小数量</string>
+    <string name="NetWorkError">网络错误</string>
+    <string name="NoSave">不保存</string>
+    <string name="NotificationVolume">提示音音量</string>
+    <string name="Order">计划</string>
+    <string name="OrderNo">订单编号</string>
+    <string name="OrderQty">计划数量</string>
+    <string name="OriLocation">初始位置</string>
+    <string name="OriQty">初始数量</string>
+    <string name="OriUnit">初始单位</string>
+    <string name="Origin">最初的</string>
+    <string name="Outboundno">出库编号</string>
+    <string name="PlanDataOfShipping">出货计划日</string>
+    <string name="PlanEndTime">出货完成日</string>
+    <string name="PlanQty">计划数量</string>
+    <string name="PlanStartTime">出货计划日</string>
+    <string name="PoNo">Po号</string>
+    <string name="QTY">数量</string>
+    <string name="Qty">数量</string>
+    <string name="RealQty">真实数量</string>
+    <string name="Receipt">待入库</string>
+    <string name="RegisterTag">登记标签</string>
+    <string name="RememberUserID">记住用户名</string>
+    <string name="Repack">重新包装</string>
+    <string name="SaveAndExit">保存并退出</string>
+    <string name="ScanQty">标签数量</string>
+    <string name="Scaning">扫描中。。。</string>
+    <string name="ScheduleDate">计划时间</string>
+    <string name="SealNo">SealNo</string>
+    <string name="SearchInfo">搜索信息</string>
+    <string name="SetPower">设置功率</string>
+    <string name="Setting">设置</string>
+    <string name="Shipping">出货</string>
+    <string name="ShippingPlan">上车计划</string>
+    <string name="ShippingPlanNo">上车代码</string>
+    <string name="ShippingPlanState">装车计划状态</string>
+    <string name="Single">单个</string>
+    <string name="SoNo">So号</string>
+    <string name="SpinnerDefault">请选择</string>
+    <string name="StandardMgnt">基础信息管理</string>
+    <string name="Start">开始扫描</string>
+    <string name="State">状态</string>
+    <string name="StockCheckState">盘点状态</string>
+    <string name="StockMove">仓库移动</string>
+    <string name="StockSafety">安全库存</string>
+    <string name="StockStatus">库存状态</string>
+    <string name="Stop">停止扫描</string>
+    <string name="SystemVolume">系统音量</string>
+    <string name="TagCnt">Tag数量</string>
+    <string name="TagID">标签ID</string>
+    <string name="TagList">标签清单</string>
+    <string name="TempInboundDate">待入库时间</string>
+    <string name="TempSave">临时保存</string>
+    <string name="To">—</string>
+    <string name="ToDate">ToDate</string>
+    <string name="Unit">单位</string>
+    <string name="Urgencytype">应急区分</string>
+    <string name="UserID">用户ID</string>
+    <string name="Vendor">供应商</string>
+    <string name="WEBURL">http://192.168.1.68:8002/MESService.svc</string>
+    <string name="WEBURLend">:5010/do</string>
+    <string name="WareHouse">仓库</string>
+    <string name="WarehousType">仓库类型</string>
+    <string name="ZH_CN">中文</string>
+    <string msgid="4600421777120114993" name="abc_action_bar_home_description">"转到主屏幕"</string>
+    <string msgid="1397052879051804371" name="abc_action_bar_home_description_format">"%1$s：%2$s"</string>
+    <string msgid="6623331958280229229" name="abc_action_bar_home_subtitle_description_format">"%1$s - %2$s：%3$s"</string>
+    <string msgid="1594238315039666878" name="abc_action_bar_up_description">"转到上一层级"</string>
+    <string msgid="3588849162933574182" name="abc_action_menu_overflow_description">"更多选项"</string>
+    <string msgid="4076576682505996667" name="abc_action_mode_done">"完成"</string>
+    <string msgid="7468859129482906941" name="abc_activity_chooser_view_see_all">"查看全部"</string>
+    <string msgid="2031811694353399454" name="abc_activitychooserview_choose_application">"选择应用"</string>
+    <string msgid="121134116657445385" name="abc_capital_off">"关闭"</string>
+    <string msgid="3405795526292276155" name="abc_capital_on">"开启"</string>
+    <string msgid="7723749260725869598" name="abc_search_hint">"搜索…"</string>
+    <string msgid="3691816814315814921" name="abc_searchview_description_clear">"清除查询"</string>
+    <string msgid="2550479030709304392" name="abc_searchview_description_query">"搜索查询"</string>
+    <string msgid="8264924765203268293" name="abc_searchview_description_search">"搜索"</string>
+    <string msgid="8928215447528550784" name="abc_searchview_description_submit">"提交查询"</string>
+    <string msgid="893419373245838918" name="abc_searchview_description_voice">"语音搜索"</string>
+    <string msgid="3421042268587513524" name="abc_shareactionprovider_share_with">"分享方式"</string>
+    <string msgid="7165123711973476752" name="abc_shareactionprovider_share_with_application">"通过%s分享"</string>
+    <string msgid="1603543279005712093" name="abc_toolbar_collapse_description">"收起"</string>
+    <string name="action_ClearAll">清除全部</string>
+    <string name="action_login">登录</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_sign_in_short">登陆</string>
+    <string name="app_name">仓库用</string>
+    <string name="apply">应用</string>
+    <string name="confirm">确定</string>
+    <string name="consumabledefid">consumabledefid</string>
+    <string name="consumabledefname">资材名</string>
+    <string name="consumabledefversion">consumabledefversion</string>
+    <string name="consumablelot">LOT</string>
+    <string name="consumablelotid">资材LOT ID</string>
+    <string name="consumeRequestNo">出库需求编号</string>
+    <string name="dbm">dbm</string>
+    <string name="delete">删除</string>
+    <string name="errorQty">Item数量不正确,请核查</string>
+    <string name="error_field_required">必要的</string>
+    <string name="error_incorrect_password">密码错误</string>
+    <string name="etOrderNo">Please scan Order No</string>
+    <string name="fixQty">修改</string>
+    <string name="getPower">获取功率</string>
+    <string name="inqty">实际数量</string>
+    <string name="lotShipping">装车lot</string>
+    <string name="menu">菜单</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="ok">OK</string>
+    <string name="planNO">计划编号</string>
+    <string name="product">产品</string>
+    <string name="prompt">提示</string>
+    <string name="prompt_password">密码</string>
+    <string name="requestData">需求日期</string>
+    <string name="save">保存</string>
+    <string name="search">查询</string>
+    <string msgid="146198913615257606" name="search_menu_title">"搜索"</string>
+    <string name="startData">开始日期</string>
+    <string msgid="2869576371154716097" name="status_bar_notification_info_overflow">"999+"</string>
+    <string name="stockSearch">库存查找</string>
+    <string name="title_activity_login">ZINUS</string>
+    <string name="title_activity_main_navi">MainNaviActivity</string>
+    <string name="uhf_msg_inventory_fail">识别错误</string>
+</resources>

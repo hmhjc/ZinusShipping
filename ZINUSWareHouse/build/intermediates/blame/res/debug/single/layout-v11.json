@@ -1,0 +1,26 @@
+[
+    {
+        "merged": "C:\\Source\\Android\\Micube\\UsbSocketPDA\\ZINUSWareHouse\\build\\intermediates\\res\\merged\\debug\\layout-v11\\notification_template_big_media.xml",
+        "source": "D:\\Android\\AVDs\\.android\\build-cache\\8bf2c586850eed9a091254db02599baa7f783472\\output\\res\\layout-v11\\notification_template_big_media.xml"
+    },
+    {
+        "merged": "C:\\Source\\Android\\Micube\\UsbSocketPDA\\ZINUSWareHouse\\build\\intermediates\\res\\merged\\debug\\layout-v11\\notification_media_action.xml",
+        "source": "D:\\Android\\AVDs\\.android\\build-cache\\8bf2c586850eed9a091254db02599baa7f783472\\output\\res\\layout-v11\\notification_media_action.xml"
+    },
+    {
+        "merged": "C:\\Source\\Android\\Micube\\UsbSocketPDA\\ZINUSWareHouse\\build\\intermediates\\res\\merged\\debug\\layout-v11\\notification_template_big_media_narrow.xml",
+        "source": "D:\\Android\\AVDs\\.android\\build-cache\\8bf2c586850eed9a091254db02599baa7f783472\\output\\res\\layout-v11\\notification_template_big_media_narrow.xml"
+    },
+    {
+        "merged": "C:\\Source\\Android\\Micube\\UsbSocketPDA\\ZINUSWareHouse\\build\\intermediates\\res\\merged\\debug\\layout-v11\\notification_template_big_media_narrow_custom.xml",
+        "source": "D:\\Android\\AVDs\\.android\\build-cache\\8bf2c586850eed9a091254db02599baa7f783472\\output\\res\\layout-v11\\notification_template_big_media_narrow_custom.xml"
+    },
+    {
+        "merged": "C:\\Source\\Android\\Micube\\UsbSocketPDA\\ZINUSWareHouse\\build\\intermediates\\res\\merged\\debug\\layout-v11\\notification_media_cancel_action.xml",
+        "source": "D:\\Android\\AVDs\\.android\\build-cache\\8bf2c586850eed9a091254db02599baa7f783472\\output\\res\\layout-v11\\notification_media_cancel_action.xml"
+    },
+    {
+        "merged": "C:\\Source\\Android\\Micube\\UsbSocketPDA\\ZINUSWareHouse\\build\\intermediates\\res\\merged\\debug\\layout-v11\\notification_template_big_media_custom.xml",
+        "source": "D:\\Android\\AVDs\\.android\\build-cache\\8bf2c586850eed9a091254db02599baa7f783472\\output\\res\\layout-v11\\notification_template_big_media_custom.xml"
+    }
+]

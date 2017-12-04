@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              style="@style/listviewitem">
+
+    <TextView
+        android:id="@+id/tv_Inboundno"
+        style="@style/listviewcontext"/>
+
+    <View
+        style="@style/listviewverticalsplit"/>
+
+    <TextView
+        android:id="@+id/tv_WareHouse"
+        style="@style/listviewcontext"/>
+
+    <View
+        style="@style/listviewverticalsplit"/>
+
+    <TextView
+        android:id="@+id/tv_ScheduleDate"
+        style="@style/listviewcontext"/>
+
+    <View
+        style="@style/listviewverticalsplit"/>
+
+    <TextView
+        android:id="@+id/tv_TempInboundDate"
+        style="@style/listviewcontext"/>
+
+    <View
+        style="@style/listviewverticalsplit"/>
+
+    <TextView
+        android:id="@+id/tv_InboundDate"
+        style="@style/listviewcontext"/>
+
+    <View
+        style="@style/listviewverticalsplit"/>
+
+    <TextView
+        android:id="@+id/tv_InboundState"
+        style="@style/listviewcontext"/>
+
+    <View
+        style="@style/listviewverticalsplit"/>
+
+    <TextView
+        android:id="@+id/tv_Inspectionresult"
+        style="@style/listviewcontext"/>
+
+    <View
+        style="@style/listviewverticalsplit"/>
+
+    <TextView
+        android:id="@+id/tv_Urgencytype"
+        style="@style/listviewcontext"/>
+
+</LinearLayout>
