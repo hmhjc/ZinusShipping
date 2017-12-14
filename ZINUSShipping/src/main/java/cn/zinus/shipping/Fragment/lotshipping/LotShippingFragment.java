@@ -326,11 +326,11 @@ public class LotShippingFragment extends KeyDownFragment implements View.OnClick
     public void getLotShippingByShippingPlan(ShippingPlanData shippingPlanData) {
         tvshippingPlanNo.setText(shippingPlanData.getSHIPPINGPLANNO());
         tvCustomer.setText(shippingPlanData.getCUSTOMERID());
-        PoNo = shippingPlanData.getPRODUCTIONORDERNAME();
-        tvPoNo.setText(shippingPlanData.getPRODUCTIONORDERNAME());
-        tvProduct.setText(shippingPlanData.getPRODUCTDEFID());
+        PoNo = shippingPlanData.getPOID();
+        tvPoNo.setText(shippingPlanData.getPOID());
+        tvProduct.setText(shippingPlanData.getPRODUCTDEFNAME());
         SQLiteDatabase db = mHelper.getWritableDatabase();
-        String selectDataListsql = String.format(getString(R.string.GetlOTShippingQuery), shippingPlanData.getPRODUCTIONORDERNAME());
+        String selectDataListsql = String.format(getString(R.string.GetlOTShippingQuery), shippingPlanData.getPOID());
         Log.e("sql语句lotShipping", selectDataListsql);
         Cursor cursorDatalist = DBManger.selectDatBySql(db, selectDataListsql, null);
         mLotShippingDataList.clear();

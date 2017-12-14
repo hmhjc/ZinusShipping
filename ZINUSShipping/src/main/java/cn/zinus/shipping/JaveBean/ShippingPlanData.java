@@ -10,35 +10,36 @@ import java.io.Serializable;
 
 public class ShippingPlanData implements Serializable {
 
-    private String SHIPPINGPLANNO;
-    private String PRODUCTIONORDERNAME;
-    private String PLANTID;
-    private String CUSTOMERID;
-    private String PRODUCTDEFID;
-    private String PRODUCTDEFVERSION;
-    private String PLANSTARTTIME;
-    private String PLANENDTIME;
-    private String PLANQTY;
-    private String CONTAINERSPEC;
-    private String WORKINGSHIFT;
-    private String AREAID;
-    private String STATE;
-    private String ISOISAVE;
+    private String SHIPPINGPLANNO ;
+    private String POID ;
+    private String SHIPPINGPLANSEQ ;
+    private String CONTAINERSEQ ;
+    private String CONTAINERSPEC ;
+    private String PRODUCTDEFNAME ;
+    private String PLANQTY ;
+    private String LOADEDQTY ;
+    private String PLANSTARTTIME ;
+    private String PLANENDTIME ;
+    private String CUSTOMERID ;
+    private String WORKINGSHIFT ;
+    private String AREAID ;
+    private String STATE ;
     private String VALIDSTATE;
 
     @Override
     public String toString() {
         return "ShippingPlanData{" +
                 "SHIPPINGPLANNO='" + SHIPPINGPLANNO + '\'' +
-                ", PRODUCTIONORDERNAME='" + PRODUCTIONORDERNAME + '\'' +
-                ", PLANTID='" + PLANTID + '\'' +
-                ", CUSTOMERID='" + CUSTOMERID + '\'' +
-                ", PRODUCTDEFID='" + PRODUCTDEFID + '\'' +
-                ", PRODUCTDEFVERSION='" + PRODUCTDEFVERSION + '\'' +
+                ", POID='" + POID + '\'' +
+                ", SHIPPINGPLANSEQ='" + SHIPPINGPLANSEQ + '\'' +
+                ", CONTAINERSEQ='" + CONTAINERSEQ + '\'' +
+                ", CONTAINERSPEC='" + CONTAINERSPEC + '\'' +
+                ", PRODUCTDEFNAME='" + PRODUCTDEFNAME + '\'' +
+                ", PLANQTY='" + PLANQTY + '\'' +
+                ", LOADEDQTY='" + LOADEDQTY + '\'' +
                 ", PLANSTARTTIME='" + PLANSTARTTIME + '\'' +
                 ", PLANENDTIME='" + PLANENDTIME + '\'' +
-                ", PLANQTY='" + PLANQTY + '\'' +
-                ", CONTAINERSPEC='" + CONTAINERSPEC + '\'' +
+                ", CUSTOMERID='" + CUSTOMERID + '\'' +
                 ", WORKINGSHIFT='" + WORKINGSHIFT + '\'' +
                 ", AREAID='" + AREAID + '\'' +
                 ", STATE='" + STATE + '\'' +
@@ -54,44 +55,60 @@ public class ShippingPlanData implements Serializable {
         this.SHIPPINGPLANNO = SHIPPINGPLANNO;
     }
 
-    public String getPRODUCTIONORDERNAME() {
-        return PRODUCTIONORDERNAME;
+    public String getPOID() {
+        return POID;
     }
 
-    public void setPRODUCTIONORDERNAME(String PRODUCTIONORDERNAME) {
-        this.PRODUCTIONORDERNAME = PRODUCTIONORDERNAME;
+    public void setPOID(String POID) {
+        this.POID = POID;
     }
 
-    public String getPLANTID() {
-        return PLANTID;
+    public String getSHIPPINGPLANSEQ() {
+        return SHIPPINGPLANSEQ;
     }
 
-    public void setPLANTID(String PLANTID) {
-        this.PLANTID = PLANTID;
+    public void setSHIPPINGPLANSEQ(String SHIPPINGPLANSEQ) {
+        this.SHIPPINGPLANSEQ = SHIPPINGPLANSEQ;
     }
 
-    public String getCUSTOMERID() {
-        return CUSTOMERID;
+    public String getCONTAINERSEQ() {
+        return CONTAINERSEQ;
     }
 
-    public void setCUSTOMERID(String CUSTOMERID) {
-        this.CUSTOMERID = CUSTOMERID;
+    public void setCONTAINERSEQ(String CONTAINERSEQ) {
+        this.CONTAINERSEQ = CONTAINERSEQ;
     }
 
-    public String getPRODUCTDEFID() {
-        return PRODUCTDEFID;
+    public String getCONTAINERSPEC() {
+        return CONTAINERSPEC;
     }
 
-    public void setPRODUCTDEFID(String PRODUCTDEFID) {
-        this.PRODUCTDEFID = PRODUCTDEFID;
+    public void setCONTAINERSPEC(String CONTAINERSPEC) {
+        this.CONTAINERSPEC = CONTAINERSPEC;
     }
 
-    public String getPRODUCTDEFVERSION() {
-        return PRODUCTDEFVERSION;
+    public String getPRODUCTDEFNAME() {
+        return PRODUCTDEFNAME;
     }
 
-    public void setPRODUCTDEFVERSION(String PRODUCTDEFVERSION) {
-        this.PRODUCTDEFVERSION = PRODUCTDEFVERSION;
+    public void setPRODUCTDEFNAME(String PRODUCTDEFNAME) {
+        this.PRODUCTDEFNAME = PRODUCTDEFNAME;
+    }
+
+    public String getPLANQTY() {
+        return PLANQTY;
+    }
+
+    public void setPLANQTY(String PLANQTY) {
+        this.PLANQTY = PLANQTY;
+    }
+
+    public String getLOADEDQTY() {
+        return LOADEDQTY;
+    }
+
+    public void setLOADEDQTY(String LOADEDQTY) {
+        this.LOADEDQTY = LOADEDQTY;
     }
 
     public String getPLANSTARTTIME() {
@@ -110,20 +127,12 @@ public class ShippingPlanData implements Serializable {
         this.PLANENDTIME = PLANENDTIME;
     }
 
-    public String getPLANQTY() {
-        return PLANQTY;
+    public String getCUSTOMERID() {
+        return CUSTOMERID;
     }
 
-    public void setPLANQTY(String PLANQTY) {
-        this.PLANQTY = PLANQTY;
-    }
-
-    public String getCONTAINERSPEC() {
-        return CONTAINERSPEC;
-    }
-
-    public void setCONTAINERSPEC(String CONTAINERSPEC) {
-        this.CONTAINERSPEC = CONTAINERSPEC;
+    public void setCUSTOMERID(String CUSTOMERID) {
+        this.CUSTOMERID = CUSTOMERID;
     }
 
     public String getWORKINGSHIFT() {
@@ -148,14 +157,6 @@ public class ShippingPlanData implements Serializable {
 
     public void setSTATE(String STATE) {
         this.STATE = STATE;
-    }
-
-    public String getISOISAVE() {
-        return ISOISAVE;
-    }
-
-    public void setISOISAVE(String ISOISAVE) {
-        this.ISOISAVE = ISOISAVE;
     }
 
     public String getVALIDSTATE() {

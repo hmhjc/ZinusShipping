@@ -855,36 +855,38 @@ public class UpdateSqlite {
             StringBuffer SHIPPINGPLAN_insert = new StringBuffer();
             SHIPPINGPLAN_insert.append("INSERT OR REPLACE INTO " + Constant.SF_SHIPPINGPLAN + "("
                     + Constant.SHIPPINGPLANNO + ","
-                    + Constant.PRODUCTIONORDERNAME + ","
-                    + Constant.CUSTOMERID + ","
-                    + Constant.PRODUCTDEFID + ","
-                    + Constant.PRODUCTDEFVERSION + ","
+                    + Constant.POID + ","
+                    + Constant.SHIPPINGPLANSEQ + ","
+                    + Constant.CONTAINERSEQ + ","
+                    + Constant.CONTAINERSPEC + ","
+                    + Constant.PRODUCTDEFNAME + ","
+                    + Constant.PLANQTY + ","
+                    + Constant.LOADEDQTY + ","
                     + Constant.PLANSTARTTIME + ","
                     + Constant.PLANENDTIME + ","
-                    + Constant.PLANQTY + ","
-                    + Constant.CONTAINERSPEC + ","
+                    + Constant.CUSTOMERID + ","
                     + Constant.WORKINGSHIFT + ","
                     + Constant.AREAID + ","
                     + Constant.STATE + ","
-                    + Constant.ISOISAVE + ","
-                    + Constant.VALIDSTATE + ")");
-            SHIPPINGPLAN_insert.append(" VALUES( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)");
+                    + Constant.ISOISAVE + ")");
+            SHIPPINGPLAN_insert.append(" VALUES( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )");
             for (int i = 0; i < array.length(); i++) {
                 ShippingPlanData shippingPlanData = new ShippingPlanData();
                 JSONObject jsonObject = array.getJSONObject(i);
                 shippingPlanData.setSHIPPINGPLANNO(jsonObject.getString(Constant.SHIPPINGPLANNO));
-                shippingPlanData.setPRODUCTIONORDERNAME(jsonObject.getString(Constant.PRODUCTIONORDERNAME));
-                shippingPlanData.setCUSTOMERID(jsonObject.getString(Constant.CUSTOMERID));
-                shippingPlanData.setPRODUCTDEFID(jsonObject.getString(Constant.PRODUCTDEFID));
-                shippingPlanData.setPRODUCTDEFVERSION(jsonObject.getString(Constant.PRODUCTDEFVERSION));
+                shippingPlanData.setPOID(jsonObject.getString(Constant.POID));
+                shippingPlanData.setSHIPPINGPLANSEQ(jsonObject.getString(Constant.SHIPPINGPLANSEQ));
+                shippingPlanData.setCONTAINERSEQ(jsonObject.getString(Constant.CONTAINERSEQ));
+                shippingPlanData.setCONTAINERSPEC(jsonObject.getString(Constant.CONTAINERSPEC));
+                shippingPlanData.setPRODUCTDEFNAME(jsonObject.getString(Constant.PRODUCTDEFNAME));
+                shippingPlanData.setPLANQTY(jsonObject.getString(Constant.PLANQTY));
+                shippingPlanData.setLOADEDQTY(jsonObject.getString(Constant.LOADEDQTY));
                 shippingPlanData.setPLANSTARTTIME(jsonObject.getString(Constant.PLANSTARTTIME));
                 shippingPlanData.setPLANENDTIME(jsonObject.getString(Constant.PLANENDTIME));
-                shippingPlanData.setPLANQTY(jsonObject.getString(Constant.PLANQTY));
-                shippingPlanData.setCONTAINERSPEC(jsonObject.getString(Constant.CONTAINERSPEC));
+                shippingPlanData.setCUSTOMERID(jsonObject.getString(Constant.CUSTOMERID));
                 shippingPlanData.setWORKINGSHIFT(jsonObject.getString(Constant.WORKINGSHIFT));
                 shippingPlanData.setAREAID(jsonObject.getString(Constant.AREAID));
                 shippingPlanData.setSTATE(jsonObject.getString(Constant.STATE));
-                shippingPlanData.setVALIDSTATE(jsonObject.getString(Constant.VALIDSTATE));
                 updateTableSF_SHIPPINGPLAN(shippingPlanData, SHIPPINGPLAN_insert.toString());
             }
         } catch (JSONException e) {
@@ -895,23 +897,24 @@ public class UpdateSqlite {
     private void updateTableSF_SHIPPINGPLAN(ShippingPlanData shippingPlanData, String SHIPPINGPLAN_insert) {
         SQLiteStatement statement = db.compileStatement(SHIPPINGPLAN_insert);
         statement.bindString(1, shippingPlanData.getSHIPPINGPLANNO());
-        statement.bindString(2, shippingPlanData.getPRODUCTIONORDERNAME());
-        statement.bindString(3, shippingPlanData.getCUSTOMERID());
-        statement.bindString(4, shippingPlanData.getPRODUCTDEFID());
-        statement.bindString(5, shippingPlanData.getPRODUCTDEFVERSION());
-        statement.bindString(6, shippingPlanData.getPLANSTARTTIME());
-        statement.bindString(7, shippingPlanData.getPLANENDTIME());
-        statement.bindString(8, shippingPlanData.getPLANQTY());
-        statement.bindString(9, shippingPlanData.getCONTAINERSPEC());
-        statement.bindString(10, shippingPlanData.getWORKINGSHIFT());
-        statement.bindString(11, shippingPlanData.getAREAID());
-        statement.bindString(12, shippingPlanData.getSTATE());
-        statement.bindString(13, "N");
-        statement.bindString(14, shippingPlanData.getVALIDSTATE());
+        statement.bindString(2, shippingPlanData.getPOID());
+        statement.bindString(3, shippingPlanData.getSHIPPINGPLANSEQ());
+        statement.bindString(4, shippingPlanData.getCONTAINERSEQ());
+        statement.bindString(5, shippingPlanData.getCONTAINERSPEC());
+        statement.bindString(6, shippingPlanData.getPRODUCTDEFNAME());
+        statement.bindString(7, shippingPlanData.getPLANQTY());
+        statement.bindString(8, shippingPlanData.getLOADEDQTY());
+        statement.bindString(9, shippingPlanData.getPLANSTARTTIME());
+        statement.bindString(10, shippingPlanData.getPLANENDTIME());
+        statement.bindString(11, shippingPlanData.getCUSTOMERID());
+        statement.bindString(12, shippingPlanData.getWORKINGSHIFT());
+        statement.bindString(13, shippingPlanData.getAREAID());
+        statement.bindString(14, shippingPlanData.getSTATE());
+        statement.bindString(15, "N");
         try {
             statement.executeInsert();
         } catch (Exception e) {
-            Log.e("SHIPPINGPLAN更新出错", e.getMessage().toString());
+            Log.e("SHIPPINGPLAN更新出错update", e.getMessage().toString());
         }
     }
     //endregion

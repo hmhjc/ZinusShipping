@@ -26,13 +26,9 @@ import org.greenrobot.eventbus.Subscribe;
 import cn.zinus.shipping.Fragment.Event;
 import cn.zinus.shipping.Fragment.KeyDownFragment;
 import cn.zinus.shipping.Fragment.MainMenuFragment;
-import cn.zinus.shipping.Fragment.inventorymgnt.StockTakingFragment;
 import cn.zinus.shipping.Fragment.lotshipping.ShippingFragment;
-import cn.zinus.shipping.Fragment.materialstockin.InboundFragment;
-import cn.zinus.shipping.Fragment.materialstockout.OutboundFragment;
 import cn.zinus.shipping.Fragment.standardmgnt.RegisterTagFragment;
 import cn.zinus.shipping.Fragment.standardmgnt.SettingFragment;
-import cn.zinus.shipping.Fragment.stocksearch.StockSearchFragment;
 import cn.zinus.shipping.R;
 import cn.zinus.shipping.util.BarCode2DHelper;
 
@@ -52,14 +48,6 @@ public class MainNaviActivity extends BaseActivity
     //Standard Mgnt
     private RegisterTagFragment mRegisterTagFragment;
     private SettingFragment mSettingFragment;
-    //Material Stock In
-    private InboundFragment mInboundFragment;
-    //Material Stock Out
-    private OutboundFragment mOutBoundFragment;
-    //Inventoruy Mgnt
-    private StockTakingFragment mStockTakingFragment;
-    //Information Search
-    private StockSearchFragment mStockSearchFragment;
     //Lot Shipping
     private ShippingFragment mShippingFragment;
     public RFIDWithUHF mRFIDWithUHF;
@@ -375,7 +363,7 @@ public class MainNaviActivity extends BaseActivity
             isMenuSave = true;
             isMenuTemp = false;
         }
-        invalidateOptionsMenu();
+       // invalidateOptionsMenu();
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
     }
@@ -409,24 +397,6 @@ public class MainNaviActivity extends BaseActivity
     }
 
     @Subscribe
-    public void onEventMainThread(Event.InboundClearOrderItemEvent event) {
-        mInboundFragment.mConsumeInboundFragment.actionClearAll();
-        mInboundFragment.mConsumeLotInboundFragment.actionClearAll();
-    }
-
-    @Subscribe
-    public void onEventMainThread(Event.OutboundClearOrderItemEvent event) {
-        mOutBoundFragment.mConsumeOutboundFragment.actionClearAll();
-        mOutBoundFragment.mConsumeLotOutboundFragment.actionClearAll();
-    }
-
-    @Subscribe
-    public void onEventMainThread(Event.StockCheckClearOrderItemEvent event) {
-        mStockTakingFragment.mStockCheckDetailFragment.actionClearAll();
-        mStockTakingFragment.mStockLotCheckDetailFragment.actionClearAll();
-    }
-
-    @Subscribe
     public void onEventMainThread(Event.ShippingClearLotShippingItemEvent event) {
         mShippingFragment.mLotShippingFragment.actionClearAll();
     }
@@ -440,36 +410,6 @@ public class MainNaviActivity extends BaseActivity
         Intent intent = getIntent();
         finish();
         startActivity(intent);
-    }
-
-    //查询ConsumeInbound
-    @Subscribe
-    public void onEventMainThread(Event.ConsumeInboundByOrderEvent event) {
-        mInboundFragment.mConsumeInboundFragment.actionClearAll();
-        mInboundFragment.mConsumeInboundFragment.getConsumeInboundByInboundOrder(event.getInboundOrderNo());
-        mInboundFragment.mConsumeLotInboundFragment.actionClearAll();
-        mInboundFragment.mConsumeLotInboundFragment.getConsumeLotInboundByInboundOrder(event.getInboundOrderNo());
-        mInboundFragment.jump(1);
-    }
-
-    //查询ConsumeOutbound
-    @Subscribe
-    public void onEventMainThread(Event.ConsumeOutboundByConsumeRequestEvent event) {
-        mOutBoundFragment.mConsumeOutboundFragment.actionClearAll();
-        mOutBoundFragment.mConsumeOutboundFragment.getConsumeOutboundByConsumeRequest(event.getConsumeRequestNo());
-        mOutBoundFragment.mConsumeLotOutboundFragment.actionClearAll();
-        mOutBoundFragment.mConsumeLotOutboundFragment.getConsumeLotOutboundByConsumeRequest(event.getConsumeRequestNo());
-        mOutBoundFragment.jump(1);
-    }
-
-    //查询StockCheck
-    @Subscribe
-    public void onEventMainThread(Event.StockCheckDetailbyCheckMonthEvent event) {
-        mStockTakingFragment.mStockCheckDetailFragment.actionClearAll();
-        mStockTakingFragment.mStockCheckDetailFragment.getStockCheckDetailbyCheckMonth(event.getStockCheck());
-        mStockTakingFragment.mStockLotCheckDetailFragment.actionClearAll();
-        mStockTakingFragment.mStockLotCheckDetailFragment.getStockLotCheckDetailbyCheckMonth(event.getStockCheck());
-        mStockTakingFragment.jump(1);
     }
 
     //查询ConsumeInbound

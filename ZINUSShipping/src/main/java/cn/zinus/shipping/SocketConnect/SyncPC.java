@@ -233,10 +233,6 @@ public class SyncPC implements Runnable {
         byte[] filebytes = null;// 文件数据
         try {
             int filelen = length;// 文件长度
-//            String strtmp = "read file length ok:" + filelen;
-//            out.write(strtmp.getBytes("utf-8"));
-//            out.flush();
-
             filebytes = new byte[filelen];
             int pos = 0;
             int rcvLen = 0;
@@ -245,11 +241,8 @@ public class SyncPC implements Runnable {
             }
             Log.e("1111111", Thread.currentThread().getName()
                     + "---->" + "read file OK:file size=" + filebytes.length);
-
             returnstr = new String(filebytes, "UTF8");
             Log.e("read file长度", returnstr.length() + "");
-//            out.write("read file ok".getBytes("utf-8"));
-//            out.flush();
         } catch (Exception e) {
             Log.e("1111111", Thread.currentThread().getName()
                     + "---->" + "receiveFileFromSocket error");

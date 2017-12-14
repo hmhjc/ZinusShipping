@@ -140,12 +140,16 @@ public class Constant {
     //SF_SHIPPINGPLAN
     public static final String SF_SHIPPINGPLAN = "SF_SHIPPINGPLAN";
     public static final String SHIPPINGPLANNO = "SHIPPINGPLANNO";
-    public static final String PRODUCTIONORDERNAME = "PRODUCTIONORDERNAME";
+    public static final String POID = "POID";
     public static final String PLANTID = "PLANTID";
     public static final String CUSTOMERID = "CUSTOMERID";
     public static final String PRODUCTDEFID = "PRODUCTDEFID";
     public static final String PRODUCTDEFVERSION = "PRODUCTDEFVERSION";
     public static final String PLANSTARTTIME = "PLANSTARTTIME";
+    public static final String SHIPPINGPLANSEQ = "SHIPPINGPLANSEQ";
+    public static final String CONTAINERSEQ = "CONTAINERSEQ";
+    public static final String PRODUCTDEFNAME = "PRODUCTDEFNAME";
+    public static final String LOADEDQTY = "LOADEDQTY";
     public static final String PLANENDTIME = "PLANENDTIME";
     //public static final String  PLANQTY= "PLANQTY";
     public static final String CONTAINERSPEC = "CONTAINERSPEC";

@@ -1,7 +1,0 @@
-#Fri Dec 01 16:51:01 CST 2017
-base.0=C\:\\Source\\Android\\Micube\\UsbSocketPDA\\ZINUSWareHouse\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\10000\\instant-run-bootstrap_36aa69cf544e580ddfdc5a98f54e11504eed50f0
-renamed.1=classes.dex
-renamed.0=classes2.dex
-file.1=C\:\\Source\\Android\\Micube\\UsbSocketPDA\\ZINUSWareHouse\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\10000\\instant-run_f88a77e7df1a03e735c9f8e2ebfbecbb38109ae4\\classes.dex
-base.1=C\:\\Source\\Android\\Micube\\UsbSocketPDA\\ZINUSWareHouse\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\10000\\instant-run_f88a77e7df1a03e735c9f8e2ebfbecbb38109ae4
-file.0=C\:\\Source\\Android\\Micube\\UsbSocketPDA\\ZINUSWareHouse\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\10000\\instant-run-bootstrap_36aa69cf544e580ddfdc5a98f54e11504eed50f0\\classes.dex

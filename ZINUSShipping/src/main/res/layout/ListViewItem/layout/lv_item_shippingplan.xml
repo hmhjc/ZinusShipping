@@ -10,13 +10,6 @@
         style="@style/listviewverticalsplit"/>
 
     <TextView
-        android:id="@+id/tv_ProductionOrderName"
-        style="@style/listviewcontext"/>
-
-    <View
-        style="@style/listviewverticalsplit"/>
-
-    <TextView
         android:id="@+id/tv_PoNo"
         style="@style/listviewcontext"/>
 

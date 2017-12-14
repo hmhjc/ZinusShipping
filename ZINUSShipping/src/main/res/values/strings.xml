@@ -262,8 +262,8 @@
     </string>
 
     <!--Shipping-->
-    <string name="GetShippingPlanQueryAll"> SELECT SHIPPINGPLANNO,PRODUCTIONORDERNAME,      \n
-                                                   CUSTOMERID,PRODUCTDEFID,PLANQTY,      \n
+    <string name="GetShippingPlanQueryAll"> SELECT SHIPPINGPLANNO,POID,      \n
+                                                   CUSTOMERID,PRODUCTDEFNAME,PLANQTY,      \n
                                                    CONTAINERSPEC,PLANSTARTTIME,             \n
                                                    PLANENDTIME,STATE                        \n
                                             FROM SF_SHIPPINGPLAN                                \n
@@ -272,8 +272,8 @@
                                             AND PLANSTARTTIME &gt; \'%1$s\'                     \n
                                             AND PLANSTARTTIME &lt; \'%2$s\'                     \n
                                             UNION                                                 \n
-                                            SELECT SHIPPINGPLANNO,PRODUCTIONORDERNAME,      \n
-                                                   CUSTOMERID,PRODUCTDEFID,PLANQTY,      \n
+                                            SELECT SHIPPINGPLANNO,POID,      \n
+                                                   CUSTOMERID,PRODUCTDEFNAME,PLANQTY,      \n
                                                    CONTAINERSPEC,PLANSTARTTIME,             \n
                                                    PLANENDTIME,STATE                        \n
                                             FROM SF_SHIPPINGPLAN                                \n

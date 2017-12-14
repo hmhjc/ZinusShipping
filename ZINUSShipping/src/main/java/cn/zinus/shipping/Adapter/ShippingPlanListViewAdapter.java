@@ -25,7 +25,6 @@ public class ShippingPlanListViewAdapter extends BaseAdapter {
 
     public final class ListItemView {
         public TextView tvShipplanNo;
-        public TextView tvProductionOrderName;
         public TextView tvPoNo;
         public TextView tvCustomer;
         public TextView tvProduct;
@@ -64,8 +63,7 @@ public class ShippingPlanListViewAdapter extends BaseAdapter {
             listItemView = new ListItemView();
             convertView = mInflater.inflate(R.layout.lv_item_shippingplan, null);
             listItemView.tvShipplanNo= (TextView) convertView.findViewById(R.id.tv_ShipplanNo);
-            listItemView.tvProductionOrderName= (TextView) convertView.findViewById(R.id.tv_ProductionOrderName);
-            listItemView.tvPoNo= (TextView) convertView.findViewById(R.id.tv_ProductionOrderName);
+            listItemView.tvPoNo= (TextView) convertView.findViewById(R.id.tv_PoNo);
             listItemView.tvCustomer= (TextView) convertView.findViewById(R.id.tv_Customer);
             listItemView.tvProduct= (TextView) convertView.findViewById(R.id.tv_Product);
             listItemView.tvPlanQty= (TextView) convertView.findViewById(R.id.tv_PlanQty);
@@ -80,10 +78,9 @@ public class ShippingPlanListViewAdapter extends BaseAdapter {
 
         ShippingPlanData data = listMap.get(position);
         listItemView.tvShipplanNo.setText(data.getSHIPPINGPLANNO());
-        listItemView.tvProductionOrderName.setText(data.getPRODUCTIONORDERNAME());
-        listItemView.tvPoNo.setText(data.getPRODUCTIONORDERNAME());
+        listItemView.tvPoNo.setText(data.getPOID());
         listItemView.tvCustomer.setText(data.getCUSTOMERID());
-        listItemView.tvProduct.setText(data.getPRODUCTDEFID());
+        listItemView.tvProduct.setText(data.getPRODUCTDEFNAME());
         listItemView.tvPlanQty.setText(data.getPLANQTY());
         listItemView.tvContainerSpec.setText(data.getCONTAINERSPEC());
         listItemView.tvPlanStartTime.setText(data.getPLANSTARTTIME());
