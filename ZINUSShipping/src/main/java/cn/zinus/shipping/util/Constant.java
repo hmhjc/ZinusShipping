@@ -186,11 +186,12 @@ public class Constant {
     public static final String SEALNO = "SEALNO";
     //public static final String  SHIPPINGPLANNO= "SHIPPINGPLANNO";
     public static final String CONTAINERNO = "CONTAINERNO";
+    public static final String SHIPPINGDATE = "SHIPPINGDATE";
 
     //SF_LOT
     public static final String SF_LOT = "SF_LOT";
     //public static final String LOTID = "LOTID";
-    public static final String SALESORDERID = "SALESORDERID";
+    public static final String PURCHASEORDERID = "PURCHASEORDERID";
     //public static final String PROCESSSEGMENTID = "PROCESSSEGMENTID";
     public static final String LOTSTATE = "LOTSTATE";
     //public static final String VALIDSTATE = "VALIDSTATE";

@@ -17,6 +17,20 @@
         style="@style/listviewverticalsplit"/>
 
     <TextView
+        android:id="@+id/tv_ShippingPlanSeq"
+        style="@style/listviewcontext"/>
+
+    <View
+        style="@style/listviewverticalsplit"/>
+
+    <TextView
+        android:id="@+id/tv_ContainerSeq"
+        style="@style/listviewcontext"/>
+
+    <View
+        style="@style/listviewverticalsplit"/>
+
+    <TextView
         android:id="@+id/tv_Customer"
         style="@style/listviewcontext"/>
 

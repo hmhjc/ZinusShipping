@@ -190,5 +190,9 @@
     <string name="TagQty">TagQty</string>
     <string name="noContainerAndSealNo"/>
     <string name="removeshipping">removeshipping</string>
+    <string name="ShippingPlanSeq">ShippingPlanSeq</string>
+    <string name="ContainerSeq">ContainerSeq</string>
+    <string name="ShippedQTY">ShippedQTY</string>
+    <string name="ShipplanQTY">ShipplanQTY</string>
 
 </resources>

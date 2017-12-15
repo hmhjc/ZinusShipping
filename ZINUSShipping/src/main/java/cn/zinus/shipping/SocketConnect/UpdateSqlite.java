@@ -27,7 +27,7 @@ import cn.zinus.shipping.JaveBean.StockCheckData;
 import cn.zinus.shipping.JaveBean.StockCheckDeatilData;
 import cn.zinus.shipping.JaveBean.StockLotCheckDeatilData;
 import cn.zinus.shipping.JaveBean.WareHouseData;
-import cn.zinus.shipping.JaveBean.lotData;
+import cn.zinus.shipping.JaveBean.LotData;
 import cn.zinus.shipping.util.Constant;
 import cn.zinus.shipping.util.DBManger;
 import cn.zinus.shipping.util.MyDateBaseHelper;
@@ -928,18 +928,24 @@ public class UpdateSqlite {
             LOTSHIPPING_insert.append("INSERT OR REPLACE INTO " + Constant.SF_LOTSHIPPING + "("
                     + Constant.LOTID + ","
                     + Constant.SHIPPINGPLANNO + ","
+                    + Constant.SHIPPINGPLANSEQ + ","
+                    + Constant.CONTAINERSEQ + ","
+                    + Constant.QTY + ","
+                    + Constant.SHIPPINGDATE + ","
                     + Constant.CONTAINERNO + ","
-                    + Constant.SEALNO + ","
-                    + Constant.VALIDSTATE + ")");
-            LOTSHIPPING_insert.append(" VALUES( ?, ?, ?, ? ,?)");
+                    + Constant.SEALNO + ")");
+            LOTSHIPPING_insert.append(" VALUES( ?, ?, ?, ? ,?, ?, ?, ?)");
             for (int i = 0; i < array.length(); i++) {
                 LotShippingData lotShippingData = new LotShippingData();
                 JSONObject jsonObject = array.getJSONObject(i);
                 lotShippingData.setLOTID(jsonObject.getString(Constant.LOTID));
                 lotShippingData.setSHIPPINGPLANNO(jsonObject.getString(Constant.SHIPPINGPLANNO));
+                lotShippingData.setSHIPPINGPLANSEQ(jsonObject.getString(Constant.SHIPPINGPLANSEQ));
+                lotShippingData.setCONTAINERSEQ(jsonObject.getString(Constant.CONTAINERSEQ));
+                lotShippingData.setQTY(jsonObject.getString(Constant.QTY));
                 lotShippingData.setCONTAINERNO(jsonObject.getString(Constant.CONTAINERNO));
                 lotShippingData.setSEALNO(jsonObject.getString(Constant.SEALNO));
-                lotShippingData.setVALIDSTATE(jsonObject.getString(Constant.VALIDSTATE));
+                lotShippingData.setSHIPPINGDATE(jsonObject.getString(Constant.SHIPPINGDATE));
                 updateTableSF_LOTSHIPPING(lotShippingData, LOTSHIPPING_insert.toString());
             }
         } catch (JSONException e) {
@@ -951,9 +957,12 @@ public class UpdateSqlite {
         SQLiteStatement statement = db.compileStatement(LOTSHIPPING_insert);
         statement.bindString(1, lotShippingData.getLOTID());
         statement.bindString(2, lotShippingData.getSHIPPINGPLANNO());
-        statement.bindString(3, lotShippingData.getCONTAINERNO());
-        statement.bindString(4, lotShippingData.getSEALNO());
-        statement.bindString(5, lotShippingData.getVALIDSTATE());
+        statement.bindString(3, lotShippingData.getSHIPPINGPLANSEQ());
+        statement.bindString(4, lotShippingData.getCONTAINERSEQ());
+        statement.bindString(5, lotShippingData.getQTY());
+        statement.bindString(6, lotShippingData.getSHIPPINGDATE());
+        statement.bindString(7, lotShippingData.getCONTAINERNO());
+        statement.bindString(8, lotShippingData.getSEALNO());
         try {
             statement.executeInsert();
         } catch (Exception e) {
@@ -970,39 +979,33 @@ public class UpdateSqlite {
             StringBuffer LOT_insert = new StringBuffer();
             LOT_insert.append("INSERT OR REPLACE INTO " + Constant.SF_LOT + "("
                     + Constant.LOTID + ","
-                    + Constant.SALESORDERID + ","
-                    + Constant.PROCESSSEGMENTID + ","
+                    + Constant.PURCHASEORDERID + ","
                     + Constant.LOTSTATE + ","
                     + Constant.RFID + ","
-                    + Constant.QTY + ","
-                    + Constant.VALIDSTATE + ")");
-            LOT_insert.append(" VALUES( ?, ?, ?, ? , ? , ? , ? )");
+                    + Constant.QTY + ")");
+            LOT_insert.append(" VALUES( ?, ?, ?, ?,?)");
             for (int i = 0; i < array.length(); i++) {
-                lotData lotData = new lotData();
+                LotData lotdata = new LotData();
                 JSONObject jsonObject = array.getJSONObject(i);
-                lotData.setLOTID(jsonObject.getString(Constant.LOTID));
-                lotData.setSALESORDERID(jsonObject.getString(Constant.SALESORDERID));
-                lotData.setPROCESSSEGMENTID(jsonObject.getString(Constant.PROCESSSEGMENTID));
-                lotData.setLOTSTATE(jsonObject.getString(Constant.LOTSTATE));
-                lotData.setRFID(jsonObject.getString(Constant.RFID));
-                lotData.setQTY(jsonObject.getString(Constant.QTY));
-                lotData.setVALIDSTATE(jsonObject.getString(Constant.VALIDSTATE));
-                updateTableSF_LOT(lotData, LOT_insert.toString());
+                lotdata.setLOTID(jsonObject.getString(Constant.LOTID));
+                lotdata.setPURCHASEORDERID(jsonObject.getString(Constant.PURCHASEORDERID));
+                lotdata.setLOTSTATE(jsonObject.getString(Constant.LOTSTATE));
+                lotdata.setRFID(jsonObject.getString(Constant.RFID));
+                lotdata.setQTY(jsonObject.getString(Constant.QTY));
+                updateTableSF_LOT(lotdata, LOT_insert.toString());
             }
         } catch (JSONException e) {
             Log.e("LOT更新出错", e.getMessage().toString());
         }
     }
 
-    private void updateTableSF_LOT(lotData lotData, String LOTSHIPPING_insert) {
+    private void updateTableSF_LOT(LotData lotData, String LOTSHIPPING_insert) {
         SQLiteStatement statement = db.compileStatement(LOTSHIPPING_insert);
         statement.bindString(1, lotData.getLOTID());
-        statement.bindString(2, lotData.getSALESORDERID());
-        statement.bindString(3, lotData.getPROCESSSEGMENTID());
-        statement.bindString(4, lotData.getLOTSTATE());
-        statement.bindString(5, lotData.getRFID());
-        statement.bindString(6, lotData.getQTY());
-        statement.bindString(7, lotData.getVALIDSTATE());
+        statement.bindString(2, lotData.getPURCHASEORDERID());
+        statement.bindString(3, lotData.getLOTSTATE());
+        statement.bindString(4, lotData.getRFID());
+        statement.bindString(5, lotData.getQTY());
         try {
             statement.executeInsert();
         } catch (Exception e) {

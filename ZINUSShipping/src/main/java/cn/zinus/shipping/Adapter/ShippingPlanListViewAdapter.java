@@ -26,6 +26,8 @@ public class ShippingPlanListViewAdapter extends BaseAdapter {
     public final class ListItemView {
         public TextView tvShipplanNo;
         public TextView tvPoNo;
+        public TextView tvShippingplanSeq;
+        public TextView tvContainerSeq;
         public TextView tvCustomer;
         public TextView tvProduct;
         public TextView tvPlanQty;
@@ -63,7 +65,9 @@ public class ShippingPlanListViewAdapter extends BaseAdapter {
             listItemView = new ListItemView();
             convertView = mInflater.inflate(R.layout.lv_item_shippingplan, null);
             listItemView.tvShipplanNo= (TextView) convertView.findViewById(R.id.tv_ShipplanNo);
+            listItemView.tvShippingplanSeq= (TextView) convertView.findViewById(R.id.tv_ShippingPlanSeq);
             listItemView.tvPoNo= (TextView) convertView.findViewById(R.id.tv_PoNo);
+            listItemView.tvContainerSeq= (TextView) convertView.findViewById(R.id.tv_ContainerSeq);
             listItemView.tvCustomer= (TextView) convertView.findViewById(R.id.tv_Customer);
             listItemView.tvProduct= (TextView) convertView.findViewById(R.id.tv_Product);
             listItemView.tvPlanQty= (TextView) convertView.findViewById(R.id.tv_PlanQty);
@@ -79,6 +83,8 @@ public class ShippingPlanListViewAdapter extends BaseAdapter {
         ShippingPlanData data = listMap.get(position);
         listItemView.tvShipplanNo.setText(data.getSHIPPINGPLANNO());
         listItemView.tvPoNo.setText(data.getPOID());
+        listItemView.tvShippingplanSeq.setText(data.getSHIPPINGPLANSEQ());
+        listItemView.tvContainerSeq.setText(data.getCONTAINERSEQ());
         listItemView.tvCustomer.setText(data.getCUSTOMERID());
         listItemView.tvProduct.setText(data.getPRODUCTDEFNAME());
         listItemView.tvPlanQty.setText(data.getPLANQTY());

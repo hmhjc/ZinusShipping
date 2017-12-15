@@ -15,6 +15,33 @@ public class LotShippingData implements Serializable {
     private String SEALNO;
     private String VALIDSTATE;
     private String QTY;
+    private String SHIPPINGPLANSEQ;
+    private String CONTAINERSEQ;
+    private String SHIPPINGDATE;
+
+    public String getSHIPPINGPLANSEQ() {
+        return SHIPPINGPLANSEQ;
+    }
+
+    public void setSHIPPINGPLANSEQ(String SHIPPINGPLANSEQ) {
+        this.SHIPPINGPLANSEQ = SHIPPINGPLANSEQ;
+    }
+
+    public String getCONTAINERSEQ() {
+        return CONTAINERSEQ;
+    }
+
+    public void setCONTAINERSEQ(String CONTAINERSEQ) {
+        this.CONTAINERSEQ = CONTAINERSEQ;
+    }
+
+    public String getSHIPPINGDATE() {
+        return SHIPPINGDATE;
+    }
+
+    public void setSHIPPINGDATE(String SHIPPINGDATE) {
+        this.SHIPPINGDATE = SHIPPINGDATE;
+    }
 
     public String getQTY() {
         return QTY;

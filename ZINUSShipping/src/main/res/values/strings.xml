@@ -262,7 +262,7 @@
     </string>
 
     <!--Shipping-->
-    <string name="GetShippingPlanQueryAll"> SELECT SHIPPINGPLANNO,POID,      \n
+    <string name="GetShippingPlanQueryAll"> SELECT SHIPPINGPLANNO,POID,SHIPPINGPLANSEQ,CONTAINERSEQ,     \n
                                                    CUSTOMERID,PRODUCTDEFNAME,PLANQTY,      \n
                                                    CONTAINERSPEC,PLANSTARTTIME,             \n
                                                    PLANENDTIME,STATE                        \n
@@ -272,7 +272,7 @@
                                             AND PLANSTARTTIME &gt; \'%1$s\'                     \n
                                             AND PLANSTARTTIME &lt; \'%2$s\'                     \n
                                             UNION                                                 \n
-                                            SELECT SHIPPINGPLANNO,POID,      \n
+                                            SELECT SHIPPINGPLANNO,POID,SHIPPINGPLANSEQ,CONTAINERSEQ,      \n
                                                    CUSTOMERID,PRODUCTDEFNAME,PLANQTY,      \n
                                                    CONTAINERSPEC,PLANSTARTTIME,             \n
                                                    PLANENDTIME,STATE                        \n
@@ -285,8 +285,8 @@
     </string>
 
     <string name="GetShippingPlanQueryFinished">
-                                            SELECT SP.SHIPPINGPLANNO,SP.PRODUCTIONORDERNAME,      \n
-                                                   SP.CUSTOMERID,SP.PRODUCTDEFID,SP.PLANQTY,      \n
+                                            SELECT SP.SHIPPINGPLANNO,POID,SHIPPINGPLANSEQ,CONTAINERSEQ,     \n
+                                                   SP.CUSTOMERID,SP.PRODUCTDEFNAME,SP.PLANQTY,      \n
                                                    SP.CONTAINERSPEC,SP.PLANSTARTTIME,             \n
                                                    SP.PLANENDTIME,SP.STATE                        \n
                                             FROM SF_SHIPPINGPLAN SP                               \n
@@ -297,8 +297,8 @@
                                             AND SP.PLANSTARTTIME &lt; \'%2$s\'                     \n
     </string>
     <string name="GetShippingPlanQueryNormal">
-                                            SELECT SP.SHIPPINGPLANNO,SP.PRODUCTIONORDERNAME,      \n
-                                                   SP.CUSTOMERID,SP.PRODUCTDEFID,SP.PLANQTY,      \n
+                                            SELECT SP.SHIPPINGPLANNO,POID,SHIPPINGPLANSEQ,CONTAINERSEQ,    \n
+                                                   SP.CUSTOMERID,SP.PRODUCTDEFNAME,SP.PLANQTY,      \n
                                                    SP.CONTAINERSPEC,SP.PLANSTARTTIME,             \n
                                                    SP.PLANENDTIME,SP.STATE                        \n
                                             FROM SF_SHIPPINGPLAN SP                               \n
@@ -309,7 +309,26 @@
     </string>
     <string name="gspOrderBy">ORDER BY SHIPPINGPLANNO</string>
 
-    <string name="GetlOTShippingQuery">SELECT  A.LOTID,A.RFID ,B.CONTAINERNO ,                      \n
+    <string name="GetlOTShippingQuery">SELECT  A.LOTID,A.RFID ,A.QTY            \n
+                                           FROM SF_LOT A                                          \n
+                                        WHERE 1=1                                                 \n
+                                        AND A.PURCHASEORDERID = \'%1$s\'                          \n
+                                        AND A.LOTSTATE = \'Finished\'                             \n
+                                        ORDER BY A.LOTID                                          \n
+    </string>
+
+    <string name="GetlOTShipedQuery">SELECT LS.LOTID,LS.CONTAINERNO,LS.SEALNO,LS.QTY    \n
+                                           FROM SF_LOTSHIPPING LS                                 \n
+                                        WHERE 1=1                                                 \n
+                                        AND LS.SHIPPINGPLANNO  = \'%1$s\'                          \n
+                                        AND LS.SHIPPINGPLANSEQ  = \'%2$s\'                          \n
+                                        AND LS.CONTAINERSEQ  = \'%3$s\'                          \n
+                                        AND LS.LOTSTATE = \'Finished\'                             \n
+                                        AND LS.VALIDSTATE = \'Valid\'                             \n
+                                        ORDER BY A.LOTID                                          \n
+    </string>
+
+    <string name="GetShippinglOTQuery">SELECT  A.LOTID,A.RFID ,B.CONTAINERNO ,                    \n
                                                B.SEALNO ,A.QTY,B.VALIDSTATE                       \n
                                            FROM SF_LOT A                                          \n
                                         LEFT JOIN SF_LOTSHIPPING B on B.LOTID = A.LOTID           \n
@@ -397,6 +416,10 @@
     <string name="TagQty">TagQty</string>
     <string name="noContainerAndSealNo"/>
     <string name="removeshipping">removeshipping</string>
+    <string name="ShippingPlanSeq">ShippingPlanSeq</string>
+    <string name="ContainerSeq">ContainerSeq</string>
+    <string name="ShippedQTY">ShippedQTY</string>
+    <string name="ShipplanQTY">ShipplanQTY</string>
 
 
 </resources>

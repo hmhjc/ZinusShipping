@@ -253,6 +253,8 @@ public class ShippingPlanFragment extends KeyDownFragment {
                 ShippingPlanData shippingPlanData = new ShippingPlanData();
                 shippingPlanData.setSHIPPINGPLANNO(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.SHIPPINGPLANNO)));
                 shippingPlanData.setPOID(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.POID)));
+                shippingPlanData.setSHIPPINGPLANSEQ(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.SHIPPINGPLANSEQ)));
+                shippingPlanData.setCONTAINERSEQ(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.CONTAINERSEQ)));
                 shippingPlanData.setCUSTOMERID(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.CUSTOMERID)));
                 shippingPlanData.setPRODUCTDEFNAME(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.PRODUCTDEFNAME)));
                 shippingPlanData.setPLANQTY(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.PLANQTY)));

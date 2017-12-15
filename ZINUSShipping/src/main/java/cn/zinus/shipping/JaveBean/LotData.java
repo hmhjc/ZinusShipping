@@ -8,14 +8,22 @@ import java.io.Serializable;
  * Main Change:
  */
 
-public class lotData implements Serializable {
+public class LotData implements Serializable {
     private String LOTID;
-    private String SALESORDERID;
+    private String PURCHASEORDERID;
     private String PROCESSSEGMENTID;
     private String LOTSTATE;
     private String VALIDSTATE;
     private String QTY;
     private String RFID;
+
+    public String getPURCHASEORDERID() {
+        return PURCHASEORDERID;
+    }
+
+    public void setPURCHASEORDERID(String PURCHASEORDERID) {
+        this.PURCHASEORDERID = PURCHASEORDERID;
+    }
 
     public String getRFID() {
         return RFID;
@@ -39,14 +47,6 @@ public class lotData implements Serializable {
 
     public void setLOTID(String LOTID) {
         this.LOTID = LOTID;
-    }
-
-    public String getSALESORDERID() {
-        return SALESORDERID;
-    }
-
-    public void setSALESORDERID(String SALESORDERID) {
-        this.SALESORDERID = SALESORDERID;
     }
 
     public String getPROCESSSEGMENTID() {

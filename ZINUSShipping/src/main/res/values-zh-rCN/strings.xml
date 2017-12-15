@@ -174,9 +174,13 @@
     <string name="product">产品</string>
     <string name="ContainerNo">货柜编号</string>
     <string name="SealNo">封箱号</string>
-    <string name="LotQty">Lot数量</string>
+    <string name="LotQty">Lot个数</string>
     <string name="TagQty">已经上车数量</string>
     <string name="noContainerAndSealNo">请先输入货柜号和封箱号</string>
     <string name="removeshipping">确认要移除装车嘛</string>
+    <string name="ShippingPlanSeq">装车计划顺序</string>
+    <string name="ContainerSeq">货柜顺序</string>
+    <string name="ShippedQTY">已经上车总数</string>
+    <string name="ShipplanQTY">计划上车总数</string>
 
 </resources>
