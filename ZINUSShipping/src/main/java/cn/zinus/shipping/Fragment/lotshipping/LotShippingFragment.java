@@ -46,6 +46,7 @@ import cn.zinus.shipping.util.DBManger;
 import cn.zinus.shipping.util.MyDateBaseHelper;
 import cn.zinus.shipping.util.SoundUtil;
 
+import static cn.zinus.shipping.util.Constant.INVALID;
 import static cn.zinus.shipping.util.Constant.RFIDSCAN;
 import static cn.zinus.shipping.util.Constant.UPDATEUI;
 import static cn.zinus.shipping.util.Utils.showToast;
@@ -72,6 +73,7 @@ public class LotShippingFragment extends KeyDownFragment implements View.OnClick
     private ListView mlvLotShhipping;
     private LotShippingListViewAdapter mLotShippingListViewAdapter;
     private ArrayList<LotShippingListData> mLotShippingDataList;
+    //这个记录了这个po下面所有的lot
     private ArrayList<LotData> mLotDataList;
     //condition
     private TextView tvtagqty;
@@ -328,7 +330,7 @@ public class LotShippingFragment extends KeyDownFragment implements View.OnClick
     //region getLotShippingByShippingPlan
     public void getLotShippingByShippingPlan(ShippingPlanData shippingPlanData) {
         //先把lot表里符合条件的lot搜出来放到一个全局变量中
-        //再搜shippinglot，找出对应货柜顺序已经装车的lot，显示在画面中‘
+        //再搜shippinglot，找出对应货柜顺序已经装车的lot，显示在画面中
         //把公共的数据显示到画面的下方
         tvshippingPlanNo.setText(shippingPlanData.getSHIPPINGPLANNO());
         tvlotshippingPlanqty.setText(shippingPlanData.getPLANQTY());
@@ -376,15 +378,16 @@ public class LotShippingFragment extends KeyDownFragment implements View.OnClick
     }
     //endregion
 
-    //region checkIsExist
-    private int checkIsExist(String tagid) {
+    //region checkIsExistInSF_LOT
+    //判断扫到的lot是不是这个po所对应的lot
+    private int checkIsExistInSF_LOT(String tagid) {
         int TagLocation = -1;
-        for (int i = 0; i < mLotShippingDataList.size(); i++)
-            if (mLotShippingDataList.get(i).getTAGID().equals(tagid) &&
-                    mLotShippingDataList.get(i).getCONTAINER() != null &&
-                    mLotShippingDataList.get(i).getSEALNO() != null) {
+        for (int i = 0; i < mLotDataList.size(); i++){
+            if (mLotDataList.get(i).getRFID().equals(tagid)&&
+                    !(mLotDataList.get(i).getVALIDSTATE().equals(INVALID))) {
                 TagLocation = i;
             }
+        }
         return TagLocation;
     }
     //endregion
@@ -464,7 +467,7 @@ public class LotShippingFragment extends KeyDownFragment implements View.OnClick
 
     //region checkAndSearchWeb
     private void checkAndSearchWeb(String tagID) {
-        if (tvlotshippingqty.getText().toString().equals(tvtagqty.getText().toString())) {
+        if (Integer.parseInt(tvlotshippingqty.getText().toString())== Integer.parseInt(tvlotshippingPlanqty.getText().toString())) {
             Log.e("全部完成", "全部完成");
             if (dismessDialogFlag) {
                 dismessDialogFlag = false;
@@ -479,8 +482,10 @@ public class LotShippingFragment extends KeyDownFragment implements View.OnClick
             showToast(mContext, getString(R.string.noContainerAndSealNo), 0);
             return;
         }
-        if (checkIsExist(tagID) == -1) {
-            Log.e("indexhand", "列表里存在" + tagID + "修改货柜号和封箱号");
+        if (checkIsExistInSF_LOT(tagID) == -1) {
+           //在lot表里面找不到，可能数据没有更新，可能不是这个po下面的lot，需要报警
+            showToast(mContext,tagID+"不是这个计划的lot，请确认",0);
+            SoundUtil.play(R.raw.beep51, 0);
         } else {
             Log.e("indexhand", "列表里不存在" + tagID + "查询数据库");
             SoundUtil.play(R.raw.pegconn, 0);
@@ -552,7 +557,7 @@ public class LotShippingFragment extends KeyDownFragment implements View.OnClick
         int i = 0;
         for (LotShippingListData data : mLotShippingDataList) {
             if (data.getCONTAINER() != null) {
-                i++;
+                i = i+Integer.parseInt(data.getINQTY());
             }
         }
         return i;
@@ -743,3 +748,41 @@ public class LotShippingFragment extends KeyDownFragment implements View.OnClick
     //endregion
 
 }
+
+
+//INSERT INTO SF_RFIDANTENNA (ANTENNAID,ANTENNATYPE,IPADDRESS,IPPORT)VALUES('C2_33LIGHT','Led','10.86.203.83','5000');
+//INSERT INTO SF_RFIDANTENNA (ANTENNAID,ANTENNATYPE,IPADDRESS,IPPORT)VALUES('C2_34LIGHT','Led','10.86.203.84','5000');
+//INSERT INTO SF_RFIDANTENNA (ANTENNAID,ANTENNATYPE,IPADDRESS,IPPORT)VALUES('C2_35LIGHT','Led','10.86.203.85','5000');
+//INSERT INTO SF_RFIDANTENNA (ANTENNAID,ANTENNATYPE,IPADDRESS,IPPORT)VALUES('C2_36LIGHT','Led','10.86.203.86','5000');
+//INSERT INTO SF_RFIDANTENNA (ANTENNAID,ANTENNATYPE,IPADDRESS,IPPORT)VALUES('C2_37LIGHT','Led','10.86.203.87','5000');
+//INSERT INTO SF_RFIDANTENNA (ANTENNAID,ANTENNATYPE,IPADDRESS,IPPORT)VALUES('C2_38LIGHT','Led','10.86.203.88','5000');
+//INSERT INTO SF_RFIDANTENNA (ANTENNAID,ANTENNATYPE,IPADDRESS,IPPORT)VALUES('C2_39LIGHT','Led','10.86.203.89','5000');
+//INSERT INTO SF_RFIDANTENNA (ANTENNAID,ANTENNATYPE,IPADDRESS,IPPORT)VALUES('C2_40LIGHT','Led','10.86.203.90','5000');
+//INSERT INTO SF_RFIDANTENNA (ANTENNAID,ANTENNATYPE,IPADDRESS,IPPORT)VALUES('C2_41LIGHT','Led','10.86.203.91','5000');
+//INSERT INTO SF_RFIDANTENNA (ANTENNAID,ANTENNATYPE,IPADDRESS,IPPORT)VALUES('C2_42LIGHT','Led','10.86.203.92','5000');
+//INSERT INTO SF_RFIDANTENNA (ANTENNAID,ANTENNATYPE,IPADDRESS,IPPORT)VALUES('C2_43LIGHT','Led','10.86.203.93','5000');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -33,6 +33,7 @@ import cn.zinus.shipping.util.DBManger;
 import cn.zinus.shipping.util.MyDateBaseHelper;
 
 import static cn.zinus.shipping.util.Constant.ISOISAVE;
+import static cn.zinus.shipping.util.Constant.VALID;
 
 /**
  * Developer:Spring
@@ -933,8 +934,9 @@ public class UpdateSqlite {
                     + Constant.QTY + ","
                     + Constant.SHIPPINGDATE + ","
                     + Constant.CONTAINERNO + ","
-                    + Constant.SEALNO + ")");
-            LOTSHIPPING_insert.append(" VALUES( ?, ?, ?, ? ,?, ?, ?, ?)");
+                    + Constant.SEALNO + ","
+                    + Constant.VALIDSTATE + ")");
+            LOTSHIPPING_insert.append(" VALUES( ?, ?, ?, ? ,?, ?, ?, ?,?)");
             for (int i = 0; i < array.length(); i++) {
                 LotShippingData lotShippingData = new LotShippingData();
                 JSONObject jsonObject = array.getJSONObject(i);
@@ -963,6 +965,7 @@ public class UpdateSqlite {
         statement.bindString(6, lotShippingData.getSHIPPINGDATE());
         statement.bindString(7, lotShippingData.getCONTAINERNO());
         statement.bindString(8, lotShippingData.getSEALNO());
+        statement.bindString(9, VALID);
         try {
             statement.executeInsert();
         } catch (Exception e) {
@@ -992,6 +995,7 @@ public class UpdateSqlite {
                 lotdata.setLOTSTATE(jsonObject.getString(Constant.LOTSTATE));
                 lotdata.setRFID(jsonObject.getString(Constant.RFID));
                 lotdata.setQTY(jsonObject.getString(Constant.QTY));
+                Log.e("看看有什么",lotdata.toString());
                 updateTableSF_LOT(lotdata, LOT_insert.toString());
             }
         } catch (JSONException e) {

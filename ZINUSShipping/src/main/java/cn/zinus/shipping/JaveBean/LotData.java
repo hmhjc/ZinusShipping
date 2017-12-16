@@ -17,6 +17,19 @@ public class LotData implements Serializable {
     private String QTY;
     private String RFID;
 
+    @Override
+    public String toString() {
+        return "LotData{" +
+                "LOTID='" + LOTID + '\'' +
+                ", PURCHASEORDERID='" + PURCHASEORDERID + '\'' +
+                ", PROCESSSEGMENTID='" + PROCESSSEGMENTID + '\'' +
+                ", LOTSTATE='" + LOTSTATE + '\'' +
+                ", VALIDSTATE='" + VALIDSTATE + '\'' +
+                ", QTY='" + QTY + '\'' +
+                ", RFID='" + RFID + '\'' +
+                '}';
+    }
+
     public String getPURCHASEORDERID() {
         return PURCHASEORDERID;
     }

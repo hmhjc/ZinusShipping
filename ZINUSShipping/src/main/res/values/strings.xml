@@ -323,9 +323,8 @@
                                         AND LS.SHIPPINGPLANNO  = \'%1$s\'                          \n
                                         AND LS.SHIPPINGPLANSEQ  = \'%2$s\'                          \n
                                         AND LS.CONTAINERSEQ  = \'%3$s\'                          \n
-                                        AND LS.LOTSTATE = \'Finished\'                             \n
                                         AND LS.VALIDSTATE = \'Valid\'                             \n
-                                        ORDER BY A.LOTID                                          \n
+                                        ORDER BY LS.LOTID                                          \n
     </string>
 
     <string name="GetShippinglOTQuery">SELECT  A.LOTID,A.RFID ,B.CONTAINERNO ,                    \n
