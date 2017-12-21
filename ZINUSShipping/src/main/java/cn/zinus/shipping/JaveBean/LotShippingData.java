@@ -18,6 +18,66 @@ public class LotShippingData implements Serializable {
     private String SHIPPINGPLANSEQ;
     private String CONTAINERSEQ;
     private String SHIPPINGDATE;
+    private String ORDERTYPE;
+    private String ORDERNO;
+    private String PRODUCTDEFID;
+    private String PRODUCTDEFVERSION;
+    private String LINENO;
+
+    public String getORDERTYPE() {
+        return ORDERTYPE;
+    }
+
+    public void setORDERTYPE(String ORDERTYPE) {
+        this.ORDERTYPE = ORDERTYPE;
+    }
+
+    public String getORDERNO() {
+        return ORDERNO;
+    }
+
+    public void setORDERNO(String ORDERNO) {
+        this.ORDERNO = ORDERNO;
+    }
+
+    public String getPRODUCTDEFID() {
+        return PRODUCTDEFID;
+    }
+
+    public void setPRODUCTDEFID(String PRODUCTDEFID) {
+        this.PRODUCTDEFID = PRODUCTDEFID;
+    }
+
+    public String getPRODUCTDEFVERSION() {
+        return PRODUCTDEFVERSION;
+    }
+
+    public void setPRODUCTDEFVERSION(String PRODUCTDEFVERSION) {
+        this.PRODUCTDEFVERSION = PRODUCTDEFVERSION;
+    }
+
+    public String getLINENO() {
+        return LINENO;
+    }
+
+    public void setLINENO(String LINENO) {
+        this.LINENO = LINENO;
+    }
+
+    @Override
+    public String toString() {
+        return "LotShippingData{" +
+                "LOTID='" + LOTID + '\'' +
+                ", SHIPPINGPLANNO='" + SHIPPINGPLANNO + '\'' +
+                ", CONTAINERNO='" + CONTAINERNO + '\'' +
+                ", SEALNO='" + SEALNO + '\'' +
+                ", VALIDSTATE='" + VALIDSTATE + '\'' +
+                ", QTY='" + QTY + '\'' +
+                ", SHIPPINGPLANSEQ='" + SHIPPINGPLANSEQ + '\'' +
+                ", CONTAINERSEQ='" + CONTAINERSEQ + '\'' +
+                ", SHIPPINGDATE='" + SHIPPINGDATE + '\'' +
+                '}';
+    }
 
     public String getSHIPPINGPLANSEQ() {
         return SHIPPINGPLANSEQ;

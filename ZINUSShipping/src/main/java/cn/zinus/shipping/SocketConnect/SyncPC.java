@@ -264,7 +264,18 @@ public class SyncPC implements Runnable {
             while (cursorDatalist.moveToNext()) {
                 Uploadshipplan uploadshipplan = new Uploadshipplan();
                 uploadshipplan.setSHIPPINGPLANNO(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.SHIPPINGPLANNO)));
+                uploadshipplan.setPOID(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.POID)));
+                uploadshipplan.setLINENO(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.LINENO)));
+                uploadshipplan.setSHIPPINGPLANSEQ(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.SHIPPINGPLANSEQ)));
+                uploadshipplan.setCONTAINERSEQ(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.CONTAINERSEQ)));
                 uploadshipplan.setSTATE(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.STATE)));
+                uploadshipplan.setPRODUCTDEFID(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.PRODUCTDEFID)));
+                uploadshipplan.setPRODUCTDEFVERSION(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.PRODUCTDEFVERSION)));
+                uploadshipplan.setORDERTYPE(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.ORDERTYPE)));
+                uploadshipplan.setORDERNO(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.ORDERNO)));
+//                SHIPPINGPLANNO ,POID,LINENO,SHIPPINGPLANSEQ,
+//                        CONTAINERSEQ,STATE,PRODUCTDEFID,PRODUCTDEFVERSION
+//                ORDERTYPE,ORDERNO                             \n
                 shipplanlist.add(uploadshipplan);
             }
         }
@@ -286,10 +297,18 @@ public class SyncPC implements Runnable {
                 LotShippingData data = new LotShippingData();
                 data.setLOTID(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.LOTID)));
                 data.setSHIPPINGPLANNO(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.SHIPPINGPLANNO)));
+                data.setSHIPPINGPLANSEQ(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.SHIPPINGPLANSEQ)));
+                data.setCONTAINERSEQ(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.CONTAINERSEQ)));
+                data.setSHIPPINGDATE(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.SHIPPINGDATE)));
                 data.setCONTAINERNO(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.CONTAINERNO)));
                 data.setSEALNO(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.SEALNO)));
                 data.setVALIDSTATE(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.VALIDSTATE)));
                 data.setQTY(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.QTY)));
+                data.setLINENO(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.LINENO)));
+                data.setPRODUCTDEFID(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.PRODUCTDEFID)));
+                data.setPRODUCTDEFVERSION(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.PRODUCTDEFVERSION)));
+                data.setORDERNO(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.ORDERNO)));
+                data.setORDERTYPE(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.ORDERTYPE)));
                 lotshiplist.add(data);
             }
         }
@@ -299,8 +318,48 @@ public class SyncPC implements Runnable {
     }
 
     private class Uploadshipplan {
-        private String SHIPPINGPLANNO;
-        private String STATE;
+        private String SHIPPINGPLANNO ;
+        private String POID ;
+        private String LINENO ;
+        private String SHIPPINGPLANSEQ ;
+        private String CONTAINERSEQ ;
+        private String STATE ;
+        private String ORDERTYPE;
+        private String ORDERNO;
+        private String PRODUCTDEFID;
+        private String PRODUCTDEFVERSION;
+
+        public String getORDERTYPE() {
+            return ORDERTYPE;
+        }
+
+        public void setORDERTYPE(String ORDERTYPE) {
+            this.ORDERTYPE = ORDERTYPE;
+        }
+
+        public String getORDERNO() {
+            return ORDERNO;
+        }
+
+        public void setORDERNO(String ORDERNO) {
+            this.ORDERNO = ORDERNO;
+        }
+
+        public String getPRODUCTDEFID() {
+            return PRODUCTDEFID;
+        }
+
+        public void setPRODUCTDEFID(String PRODUCTDEFID) {
+            this.PRODUCTDEFID = PRODUCTDEFID;
+        }
+
+        public String getPRODUCTDEFVERSION() {
+            return PRODUCTDEFVERSION;
+        }
+
+        public void setPRODUCTDEFVERSION(String PRODUCTDEFVERSION) {
+            this.PRODUCTDEFVERSION = PRODUCTDEFVERSION;
+        }
 
         public String getSHIPPINGPLANNO() {
             return SHIPPINGPLANNO;
@@ -310,6 +369,38 @@ public class SyncPC implements Runnable {
             this.SHIPPINGPLANNO = SHIPPINGPLANNO;
         }
 
+        public String getPOID() {
+            return POID;
+        }
+
+        public void setPOID(String POID) {
+            this.POID = POID;
+        }
+
+        public String getLINENO() {
+            return LINENO;
+        }
+
+        public void setLINENO(String LINENO) {
+            this.LINENO = LINENO;
+        }
+
+        public String getSHIPPINGPLANSEQ() {
+            return SHIPPINGPLANSEQ;
+        }
+
+        public void setSHIPPINGPLANSEQ(String SHIPPINGPLANSEQ) {
+            this.SHIPPINGPLANSEQ = SHIPPINGPLANSEQ;
+        }
+
+        public String getCONTAINERSEQ() {
+            return CONTAINERSEQ;
+        }
+
+        public void setCONTAINERSEQ(String CONTAINERSEQ) {
+            this.CONTAINERSEQ = CONTAINERSEQ;
+        }
+
         public String getSTATE() {
             return STATE;
         }
@@ -317,6 +408,5 @@ public class SyncPC implements Runnable {
         public void setSTATE(String STATE) {
             this.STATE = STATE;
         }
-
     }
 }

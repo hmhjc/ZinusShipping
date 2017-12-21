@@ -401,7 +401,6 @@ public class MainNaviActivity extends BaseActivity
         mShippingFragment.mLotShippingFragment.actionClearAll();
     }
 
-
     //多国语切换
     @Subscribe
     public void onEventMainThread(Event.ChangeLanguageEvent event) {
@@ -424,9 +423,9 @@ public class MainNaviActivity extends BaseActivity
     @Subscribe
     public void onEventMainThread(Event.RefreshActivityEvent event) {
         //刷新界面
-        Intent intent = getIntent();
-        finish();
-        startActivity(intent);
+//        Intent intent = getIntent();
+//        finish();
+//        startActivity(intent);
     }
 
     //endregion

@@ -16,6 +16,7 @@ public class LotData implements Serializable {
     private String VALIDSTATE;
     private String QTY;
     private String RFID;
+    private String ISPDASHIPPING;
 
     @Override
     public String toString() {
@@ -27,7 +28,16 @@ public class LotData implements Serializable {
                 ", VALIDSTATE='" + VALIDSTATE + '\'' +
                 ", QTY='" + QTY + '\'' +
                 ", RFID='" + RFID + '\'' +
+                ", ISPDASHIPPING='" + ISPDASHIPPING + '\'' +
                 '}';
+    }
+
+    public String getISPDASHIPPING() {
+        return ISPDASHIPPING;
+    }
+
+    public void setISPDASHIPPING(String ISPDASHIPPING) {
+        this.ISPDASHIPPING = ISPDASHIPPING;
     }
 
     public String getPURCHASEORDERID() {

@@ -869,13 +869,19 @@ public class UpdateSqlite {
                     + Constant.WORKINGSHIFT + ","
                     + Constant.AREAID + ","
                     + Constant.STATE + ","
-                    + Constant.ISOISAVE + ")");
-            SHIPPINGPLAN_insert.append(" VALUES( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )");
+                    + Constant.ISOISAVE + ","
+                    + Constant.ORDERTYPE + ","
+                    + Constant.ORDERNO + ","
+                    + Constant.PRODUCTDEFID + ","
+                    + Constant.PRODUCTDEFVERSION + ","
+                    + Constant.LINENO + ")");
+            SHIPPINGPLAN_insert.append(" VALUES( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?, ?,?,?,? )");
             for (int i = 0; i < array.length(); i++) {
                 ShippingPlanData shippingPlanData = new ShippingPlanData();
                 JSONObject jsonObject = array.getJSONObject(i);
                 shippingPlanData.setSHIPPINGPLANNO(jsonObject.getString(Constant.SHIPPINGPLANNO));
                 shippingPlanData.setPOID(jsonObject.getString(Constant.POID));
+                shippingPlanData.setLINENO(jsonObject.getString(Constant.LINENO));
                 shippingPlanData.setSHIPPINGPLANSEQ(jsonObject.getString(Constant.SHIPPINGPLANSEQ));
                 shippingPlanData.setCONTAINERSEQ(jsonObject.getString(Constant.CONTAINERSEQ));
                 shippingPlanData.setCONTAINERSPEC(jsonObject.getString(Constant.CONTAINERSPEC));
@@ -888,6 +894,10 @@ public class UpdateSqlite {
                 shippingPlanData.setWORKINGSHIFT(jsonObject.getString(Constant.WORKINGSHIFT));
                 shippingPlanData.setAREAID(jsonObject.getString(Constant.AREAID));
                 shippingPlanData.setSTATE(jsonObject.getString(Constant.STATE));
+                shippingPlanData.setORDERTYPE(jsonObject.getString(Constant.ORDERTYPE));
+                shippingPlanData.setORDERNO(jsonObject.getString(Constant.ORDERNO));
+                shippingPlanData.setPRODUCTDEFID(jsonObject.getString(Constant.PRODUCTDEFID));
+                shippingPlanData.setPRODUCTDEFVERSION(jsonObject.getString(Constant.PRODUCTDEFVERSION));
                 updateTableSF_SHIPPINGPLAN(shippingPlanData, SHIPPINGPLAN_insert.toString());
             }
         } catch (JSONException e) {
@@ -912,6 +922,11 @@ public class UpdateSqlite {
         statement.bindString(13, shippingPlanData.getAREAID());
         statement.bindString(14, shippingPlanData.getSTATE());
         statement.bindString(15, "N");
+        statement.bindString(16, shippingPlanData.getORDERTYPE());
+        statement.bindString(17, shippingPlanData.getORDERNO());
+        statement.bindString(18, shippingPlanData.getPRODUCTDEFID());
+        statement.bindString(19, shippingPlanData.getPRODUCTDEFVERSION());
+        statement.bindString(20, shippingPlanData.getLINENO());
         try {
             statement.executeInsert();
         } catch (Exception e) {

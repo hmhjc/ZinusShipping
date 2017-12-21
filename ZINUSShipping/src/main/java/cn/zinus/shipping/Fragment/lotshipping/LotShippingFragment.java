@@ -32,6 +32,7 @@ import com.zebra.adc.decoder.Barcode2DWithSoft;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import cn.zinus.shipping.Activity.MainNaviActivity;
 import cn.zinus.shipping.Adapter.LotShippingListViewAdapter;
@@ -49,6 +50,8 @@ import cn.zinus.shipping.util.SoundUtil;
 import static cn.zinus.shipping.util.Constant.INVALID;
 import static cn.zinus.shipping.util.Constant.RFIDSCAN;
 import static cn.zinus.shipping.util.Constant.UPDATEUI;
+import static cn.zinus.shipping.util.Constant.VALID;
+import static cn.zinus.shipping.util.Constant.VALIDSTATE;
 import static cn.zinus.shipping.util.Utils.showToast;
 import static com.micube.control.util.Server.hexStringToString;
 
@@ -73,26 +76,29 @@ public class LotShippingFragment extends KeyDownFragment implements View.OnClick
     private ListView mlvLotShhipping;
     private LotShippingListViewAdapter mLotShippingListViewAdapter;
     private ArrayList<LotShippingListData> mLotShippingDataList;
+    //这个画面的计划信息
+    private ShippingPlanData plandata;
     //这个记录了这个po下面所有的lot
     private ArrayList<LotData> mLotDataList;
     //condition
     private TextView tvtagqty;
+    //已经上车总数
     private TextView tvlotshippingqty;
+    //计划上车总数
     private TextView tvlotshippingPlanqty;
+    //上车计划号
     private TextView tvshippingPlanNo;
+    //po号
     private TextView tvPoNo;
+    //产品
     private TextView tvProduct;
-    private String PoNo;
+    //记录移除的tag
+    private ArrayList<LotShippingListData> removeData = new ArrayList<>();
     //
     private EditText etTagID;
     private EditText etContainerNo;
     private EditText etSealNo;
     private int BRFlag = 1;
-    //RadioGroup
-//    private RadioGroup RgInventory;
-//    private RadioButton rbSingle;
-//    private RadioButton rbAuto;
-    // private Handler handler;
     private boolean threadStop = true;
     private Thread thread;
     //Auto Read
@@ -149,10 +155,11 @@ public class LotShippingFragment extends KeyDownFragment implements View.OnClick
                         break;
                     case UPDATEUI:
                         tvlotshippingqty.setText(getShippingQty() + "");
+                        Log.e("TAGgeshu ",mLotShippingDataList.size()+"") ;
+                        tvtagqty.setText(mLotShippingDataList.size()+"");
                         mlvLotShhipping.setSelection((Integer) msg.obj);
                         break;
                 }
-
             }
         };
     }
@@ -262,7 +269,8 @@ public class LotShippingFragment extends KeyDownFragment implements View.OnClick
     private void initData() {
         mLotDataList = new ArrayList<>();
         mLotShippingDataList = new ArrayList<>();
-        PoNo = "";
+        plandata = new ShippingPlanData();
+        removeData = new ArrayList<>();
     }
     //endregion
 
@@ -306,11 +314,12 @@ public class LotShippingFragment extends KeyDownFragment implements View.OnClick
                                     /**
                                      * 移除装车
                                      */
-                                    LotShippingListData data = new LotShippingListData();
-                                    data.setLOTID(mLotShippingDataList.get(position).getLOTID());
-                                    data.setTAGID(mLotShippingDataList.get(position).getTAGID());
-                                    data.setVALIDSTATE(Constant.INVALID);
-                                    mLotShippingDataList.set(position, data);
+//                                    LotShippingListData data = new LotShippingListData();
+//                                    data.setLOTID(mLotShippingDataList.get(position).getLOTID());
+//                                    data.setTAGID(mLotShippingDataList.get(position).getTAGID());
+//                                    data.setVALIDSTATE(INVALID);
+                                    removeData.add(mLotShippingDataList.get(position));
+                                    mLotShippingDataList.remove(position);
                                     mLotShippingListViewAdapter.notifyDataSetChanged();
                                     Message message = new Message();
                                     message.what = UPDATEUI;
@@ -331,10 +340,11 @@ public class LotShippingFragment extends KeyDownFragment implements View.OnClick
     public void getLotShippingByShippingPlan(ShippingPlanData shippingPlanData) {
         //先把lot表里符合条件的lot搜出来放到一个全局变量中
         //再搜shippinglot，找出对应货柜顺序已经装车的lot，显示在画面中
-        //把公共的数据显示到画面的下方
+        //把公共的数据显示到画面的下方shippingPlanData
+        plandata = shippingPlanData;
         tvshippingPlanNo.setText(shippingPlanData.getSHIPPINGPLANNO());
         tvlotshippingPlanqty.setText(shippingPlanData.getPLANQTY());
-        PoNo = shippingPlanData.getPOID();
+     //   PoNo = shippingPlanData.getPOID();
         tvPoNo.setText(shippingPlanData.getPOID());
         tvProduct.setText(shippingPlanData.getPRODUCTDEFNAME());
         //搜索符合条件的,没有装车的lot,并放入mLotDataList，
@@ -348,6 +358,7 @@ public class LotShippingFragment extends KeyDownFragment implements View.OnClick
                 mLotData.setLOTID(cursorLotDatalist.getString(cursorLotDatalist.getColumnIndex(Constant.LOTID)));
                 mLotData.setRFID(cursorLotDatalist.getString(cursorLotDatalist.getColumnIndex(Constant.RFID)));
                 mLotData.setQTY(cursorLotDatalist.getString(cursorLotDatalist.getColumnIndex(Constant.QTY)));
+                mLotData.setVALIDSTATE(INVALID);
                 Log.e("lot数据", mLotData.toString());
                 mLotDataList.add(mLotData);
             }
@@ -365,6 +376,7 @@ public class LotShippingFragment extends KeyDownFragment implements View.OnClick
                 lotShippingListData.setINQTY(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.QTY)));
                 lotShippingListData.setCONTAINER(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.CONTAINERNO)));
                 lotShippingListData.setSEALNO(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.SEALNO)));
+                lotShippingListData.setVALIDSTATE(VALID);
                 Log.e("搜索已经装车的lot数据", lotShippingListData.toString());
                 mLotShippingDataList.add(lotShippingListData);
             }
@@ -381,11 +393,15 @@ public class LotShippingFragment extends KeyDownFragment implements View.OnClick
     //region checkIsExistInSF_LOT
     //判断扫到的lot是不是这个po所对应的lot
     private int checkIsExistInSF_LOT(String tagid) {
-        int TagLocation = -1;
-        for (int i = 0; i < mLotDataList.size(); i++){
-            if (mLotDataList.get(i).getRFID().equals(tagid)&&
-                    !(mLotDataList.get(i).getVALIDSTATE().equals(INVALID))) {
-                TagLocation = i;
+        //没有加入列表的是invalid
+        int TagLocation = -2;
+        for (int i = 0; i < mLotDataList.size(); i++) {
+            if (mLotDataList.get(i).getRFID().equals(tagid)) {
+                if ((mLotDataList.get(i).getVALIDSTATE().equals(INVALID))) {
+                    TagLocation = i;
+                } else {
+                    TagLocation = -1;
+                }
             }
         }
         return TagLocation;
@@ -467,7 +483,7 @@ public class LotShippingFragment extends KeyDownFragment implements View.OnClick
 
     //region checkAndSearchWeb
     private void checkAndSearchWeb(String tagID) {
-        if (Integer.parseInt(tvlotshippingqty.getText().toString())== Integer.parseInt(tvlotshippingPlanqty.getText().toString())) {
+        if (Integer.parseInt(tvlotshippingqty.getText().toString()) == Integer.parseInt(tvlotshippingPlanqty.getText().toString())) {
             Log.e("全部完成", "全部完成");
             if (dismessDialogFlag) {
                 dismessDialogFlag = false;
@@ -482,47 +498,75 @@ public class LotShippingFragment extends KeyDownFragment implements View.OnClick
             showToast(mContext, getString(R.string.noContainerAndSealNo), 0);
             return;
         }
-        if (checkIsExistInSF_LOT(tagID) == -1) {
-           //在lot表里面找不到，可能数据没有更新，可能不是这个po下面的lot，需要报警
-            showToast(mContext,tagID+"不是这个计划的lot，请确认",0);
-            SoundUtil.play(R.raw.beep51, 0);
-        } else {
-            Log.e("indexhand", "列表里不存在" + tagID + "查询数据库");
-            SoundUtil.play(R.raw.pegconn, 0);
+        int lotflag = checkIsExistInSF_LOT(tagID);
+        switch (lotflag) {
+            case -2:
+                showToast(mContext, tagID + "不是这个计划的lot，请确认", 0);
+                SoundUtil.play(R.raw.ding, 0);
+                break;
+            case -1:
+                //已经存在了
+                Log.e("已经存在了", "已经存在了");
+                break;
+            default:
+                //没有扫到过这个lot，且lot表里有这个数据
+                SoundUtil.play(R.raw.pegconn, 0);
+                searchSqlite(lotflag);
+                break;
         }
-        searchSqlite(tagID);
     }
 
-    private void searchSqlite(String tagID) {
-        SQLiteDatabase db = mHelper.getWritableDatabase();
-        String selectDataListsql = String.format(getString(R.string.GetlOTQtyQuery), PoNo, tagID);
-        Log.e("sql语句GetlOTQtyQuery", selectDataListsql);
-        Cursor cursorDatalist = DBManger.selectDatBySql(db, selectDataListsql, null);
-        if (cursorDatalist.getCount() != 0) {
-            Log.e("查到了", "111111111");
-            while (cursorDatalist.moveToNext()) {
-                LotShippingListData lotShippingListData = new LotShippingListData();
-                lotShippingListData.setLOTID(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.LOTID)));
-                lotShippingListData.setINQTY(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.QTY)));
-                for (int i = 0; i < mLotShippingDataList.size(); i++) {
-                    LotShippingListData data = mLotShippingDataList.get(i);
-                    if (data.equals(lotShippingListData)) {
-                        data.setINQTY(lotShippingListData.getINQTY());
-                        data.setCONTAINER(etContainerNo.getText().toString());
-                        data.setSEALNO(etSealNo.getText().toString());
-                        data.setVALIDSTATE(Constant.VALID);
-                        mLotShippingDataList.set(i, data);
-                        mLotShippingListViewAdapter.notifyDataSetChanged();
-                        tvlotshippingqty.setText(getShippingQty() + "");
-                        // mlvLotShhipping.setSelection(0);
-//                        Message message = new Message();
-//                        message.what = UPDATEUI;
-//                        message.obj = 0;
-//                        handler.sendMessage(message);
-                    }
-                }
+    private void searchSqlite(int lotflag) {
+        //修改lot数据的validstate为valid，再扫描的时候就会把它归为已经存放到列表上的数据
+        LotData data = mLotDataList.get(lotflag);
+        data.setVALIDSTATE(VALID);
+        mLotDataList.set(lotflag, data);
+        //设置listview的数据
+        LotShippingListData listData = new LotShippingListData();
+        listData.setLOTID(data.getLOTID());
+        listData.setINQTY(data.getQTY());
+        listData.setCONTAINER(etContainerNo.getText().toString());
+        listData.setSEALNO(etSealNo.getText().toString());
+        listData.setVALIDSTATE(VALID);
+        boolean flag = true;
+        for (int i = 0; i < mLotShippingDataList.size(); i++) {
+            if (mLotShippingDataList.get(i).getLOTID().equals(listData.getLOTID())) {
+                flag = false;
             }
         }
+        if (flag) {
+            mLotShippingDataList.add(listData);
+            mLotShippingListViewAdapter.notifyDataSetChanged();
+        }
+//        SQLiteDatabase db = mHelper.getWritableDatabase();
+//        String selectDataListsql = String.format(getString(R.string.GetlOTQtyQuery), PoNo, tagID);
+//        Log.e("sql语句GetlOTQtyQuery", selectDataListsql);
+//        Cursor cursorDatalist = DBManger.selectDatBySql(db, selectDataListsql, null);
+//        if (cursorDatalist.getCount() != 0) {
+//            Log.e("查到了", "111111111");
+//            while (cursorDatalist.moveToNext()) {
+//                LotShippingListData lotShippingListData = new LotShippingListData();
+//                lotShippingListData.setLOTID(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.LOTID)));
+//                lotShippingListData.setINQTY(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.QTY)));
+//                for (int i = 0; i < mLotShippingDataList.size(); i++) {
+//                    LotShippingListData data = mLotShippingDataList.get(i);
+//                    if (data.equals(lotShippingListData)) {
+//                        data.setINQTY(lotShippingListData.getINQTY());
+//                        data.setCONTAINER(etContainerNo.getText().toString());
+//                        data.setSEALNO(etSealNo.getText().toString());
+//                        data.setVALIDSTATE(Constant.VALID);
+//                        mLotShippingDataList.set(i, data);
+//                        mLotShippingListViewAdapter.notifyDataSetChanged();
+//                        tvlotshippingqty.setText(getShippingQty() + "");
+//                        // mlvLotShhipping.setSelection(0);
+////                        Message message = new Message();
+////                        message.what = UPDATEUI;
+////                        message.obj = 0;
+////                        handler.sendMessage(message);
+//                    }
+//                }
+//            }
+//        }
     }
     //endregion
 
@@ -545,7 +589,7 @@ public class LotShippingFragment extends KeyDownFragment implements View.OnClick
         tvlotshippingPlanqty.setText("0");
         tvPoNo.setText("");
         tvProduct.setText("");
-        PoNo = "";
+        //PoNo = "";
         TagInfoData data = new TagInfoData();
         data.setEnableFlag(true);
         data.setClearFlag(true);
@@ -557,36 +601,41 @@ public class LotShippingFragment extends KeyDownFragment implements View.OnClick
         int i = 0;
         for (LotShippingListData data : mLotShippingDataList) {
             if (data.getCONTAINER() != null) {
-                i = i+Integer.parseInt(data.getINQTY());
+                i = i + Integer.parseInt(data.getINQTY());
             }
         }
         return i;
     }
     //endregion
 
+    //region ActionSave
     public void saveShipping() {
         Log.e("保存", "保存");
         StringBuffer Shipping_insert = new StringBuffer();
         Shipping_insert.append("INSERT OR REPLACE INTO " + Constant.SF_LOTSHIPPING + "("
                 + Constant.LOTID + ","
                 + Constant.SHIPPINGPLANNO + ","
+                + Constant.SHIPPINGPLANSEQ + ","
+                + Constant.CONTAINERSEQ + ","
                 + Constant.CONTAINERNO + ","
                 + Constant.SEALNO + ","
+                + Constant.QTY + ","
+                + Constant.SHIPPINGDATE + ","
                 + Constant.VALIDSTATE + ")");
-        Shipping_insert.append(" VALUES( ?, ?, ?, ? , ? )");
+        Shipping_insert.append(" VALUES( ?, ?, ?, ? , ?, ?, ?, ? , ? )");
+        Date now = new Date();
         for (int i = 0; i < mLotShippingDataList.size(); i++) {
             if (mLotShippingDataList.get(i).getVALIDSTATE() != null) {
                 SQLiteStatement statement = db.compileStatement(Shipping_insert.toString());
                 statement.bindString(1, mLotShippingDataList.get(i).getLOTID());
-                statement.bindString(2, tvshippingPlanNo.getText().toString());
-                statement.bindString(5, mLotShippingDataList.get(i).getVALIDSTATE());
-                if (mLotShippingDataList.get(i).getVALIDSTATE().equals(Constant.VALID)) {
-                    statement.bindString(3, mLotShippingDataList.get(i).getCONTAINER());
-                    statement.bindString(4, mLotShippingDataList.get(i).getSEALNO());
-                } else {
-                    statement.bindString(3, "");
-                    statement.bindString(4, "");
-                }
+                statement.bindString(2, plandata.getSHIPPINGPLANNO());
+                statement.bindString(3, plandata.getSHIPPINGPLANSEQ());
+                statement.bindString(4, plandata.getCONTAINERSEQ());
+                statement.bindString(5, mLotShippingDataList.get(i).getCONTAINER());
+                statement.bindString(6, mLotShippingDataList.get(i).getSEALNO());
+                statement.bindString(7, mLotShippingDataList.get(i).getINQTY());
+                statement.bindString(8, df.format(now));
+                statement.bindString(9, mLotShippingDataList.get(i).getVALIDSTATE());
                 try {
                     statement.executeInsert();
                 } catch (Exception e) {
@@ -594,17 +643,23 @@ public class LotShippingFragment extends KeyDownFragment implements View.OnClick
                 }
             }
         }
-        //插入plan表,说明pda已经操作过了
-
-        ContentValues values = new ContentValues();
-        values.put(Constant.ISPDASHIPPING, "Y");
+        //把移除的东西从SF_LOTSHIPPING表中删除
+        ContentValues lotshippingValues = new ContentValues();
+        lotshippingValues.put(VALIDSTATE,INVALID);
+        for (int i=0;i<removeData.size();i++){
+            Log.e("移除保存",removeData.get(i).getLOTID());
+            db.update(Constant.SF_LOTSHIPPING, lotshippingValues, "LOTID = ?", new String[]{removeData.get(i).getLOTID()});
+        }
+        //修改plan表,说明pda已经操作过了
+        ContentValues shippingplanValues = new ContentValues();
+        shippingplanValues.put(Constant.ISPDASHIPPING, "Y");
         if (tvlotshippingqty.getText().toString().equals(tvtagqty.getText().toString())) {
-            values.put(Constant.STATE, "Finished");
+            shippingplanValues.put(Constant.STATE, "Finished");
         } else {
-            values.put(Constant.STATE, "Run");
+            shippingplanValues.put(Constant.STATE, "Run");
         }
 
-        db.update(Constant.SF_SHIPPINGPLAN, values, "SHIPPINGPLANNO = ?", new String[]{tvshippingPlanNo.getText().toString()});
+        db.update(Constant.SF_SHIPPINGPLAN, shippingplanValues, "SHIPPINGPLANNO = ?", new String[]{tvshippingPlanNo.getText().toString()});
 //        StringBuffer Shipplan_insert = new StringBuffer();
 //
 //        //SET column1 = value1, column2 = value2...., columnN = valueN
@@ -624,6 +679,7 @@ public class LotShippingFragment extends KeyDownFragment implements View.OnClick
 //            Log.e("SHIPPLAN保存出错", e.getMessage().toString());
 //        }
     }
+    //endregion
 
     //endregion
 
@@ -748,41 +804,3 @@ public class LotShippingFragment extends KeyDownFragment implements View.OnClick
     //endregion
 
 }
-
-
-//INSERT INTO SF_RFIDANTENNA (ANTENNAID,ANTENNATYPE,IPADDRESS,IPPORT)VALUES('C2_33LIGHT','Led','10.86.203.83','5000');
-//INSERT INTO SF_RFIDANTENNA (ANTENNAID,ANTENNATYPE,IPADDRESS,IPPORT)VALUES('C2_34LIGHT','Led','10.86.203.84','5000');
-//INSERT INTO SF_RFIDANTENNA (ANTENNAID,ANTENNATYPE,IPADDRESS,IPPORT)VALUES('C2_35LIGHT','Led','10.86.203.85','5000');
-//INSERT INTO SF_RFIDANTENNA (ANTENNAID,ANTENNATYPE,IPADDRESS,IPPORT)VALUES('C2_36LIGHT','Led','10.86.203.86','5000');
-//INSERT INTO SF_RFIDANTENNA (ANTENNAID,ANTENNATYPE,IPADDRESS,IPPORT)VALUES('C2_37LIGHT','Led','10.86.203.87','5000');
-//INSERT INTO SF_RFIDANTENNA (ANTENNAID,ANTENNATYPE,IPADDRESS,IPPORT)VALUES('C2_38LIGHT','Led','10.86.203.88','5000');
-//INSERT INTO SF_RFIDANTENNA (ANTENNAID,ANTENNATYPE,IPADDRESS,IPPORT)VALUES('C2_39LIGHT','Led','10.86.203.89','5000');
-//INSERT INTO SF_RFIDANTENNA (ANTENNAID,ANTENNATYPE,IPADDRESS,IPPORT)VALUES('C2_40LIGHT','Led','10.86.203.90','5000');
-//INSERT INTO SF_RFIDANTENNA (ANTENNAID,ANTENNATYPE,IPADDRESS,IPPORT)VALUES('C2_41LIGHT','Led','10.86.203.91','5000');
-//INSERT INTO SF_RFIDANTENNA (ANTENNAID,ANTENNATYPE,IPADDRESS,IPPORT)VALUES('C2_42LIGHT','Led','10.86.203.92','5000');
-//INSERT INTO SF_RFIDANTENNA (ANTENNAID,ANTENNATYPE,IPADDRESS,IPPORT)VALUES('C2_43LIGHT','Led','10.86.203.93','5000');
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

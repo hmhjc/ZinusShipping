@@ -12,6 +12,7 @@ public class ShippingPlanData implements Serializable {
 
     private String SHIPPINGPLANNO ;
     private String POID ;
+    private String LINENO ;
     private String SHIPPINGPLANSEQ ;
     private String CONTAINERSEQ ;
     private String CONTAINERSPEC ;
@@ -25,12 +26,17 @@ public class ShippingPlanData implements Serializable {
     private String AREAID ;
     private String STATE ;
     private String VALIDSTATE;
+    private String ORDERTYPE;
+    private String ORDERNO;
+    private String PRODUCTDEFID;
+    private String PRODUCTDEFVERSION;
 
     @Override
     public String toString() {
         return "ShippingPlanData{" +
                 "SHIPPINGPLANNO='" + SHIPPINGPLANNO + '\'' +
                 ", POID='" + POID + '\'' +
+                ", LINENO='" + LINENO + '\'' +
                 ", SHIPPINGPLANSEQ='" + SHIPPINGPLANSEQ + '\'' +
                 ", CONTAINERSEQ='" + CONTAINERSEQ + '\'' +
                 ", CONTAINERSPEC='" + CONTAINERSPEC + '\'' +
@@ -44,7 +50,51 @@ public class ShippingPlanData implements Serializable {
                 ", AREAID='" + AREAID + '\'' +
                 ", STATE='" + STATE + '\'' +
                 ", VALIDSTATE='" + VALIDSTATE + '\'' +
+                ", ORDERTYPE='" + ORDERTYPE + '\'' +
+                ", ORDERNO='" + ORDERNO + '\'' +
+                ", PRODUCTDEFID='" + PRODUCTDEFID + '\'' +
+                ", PRODUCTDEFVERSION='" + PRODUCTDEFVERSION + '\'' +
                 '}';
+    }
+
+    public String getORDERTYPE() {
+        return ORDERTYPE;
+    }
+
+    public void setORDERTYPE(String ORDERTYPE) {
+        this.ORDERTYPE = ORDERTYPE;
+    }
+
+    public String getORDERNO() {
+        return ORDERNO;
+    }
+
+    public void setORDERNO(String ORDERNO) {
+        this.ORDERNO = ORDERNO;
+    }
+
+    public String getPRODUCTDEFID() {
+        return PRODUCTDEFID;
+    }
+
+    public void setPRODUCTDEFID(String PRODUCTDEFID) {
+        this.PRODUCTDEFID = PRODUCTDEFID;
+    }
+
+    public String getPRODUCTDEFVERSION() {
+        return PRODUCTDEFVERSION;
+    }
+
+    public void setPRODUCTDEFVERSION(String PRODUCTDEFVERSION) {
+        this.PRODUCTDEFVERSION = PRODUCTDEFVERSION;
+    }
+
+    public String getLINENO() {
+        return LINENO;
+    }
+
+    public void setLINENO(String LINENO) {
+        this.LINENO = LINENO;
     }
 
     public String getSHIPPINGPLANNO() {

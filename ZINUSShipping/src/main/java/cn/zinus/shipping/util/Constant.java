@@ -141,8 +141,11 @@ public class Constant {
     public static final String SF_SHIPPINGPLAN = "SF_SHIPPINGPLAN";
     public static final String SHIPPINGPLANNO = "SHIPPINGPLANNO";
     public static final String POID = "POID";
+    public static final String LINENO = "LINENO";
     public static final String PLANTID = "PLANTID";
     public static final String CUSTOMERID = "CUSTOMERID";
+    public static final String ORDERTYPE = "ORDERTYPE";
+    public static final String ORDERNO = "ORDERNO";
     public static final String PRODUCTDEFID = "PRODUCTDEFID";
     public static final String PRODUCTDEFVERSION = "PRODUCTDEFVERSION";
     public static final String PLANSTARTTIME = "PLANSTARTTIME";

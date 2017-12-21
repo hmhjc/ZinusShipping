@@ -265,7 +265,7 @@
     <string name="GetShippingPlanQueryAll"> SELECT SHIPPINGPLANNO,POID,SHIPPINGPLANSEQ,CONTAINERSEQ,     \n
                                                    CUSTOMERID,PRODUCTDEFNAME,PLANQTY,      \n
                                                    CONTAINERSPEC,PLANSTARTTIME,             \n
-                                                   PLANENDTIME,STATE                        \n
+                                                   PLANENDTIME,STATE,LINENO,PRODUCTDEFID,PRODUCTDEFVERSION,ORDERTYPE,ORDERNO  \n                        \n
                                             FROM SF_SHIPPINGPLAN                                \n
                                             WHERE 1=1                                             \n
                                             AND ISOISAVE IS NOT \'Y\'                          \n
@@ -275,7 +275,7 @@
                                             SELECT SHIPPINGPLANNO,POID,SHIPPINGPLANSEQ,CONTAINERSEQ,      \n
                                                    CUSTOMERID,PRODUCTDEFNAME,PLANQTY,      \n
                                                    CONTAINERSPEC,PLANSTARTTIME,             \n
-                                                   PLANENDTIME,STATE                        \n
+                                                   PLANENDTIME,STATE ,LINENO,PRODUCTDEFID,PRODUCTDEFVERSION,ORDERTYPE,ORDERNO \n                       \n
                                             FROM SF_SHIPPINGPLAN                                \n
                                             WHERE 1=1                                             \n
                                             AND STATE IS NOT \'Finished\'                          \n
@@ -288,7 +288,8 @@
                                             SELECT SP.SHIPPINGPLANNO,POID,SHIPPINGPLANSEQ,CONTAINERSEQ,     \n
                                                    SP.CUSTOMERID,SP.PRODUCTDEFNAME,SP.PLANQTY,      \n
                                                    SP.CONTAINERSPEC,SP.PLANSTARTTIME,             \n
-                                                   SP.PLANENDTIME,SP.STATE                        \n
+                                                   SP.PLANENDTIME,SP.STATE,SP.LINENO,SP.PRODUCTDEFID,
+                                                   SP.PRODUCTDEFVERSION,SP.ORDERTYPE,SP.ORDERNO                         \n
                                             FROM SF_SHIPPINGPLAN SP                               \n
                                             WHERE 1=1                                             \n
                                             AND SP.STATE = \'Finished\'                               \n
@@ -300,7 +301,8 @@
                                             SELECT SP.SHIPPINGPLANNO,POID,SHIPPINGPLANSEQ,CONTAINERSEQ,    \n
                                                    SP.CUSTOMERID,SP.PRODUCTDEFNAME,SP.PLANQTY,      \n
                                                    SP.CONTAINERSPEC,SP.PLANSTARTTIME,             \n
-                                                   SP.PLANENDTIME,SP.STATE                        \n
+                                                   SP.PLANENDTIME,SP.STATE,SP.LINENO,SP.PRODUCTDEFID,
+                                                   SP.PRODUCTDEFVERSION,SP.ORDERTYPE,SP.ORDERNO                         \n
                                             FROM SF_SHIPPINGPLAN SP                               \n
                                             WHERE 1=1                                             \n
                                             AND SP.PLANSTARTTIME &gt; \'%1$s\'                     \n
@@ -348,19 +350,22 @@
                                     ORDER BY A.LOTID                                              \n
     </string>
 
-    <string name="GetUploadShipplanQuery"> SELECT  SHIPPINGPLANNO ,STATE             \n
+    <string name="GetUploadShipplanQuery"> SELECT   SHIPPINGPLANNO ,POID,LINENO,SHIPPINGPLANSEQ,
+                                                    CONTAINERSEQ,STATE,PRODUCTDEFID,PRODUCTDEFVERSION,
+                                                    ORDERTYPE,ORDERNO                             \n
                                                  FROM SF_SHIPPINGPLAN A                           \n
                                            WHERE 1=1                                              \n
                                            AND ISPDASHIPPING = \'Y\'
     </string>
 
-    <string name="GetUploadlOTShipQuery"> SELECT LS.*,L.QTY FROM                                  \n
-                                          SF_LOTSHIPPING LS                                       \n
-                                          INNER JOIN SF_SHIPPINGPLAN SP                           \n
-                                          ON SP.SHIPPINGPLANNO = LS.SHIPPINGPLANNO                \n
-                                          INNER JOIN SF_LOT L ON L.LOTID = LS.LOTID               \n
-                                          WHERE 1=1                                               \n
-                                          AND SP.ISPDASHIPPING = \'Y\'                            \n
+    <string name="GetUploadlOTShipQuery"> SELECT LS.*,SP.PRODUCTDEFID,SP.PRODUCTDEFVERSION,SP.ORDERNO,SP.ORDERTYPE,SP.LINENO FROM
+                                          SF_LOTSHIPPING LS                           \n
+                                          INNER JOIN SF_SHIPPINGPLAN SP       \n
+                                          ON SP.SHIPPINGPLANNO = LS.SHIPPINGPLANNO       \n
+                                          AND SP.SHIPPINGPLANSEQ = LS.SHIPPINGPLANSEQ
+                                          AND SP.CONTAINERSEQ = LS.CONTAINERSEQ
+                                          WHERE 1=1
+                                          AND LS.VALIDSTATE = \'Valid\'                            \n
     </string>
 
     <string name="ChangeLanguage">ChangeLanguage</string>
