@@ -1,46 +1,47 @@
 package cn.zinus.warehouse.Fragment.materialstockin;
 
-import android.content.ContentValues;
-import android.content.Context;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.graphics.drawable.ColorDrawable;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.support.annotation.Nullable;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.MenuItem;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.PopupWindow;
-import android.widget.TextView;
+        import android.annotation.SuppressLint;
+        import android.content.ContentValues;
+        import android.content.Context;
+        import android.database.Cursor;
+        import android.database.sqlite.SQLiteDatabase;
+        import android.graphics.drawable.ColorDrawable;
+        import android.os.Bundle;
+        import android.os.Handler;
+        import android.os.Message;
+        import android.support.annotation.Nullable;
+        import android.util.Log;
+        import android.view.Gravity;
+        import android.view.LayoutInflater;
+        import android.view.MenuItem;
+        import android.view.MotionEvent;
+        import android.view.View;
+        import android.view.ViewGroup;
+        import android.view.WindowManager;
+        import android.view.inputmethod.InputMethodManager;
+        import android.widget.AdapterView;
+        import android.widget.Button;
+        import android.widget.EditText;
+        import android.widget.ListView;
+        import android.widget.PopupWindow;
+        import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
+        import java.util.ArrayList;
+        import java.util.Timer;
+        import java.util.TimerTask;
 
-import cn.zinus.warehouse.Activity.MainNaviActivity;
-import cn.zinus.warehouse.Adapter.ConsumeInboundListViewAdapter;
-import cn.zinus.warehouse.Fragment.KeyDownFragment;
-import cn.zinus.warehouse.JaveBean.ConsumeInboundData;
-import cn.zinus.warehouse.JaveBean.TagInfoData;
-import cn.zinus.warehouse.R;
-import cn.zinus.warehouse.util.Constant;
-import cn.zinus.warehouse.util.DBManger;
-import cn.zinus.warehouse.util.MyDateBaseHelper;
-import cn.zinus.warehouse.util.Utils;
+        import cn.zinus.warehouse.Activity.MainNaviActivity;
+        import cn.zinus.warehouse.Adapter.ConsumeInboundListViewAdapter;
+        import cn.zinus.warehouse.Fragment.KeyDownFragment;
+        import cn.zinus.warehouse.JaveBean.ConsumeInboundData;
+        import cn.zinus.warehouse.JaveBean.TagInfoData;
+        import cn.zinus.warehouse.R;
+        import cn.zinus.warehouse.util.Constant;
+        import cn.zinus.warehouse.util.DBManger;
+        import cn.zinus.warehouse.util.MyDateBaseHelper;
+        import cn.zinus.warehouse.util.Utils;
 
-import static cn.zinus.warehouse.util.Constant.UPDATEUI;
+        import static cn.zinus.warehouse.util.Constant.UPDATEUI;
 
 /**
  * Created by Spring on 2017/2/18.
@@ -149,7 +150,6 @@ public class ConsumeInboundFragment extends KeyDownFragment {
     }
     //endregion
 
-
     //endregion
 
     //region ◆ Function
@@ -183,6 +183,7 @@ public class ConsumeInboundFragment extends KeyDownFragment {
     //endregion
 
     //region fixQty
+    @SuppressLint("WrongConstant")
     private void fixQty(View view, final int position) {
         final ConsumeInboundData tempdata = mcomsumeInboundDataList.get(position);
         Button btnConfirm = (Button) mViewFixQty.findViewById(R.id.btnfqty);
@@ -193,9 +194,9 @@ public class ConsumeInboundFragment extends KeyDownFragment {
             @Override
             public void onClick(View v) {
                 tempdata.setINQTY(etFixQty.getText().toString());
-                if (Integer.parseInt(tempdata.getINQTY()) > Integer.parseInt(tempdata.getPLANQTY())) {
+                if (Float.parseFloat(tempdata.getINQTY()) > Float.parseFloat(tempdata.getPLANQTY())) {
                     tempdata.setBackgroundColor(R.color.qtymore);
-                } else if (Integer.parseInt(tempdata.getINQTY()) == Integer.parseInt(tempdata.getPLANQTY())) {
+                } else if (Float.parseFloat(tempdata.getINQTY()) == Float.parseFloat(tempdata.getPLANQTY())) {
                     tempdata.setBackgroundColor(R.color.qtymatch);
                 } else {
                     tempdata.setBackgroundColor(R.color.qtyless);
@@ -243,8 +244,14 @@ public class ConsumeInboundFragment extends KeyDownFragment {
         if (cursorDatalist.getCount() != 0) {
             while (cursorDatalist.moveToNext()) {
                 ConsumeInboundData consumeInboundData = new ConsumeInboundData();
-                consumeInboundData.setCONSUMABLEDEFNAME(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.CONSUMABLEDEFNAME)).trim());
+                consumeInboundData.setCONSUMABLEDEFID(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.CONSUMABLEDEFID)).trim());
                 consumeInboundData.setUNIT(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.UNIT)));
+                consumeInboundData.setORDERNO(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.ORDERNO)));
+                consumeInboundData.setORDERTYPE(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.ORDERTYPE)));
+                consumeInboundData.setLINENO(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.LINENO)));
+                consumeInboundData.setWAREHOUSEID(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.WAREHOUSEID)));
+                consumeInboundData.setCONSUMABLEDEFNAME(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.CONSUMABLEDEFID)));
+                consumeInboundData.setCONSUMABLEDEFVERSION(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.CONSUMABLEDEFVERSION)));
                 if (cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.INQTY)).equals("null")||
                         cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.INQTY)).equals("")) {
                     consumeInboundData.setINQTY("0");
@@ -252,9 +259,9 @@ public class ConsumeInboundFragment extends KeyDownFragment {
                     consumeInboundData.setINQTY(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.INQTY)));
                 }
                 consumeInboundData.setPLANQTY(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.PLANQTY)));
-                if (Integer.parseInt(consumeInboundData.getINQTY()) > Integer.parseInt(consumeInboundData.getPLANQTY())) {
+                if (Float.parseFloat(consumeInboundData.getINQTY()) > Float.parseFloat(consumeInboundData.getPLANQTY())) {
                     consumeInboundData.setBackgroundColor(R.color.qtymore);
-                } else if (Integer.parseInt(consumeInboundData.getINQTY()) == Integer.parseInt(consumeInboundData.getPLANQTY())) {
+                } else if (Float.parseFloat(consumeInboundData.getINQTY()) == Float.parseFloat(consumeInboundData.getPLANQTY())) {
                     consumeInboundData.setBackgroundColor(R.color.qtymatch);
                 } else {
                     consumeInboundData.setBackgroundColor(R.color.qtyless);
@@ -280,7 +287,6 @@ public class ConsumeInboundFragment extends KeyDownFragment {
     }
     //endregion
 
-
     //region actionSearch
     protected void actionSearch() {
 
@@ -289,13 +295,18 @@ public class ConsumeInboundFragment extends KeyDownFragment {
 
     //region actionSave
     private void  actionSave(){
-    Log.e("保存","保存ConsumeInbound");
+        Log.e("保存","保存ConsumeInbound");
         try {
             for (int i = 0; i < mcomsumeInboundDataList.size(); i++) {
                 ConsumeInboundData data = mcomsumeInboundDataList.get(i);
                 ContentValues values = new ContentValues();
                 values.put(Constant.INQTY, data.getINQTY());
-                db.update(Constant.SF_CONSUMEINBOUND, values, "CONSUMABLEDEFNAME =?", new String[]{data.getCONSUMABLEDEFNAME()});
+                db.update(Constant.SF_CONSUMEINBOUND, values, "INBOUNDNO = ? AND " +
+                                "CONSUMABLEDEFID =? AND CONSUMABLEDEFVERSION = ? AND WAREHOUSEID = ?" +
+                                "AND ORDERNO = ? AND ORDERTYPE = ? AND LINENO = ?",
+                        new String[]{InboundOrderNo,data.getCONSUMABLEDEFID(), data.getCONSUMABLEDEFVERSION(),
+                                data.getWAREHOUSEID(),data.getORDERNO(),data.getORDERTYPE(),
+                                data.getLINENO()});
             }
             ContentValues values = new ContentValues();
             values.put(Constant.ISPDASAVE, "Y");

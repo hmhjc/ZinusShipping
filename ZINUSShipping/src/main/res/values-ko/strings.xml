@@ -194,5 +194,15 @@
     <string name="ContainerSeq">ContainerSeq</string>
     <string name="ShippedQTY">ShippedQTY</string>
     <string name="ShipplanQTY">ShipplanQTY</string>
+    <string name="ShippingPlanDetail">ShippingPlanDetail</string>
+    <string name="BookingNo">BookingNo</string>
+    <string name="PlanDate">PlanDate</string>
+    <string name="ShippingPlanDate">ShippingPlanDate</string>
+    <string name="ShippingEndPlanDate">ShippingEndPlanDate</string>
+    <string name="ShippingEndDate">ShippingEndDate</string>
+    <string name="setContainerNoAndSealNo">setContainerNoAndSealNo</string>
+    <string name="productID">productID</string>
+    <string name="SKU">productName</string>
+    <string name="trackOutTime">trackOutTime</string>
 
 </resources>

@@ -1,5 +1,6 @@
 package cn.zinus.warehouse.Fragment.materialstockin;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
@@ -73,7 +74,6 @@ public class ConsumeLotInboundFragment extends KeyDownFragment implements View.O
     private ListView mlvComsumeLotInbound;
     private ConsumeLotInboundListViewAdapter mConsumeLotInboundListViewAdapter;
     private ArrayList<ConsumeLotInboundData> mcomsumeLotInboundDataList;
-    private ArrayList<String> IDlist;
     private TextView tvtagqty;
     private TextView tvInboundOrderNo;
     private String InboundOrderNo;
@@ -241,7 +241,6 @@ public class ConsumeLotInboundFragment extends KeyDownFragment implements View.O
     //region initData
     private void initData() {
         mcomsumeLotInboundDataList = new ArrayList<>();
-        IDlist = new ArrayList<>();
     }
     //endregion
 
@@ -270,6 +269,7 @@ public class ConsumeLotInboundFragment extends KeyDownFragment implements View.O
     }
     //endregion
 
+    @SuppressLint("WrongConstant")
     private void fixQty(View view, final int position) {
         final ConsumeLotInboundData tempdata = mcomsumeLotInboundDataList.get(position);
         Button btnConfirm = (Button) mViewFixQty.findViewById(R.id.btnfqty);
@@ -280,9 +280,9 @@ public class ConsumeLotInboundFragment extends KeyDownFragment implements View.O
             @Override
             public void onClick(View v) {
                 tempdata.setINQTY(etFixQty.getText().toString());
-                if (Integer.parseInt(tempdata.getINQTY()) > Integer.parseInt(tempdata.getPLANQTY())) {
+                if (Float.parseFloat(tempdata.getINQTY()) > Float.parseFloat(tempdata.getPLANQTY())) {
                     tempdata.setBackgroundColor(R.color.qtymore);
-                } else if (Integer.parseInt(tempdata.getINQTY()) == Integer.parseInt(tempdata.getPLANQTY())) {
+                } else if (Float.parseFloat(tempdata.getINQTY()) == Float.parseFloat(tempdata.getPLANQTY())) {
                     tempdata.setBackgroundColor(R.color.qtymatch);
                 } else {
                     tempdata.setBackgroundColor(R.color.qtyless);
@@ -329,9 +329,17 @@ public class ConsumeLotInboundFragment extends KeyDownFragment implements View.O
         if (cursorDatalist.getCount() != 0) {
             while (cursorDatalist.moveToNext()) {
                 ConsumeLotInboundData consumeLotInboundData = new ConsumeLotInboundData();
-                consumeLotInboundData.setCONSUMABLEDEFNAME(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.CONSUMABLEDEFNAME)).trim());
+                consumeLotInboundData.setCONSUMABLEDEFID(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.CONSUMABLEDEFID)).trim());
                 consumeLotInboundData.setCONSUMABLELOTID(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.CONSUMABLELOTID)));
                 consumeLotInboundData.setUNIT(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.UNIT)));
+                consumeLotInboundData.setORDERNO(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.ORDERNO)));
+                consumeLotInboundData.setORDERTYPE(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.ORDERTYPE)));
+                consumeLotInboundData.setLINENO(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.LINENO)));
+                consumeLotInboundData.setWAREHOUSEID(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.WAREHOUSEID)));
+                consumeLotInboundData.setCONSUMABLEDEFNAME(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.CONSUMABLEDEFID)));
+                consumeLotInboundData.setCONSUMABLEDEFVERSION(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.CONSUMABLEDEFVERSION)));
+                consumeLotInboundData.setTAGID(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.TAGID)));
+                consumeLotInboundData.setTAGQTY(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.TAGQTY)));
                 if (cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.INQTY)).equals("null") ||
                         cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.INQTY)).equals("")) {
                     consumeLotInboundData.setINQTY("0");
@@ -339,13 +347,14 @@ public class ConsumeLotInboundFragment extends KeyDownFragment implements View.O
                     consumeLotInboundData.setINQTY(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.INQTY)));
                 }
                 consumeLotInboundData.setPLANQTY(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.PLANQTY)));
-                if (Integer.parseInt(consumeLotInboundData.getINQTY()) > Integer.parseInt(consumeLotInboundData.getPLANQTY())) {
+                if (Float.parseFloat(consumeLotInboundData.getINQTY()) > Float.parseFloat(consumeLotInboundData.getPLANQTY())) {
                     consumeLotInboundData.setBackgroundColor(R.color.qtymore);
-                } else if (Integer.parseInt(consumeLotInboundData.getINQTY()) == Integer.parseInt(consumeLotInboundData.getPLANQTY())) {
+                } else if (Float.parseFloat(consumeLotInboundData.getINQTY()) == Float.parseFloat(consumeLotInboundData.getPLANQTY())) {
                     consumeLotInboundData.setBackgroundColor(R.color.qtymatch);
                 } else {
                     consumeLotInboundData.setBackgroundColor(R.color.qtyless);
                 }
+                Log.e("consumeLotInboundData",consumeLotInboundData.toString());
                 mcomsumeLotInboundDataList.add(consumeLotInboundData);
             }
         }
@@ -353,14 +362,18 @@ public class ConsumeLotInboundFragment extends KeyDownFragment implements View.O
         tvInboundOrderNo.setText(inboundNo);
         InboundOrderNo = inboundNo;
         mConsumeLotInboundListViewAdapter.notifyDataSetChanged();
+        Message message = new Message();
+        message.what = UPDATEUI;
+        message.obj = 0;
+        handler.sendMessage(message);
     }
     //endregion
 
-    //region checkIsExist
-    private int checkIsExist(String tagid) {
+    //region findTagInList
+    private int findTagInList(String tagid) {
         int returnint = -1;
-        for (int i = 0; i < IDlist.size(); i++)
-            if (IDlist.get(i).equals(tagid)) {
+        for (int i = 0; i < mcomsumeLotInboundDataList.size(); i++)
+            if (mcomsumeLotInboundDataList.get(i).getTAGID().equals(tagid)) {
                 returnint = i;
             }
         return returnint;
@@ -427,11 +440,26 @@ public class ConsumeLotInboundFragment extends KeyDownFragment implements View.O
 
     //region checkAndSearchWeb
     private void checkAndSearchWeb(String tagID) {
-        if (checkIsExist(tagID) == -1) {
-            Log.e("indexhand", "列表里不存在" + tagID + "查询数据库");
-            IDlist.add(tagID);
+        int tagposition = findTagInList(tagID);
+        if (tagposition == -1) {
+            Log.e("indexhand",  tagID + "不在这个list里面");
         } else {
-            Log.e("indexhand", "列表里存在" + tagID + "继续读");
+            Log.e("indexhand", tagID  + "在列表里，替换Inqty的值");
+            final ConsumeLotInboundData tempdata = mcomsumeLotInboundDataList.get(tagposition);
+            tempdata.setINQTY(tempdata.getTAGQTY().toString());
+            if (Float.parseFloat(tempdata.getINQTY()) > Float.parseFloat(tempdata.getPLANQTY())) {
+                tempdata.setBackgroundColor(R.color.qtymore);
+            } else if (Float.parseFloat(tempdata.getINQTY()) == Float.parseFloat(tempdata.getPLANQTY())) {
+                tempdata.setBackgroundColor(R.color.qtymatch);
+            } else {
+                tempdata.setBackgroundColor(R.color.qtyless);
+            }
+            mcomsumeLotInboundDataList.set(tagposition, tempdata);
+            mConsumeLotInboundListViewAdapter.notifyDataSetChanged();
+            Message message = new Message();
+            message.what = UPDATEUI;
+            message.obj = tagposition;
+            handler.sendMessage(message);
         }
     }
     //endregion
@@ -449,7 +477,12 @@ public class ConsumeLotInboundFragment extends KeyDownFragment implements View.O
                 ConsumeLotInboundData data = mcomsumeLotInboundDataList.get(i);
                 ContentValues values = new ContentValues();
                 values.put(Constant.INQTY,data.getINQTY());
-                db.update(Constant.SF_CONSUMELOTINBOUND,values,"CONSUMABLELOTID =? ",new String[]{data.getCONSUMABLELOTID()});
+                db.update(Constant.SF_CONSUMELOTINBOUND,values,"INBOUNDNO = ? AND " +
+                                "CONSUMABLEDEFID =? AND CONSUMABLEDEFVERSION = ? AND WAREHOUSEID = ?" +
+                                "AND ORDERNO = ? AND ORDERTYPE = ? AND LINENO = ? AND CONSUMABLELOTID = ?",
+                        new String[]{InboundOrderNo,data.getCONSUMABLEDEFID(), data.getCONSUMABLEDEFVERSION(),
+                                data.getWAREHOUSEID(),data.getORDERNO(),data.getORDERTYPE(),
+                                data.getLINENO(),data.getCONSUMABLELOTID()});
             }
             ContentValues values = new ContentValues();
             values.put(Constant.ISPDASAVE, "Y");
@@ -468,7 +501,6 @@ public class ConsumeLotInboundFragment extends KeyDownFragment implements View.O
             mcomsumeLotInboundDataList.clear();
         }
         mConsumeLotInboundListViewAdapter.notifyDataSetChanged();
-        IDlist.clear();
         etTagID.setText("");
         tvtagqty.setText("0");
         tvInboundOrderNo.setText("");
@@ -533,7 +565,10 @@ public class ConsumeLotInboundFragment extends KeyDownFragment implements View.O
             String barcode = new String(data).trim();
             //Log.e("barcode", barcode);
             if (!TextUtils.isEmpty(barcode)) {
-                checkAndSearchWeb(barcode);
+                Message msg = handler.obtainMessage();
+                msg.what = RFIDSCAN;
+                msg.obj = barcode;
+                handler.sendMessage(msg);
             }
         }
     };

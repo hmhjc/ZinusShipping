@@ -30,6 +30,9 @@ public class ConsumeLotInboundListViewAdapter extends BaseAdapter {
         public TextView tvunit;
         public TextView tvinqty;
         public TextView tvplantqty;
+        public TextView tvORDERNO;
+        public TextView tvORDERTYPE;
+        public TextView tvLINENO;
     }
 
     public ConsumeLotInboundListViewAdapter(Context context, List<ConsumeLotInboundData> listMap) {
@@ -64,6 +67,9 @@ public class ConsumeLotInboundListViewAdapter extends BaseAdapter {
             listItemView.tvunit = (TextView) convertView.findViewById(R.id.tv_unit);
             listItemView.tvinqty = (TextView) convertView.findViewById(R.id.tv_inqty);
             listItemView.tvplantqty = (TextView) convertView.findViewById(R.id.tv_plantqty);
+            listItemView.tvORDERNO = (TextView) convertView.findViewById(R.id.tv_ORDERNO);
+            listItemView.tvORDERTYPE = (TextView) convertView.findViewById(R.id.tv_ORDERTYPE);
+            listItemView.tvLINENO = (TextView) convertView.findViewById(R.id.tv_LINENO);
             convertView.setTag(listItemView);
         } else {
             listItemView = (ListItemView) convertView.getTag();
@@ -75,6 +81,9 @@ public class ConsumeLotInboundListViewAdapter extends BaseAdapter {
         listItemView.tvinqty.setText(data.getINQTY());
         listItemView.tvinqty.setTextColor(ContextCompat.getColor(mContext, data.getBackgroundColor()));
         listItemView.tvplantqty.setText(data.getPLANQTY());
+        listItemView.tvORDERNO .setText(data.getORDERNO());
+        listItemView.tvORDERTYPE.setText(data.getORDERTYPE());
+        listItemView.tvLINENO .setText(data.getLINENO());
         return convertView;
     }
 }

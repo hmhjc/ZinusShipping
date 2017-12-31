@@ -5,40 +5,41 @@ import java.io.Serializable;
 /**
  * 上车的lot
  * Created by huangjiechun on 2017/12/15.
+ *
+ SHIPPINGPLANNO，
+ SHIPPINGPLANSEQ，
+ ORDERTYPE，
+ ORDERNO，
+ LINENO，
+ PRODUCTDEFID，
+ PRODUCTDEFVERSION，
+ CONTAINERSEQ，
+ POID，
+ LOTID，
+ QTY，
+ SHIPPINGDATE，
  */
 
 public class ShippingLotData implements Serializable {
-    private String LOTID;
-    private String RFID;
-    private String CONTAINERNO;
-    private String SHIPPINGPLANSEQ;
-    private String CONTAINERDEQ;
-    private String SEALNO;
-    private String QTY;
-    private String VALIDSTATE;
+    private String SHIPPINGPLANNO ;
+    private String SHIPPINGPLANSEQ ;
+    private String ORDERTYPE ;
+    private String ORDERNO ;
+    private String LINENO ;
+    private String PRODUCTDEFID ;
+    private String PRODUCTDEFVERSION ;
+    private String CONTAINERSEQ ;
+    private String POID ;
+    private String LOTID ;
+    private String QTY ;
+    private String SHIPPINGDATE ;
 
-    public String getLOTID() {
-        return LOTID;
+    public String getSHIPPINGPLANNO() {
+        return SHIPPINGPLANNO;
     }
 
-    public void setLOTID(String LOTID) {
-        this.LOTID = LOTID;
-    }
-
-    public String getRFID() {
-        return RFID;
-    }
-
-    public void setRFID(String RFID) {
-        this.RFID = RFID;
-    }
-
-    public String getCONTAINERNO() {
-        return CONTAINERNO;
-    }
-
-    public void setCONTAINERNO(String CONTAINERNO) {
-        this.CONTAINERNO = CONTAINERNO;
+    public void setSHIPPINGPLANNO(String SHIPPINGPLANNO) {
+        this.SHIPPINGPLANNO = SHIPPINGPLANNO;
     }
 
     public String getSHIPPINGPLANSEQ() {
@@ -49,20 +50,68 @@ public class ShippingLotData implements Serializable {
         this.SHIPPINGPLANSEQ = SHIPPINGPLANSEQ;
     }
 
-    public String getCONTAINERDEQ() {
-        return CONTAINERDEQ;
+    public String getORDERTYPE() {
+        return ORDERTYPE;
     }
 
-    public void setCONTAINERDEQ(String CONTAINERDEQ) {
-        this.CONTAINERDEQ = CONTAINERDEQ;
+    public void setORDERTYPE(String ORDERTYPE) {
+        this.ORDERTYPE = ORDERTYPE;
     }
 
-    public String getSEALNO() {
-        return SEALNO;
+    public String getORDERNO() {
+        return ORDERNO;
     }
 
-    public void setSEALNO(String SEALNO) {
-        this.SEALNO = SEALNO;
+    public void setORDERNO(String ORDERNO) {
+        this.ORDERNO = ORDERNO;
+    }
+
+    public String getLINENO() {
+        return LINENO;
+    }
+
+    public void setLINENO(String LINENO) {
+        this.LINENO = LINENO;
+    }
+
+    public String getPRODUCTDEFID() {
+        return PRODUCTDEFID;
+    }
+
+    public void setPRODUCTDEFID(String PRODUCTDEFID) {
+        this.PRODUCTDEFID = PRODUCTDEFID;
+    }
+
+    public String getPRODUCTDEFVERSION() {
+        return PRODUCTDEFVERSION;
+    }
+
+    public void setPRODUCTDEFVERSION(String PRODUCTDEFVERSION) {
+        this.PRODUCTDEFVERSION = PRODUCTDEFVERSION;
+    }
+
+    public String getCONTAINERSEQ() {
+        return CONTAINERSEQ;
+    }
+
+    public void setCONTAINERSEQ(String CONTAINERSEQ) {
+        this.CONTAINERSEQ = CONTAINERSEQ;
+    }
+
+    public String getPOID() {
+        return POID;
+    }
+
+    public void setPOID(String POID) {
+        this.POID = POID;
+    }
+
+    public String getLOTID() {
+        return LOTID;
+    }
+
+    public void setLOTID(String LOTID) {
+        this.LOTID = LOTID;
     }
 
     public String getQTY() {
@@ -73,11 +122,11 @@ public class ShippingLotData implements Serializable {
         this.QTY = QTY;
     }
 
-    public String getVALIDSTATE() {
-        return VALIDSTATE;
+    public String getSHIPPINGDATE() {
+        return SHIPPINGDATE;
     }
 
-    public void setVALIDSTATE(String VALIDSTATE) {
-        this.VALIDSTATE = VALIDSTATE;
+    public void setSHIPPINGDATE(String SHIPPINGDATE) {
+        this.SHIPPINGDATE = SHIPPINGDATE;
     }
 }

@@ -117,7 +117,7 @@ public class RegisterTagFragment extends KeyDownFragment implements View.OnClick
                     }
                 }
 
-                String selectlotshippingsql = "select * from SF_LOTSHIPPING";
+                String selectlotshippingsql = "select * from SF_SHIPPINGLOT";
                 Log.e("sql语句查po对应的lot", selectlOTsql);
                 Cursor cursorlotshipping = DBManger.selectDatBySql(db, selectlotshippingsql, null);
                 if (cursorlotshipping.getCount() != 0) {

@@ -219,17 +219,38 @@
     <string name="gioConditionState">AND INBOUNDSTATE = \'%1$s\' \n</string>
     <string name="gioOrderBy">ORDER BY INBOUNDNO,WAREHOUSEID,INBOUNDSTATE</string>
 
-    <string name="GetConsumeLotInboundQuery">SELECT CLI.PLANQTY,CLI.INQTY,CLI.UNIT,CLI.CONSUMABLELOTID,CLI.CONSUMABLEDEFNAME \n
+    <string name="GetConsumeLotInboundQuery">SELECT CLI.PLANQTY,CLI.INQTY,CLI.UNIT,              \n
+                                              CLI.CONSUMABLELOTID,CLI.CONSUMABLEDEFID            \n
+                                              ,CLI.ORDERNO,CLI.ORDERTYPE,CLI.LINENO, CLI.INBOUNDNO              \n
+                                              ,CLI.CONSUMABLEDEFVERSION,CLI.WAREHOUSEID,CLI.TAGID,CLI.TAGQTY           \n
                                             FROM SF_CONSUMELOTINBOUND CLI \n
                                             WHERE 1=1 AND INBOUNDNO = \'%1$s\'
-                                            ORDER BY CLI.CONSUMABLEDEFNAME
+                                            ORDER BY CLI.CONSUMABLEDEFID
     </string>
 
-    <string name="GetConsumeInboundQuery">SELECT CI.PLANQTY,CI.INQTY,CI.UNIT,CI.CONSUMABLEDEFNAME \n
+    <string name="GetConsumeInboundQuery">SELECT CI.PLANQTY,CI.INQTY,CI.UNIT,CI.CONSUMABLEDEFID \n
+                                                 ,CI.ORDERNO,CI.ORDERTYPE,CI.LINENO,CI.INBOUNDNO   \n
+                                                 ,CI.CONSUMABLEDEFVERSION,CI.WAREHOUSEID
                                             FROM SF_CONSUMEINBOUND CI                             \n
                                             WHERE 1=1 AND INBOUNDNO = \'%1$s\'                    \n
-                                            ORDER BY CI.CONSUMABLEDEFNAME
+                                            ORDER BY CI.CONSUMABLEDEFID
     </string>
+    <string name="GetUploadInboundOrderQuery">SELECT * FROM SF_INBOUNDORDER                       \n
+                                              WHERE 1=1  AND ISPDASAVE = \'Y\'
+    </string>
+
+    <string name="GetUploadConsumeInboundQuery">SELECT  CI.*                                      \n
+                                                FROM SF_CONSUMEINBOUND CI                         \n
+                                                INNER JOIN SF_INBOUNDORDER IO ON IO.INBOUNDNO = CI.INBOUNDNO    \n
+                                                 AND IO.ISPDASAVE = \'Y\'
+    </string>
+
+    <string name="GetUploadConsumeLotInboundQuery">SELECT  CLI.*                                      \n
+                                                FROM SF_CONSUMELOTINBOUND CLI                         \n
+                                                INNER JOIN SF_INBOUNDORDER IO ON IO.INBOUNDNO = CLI.INBOUNDNO    \n
+                                                 AND IO.ISPDASAVE = \'Y\'
+    </string>
+
     <!--ConsumeRequest-->
     <string name="GetConsumeRequestQuery">SELECT * FROM SF_CONSUMEREQUEST \n WHERE 1=1 \n AND REQUESTDATE  &gt; \'%1$s\' AND REQUESTDATE &lt;  \'%2$s\' \n</string>
     <string name="gcrConditionAreaId">AND AREAID = \'%1$s\' \n</string>
@@ -331,6 +352,9 @@
     <string name="product">product</string>
     <string name="ContainerNo">ContainerNo</string>
     <string name="SealNo">SealNo</string>
-
+    <string name="ConsumableCount">ConsumableCount</string>
+    <string name="ORDERNO">ORDERNO</string>
+    <string name="ORDERTYPE">ORDERTYPE</string>
+    <string name="LINENO">LINENO</string>
 
 </resources>

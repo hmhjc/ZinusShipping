@@ -1,5 +1,6 @@
 package cn.zinus.shipping.Fragment;
 
+import cn.zinus.shipping.JaveBean.PODate;
 import cn.zinus.shipping.JaveBean.ShippingPlanData;
 import cn.zinus.shipping.JaveBean.StockCheckData;
 
@@ -120,7 +121,7 @@ public class Event {
         }
     }
 
-    //单击ShippingPlan跳转到LotShipping
+    //单击ShippingPlan跳转到对应的Detail
     public static class LotShippingByShippingPlanEvent{
         private ShippingPlanData mShippingPlanData;
         public LotShippingByShippingPlanEvent(ShippingPlanData mShippingPlanData){
@@ -130,6 +131,26 @@ public class Event {
             return mShippingPlanData;
         }
     }
+
+    //单击ShippingPlanDetail的po，跳转到扫标签的画面
+    public static class LotShippingByPOEvent{
+        private PODate mPODate;
+        private ShippingPlanData mShippingPlanData;
+        public LotShippingByPOEvent(ShippingPlanData mShippingPlanData,PODate mPODate){
+            this.mPODate = mPODate;
+            this.mShippingPlanData = mShippingPlanData;
+        }
+
+        public PODate getPODate() {
+            return mPODate;
+        }
+
+        public ShippingPlanData getShippingPlanData() {
+            return mShippingPlanData;
+        }
+    }
+
+
 
     //刷新画面
     public static class  RefreshActivityEvent{

@@ -283,12 +283,14 @@ public class InboundOrderFragment extends KeyDownFragment {
                 InboundOrderData inboundOrderData = new InboundOrderData();
                 inboundOrderData.setINBOUNDNO(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.INBOUNDNO)));
                 inboundOrderData.setWAREHOUSEID(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.WAREHOUSEID)));
+                inboundOrderData.setWAREHOUSENAME(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.WAREHOUSENAME)));
                 inboundOrderData.setSCHEDULEDATE(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.SCHEDULEDATE)));
                 inboundOrderData.setTEMPINBOUNDDATE(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.TEMPINBOUNDDATE)));
                 inboundOrderData.setINBOUNDDATE(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.INBOUNDDATE)));
                 inboundOrderData.setINBOUNDSTATE(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.INBOUNDSTATE)));
-                inboundOrderData.setINSPECTIONRESULT(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.INSPECTIONRESULT)));
-                inboundOrderData.setURGENCYTYPE(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.URGENCYTYPE)));
+                inboundOrderData.setSTATENAME(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.STATENAME)));
+                inboundOrderData.setCONSUMABLECOUNT(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.CONSUMABLECOUNT)));
+                Log.e("inboundOrderData",inboundOrderData.toString());
                 mInboundOrderDataList.add(inboundOrderData);
             }
         }

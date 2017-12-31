@@ -11,24 +11,33 @@
         style="@style/listviewverticalsplit"/>
 
     <TextView
-        android:id="@+id/tv_ContainerNo"
-        style="@style/listviewcontext"
-        android:layout_width="100px"/>
-
-    <View
-        style="@style/listviewverticalsplit"/>
-
-    <TextView
-        android:id="@+id/tv_SealNo"
-        style="@style/listviewcontext"
-        android:layout_width="100px"/>
-
-    <View
-        style="@style/listviewverticalsplit"/>
-
-    <TextView
         android:id="@+id/tv_inqty"
         style="@style/listviewcontext"
         android:layout_width="80px"/>
+
+    <View
+        style="@style/listviewverticalsplit"/>
+
+    <TextView
+        android:id="@+id/tv_ProductID"
+        style="@style/listviewcontext"
+        android:layout_width="180px"/>
+
+    <View
+        style="@style/listviewverticalsplit"/>
+
+    <TextView
+        android:id="@+id/tv_ProductName"
+        style="@style/listviewcontext"
+        android:layout_width="180px"/>
+
+
+    <View
+        style="@style/listviewverticalsplit"/>
+
+    <TextView
+        android:id="@+id/tv_TrackOutTime"
+        style="@style/listviewcontext"
+        android:layout_width="150px"/>
 
 </LinearLayout>

@@ -406,26 +406,40 @@ public class MainNaviActivity extends BaseActivity
     public void onEventMainThread(Event.ChangeLanguageEvent event) {
         changeAppLanguage();
         //刷新界面
-        Intent intent = getIntent();
-        finish();
-        startActivity(intent);
+//        Intent intent = getIntent();
+//        finish();
+//        startActivity(intent);
     }
 
-    //查询ConsumeInbound
+    //查询ShippingPlanDetail
     @Subscribe
     public void onEventMainThread(Event.LotShippingByShippingPlanEvent event) {
         mShippingFragment.mLotShippingFragment.actionClearAll();
-        mShippingFragment.mLotShippingFragment.getLotShippingByShippingPlan(event.getShippingPlanData());
+        mShippingFragment.mShippingPlanDetailFragment.clearall();
+        mShippingFragment.mShippingPlanDetailFragment.setShippingPlanData(event.getShippingPlanData());
+        mShippingFragment.mShippingPlanDetailFragment.searchPlanSeq(event.getShippingPlanData().getSHIPPINGPLANNO());
+        //mShippingFragment.mLotShippingFragment.getLotShippingByShippingPlan(event.getShippingPlanData());
         mShippingFragment.jump(1);
     }
+
+    //查询ShippingPlanDetail
+    @Subscribe
+    public void onEventMainThread(Event.LotShippingByPOEvent event) {
+        mShippingFragment.mLotShippingFragment.actionClearAll();
+        mShippingFragment.mLotShippingFragment.getLotShippingByPO(event.getShippingPlanData(),event.getPODate());
+        mShippingFragment.jump(2);
+    }
+
 
     //刷新界面
     @Subscribe
     public void onEventMainThread(Event.RefreshActivityEvent event) {
         //刷新界面
-//        Intent intent = getIntent();
-//        finish();
-//        startActivity(intent);
+        Intent intent = getIntent();
+        //finish();
+        startActivity(intent);
+        finish();
+        android.os.Process.killProcess(android.os.Process.myPid());
     }
 
     //endregion

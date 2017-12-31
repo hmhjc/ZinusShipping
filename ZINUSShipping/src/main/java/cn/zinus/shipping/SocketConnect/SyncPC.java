@@ -118,6 +118,17 @@ public class SyncPC implements Runnable {
                                 String strSF_SHIPPINGPLAN = receiveFileFromSocket(in, out, lengthSF_SHIPPINGPLAN);
                                 Log.e("更新SF_SHIPPINGPLAN", strSF_SHIPPINGPLAN.length() + ":" + strSF_SHIPPINGPLAN);
                                 mUpdateSqlite.updateShippingPlan(strSF_SHIPPINGPLAN);
+                                out.write(Constant.SYNCSF_SHIPPINGPLANDETAIL.getBytes());
+                                out.flush();
+                                break;
+                            case Constant.SYNCSF_SHIPPINGPLANDETAIL:
+                                int lengthSF_SHIPPINGPLANdetail = Integer.parseInt(resultStr);
+                                out.write(Constant.IYNCSF_SHIPPINGPLANDETAIL.getBytes());
+                                out.flush();
+                                Log.e("更新SF_SHIPPINGPLANdetail", resultStr);
+                                String strSF_SHIPPINGPLANdetail = receiveFileFromSocket(in, out, lengthSF_SHIPPINGPLANdetail);
+                                Log.e("更新SF_SHIPPINGPLANdetail", strSF_SHIPPINGPLANdetail.length() + ":" + strSF_SHIPPINGPLANdetail);
+                                mUpdateSqlite.updateShippingPlanDetail(strSF_SHIPPINGPLANdetail);
                                 out.write(Constant.SYNCSF_LOTSHIPPING.getBytes());
                                 out.flush();
                                 break;
@@ -125,10 +136,10 @@ public class SyncPC implements Runnable {
                                 int lengthSF_LOTSHIPPING = Integer.parseInt(resultStr);
                                 out.write(Constant.IYNCSF_LOTSHIPPING.getBytes());
                                 out.flush();
-                                Log.e("更新SF_LOTSHIPPING", resultStr);
+                                Log.e("更新SF_SHIPPINGLOT", resultStr);
                                 String strSF_LOTSHIPPING = receiveFileFromSocket(in, out, lengthSF_LOTSHIPPING);
-                                Log.e("更新SF_LOTSHIPPING", strSF_LOTSHIPPING.length() + ":" + strSF_LOTSHIPPING);
-                                mUpdateSqlite.updateLotShipping(strSF_LOTSHIPPING);
+                                Log.e("更新SF_SHIPPINGLOT", strSF_LOTSHIPPING.length() + ":" + strSF_LOTSHIPPING);
+                                mUpdateSqlite.updateShippingLot(strSF_LOTSHIPPING);
                                 out.write(Constant.SYNCSF_LOT.getBytes());
                                 out.flush();
                                 break;
@@ -172,24 +183,24 @@ public class SyncPC implements Runnable {
                                 break;
                             //endregion
 
-                            //region 返回出货保存的plan号,修改状态
-                            case Constant.RETURNSHIPPINGSAVESTART:
-                                //先给pc端传需要更新的表的标志
-                                out.write(Constant.SYNCSHIPPINGSAVE.getBytes());
-                                out.flush();
-                                break;
-                            case Constant.SYNCSHIPPINGSAVE:
-                                int lengthSHIPPINGSAVE = Integer.parseInt(resultStr);
-                                out.write(Constant.IYNCSHIPPINGSAVE.getBytes());
-                                out.flush();
-                                Log.e("更新SHIPPINGSAVE", resultStr);
-                                String strSHIPPINGSAVE = receiveFileFromSocket(in, out, lengthSHIPPINGSAVE);
-                                Log.e("更新SHIPPINGSAVE", strSHIPPINGSAVE.length() + ":" + strSHIPPINGSAVE);
-                                mUpdateSqlite.updateSHIPPINGSAVE(strSHIPPINGSAVE);
-                                out.write(Constant.UPDATEEXIT.getBytes());
-                                out.flush();
-                                break;
-                            //endregion
+//                            //region 返回出货保存的plan号,修改状态
+//                            case Constant.RETURNSHIPPINGSAVESTART:
+//                                //先给pc端传需要更新的表的标志
+//                                out.write(Constant.SYNCSHIPPINGSAVE.getBytes());
+//                                out.flush();
+//                                break;
+//                            case Constant.SYNCSHIPPINGSAVE:
+//                                int lengthSHIPPINGSAVE = Integer.parseInt(resultStr);
+//                                out.write(Constant.IYNCSHIPPINGSAVE.getBytes());
+//                                out.flush();
+//                                Log.e("更新SHIPPINGSAVE", resultStr);
+//                                String strSHIPPINGSAVE = receiveFileFromSocket(in, out, lengthSHIPPINGSAVE);
+//                                Log.e("更新SHIPPINGSAVE", strSHIPPINGSAVE.length() + ":" + strSHIPPINGSAVE);
+//                                mUpdateSqlite.updateSHIPPINGSAVE(strSHIPPINGSAVE);
+//                                out.write(Constant.UPDATEEXIT.getBytes());
+//                                out.flush();
+//                                break;
+//                            //endregion
                         }
                     }
                 } catch (Exception e) {

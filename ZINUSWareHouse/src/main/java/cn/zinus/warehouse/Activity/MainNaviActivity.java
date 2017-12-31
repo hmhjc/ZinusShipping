@@ -1,5 +1,6 @@
 package cn.zinus.warehouse.Activity;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -314,6 +315,7 @@ public class MainNaviActivity extends BaseActivity
         }
     }
 
+    @SuppressLint("RestrictedApi")
     private void switchtofragment(int id, String menuName) {
         getSupportActionBar().setTitle(menuName);
         if (id == R.id.item_MianMenu) {
@@ -483,13 +485,13 @@ public class MainNaviActivity extends BaseActivity
     @Subscribe
     public void onEventMainThread(Event.RefreshActivityEvent event) {
         //刷新界面
-        freeUHF();
-        freeBarcode();
+        //freeUHF();
+        //freeBarcode();
 //        ActivityManager manager = (ActivityManager)this.getSystemService(Context.ACTIVITY_SERVICE);
 //        manager.restartPackage(getApplication().getPackageName());
-   final Intent intent1 = MainNaviActivity.this.getPackageManager().getLaunchIntentForPackage(MainNaviActivity.this.getPackageName());
-        intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent1);
+   //final Intent intent1 = MainNaviActivity.this.getPackageManager().getLaunchIntentForPackage(MainNaviActivity.this.getPackageName());
+        //intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        //startActivity(intent1);
 
 //        Intent intent = getIntent();
 //        finish();

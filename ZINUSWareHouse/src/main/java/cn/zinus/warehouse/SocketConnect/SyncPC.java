@@ -1,6 +1,8 @@
 package cn.zinus.warehouse.SocketConnect;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -16,7 +18,13 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 import cn.zinus.warehouse.Fragment.Event;
+import cn.zinus.warehouse.JaveBean.UploadConsumeInbound;
+import cn.zinus.warehouse.JaveBean.UploadConsumeLotInbound;
+import cn.zinus.warehouse.JaveBean.UploadInboundOrder;
+import cn.zinus.warehouse.R;
 import cn.zinus.warehouse.util.Constant;
+import cn.zinus.warehouse.util.DBManger;
+import cn.zinus.warehouse.util.MyDateBaseHelper;
 
 /**
  * Developer:Spring
@@ -31,11 +39,20 @@ public class SyncPC implements Runnable {
     private UpdateSqlite mUpdateSqlite;
     BufferedOutputStream out;
     BufferedInputStream in;
+    MyDateBaseHelper mHelper;
+    private SQLiteDatabase db;
+    Context mContext;
+    String inboundOrderData;
+    String consumeInboundData;
+    String consumeLotInboundData;
 
     public SyncPC(Socket client, ArrayList<?> list, Context mContext) {
         this.client = client;
         this.list = list;
+        this.mContext = mContext;
         mUpdateSqlite = new UpdateSqlite(mContext);
+        this.mHelper = DBManger.getIntance(mContext);
+        this.db = mHelper.getWritableDatabase();
     }
 
     @Override
@@ -75,9 +92,11 @@ public class SyncPC implements Runnable {
                     } else {
                         switch (flag) {
 
+                            //region 入库相关
+
                             //region UpdateStockin
                             case Constant.UPDATESTOCKINSTART:
-                                Log.e("kaishi", "881kaishi");
+                                Log.e("kaishi", "STOCKINSTART");
                                 /**
                                  * 收到开始的标志以后,按顺序更新数据库表:
                                  * SF_INBOUNDORDER-->SF_CONSUMEINBOUND-->SF_CONSUMELOTINBOUND
@@ -102,9 +121,7 @@ public class SyncPC implements Runnable {
                                 String strSF_INBOUNDORDER = receiveFileFromSocket(in, out, lengthSF_INBOUNDORDER);
                                 Log.e("更新SF_INBOUNDORDER", strSF_INBOUNDORDER.length() + ":" + strSF_INBOUNDORDER);
                                 mUpdateSqlite.updateInboundOrder(strSF_INBOUNDORDER);
-                                Gson gson1 = new Gson();
-                                String msg_SYNCSF_CONSUMEINBOUND = Constant.SYNCSF_CONSUMEINBOUND + gson1.toJson(list);
-                                out.write(msg_SYNCSF_CONSUMEINBOUND.getBytes());
+                                out.write(Constant.SYNCSF_CONSUMEINBOUND.getBytes());
                                 out.flush();
                                 break;
                             case Constant.SYNCSF_CONSUMEINBOUND:
@@ -129,6 +146,47 @@ public class SyncPC implements Runnable {
                                 out.write(Constant.UPDATEEXIT.getBytes());
                                 out.flush();
                                 break;
+                            //endregion
+
+                            //region UploadStockin
+                            case Constant.UPLOADSTOCKINSTART:
+                                inboundOrderData = getInboundOrderData();
+                                String inboundOrderData1 = Constant.UPLOADINBOUNDORDERINFO + inboundOrderData.getBytes().length;
+                                Log.e("准备上传inboundorder", inboundOrderData1);
+                                out.write(inboundOrderData1.getBytes());
+                                out.flush();
+                                break;
+                            case Constant.UPLOADINBOUNDORDER:
+                                Log.e("上传inboundorder", inboundOrderData);
+                                out.write((Constant.UPLOADINBOUNDORDER + inboundOrderData).getBytes());
+                                out.flush();
+                                break;
+                            case Constant.UPLOADCONSUMEINBOUNDINFO:
+                                consumeInboundData = getConsumeInboundData();
+                                String consumeInboundData1 = Constant.UPLOADCONSUMEINBOUNDINFO + consumeInboundData.getBytes().length;
+                                Log.e("准备上传consumeInbound", consumeInboundData1);
+                                out.write(consumeInboundData1.getBytes());
+                                out.flush();
+                                break;
+                            case Constant.UPLOADCONSUMEINBOUND:
+                                Log.e("上传consumeInbound", consumeInboundData);
+                                out.write((Constant.UPLOADCONSUMEINBOUND + consumeInboundData).getBytes());
+                                out.flush();
+                                break;
+                            case Constant.UPLOADCONSUMELOTINBOUNDINFO:
+                                consumeLotInboundData= getConsumeLotInboundData();
+                                String consumeLotInboundData1 = Constant.UPLOADCONSUMELOTINBOUNDINFO + consumeLotInboundData.getBytes().length;
+                                Log.e("准备上传consumeLotInbound", consumeLotInboundData1);
+                                out.write(consumeLotInboundData1.getBytes());
+                                out.flush();
+                                break;
+                            case Constant.UPLOADCONSUMELOTINBOUND:
+                                Log.e("上传consumeLotInbound", consumeLotInboundData);
+                                out.write((Constant.UPLOADCONSUMELOTINBOUND + consumeLotInboundData).getBytes());
+                                out.flush();
+                                break;
+                            //endregion
+
                             //endregion
 
                             //region UpdateStockout
@@ -338,8 +396,7 @@ public class SyncPC implements Runnable {
         return msg;
     }
 
-    public static String receiveFileFromSocket(InputStream in,
-                                               OutputStream out, int length) {
+    public static String receiveFileFromSocket(InputStream in, OutputStream out, int length) {
         String returnstr = "";
         byte[] filebytes = null;// 文件数据
         try {
@@ -368,6 +425,97 @@ public class SyncPC implements Runnable {
         }
         return returnstr;
 
+    }
+
+    private String getInboundOrderData() {
+        String a = "";
+        ArrayList<UploadInboundOrder> inboundOrderlist = new ArrayList<>();
+        db = mHelper.getWritableDatabase();
+        String selectDataListsql = String.format(mContext.getString(R.string.GetUploadInboundOrderQuery));
+        Log.e("GetUploadInbORQuery", selectDataListsql);
+        Cursor cursorDatalist = DBManger.selectDatBySql(db, selectDataListsql, null);
+        if (cursorDatalist.getCount() != 0) {
+            Log.e("查到了", "111111111");
+            while (cursorDatalist.moveToNext()) {
+                UploadInboundOrder uploadInboundOrder = new UploadInboundOrder();
+                uploadInboundOrder.setINBOUNDNO(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.INBOUNDNO)));
+                uploadInboundOrder.setWAREHOUSEID(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.WAREHOUSEID)));
+                uploadInboundOrder.setWAREHOUSENAME(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.WAREHOUSENAME)));
+                uploadInboundOrder.setSCHEDULEDATE(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.SCHEDULEDATE)));
+                uploadInboundOrder.setINBOUNDDATE(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.INBOUNDDATE)));
+                uploadInboundOrder.setTEMPINBOUNDDATE(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.TEMPINBOUNDDATE)));
+                uploadInboundOrder.setINBOUNDSTATE(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.INBOUNDSTATE)));
+                uploadInboundOrder.setINBOUNDSTATENAME(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.STATENAME)));
+                uploadInboundOrder.setCONSUMABLECOUNT(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.CONSUMABLECOUNT)));
+                inboundOrderlist.add(uploadInboundOrder);
+            }
+        }
+        Gson shipplanjson = new Gson();
+        a = shipplanjson.toJson(inboundOrderlist);
+        return a;
+    }
+
+    private String getConsumeInboundData() {
+        String a = "";
+        ArrayList<UploadConsumeInbound> uploadConsumeInboundslist = new ArrayList<>();
+        db = mHelper.getWritableDatabase();
+        String selectDataListsql = String.format(mContext.getString(R.string.GetUploadConsumeInboundQuery));
+        Log.e("GetUploadconsimQuery", selectDataListsql);
+        Cursor cursorDatalist = DBManger.selectDatBySql(db, selectDataListsql, null);
+        if (cursorDatalist.getCount() != 0) {
+            Log.e("查到了", "111111111");
+            while (cursorDatalist.moveToNext()) {
+                UploadConsumeInbound uploadConsumeInbound = new UploadConsumeInbound();
+                uploadConsumeInbound.setINBOUNDNO(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.INBOUNDNO)));
+                uploadConsumeInbound.setCONSUMABLEDEFID(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.CONSUMABLEDEFID)));
+                uploadConsumeInbound.setCONSUMABLEDEFVERSION(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.CONSUMABLEDEFVERSION)));
+                uploadConsumeInbound.setWAREHOUSEID(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.WAREHOUSEID)));
+                uploadConsumeInbound.setORDERNO(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.ORDERNO)));
+                uploadConsumeInbound.setORDERTYPE(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.ORDERTYPE)));
+                uploadConsumeInbound.setLINENO(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.LINENO)));
+                uploadConsumeInbound.setINQTY(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.INQTY)));
+                uploadConsumeInbound.setUNIT(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.UNIT)));
+                uploadConsumeInbound.setPLANQTY(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.PLANQTY)));
+                uploadConsumeInbound.setORDERCOMPANY(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.ORDERCOMPANY)));
+                uploadConsumeInboundslist.add(uploadConsumeInbound);
+
+            }
+        }
+        Gson shipplanjson = new Gson();
+        a = shipplanjson.toJson(uploadConsumeInboundslist);
+        return a;
+    }
+
+    private String getConsumeLotInboundData() {
+        String a = "";
+        ArrayList<UploadConsumeLotInbound> uploadConsumeLotInboundslist = new ArrayList<>();
+        db = mHelper.getWritableDatabase();
+        String selectDataListsql = String.format(mContext.getString(R.string.GetUploadConsumeLotInboundQuery));
+        Log.e("GetUploadconlotsimQuery", selectDataListsql);
+        Cursor cursorDatalist = DBManger.selectDatBySql(db, selectDataListsql, null);
+        if (cursorDatalist.getCount() != 0) {
+            Log.e("查到了", "111111111");
+            while (cursorDatalist.moveToNext()) {
+                UploadConsumeLotInbound uploadConsumeLotInbound = new UploadConsumeLotInbound();
+                uploadConsumeLotInbound.setINBOUNDNO(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.INBOUNDNO)));
+                uploadConsumeLotInbound.setCONSUMABLEDEFID(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.CONSUMABLEDEFID)));
+                uploadConsumeLotInbound.setCONSUMABLEDEFVERSION(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.CONSUMABLEDEFVERSION)));
+                uploadConsumeLotInbound.setWAREHOUSEID(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.WAREHOUSEID)));
+                uploadConsumeLotInbound.setORDERNO(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.ORDERNO)));
+                uploadConsumeLotInbound.setORDERTYPE(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.ORDERTYPE)));
+                uploadConsumeLotInbound.setLINENO(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.LINENO)));
+                uploadConsumeLotInbound.setINQTY(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.INQTY)));
+                uploadConsumeLotInbound.setUNIT(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.UNIT)));
+                uploadConsumeLotInbound.setPLANQTY(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.PLANQTY)));
+                uploadConsumeLotInbound.setCONSUMABLELOTID(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.CONSUMABLELOTID)));
+                uploadConsumeLotInbound.setORDERCOMPANY(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.ORDERCOMPANY)));
+                uploadConsumeLotInboundslist.add(uploadConsumeLotInbound);
+
+            }
+        }
+        Gson shipplanjson = new Gson();
+        a = shipplanjson.toJson(uploadConsumeLotInboundslist);
+        return a;
     }
 
 }

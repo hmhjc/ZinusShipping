@@ -25,15 +25,12 @@ public class ShippingPlanListViewAdapter extends BaseAdapter {
 
     public final class ListItemView {
         public TextView tvShipplanNo;
-        public TextView tvPoNo;
-        public TextView tvShippingplanSeq;
-        public TextView tvContainerSeq;
+        public TextView tvBookingNo;
         public TextView tvCustomer;
-        public TextView tvProduct;
-        public TextView tvPlanQty;
-        public TextView tvContainerSpec;
-        public TextView tvPlanStartTime;
-        public TextView tvPlanEndTime;
+        public TextView tvPlanDate;
+        public TextView tvShippingPlanDate;
+        public TextView tvShippingEndPlanDate;
+        public TextView tvShippingEndDate;
         public TextView tvState;
     }
 
@@ -65,15 +62,12 @@ public class ShippingPlanListViewAdapter extends BaseAdapter {
             listItemView = new ListItemView();
             convertView = mInflater.inflate(R.layout.lv_item_shippingplan, null);
             listItemView.tvShipplanNo= (TextView) convertView.findViewById(R.id.tv_ShipplanNo);
-            listItemView.tvShippingplanSeq= (TextView) convertView.findViewById(R.id.tv_ShippingPlanSeq);
-            listItemView.tvPoNo= (TextView) convertView.findViewById(R.id.tv_PoNo);
-            listItemView.tvContainerSeq= (TextView) convertView.findViewById(R.id.tv_ContainerSeq);
+            listItemView.tvBookingNo= (TextView) convertView.findViewById(R.id.tv_BookingNo);
             listItemView.tvCustomer= (TextView) convertView.findViewById(R.id.tv_Customer);
-            listItemView.tvProduct= (TextView) convertView.findViewById(R.id.tv_Product);
-            listItemView.tvPlanQty= (TextView) convertView.findViewById(R.id.tv_PlanQty);
-            listItemView.tvContainerSpec= (TextView) convertView.findViewById(R.id.tv_ContainerSpec);
-            listItemView.tvPlanStartTime= (TextView) convertView.findViewById(R.id.tv_PlanStartTime);
-            listItemView.tvPlanEndTime= (TextView) convertView.findViewById(R.id.tv_PlanEndTime);
+            listItemView.tvPlanDate= (TextView) convertView.findViewById(R.id.tv_PlanDate);
+            listItemView.tvShippingPlanDate= (TextView) convertView.findViewById(R.id.tv_ShippingPlanDate);
+            listItemView.tvShippingEndPlanDate= (TextView) convertView.findViewById(R.id.tv_ShippingEndPlanDate);
+            listItemView.tvShippingEndDate= (TextView) convertView.findViewById(R.id.tv_ShippingEndDate);
             listItemView.tvState= (TextView) convertView.findViewById(R.id.tv_ShippingState);
             convertView.setTag(listItemView);
         } else {
@@ -82,15 +76,12 @@ public class ShippingPlanListViewAdapter extends BaseAdapter {
 
         ShippingPlanData data = listMap.get(position);
         listItemView.tvShipplanNo.setText(data.getSHIPPINGPLANNO());
-        listItemView.tvPoNo.setText(data.getPOID());
-        listItemView.tvShippingplanSeq.setText(data.getSHIPPINGPLANSEQ());
-        listItemView.tvContainerSeq.setText(data.getCONTAINERSEQ());
+        listItemView.tvBookingNo.setText(data.getBOOKINGNO());
         listItemView.tvCustomer.setText(data.getCUSTOMERID());
-        listItemView.tvProduct.setText(data.getPRODUCTDEFNAME());
-        listItemView.tvPlanQty.setText(data.getPLANQTY());
-        listItemView.tvContainerSpec.setText(data.getCONTAINERSPEC());
-        listItemView.tvPlanStartTime.setText(data.getPLANSTARTTIME());
-        listItemView.tvPlanEndTime.setText(data.getPLANENDTIME());
+        listItemView.tvPlanDate.setText(data.getPLANDATE());
+        listItemView.tvShippingPlanDate.setText(data.getSHIPPINGPLANDATE());
+        listItemView.tvShippingEndPlanDate.setText(data.getSHIPPINGENDPLANDATE());
+        listItemView.tvShippingEndDate.setText(data.getSHIPPINGENDDATE());
         listItemView.tvState.setText(data.getSTATE());
         return convertView;
     }

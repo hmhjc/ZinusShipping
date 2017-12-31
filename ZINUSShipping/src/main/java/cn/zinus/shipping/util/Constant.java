@@ -61,6 +61,7 @@ public class Constant {
     //SF_CODE表
     public static final String SF_CODE = "SF_CODE";
     public static final String CODEID = "CODEID";
+    public static final String CODENAME = "CODENAME";
     public static final String CODECLASSID = "CODECLASSID";
     public static final String DICTIONARYNAME = "DICTIONARYNAME";
     public static final String LANGUAGETYPE = "LANGUAGETYPE";
@@ -161,7 +162,18 @@ public class Constant {
     //public static final String  STATE= "STATE";
     public static final String ISPDASHIPPING = "ISPDASHIPPING";
     public static final String ISOISAVE = "ISOISAVE";
-    //SF_CONSUMESTOCK
+    public static final String BOOKINGNO  = "BOOKINGNO";
+    public static final String PLANDATE  = "PLANDATE";
+    public static final String SHIPPINGPLANDATE  = "SHIPPINGPLANDATE";
+    public static final String SHIPPINGENDPLANDATE  = "SHIPPINGENDPLANDATE";
+    public static final String SHIPPINGENDDATE  = "SHIPPINGENDDATE";
+    public static final String TRACKOUTTIME  = "TRACKOUTTIME";
+
+    //SF_SHIPPINGPLANDETAIL
+    public static final String SF_SHIPPINGPLANDETAIL = "SF_SHIPPINGPLANDETAIL";
+    public static final String COMPLETETIME = "COMPLETETIME";
+
+
     public static final String SF_CONSUMESTOCK = "SF_CONSUMESTOCK";
 
     //SF_CONSUMABLELOT
@@ -183,8 +195,8 @@ public class Constant {
     public static final String WAREHOUSENAME = "WAREHOUSENAME";
     //public static final String WAREHOUSETYPE= "WAREHOUSETYPE";
 
-    //SF_LOTSHIPPING
-    public static final String SF_LOTSHIPPING = "SF_LOTSHIPPING";
+    //SF_SHIPPINGLOT
+    public static final String SF_SHIPPINGLOT = "SF_SHIPPINGLOT";
     public static final String LOTID = "LOTID";
     public static final String SEALNO = "SEALNO";
     //public static final String  SHIPPINGPLANNO= "SHIPPINGPLANNO";
@@ -238,7 +250,7 @@ public class Constant {
     public static final String SYNCSF_AREA = "816";
     public static final String SYNCSF_WAREHOUSE = "817";
     public static final String SYNCSF_LOT = "818";
-    public static final String SYNCSHIPPINGSAVE = "819";
+    public static final String SYNCSF_SHIPPINGPLANDETAIL = "819";
 
     public static final String IYNCSF_CODE = "701";
     public static final String IYNCSF_INBOUNDORDER = "702";
@@ -258,7 +270,7 @@ public class Constant {
     public static final String IYNCSF_AREA = "716";
     public static final String IYNCSF_WAREHOUSE = "717";
     public static final String IYNCSF_LOT = "718";
-    public static final String IYNCSHIPPINGSAVE = "719";
+    public static final String IYNCSF_SHIPPINGPLANDETAIL = "719";
 
     public static final String UPLOADSHIPPINGPLANINFO = "601";
     public static final String UPLOADLOTSHIPPINGINFO = "602";

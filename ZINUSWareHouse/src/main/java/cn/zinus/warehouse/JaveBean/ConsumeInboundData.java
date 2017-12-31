@@ -9,7 +9,7 @@ import java.io.Serializable;
  * Main Change:
  */
 
-public class ConsumeInboundData implements Serializable{
+public class ConsumeInboundData implements Serializable {
     private String CONSUMABLEDEFID;
     private String CONSUMABLEDEFVERSION;
     private String CONSUMABLEDEFNAME;
@@ -21,7 +21,43 @@ public class ConsumeInboundData implements Serializable{
     private String UNIT;
     private String INBOUNDDATE;
     private String PLANQTY;
+    private String ORDERNO;
+    private String ORDERTYPE;
+    private String LINENO;
+    private String ORDERCOMPANY;
     private int backgroundColor;
+
+    public String getORDERCOMPANY() {
+        return ORDERCOMPANY;
+    }
+
+    public void setORDERCOMPANY(String ORDERCOMPANY) {
+        this.ORDERCOMPANY = ORDERCOMPANY;
+    }
+
+    public String getORDERNO() {
+        return ORDERNO;
+    }
+
+    public void setORDERNO(String ORDERNO) {
+        this.ORDERNO = ORDERNO;
+    }
+
+    public String getORDERTYPE() {
+        return ORDERTYPE;
+    }
+
+    public void setORDERTYPE(String ORDERTYPE) {
+        this.ORDERTYPE = ORDERTYPE;
+    }
+
+    public String getLINENO() {
+        return LINENO;
+    }
+
+    public void setLINENO(String LINENO) {
+        this.LINENO = LINENO;
+    }
 
     public String getCONSUMABLEDEFNAME() {
         return CONSUMABLEDEFNAME;

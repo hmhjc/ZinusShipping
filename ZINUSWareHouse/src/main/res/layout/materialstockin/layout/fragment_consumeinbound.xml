@@ -145,6 +145,60 @@
                     <View
                         style="@style/listviewverticalsplit"/>
 
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/listviewcaption"
+                            android:layout_width="100px"
+                            android:text="@string/ORDERNO"/>
+
+                        <LinearLayout
+                            style="@style/border_bottom_style"/>
+
+                    </LinearLayout>
+
+                    <View
+                        style="@style/listviewverticalsplit"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/listviewcaption"
+                            android:layout_width="100px"
+                            android:text="@string/ORDERTYPE"/>
+
+                        <LinearLayout
+                            style="@style/border_bottom_style"/>
+
+                    </LinearLayout>
+
+                    <View
+                        style="@style/listviewverticalsplit"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/listviewcaption"
+                            android:layout_width="100px"
+                            android:text="@string/LINENO"/>
+
+                        <LinearLayout
+                            style="@style/border_bottom_style"/>
+
+                    </LinearLayout>
+
+                    <View
+                        style="@style/listviewverticalsplit"/>
+
                 </LinearLayout>
 
             </LinearLayout>

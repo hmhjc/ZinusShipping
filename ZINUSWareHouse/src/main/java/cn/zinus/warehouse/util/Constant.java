@@ -84,7 +84,9 @@ public class Constant {
     public static final String URGENCYTYPE = "URGENCYTYPE";
     public static final String SCHEDULEDATE = "SCHEDULEDATE";
     public static final String TEMPINBOUNDDATE = "TEMPINBOUNDDATE";
+    public static final String CONSUMABLECOUNT = "CONSUMABLECOUNT";
     public static final String ConsumeInboundState = "ConsumeInboundState";
+    public static final String INBOUNDSTATENAME = "INBOUNDSTATENAME";
 
     //SF_CONSUMEINBOUND
     public static final String SF_CONSUMEINBOUND = "SF_CONSUMEINBOUND";
@@ -94,12 +96,20 @@ public class Constant {
     public static final String UNIT = "UNIT";
     public static final String INQTY = "INQTY";
     public static final String PLANQTY = "PLANQTY";
+    public static final String ORDERNO = "ORDERNO";
+    public static final String ORDERTYPE = "ORDERTYPE";
+    public static final String LINENO = "LINENO";
+    public static final String ORDERCOMPANY= "ORDERCOMPANY";
+
+
     //public static final String INBOUNDDATE = "INBOUNDDATE";
 
     //SF_CONSUMELOTINBOUND
     public static final String SF_CONSUMELOTINBOUND = "SF_CONSUMELOTINBOUND";
     public static final String CONSUMABLEDEFNAME = "CONSUMABLEDEFNAME";
     public static final String CONSUMABLELOTID = "CONSUMABLELOTID";
+    public static final String TAGQTY = "TAGQTY";
+
 
     //SF_CONSUMABLEDEFINITION
     public static final String SF_CONSUMABLEDEFINITION = "SF_CONSUMABLEDEFINITION";
@@ -249,5 +259,13 @@ public class Constant {
     public static final String IYNCSF_AREA = "716";
     public static final String IYNCSF_WAREHOUSE = "717";
     public static final String IYNCSF_LOT = "718";
+
+    public static final String UPLOADINBOUNDORDERINFO = "603";
+    public static final String UPLOADCONSUMEINBOUNDINFO = "604";
+    public static final String UPLOADCONSUMELOTINBOUNDINFO = "605";
+
+    public static final String UPLOADINBOUNDORDER = "683";
+    public static final String UPLOADCONSUMEINBOUND = "684";
+    public static final String UPLOADCONSUMELOTINBOUND = "685";
 
 }

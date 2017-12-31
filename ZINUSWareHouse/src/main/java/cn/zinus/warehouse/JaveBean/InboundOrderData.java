@@ -18,6 +18,51 @@ public class InboundOrderData implements Serializable{
     private String URGENCYTYPE;
     private String SCHEDULEDATE;
     private String TEMPINBOUNDDATE;
+    private String WAREHOUSENAME;
+    private String STATENAME;
+    private String CONSUMABLECOUNT;
+
+    @Override
+    public String toString() {
+        return "InboundOrderData{" +
+                "INBOUNDNO='" + INBOUNDNO + '\'' +
+                ", WAREHOUSEID='" + WAREHOUSEID + '\'' +
+                ", INBOUNDDATE='" + INBOUNDDATE + '\'' +
+                ", INBOUNDSTATE='" + INBOUNDSTATE + '\'' +
+                ", INSPECTIONRESULT='" + INSPECTIONRESULT + '\'' +
+                ", VALIDSTATE='" + VALIDSTATE + '\'' +
+                ", URGENCYTYPE='" + URGENCYTYPE + '\'' +
+                ", SCHEDULEDATE='" + SCHEDULEDATE + '\'' +
+                ", TEMPINBOUNDDATE='" + TEMPINBOUNDDATE + '\'' +
+                ", WAREHOUSENAME='" + WAREHOUSENAME + '\'' +
+                ", STATENAME='" + STATENAME + '\'' +
+                ", CONSUMABLECOUNT='" + CONSUMABLECOUNT + '\'' +
+                '}';
+    }
+
+    public String getWAREHOUSENAME() {
+        return WAREHOUSENAME;
+    }
+
+    public void setWAREHOUSENAME(String WAREHOUSENAME) {
+        this.WAREHOUSENAME = WAREHOUSENAME;
+    }
+
+    public String getSTATENAME() {
+        return STATENAME;
+    }
+
+    public void setSTATENAME(String STATENAME) {
+        this.STATENAME = STATENAME;
+    }
+
+    public String getCONSUMABLECOUNT() {
+        return CONSUMABLECOUNT;
+    }
+
+    public void setCONSUMABLECOUNT(String CONSUMABLECOUNT) {
+        this.CONSUMABLECOUNT = CONSUMABLECOUNT;
+    }
 
     public InboundOrderData() {
     }
@@ -94,18 +139,5 @@ public class InboundOrderData implements Serializable{
         this.TEMPINBOUNDDATE = TEMPINBOUNDDATE;
     }
 
-    @Override
-    public String toString() {
-        return "InboundOrderData{" +
-                "INBOUNDNO='" + INBOUNDNO + '\'' +
-                ", WAREHOUSEID='" + WAREHOUSEID + '\'' +
-                ", INBOUNDDATE='" + INBOUNDDATE + '\'' +
-                ", INBOUNDSTATE='" + INBOUNDSTATE + '\'' +
-                ", INSPECTIONRESULT='" + INSPECTIONRESULT + '\'' +
-                ", VALIDSTATE='" + VALIDSTATE + '\'' +
-                ", URGENCYTYPE='" + URGENCYTYPE + '\'' +
-                ", SCHEDULEDATE='" + SCHEDULEDATE + '\'' +
-                ", TEMPINBOUNDDATE='" + TEMPINBOUNDDATE + '\'' +
-                '}';
-    }
+
 }

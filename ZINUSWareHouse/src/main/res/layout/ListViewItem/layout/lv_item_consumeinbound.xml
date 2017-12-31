@@ -32,4 +32,29 @@
         style="@style/listviewcontext"
         android:layout_width="100px"/>
 
+    <View
+        style="@style/listviewverticalsplit"/>
+
+    <TextView
+        android:id="@+id/tv_ORDERNO"
+        style="@style/listviewcontext"
+        android:layout_width="100px"/>
+
+    <View
+        style="@style/listviewverticalsplit"/>
+
+    <TextView
+        android:id="@+id/tv_ORDERTYPE"
+        style="@style/listviewcontext"
+        android:layout_width="100px"/>
+
+    <View
+        style="@style/listviewverticalsplit"/>
+
+    <TextView
+        android:id="@+id/tv_LINENO"
+        style="@style/listviewcontext"
+        android:layout_width="100px"/>
+
+
 </LinearLayout>

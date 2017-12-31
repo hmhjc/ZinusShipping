@@ -10,9 +10,10 @@ import java.io.Serializable;
 
 public class LotShippingListData implements Serializable {
     private String LOTID;
-    private String CONTAINER;
+    private String PRODUCTDEFID;
+    private String PRODUCTDEFNAME;
     private String INQTY;
-    private String SEALNO;
+    private String TRACKOUTTIME;
     private String TAGID;
     private String VALIDSTATE;
 
@@ -20,9 +21,10 @@ public class LotShippingListData implements Serializable {
     public String toString() {
         return "LotShippingListData{" +
                 "LOTID='" + LOTID + '\'' +
-                ", CONTAINER='" + CONTAINER + '\'' +
+                ", PRODUCTDEFID='" + PRODUCTDEFID + '\'' +
+                ", PRODUCTDEFNAME='" + PRODUCTDEFNAME + '\'' +
                 ", INQTY='" + INQTY + '\'' +
-                ", SEALNO='" + SEALNO + '\'' +
+                ", TRACKOUTTIME='" + TRACKOUTTIME + '\'' +
                 ", TAGID='" + TAGID + '\'' +
                 ", VALIDSTATE='" + VALIDSTATE + '\'' +
                 '}';
@@ -47,6 +49,30 @@ public class LotShippingListData implements Serializable {
 
     }
 
+    public String getPRODUCTDEFID() {
+        return PRODUCTDEFID;
+    }
+
+    public void setPRODUCTDEFID(String PRODUCTDEFID) {
+        this.PRODUCTDEFID = PRODUCTDEFID;
+    }
+
+    public String getPRODUCTDEFNAME() {
+        return PRODUCTDEFNAME;
+    }
+
+    public void setPRODUCTDEFNAME(String PRODUCTDEFNAME) {
+        this.PRODUCTDEFNAME = PRODUCTDEFNAME;
+    }
+
+    public String getTRACKOUTTIME() {
+        return TRACKOUTTIME;
+    }
+
+    public void setTRACKOUTTIME(String TRACKOUTTIME) {
+        this.TRACKOUTTIME = TRACKOUTTIME;
+    }
+
     @Override
     public int hashCode() {
         return LOTID != null ? LOTID.hashCode() : 0;
@@ -60,13 +86,6 @@ public class LotShippingListData implements Serializable {
         this.LOTID = LOTID;
     }
 
-    public String getCONTAINER() {
-        return CONTAINER;
-    }
-
-    public void setCONTAINER(String CONTAINER) {
-        this.CONTAINER = CONTAINER;
-    }
 
     public String getINQTY() {
         return INQTY;
@@ -76,13 +95,6 @@ public class LotShippingListData implements Serializable {
         this.INQTY = INQTY;
     }
 
-    public String getSEALNO() {
-        return SEALNO;
-    }
-
-    public void setSEALNO(String SEALNO) {
-        this.SEALNO = SEALNO;
-    }
 
     public String getTAGID() {
         return TAGID;

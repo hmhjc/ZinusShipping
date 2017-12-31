@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              style="@style/listviewitem">
+
+    <TextView
+        android:id="@+id/tv_POID"
+        style="@style/listviewcontext"/>.
+
+    <View
+        style="@style/listviewverticalsplit"/>
+
+    <TextView
+        android:id="@+id/tv_poqty"
+        style="@style/listviewcontext"/>
+
+    <View
+        style="@style/listviewverticalsplit"/>
+
+    <TextView
+        android:id="@+id/tv_ContainerNo"
+        style="@style/listviewcontext"/>
+
+    <View
+        style="@style/listviewverticalsplit"/>
+
+    <TextView
+        android:id="@+id/tv_SealNo"
+        style="@style/listviewcontext"/>
+
+</LinearLayout>
+
+
+
+
+
+
+
+

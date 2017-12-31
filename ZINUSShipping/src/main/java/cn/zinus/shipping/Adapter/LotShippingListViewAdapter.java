@@ -25,8 +25,9 @@ public class LotShippingListViewAdapter extends BaseAdapter {
 
     public final class ListItemView {
         public TextView tvLotID;
-        public TextView tvContainerNo;
-        public TextView tvSealNo;
+        public TextView tvProductID;
+        public TextView tvProductName;
+        public TextView tvTrackOutTime;
         public TextView tvinqty;
     }
 
@@ -58,8 +59,9 @@ public class LotShippingListViewAdapter extends BaseAdapter {
             listItemView = new ListItemView();
             convertView = mInflater.inflate(R.layout.lv_item_lotshipping, null);
             listItemView.tvLotID = (TextView) convertView.findViewById(R.id.tv_LotID);
-            listItemView.tvContainerNo = (TextView) convertView.findViewById(R.id.tv_ContainerNo);
-            listItemView.tvSealNo = (TextView) convertView.findViewById(R.id.tv_SealNo);
+            listItemView.tvProductID = (TextView) convertView.findViewById(R.id.tv_ProductID);
+            listItemView.tvProductName = (TextView) convertView.findViewById(R.id.tv_ProductName);
+            listItemView.tvTrackOutTime = (TextView) convertView.findViewById(R.id.tv_TrackOutTime);
             listItemView.tvinqty = (TextView) convertView.findViewById(R.id.tv_inqty);
             convertView.setTag(listItemView);
         } else {
@@ -67,8 +69,9 @@ public class LotShippingListViewAdapter extends BaseAdapter {
         }
         LotShippingListData data = listMap.get(position);
         listItemView.tvLotID.setText(data.getLOTID());
-        listItemView.tvContainerNo.setText(data.getCONTAINER());
-        listItemView.tvSealNo.setText(data.getSEALNO());
+        listItemView.tvProductID.setText(data.getPRODUCTDEFID());
+        listItemView.tvProductName.setText(data.getPRODUCTDEFNAME());
+        listItemView.tvTrackOutTime.setText(data.getTRACKOUTTIME());
         listItemView.tvinqty.setText(data.getINQTY());
         return convertView;
     }

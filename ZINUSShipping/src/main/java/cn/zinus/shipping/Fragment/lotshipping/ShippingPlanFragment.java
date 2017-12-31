@@ -56,10 +56,10 @@ public class ShippingPlanFragment extends KeyDownFragment {
     private int year, pyear;
     private int month, pmonth;
     private int day, pday;
-    private int fromtoflag;
-    private Calendar mycalendar;
     //ListView
     private ListView mlvShippingPlan;
+    private int fromtoflag;
+    private Calendar mycalendar;
     private ShippingPlanListViewAdapter mShippingPlanListViewAdapter;
     public ArrayList<ShippingPlanData> mShippingPlanDataDataList;
     protected ShippingPlanData mSelectShippingPlandata = new ShippingPlanData();
@@ -93,7 +93,6 @@ public class ShippingPlanFragment extends KeyDownFragment {
         super.onActivityCreated(savedInstanceState);
         initData();
         initview();
-        //UpDateShippingPlan();
     }
 
     //endregion
@@ -224,7 +223,7 @@ public class ShippingPlanFragment extends KeyDownFragment {
     }
     //endregion
 
-    //region UpDateShippingPlan
+    //region searchPOlist
     protected void UpDateShippingPlan() {
         String ShippingPlanState =((CodeData) spShippingPlanState.getSelectedItem()).getCODEID();
         String ShippingPlanFromDate = tvFromDate.getText().toString();
@@ -236,13 +235,10 @@ public class ShippingPlanFragment extends KeyDownFragment {
     public void getShippingPlan(String shippingPlanState, String orderFromDate, String orderToDate) {
         SQLiteDatabase db = mHelper.getWritableDatabase();
         String selectDataListsql;
-      //  String selectDataListsql = String.format(getString(R.string.GetShippingPlanQuery),orderFromDate,orderToDate);
         if (shippingPlanState.equals("")) {
             selectDataListsql = String.format(getString(R.string.GetShippingPlanQueryAll),orderFromDate,orderToDate);
-        }else if (shippingPlanState.equals("Finished")){
-            selectDataListsql = String.format(getString(R.string.GetShippingPlanQueryFinished),orderFromDate,orderToDate);
         }else {
-        selectDataListsql =String.format(getString(R.string.GetShippingPlanQueryNormal),orderFromDate,orderToDate,shippingPlanState);
+        selectDataListsql =String.format(getString(R.string.GetShippingPlanQueryNormal),shippingPlanState,orderFromDate,orderToDate);
         }
         selectDataListsql = selectDataListsql+getString(R.string.gspOrderBy);
         Log.e("ShippingPlan语句", selectDataListsql);
@@ -252,15 +248,12 @@ public class ShippingPlanFragment extends KeyDownFragment {
             while (cursorDatalist.moveToNext()) {
                 ShippingPlanData shippingPlanData = new ShippingPlanData();
                 shippingPlanData.setSHIPPINGPLANNO(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.SHIPPINGPLANNO)));
-                shippingPlanData.setPOID(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.POID)));
-                shippingPlanData.setSHIPPINGPLANSEQ(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.SHIPPINGPLANSEQ)));
-                shippingPlanData.setCONTAINERSEQ(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.CONTAINERSEQ)));
                 shippingPlanData.setCUSTOMERID(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.CUSTOMERID)));
-                shippingPlanData.setPRODUCTDEFNAME(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.PRODUCTDEFNAME)));
-                shippingPlanData.setPLANQTY(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.PLANQTY)));
-                shippingPlanData.setCONTAINERSPEC(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.CONTAINERSPEC)));
-                shippingPlanData.setPLANSTARTTIME(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.PLANSTARTTIME)));
-                shippingPlanData.setPLANENDTIME(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.PLANENDTIME)));
+                shippingPlanData.setBOOKINGNO(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.BOOKINGNO)));
+                shippingPlanData.setPLANDATE(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.PLANDATE)));
+                shippingPlanData.setSHIPPINGPLANDATE(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.SHIPPINGPLANDATE)));
+                shippingPlanData.setSHIPPINGENDPLANDATE(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.SHIPPINGENDPLANDATE)));
+                shippingPlanData.setSHIPPINGENDDATE(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.SHIPPINGENDDATE)));
                 shippingPlanData.setSTATE(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.STATE)));
                 mShippingPlanDataDataList.add(shippingPlanData);
                 Log.e("shippingPlanData",shippingPlanData.toString());

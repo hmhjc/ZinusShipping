@@ -21,13 +21,14 @@ import cn.zinus.shipping.JaveBean.ConsumeOutboundData;
 import cn.zinus.shipping.JaveBean.ConsumeRequestData;
 import cn.zinus.shipping.JaveBean.ConsumeStockData;
 import cn.zinus.shipping.JaveBean.InboundOrderData;
-import cn.zinus.shipping.JaveBean.LotShippingData;
+import cn.zinus.shipping.JaveBean.LotData;
+import cn.zinus.shipping.JaveBean.ShippingLotData;
 import cn.zinus.shipping.JaveBean.ShippingPlanData;
+import cn.zinus.shipping.JaveBean.ShippingPlanDetailData;
 import cn.zinus.shipping.JaveBean.StockCheckData;
 import cn.zinus.shipping.JaveBean.StockCheckDeatilData;
 import cn.zinus.shipping.JaveBean.StockLotCheckDeatilData;
 import cn.zinus.shipping.JaveBean.WareHouseData;
-import cn.zinus.shipping.JaveBean.LotData;
 import cn.zinus.shipping.util.Constant;
 import cn.zinus.shipping.util.DBManger;
 import cn.zinus.shipping.util.MyDateBaseHelper;
@@ -856,48 +857,29 @@ public class UpdateSqlite {
             StringBuffer SHIPPINGPLAN_insert = new StringBuffer();
             SHIPPINGPLAN_insert.append("INSERT OR REPLACE INTO " + Constant.SF_SHIPPINGPLAN + "("
                     + Constant.SHIPPINGPLANNO + ","
-                    + Constant.POID + ","
-                    + Constant.SHIPPINGPLANSEQ + ","
-                    + Constant.CONTAINERSEQ + ","
-                    + Constant.CONTAINERSPEC + ","
-                    + Constant.PRODUCTDEFNAME + ","
-                    + Constant.PLANQTY + ","
-                    + Constant.LOADEDQTY + ","
-                    + Constant.PLANSTARTTIME + ","
-                    + Constant.PLANENDTIME + ","
+                   // + Constant.PLANTID + ","
                     + Constant.CUSTOMERID + ","
-                    + Constant.WORKINGSHIFT + ","
-                    + Constant.AREAID + ","
+                    + Constant.BOOKINGNO + ","
+                    + Constant.PLANDATE + ","
+                    + Constant.SHIPPINGPLANDATE + ","
+                    + Constant.SHIPPINGENDPLANDATE + ","
+                    + Constant.SHIPPINGENDDATE + ","
                     + Constant.STATE + ","
-                    + Constant.ISOISAVE + ","
-                    + Constant.ORDERTYPE + ","
-                    + Constant.ORDERNO + ","
-                    + Constant.PRODUCTDEFID + ","
-                    + Constant.PRODUCTDEFVERSION + ","
-                    + Constant.LINENO + ")");
-            SHIPPINGPLAN_insert.append(" VALUES( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?, ?,?,?,? )");
+                    + Constant.ISPDASHIPPING + ","
+                    + Constant.ISOISAVE + ")");
+            SHIPPINGPLAN_insert.append(" VALUES( ?, ?, ?, ?, ?, ?, ?, ?, ?,?)");
             for (int i = 0; i < array.length(); i++) {
                 ShippingPlanData shippingPlanData = new ShippingPlanData();
                 JSONObject jsonObject = array.getJSONObject(i);
                 shippingPlanData.setSHIPPINGPLANNO(jsonObject.getString(Constant.SHIPPINGPLANNO));
-                shippingPlanData.setPOID(jsonObject.getString(Constant.POID));
-                shippingPlanData.setLINENO(jsonObject.getString(Constant.LINENO));
-                shippingPlanData.setSHIPPINGPLANSEQ(jsonObject.getString(Constant.SHIPPINGPLANSEQ));
-                shippingPlanData.setCONTAINERSEQ(jsonObject.getString(Constant.CONTAINERSEQ));
-                shippingPlanData.setCONTAINERSPEC(jsonObject.getString(Constant.CONTAINERSPEC));
-                shippingPlanData.setPRODUCTDEFNAME(jsonObject.getString(Constant.PRODUCTDEFNAME));
-                shippingPlanData.setPLANQTY(jsonObject.getString(Constant.PLANQTY));
-                shippingPlanData.setLOADEDQTY(jsonObject.getString(Constant.LOADEDQTY));
-                shippingPlanData.setPLANSTARTTIME(jsonObject.getString(Constant.PLANSTARTTIME));
-                shippingPlanData.setPLANENDTIME(jsonObject.getString(Constant.PLANENDTIME));
+                //shippingPlanData.setPLANTID(jsonObject.getString(Constant.PLANTID));
                 shippingPlanData.setCUSTOMERID(jsonObject.getString(Constant.CUSTOMERID));
-                shippingPlanData.setWORKINGSHIFT(jsonObject.getString(Constant.WORKINGSHIFT));
-                shippingPlanData.setAREAID(jsonObject.getString(Constant.AREAID));
+                shippingPlanData.setBOOKINGNO(jsonObject.getString(Constant.BOOKINGNO));
+                shippingPlanData.setPLANDATE(jsonObject.getString(Constant.PLANDATE));
+                shippingPlanData.setSHIPPINGPLANDATE(jsonObject.getString(Constant.SHIPPINGPLANDATE));
+                shippingPlanData.setSHIPPINGENDPLANDATE(jsonObject.getString(Constant.SHIPPINGENDPLANDATE));
+                shippingPlanData.setSHIPPINGENDDATE(jsonObject.getString(Constant.SHIPPINGENDDATE));
                 shippingPlanData.setSTATE(jsonObject.getString(Constant.STATE));
-                shippingPlanData.setORDERTYPE(jsonObject.getString(Constant.ORDERTYPE));
-                shippingPlanData.setORDERNO(jsonObject.getString(Constant.ORDERNO));
-                shippingPlanData.setPRODUCTDEFID(jsonObject.getString(Constant.PRODUCTDEFID));
-                shippingPlanData.setPRODUCTDEFVERSION(jsonObject.getString(Constant.PRODUCTDEFVERSION));
                 updateTableSF_SHIPPINGPLAN(shippingPlanData, SHIPPINGPLAN_insert.toString());
             }
         } catch (JSONException e) {
@@ -908,25 +890,16 @@ public class UpdateSqlite {
     private void updateTableSF_SHIPPINGPLAN(ShippingPlanData shippingPlanData, String SHIPPINGPLAN_insert) {
         SQLiteStatement statement = db.compileStatement(SHIPPINGPLAN_insert);
         statement.bindString(1, shippingPlanData.getSHIPPINGPLANNO());
-        statement.bindString(2, shippingPlanData.getPOID());
-        statement.bindString(3, shippingPlanData.getSHIPPINGPLANSEQ());
-        statement.bindString(4, shippingPlanData.getCONTAINERSEQ());
-        statement.bindString(5, shippingPlanData.getCONTAINERSPEC());
-        statement.bindString(6, shippingPlanData.getPRODUCTDEFNAME());
-        statement.bindString(7, shippingPlanData.getPLANQTY());
-        statement.bindString(8, shippingPlanData.getLOADEDQTY());
-        statement.bindString(9, shippingPlanData.getPLANSTARTTIME());
-        statement.bindString(10, shippingPlanData.getPLANENDTIME());
-        statement.bindString(11, shippingPlanData.getCUSTOMERID());
-        statement.bindString(12, shippingPlanData.getWORKINGSHIFT());
-        statement.bindString(13, shippingPlanData.getAREAID());
-        statement.bindString(14, shippingPlanData.getSTATE());
-        statement.bindString(15, "N");
-        statement.bindString(16, shippingPlanData.getORDERTYPE());
-        statement.bindString(17, shippingPlanData.getORDERNO());
-        statement.bindString(18, shippingPlanData.getPRODUCTDEFID());
-        statement.bindString(19, shippingPlanData.getPRODUCTDEFVERSION());
-        statement.bindString(20, shippingPlanData.getLINENO());
+        statement.bindString(2, shippingPlanData.getCUSTOMERID());
+        statement.bindString(3, shippingPlanData.getBOOKINGNO());
+        statement.bindString(4, shippingPlanData.getPLANDATE());
+        statement.bindString(5, shippingPlanData.getSHIPPINGPLANDATE());
+        statement.bindString(6, shippingPlanData.getSHIPPINGENDPLANDATE());
+        statement.bindString(7, shippingPlanData.getSHIPPINGENDDATE());
+        statement.bindString(8, shippingPlanData.getSTATE());
+        statement.bindString(9, "N");
+        statement.bindString(10, "N");
+
         try {
             statement.executeInsert();
         } catch (Exception e) {
@@ -935,56 +908,150 @@ public class UpdateSqlite {
     }
     //endregion
 
-    //region Table_SF_LOTSHIPPING
-    public void updateLotShipping(String resultStr) {
-        Log.e("更新SF_LOTSHIPPING", resultStr);
+    //region Table_SF_SHIPPINGPLANDETAIL
+    public void updateShippingPlanDetail(String resultStr) {
+        Log.e("更新SF_SHIPPINGPLANDetail", resultStr);
         try {
             JSONArray array = new JSONArray(resultStr);
-            StringBuffer LOTSHIPPING_insert = new StringBuffer();
-            LOTSHIPPING_insert.append("INSERT OR REPLACE INTO " + Constant.SF_LOTSHIPPING + "("
-                    + Constant.LOTID + ","
+            StringBuffer SHIPPINGPLANDETAIL_insert = new StringBuffer();
+            SHIPPINGPLANDETAIL_insert.append("INSERT OR REPLACE INTO " + Constant.SF_SHIPPINGPLANDETAIL + "("
                     + Constant.SHIPPINGPLANNO + ","
                     + Constant.SHIPPINGPLANSEQ + ","
+                    + Constant.ORDERTYPE + ","
+                    + Constant.ORDERNO + ","
+                    + Constant.LINENO + ","
+                    + Constant.PRODUCTDEFID + ","
+                    + Constant.PRODUCTDEFVERSION + ","
                     + Constant.CONTAINERSEQ + ","
-                    + Constant.QTY + ","
-                    + Constant.SHIPPINGDATE + ","
+                    + Constant.POID + ","
+                    + Constant.CONTAINERSPEC + ","
                     + Constant.CONTAINERNO + ","
                     + Constant.SEALNO + ","
-                    + Constant.VALIDSTATE + ")");
-            LOTSHIPPING_insert.append(" VALUES( ?, ?, ?, ? ,?, ?, ?, ?,?)");
+                    + Constant.COMPLETETIME + ","
+                    + Constant.PLANQTY + ","
+                    + Constant.STATE + ","
+                    + Constant.WORKINGSHIFT + ","
+                    + Constant.AREAID + ","
+                    + Constant.PRODUCTDEFNAME + ")");
+            SHIPPINGPLANDETAIL_insert.append(" VALUES( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?,?,?,?)");
             for (int i = 0; i < array.length(); i++) {
-                LotShippingData lotShippingData = new LotShippingData();
+                ShippingPlanDetailData shippingPlanDetailData = new ShippingPlanDetailData();
                 JSONObject jsonObject = array.getJSONObject(i);
-                lotShippingData.setLOTID(jsonObject.getString(Constant.LOTID));
-                lotShippingData.setSHIPPINGPLANNO(jsonObject.getString(Constant.SHIPPINGPLANNO));
-                lotShippingData.setSHIPPINGPLANSEQ(jsonObject.getString(Constant.SHIPPINGPLANSEQ));
-                lotShippingData.setCONTAINERSEQ(jsonObject.getString(Constant.CONTAINERSEQ));
-                lotShippingData.setQTY(jsonObject.getString(Constant.QTY));
-                lotShippingData.setCONTAINERNO(jsonObject.getString(Constant.CONTAINERNO));
-                lotShippingData.setSEALNO(jsonObject.getString(Constant.SEALNO));
-                lotShippingData.setSHIPPINGDATE(jsonObject.getString(Constant.SHIPPINGDATE));
-                updateTableSF_LOTSHIPPING(lotShippingData, LOTSHIPPING_insert.toString());
+                shippingPlanDetailData.setSHIPPINGPLANNO(jsonObject.getString(Constant.SHIPPINGPLANNO));
+                shippingPlanDetailData.setSHIPPINGPLANSEQ(jsonObject.getString(Constant.SHIPPINGPLANSEQ));
+                shippingPlanDetailData.setORDERTYPE(jsonObject.getString(Constant.ORDERTYPE));
+                shippingPlanDetailData.setORDERNO(jsonObject.getString(Constant.ORDERNO));
+                shippingPlanDetailData.setLINENO(jsonObject.getString(Constant.LINENO));
+                shippingPlanDetailData.setPRODUCTDEFID(jsonObject.getString(Constant.PRODUCTDEFID));
+                shippingPlanDetailData.setPRODUCTDEFVERSION(jsonObject.getString(Constant.PRODUCTDEFVERSION));
+                shippingPlanDetailData.setCONTAINERSEQ(jsonObject.getString(Constant.CONTAINERSEQ));
+                shippingPlanDetailData.setPOID(jsonObject.getString(Constant.POID));
+                shippingPlanDetailData.setCONTAINERSPEC(jsonObject.getString(Constant.CONTAINERSPEC));
+                shippingPlanDetailData.setCONTAINERNO(jsonObject.getString(Constant.CONTAINERNO));
+                shippingPlanDetailData.setSEALNO(jsonObject.getString(Constant.SEALNO));
+                shippingPlanDetailData.setCOMPLETETIME(jsonObject.getString(Constant.COMPLETETIME));
+                shippingPlanDetailData.setPLANQTY(jsonObject.getString(Constant.PLANQTY));
+                shippingPlanDetailData.setSTATE(jsonObject.getString(Constant.STATE));
+                shippingPlanDetailData.setWORKINGSHIFT(jsonObject.getString(Constant.WORKINGSHIFT));
+                shippingPlanDetailData.setAREAID(jsonObject.getString(Constant.AREAID));
+                shippingPlanDetailData.setPRODUCTDEFNAME(jsonObject.getString(Constant.PRODUCTDEFNAME));
+                updateTableSF_SHIPPINGPLANDETAIL(shippingPlanDetailData, SHIPPINGPLANDETAIL_insert.toString());
             }
         } catch (JSONException e) {
-            Log.e("LOTSHIPPING更新出错", e.getMessage().toString());
+            Log.e("SHIPPINGPLANDETAIL更新出错", e.getMessage().toString());
         }
     }
 
-    private void updateTableSF_LOTSHIPPING(LotShippingData lotShippingData, String LOTSHIPPING_insert) {
-        SQLiteStatement statement = db.compileStatement(LOTSHIPPING_insert);
-        statement.bindString(1, lotShippingData.getLOTID());
-        statement.bindString(2, lotShippingData.getSHIPPINGPLANNO());
-        statement.bindString(3, lotShippingData.getSHIPPINGPLANSEQ());
-        statement.bindString(4, lotShippingData.getCONTAINERSEQ());
-        statement.bindString(5, lotShippingData.getQTY());
-        statement.bindString(6, lotShippingData.getSHIPPINGDATE());
-        statement.bindString(7, lotShippingData.getCONTAINERNO());
-        statement.bindString(8, lotShippingData.getSEALNO());
-        statement.bindString(9, VALID);
+    private void updateTableSF_SHIPPINGPLANDETAIL(ShippingPlanDetailData shippingPlanDetailData, String SHIPPINGPLAN_insert) {
+        SQLiteStatement statement = db.compileStatement(SHIPPINGPLAN_insert);
+        statement.bindString(1, shippingPlanDetailData.getSHIPPINGPLANNO());
+        statement.bindString(2, shippingPlanDetailData.getSHIPPINGPLANSEQ());
+        statement.bindString(3, shippingPlanDetailData.getORDERTYPE());
+        statement.bindString(4, shippingPlanDetailData.getORDERNO());
+        statement.bindString(5, shippingPlanDetailData.getLINENO());
+        statement.bindString(6, shippingPlanDetailData.getPRODUCTDEFID());
+        statement.bindString(7, shippingPlanDetailData.getPRODUCTDEFVERSION());
+        statement.bindString(8, shippingPlanDetailData.getCONTAINERSEQ());
+        statement.bindString(9, shippingPlanDetailData.getPOID());
+        statement.bindString(10, shippingPlanDetailData.getCONTAINERSPEC());
+        statement.bindString(11, shippingPlanDetailData.getCONTAINERNO());
+        statement.bindString(12, shippingPlanDetailData.getSEALNO());
+        statement.bindString(13, shippingPlanDetailData.getCOMPLETETIME());
+        statement.bindString(14, shippingPlanDetailData.getPLANQTY());
+        statement.bindString(15, shippingPlanDetailData.getSTATE());
+        statement.bindString(16, shippingPlanDetailData.getWORKINGSHIFT());
+        statement.bindString(17, shippingPlanDetailData.getAREAID());
+        statement.bindString(18, shippingPlanDetailData.getPRODUCTDEFNAME());
         try {
             statement.executeInsert();
         } catch (Exception e) {
-            Log.e("LOTSHIPPING更新出错", e.getMessage().toString());
+            Log.e("SHIPPINGPLANDetail更新出错", e.getMessage().toString());
+        }
+    }
+    //endregion
+
+    //region Table_SF_LOTSHIPPING
+    public void updateShippingLot(String resultStr) {
+        Log.e("更新SF_SHIPPINGLOT", resultStr);
+        try {
+            JSONArray array = new JSONArray(resultStr);
+            StringBuffer LOTSHIPPING_insert = new StringBuffer();
+            LOTSHIPPING_insert.append("INSERT OR REPLACE INTO " + Constant.SF_SHIPPINGLOT + "("
+                    + Constant.SHIPPINGPLANNO + ","
+                    + Constant.SHIPPINGPLANSEQ + ","
+                    + Constant.ORDERTYPE + ","
+                    + Constant.ORDERNO + ","
+                    + Constant.LINENO + ","
+                    + Constant.PRODUCTDEFID + ","
+                    + Constant.PRODUCTDEFVERSION + ","
+                    + Constant.CONTAINERSEQ + ","
+                    + Constant.POID + ","
+                    + Constant.LOTID + ","
+                    + Constant.QTY + ","
+                    + Constant.VALIDSTATE + ","
+                    + Constant.SHIPPINGDATE + ")");
+            LOTSHIPPING_insert.append(" VALUES( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)");
+            for (int i = 0; i < array.length(); i++) {
+                ShippingLotData ShippinglotData = new ShippingLotData();
+                JSONObject jsonObject = array.getJSONObject(i);
+                ShippinglotData.setSHIPPINGPLANNO(jsonObject.getString(Constant.SHIPPINGPLANNO));
+                ShippinglotData.setSHIPPINGPLANSEQ(jsonObject.getString(Constant.SHIPPINGPLANSEQ));
+                ShippinglotData.setORDERTYPE(jsonObject.getString(Constant.ORDERTYPE));
+                ShippinglotData.setORDERNO(jsonObject.getString(Constant.ORDERNO));
+                ShippinglotData.setLINENO(jsonObject.getString(Constant.LINENO));
+                ShippinglotData.setPRODUCTDEFID(jsonObject.getString(Constant.PRODUCTDEFID));
+                ShippinglotData.setPRODUCTDEFVERSION(jsonObject.getString(Constant.PRODUCTDEFVERSION));
+                ShippinglotData.setCONTAINERSEQ(jsonObject.getString(Constant.CONTAINERSEQ));
+                ShippinglotData.setPOID(jsonObject.getString(Constant.POID));
+                ShippinglotData.setLOTID(jsonObject.getString(Constant.LOTID));
+                ShippinglotData.setQTY(jsonObject.getString(Constant.QTY));
+                ShippinglotData.setSHIPPINGDATE(jsonObject.getString(Constant.SHIPPINGDATE));
+                updateTableSF_SHIPPINGLOT(ShippinglotData, LOTSHIPPING_insert.toString());
+            }
+        } catch (JSONException e) {
+            Log.e("SHIPPINGLOT更新出错", e.getMessage().toString());
+        }
+    }
+
+    private void updateTableSF_SHIPPINGLOT(ShippingLotData ShippinglotData, String LOTSHIPPING_insert) {
+        SQLiteStatement statement = db.compileStatement(LOTSHIPPING_insert);
+        statement.bindString(1, ShippinglotData.getSHIPPINGPLANNO());
+        statement.bindString(2, ShippinglotData.getSHIPPINGPLANSEQ());
+        statement.bindString(3, ShippinglotData.getORDERTYPE());
+        statement.bindString(4, ShippinglotData.getORDERNO());
+        statement.bindString(5, ShippinglotData.getLINENO());
+        statement.bindString(6, ShippinglotData.getPRODUCTDEFID());
+        statement.bindString(7, ShippinglotData.getPRODUCTDEFVERSION());
+        statement.bindString(8, ShippinglotData.getCONTAINERSEQ());
+        statement.bindString(9, ShippinglotData.getPOID());
+        statement.bindString(10, ShippinglotData.getLOTID());
+        statement.bindString(11, ShippinglotData.getQTY());
+        statement.bindString(12, VALID);
+        statement.bindString(13, ShippinglotData.getSHIPPINGDATE());
+        try {
+            statement.executeInsert();
+        } catch (Exception e) {
+            Log.e("SHIPPINGLOT更新出错", e.getMessage().toString());
         }
     }
     //endregion
@@ -1000,8 +1067,9 @@ public class UpdateSqlite {
                     + Constant.PURCHASEORDERID + ","
                     + Constant.LOTSTATE + ","
                     + Constant.RFID + ","
-                    + Constant.QTY + ")");
-            LOT_insert.append(" VALUES( ?, ?, ?, ?,?)");
+                    + Constant.QTY + ","
+                    + Constant.TRACKOUTTIME + ")");
+            LOT_insert.append(" VALUES( ?, ?, ?, ?,?,?)");
             for (int i = 0; i < array.length(); i++) {
                 LotData lotdata = new LotData();
                 JSONObject jsonObject = array.getJSONObject(i);
@@ -1010,6 +1078,7 @@ public class UpdateSqlite {
                 lotdata.setLOTSTATE(jsonObject.getString(Constant.LOTSTATE));
                 lotdata.setRFID(jsonObject.getString(Constant.RFID));
                 lotdata.setQTY(jsonObject.getString(Constant.QTY));
+                lotdata.setTRACKOUTTIME(jsonObject.getString(Constant.TRACKOUTTIME));
                 Log.e("看看有什么",lotdata.toString());
                 updateTableSF_LOT(lotdata, LOT_insert.toString());
             }
@@ -1025,6 +1094,7 @@ public class UpdateSqlite {
         statement.bindString(3, lotData.getLOTSTATE());
         statement.bindString(4, lotData.getRFID());
         statement.bindString(5, lotData.getQTY());
+        statement.bindString(6, lotData.getTRACKOUTTIME());
         try {
             statement.executeInsert();
         } catch (Exception e) {

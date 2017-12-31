@@ -32,16 +32,22 @@ import cn.zinus.warehouse.util.DBManger;
 import cn.zinus.warehouse.util.MyDateBaseHelper;
 
 import static cn.zinus.warehouse.util.Constant.AREAID;
+import static cn.zinus.warehouse.util.Constant.CONSUMABLECOUNT;
 import static cn.zinus.warehouse.util.Constant.CONSUMABLEDEFID;
 import static cn.zinus.warehouse.util.Constant.CONSUMABLEDEFNAME;
 import static cn.zinus.warehouse.util.Constant.CONSUMABLEDEFVERSION;
+import static cn.zinus.warehouse.util.Constant.CONSUMABLELOTID;
 import static cn.zinus.warehouse.util.Constant.CONTAINERSPEC;
 import static cn.zinus.warehouse.util.Constant.CUSTOMERID;
 import static cn.zinus.warehouse.util.Constant.INBOUNDDATE;
 import static cn.zinus.warehouse.util.Constant.INBOUNDNO;
 import static cn.zinus.warehouse.util.Constant.INBOUNDSTATE;
+import static cn.zinus.warehouse.util.Constant.INBOUNDSTATENAME;
 import static cn.zinus.warehouse.util.Constant.INQTY;
-import static cn.zinus.warehouse.util.Constant.INSPECTIONRESULT;
+import static cn.zinus.warehouse.util.Constant.LINENO;
+import static cn.zinus.warehouse.util.Constant.ORDERCOMPANY;
+import static cn.zinus.warehouse.util.Constant.ORDERNO;
+import static cn.zinus.warehouse.util.Constant.ORDERTYPE;
 import static cn.zinus.warehouse.util.Constant.PLANENDTIME;
 import static cn.zinus.warehouse.util.Constant.PLANQTY;
 import static cn.zinus.warehouse.util.Constant.PLANSTARTTIME;
@@ -53,10 +59,13 @@ import static cn.zinus.warehouse.util.Constant.SCHEDULEDATE;
 import static cn.zinus.warehouse.util.Constant.SHIPPINGPLANNO;
 import static cn.zinus.warehouse.util.Constant.STATE;
 import static cn.zinus.warehouse.util.Constant.STATENAME;
+import static cn.zinus.warehouse.util.Constant.TAGID;
+import static cn.zinus.warehouse.util.Constant.TAGQTY;
 import static cn.zinus.warehouse.util.Constant.TEMPINBOUNDDATE;
-import static cn.zinus.warehouse.util.Constant.URGENCYTYPE;
+import static cn.zinus.warehouse.util.Constant.UNIT;
 import static cn.zinus.warehouse.util.Constant.VALIDSTATE;
 import static cn.zinus.warehouse.util.Constant.WAREHOUSEID;
+import static cn.zinus.warehouse.util.Constant.WAREHOUSENAME;
 import static cn.zinus.warehouse.util.Constant.WORKINGSHIFT;
 
 /**
@@ -129,27 +138,29 @@ public class UpdateSqlite {
             JSONArray array = new JSONArray(resultStr);
             StringBuffer INBOUNDORDER_insert = new StringBuffer();
             INBOUNDORDER_insert.append("INSERT OR REPLACE INTO " + Constant.SF_INBOUNDORDER + "("
-                    + INBOUNDNO + ","
-                    + WAREHOUSEID + ","
-                    + INBOUNDDATE + ","
-                    + INBOUNDSTATE + ","
-                    + INSPECTIONRESULT + ","
-                    + URGENCYTYPE + ","
-                    + SCHEDULEDATE + ","
-                    + TEMPINBOUNDDATE + ")");
-            INBOUNDORDER_insert.append(" VALUES( ?, ?, ?, ?, ?, ?, ?, ?)");
+                    + INBOUNDNO + ","             //计划号
+                    + WAREHOUSEID + ","           //仓库id
+                    + WAREHOUSENAME + ","         //仓库名
+                    + SCHEDULEDATE + ","          //计划入库时间
+                    + INBOUNDDATE + ","           //入库时间
+                    + TEMPINBOUNDDATE + ","       //暂入库时间
+                    + INBOUNDSTATE + ","          //入库状态
+                    + STATENAME + ","             //入库状态名
+                    + CONSUMABLECOUNT + ")");     //品目数
+            INBOUNDORDER_insert.append(" VALUES( ?, ?, ?, ?, ?, ?, ?, ?, ?)");
             Log.e("更新语句", new String(INBOUNDORDER_insert));
             for (int i = 0; i < array.length(); i++) {
                 InboundOrderData inboundOrderTableData = new InboundOrderData();
                 JSONObject jsonObject = array.getJSONObject(i);
                 inboundOrderTableData.setINBOUNDNO(jsonObject.getString(INBOUNDNO));
                 inboundOrderTableData.setWAREHOUSEID(jsonObject.getString(WAREHOUSEID));
-                inboundOrderTableData.setINBOUNDDATE(jsonObject.getString(INBOUNDDATE));
-                inboundOrderTableData.setINBOUNDSTATE(jsonObject.getString(INBOUNDSTATE));
-                inboundOrderTableData.setINSPECTIONRESULT(jsonObject.getString(INSPECTIONRESULT));
-                inboundOrderTableData.setURGENCYTYPE(jsonObject.getString(URGENCYTYPE));
+                inboundOrderTableData.setWAREHOUSENAME(jsonObject.getString(WAREHOUSENAME));
                 inboundOrderTableData.setSCHEDULEDATE(jsonObject.getString(SCHEDULEDATE));
+                inboundOrderTableData.setINBOUNDDATE(jsonObject.getString(INBOUNDDATE));
                 inboundOrderTableData.setTEMPINBOUNDDATE(jsonObject.getString(TEMPINBOUNDDATE));
+                inboundOrderTableData.setINBOUNDSTATE(jsonObject.getString(INBOUNDSTATE));
+                inboundOrderTableData.setSTATENAME(jsonObject.getString(INBOUNDSTATENAME));
+                inboundOrderTableData.setCONSUMABLECOUNT(jsonObject.getString(CONSUMABLECOUNT));
                 updateTableSF_INBOUNDORDER(inboundOrderTableData, INBOUNDORDER_insert.toString());
             }
         } catch (JSONException e) {
@@ -162,12 +173,13 @@ public class UpdateSqlite {
         SQLiteStatement statement = db.compileStatement(INBOUNDORDER_insert);
         statement.bindString(1, inboundOrderData.getINBOUNDNO());
         statement.bindString(2, inboundOrderData.getWAREHOUSEID());
-        statement.bindString(3, inboundOrderData.getINBOUNDDATE());
-        statement.bindString(4, inboundOrderData.getINBOUNDSTATE());
-        statement.bindString(5, inboundOrderData.getINSPECTIONRESULT());
-        statement.bindString(6, inboundOrderData.getURGENCYTYPE());
-        statement.bindString(7, inboundOrderData.getSCHEDULEDATE());
-        statement.bindString(8, inboundOrderData.getTEMPINBOUNDDATE());
+        statement.bindString(3, inboundOrderData.getWAREHOUSENAME());
+        statement.bindString(4, inboundOrderData.getSCHEDULEDATE());
+        statement.bindString(5, inboundOrderData.getINBOUNDDATE());
+        statement.bindString(6, inboundOrderData.getTEMPINBOUNDDATE());
+        statement.bindString(7, inboundOrderData.getINBOUNDSTATE());
+        statement.bindString(8, inboundOrderData.getSTATENAME());
+        statement.bindString(9, inboundOrderData.getCONSUMABLECOUNT());
         try {
             statement.executeInsert();
         } catch (Exception e) {
@@ -186,19 +198,31 @@ public class UpdateSqlite {
             StringBuffer CONSUMEINBOUND_insert = new StringBuffer();
             CONSUMEINBOUND_insert.append("INSERT OR REPLACE INTO " + Constant.SF_CONSUMEINBOUND + "("
                     + INBOUNDNO + ","
-                    + CONSUMABLEDEFNAME + ","
+                    + CONSUMABLEDEFID + ","
+                    + CONSUMABLEDEFVERSION + ","
+                    + WAREHOUSEID + ","
+                    + ORDERNO + ","
+                    + ORDERTYPE + ","
+                    + LINENO + ","
                     + INQTY + ","
-                    + Constant.UNIT + ","
-                    + PLANQTY + ")");
-            CONSUMEINBOUND_insert.append(" VALUES( ?, ?, ?, ?, ?)");
+                    + UNIT + ","
+                    + PLANQTY + ","
+                    + ORDERCOMPANY + ")");
+            CONSUMEINBOUND_insert.append(" VALUES( ?, ?, ?, ?, ? ,?, ?, ?, ?, ?,?)");
             for (int i = 0; i < array.length(); i++) {
                 ConsumeInboundData consumeInboundData = new ConsumeInboundData();
                 JSONObject jsonObject = array.getJSONObject(i);
                 consumeInboundData.setINBOUNDNO(jsonObject.getString(INBOUNDNO));
-                consumeInboundData.setCONSUMABLEDEFNAME(jsonObject.getString(CONSUMABLEDEFNAME));
+                consumeInboundData.setCONSUMABLEDEFID(jsonObject.getString(CONSUMABLEDEFID));
+                consumeInboundData.setCONSUMABLEDEFVERSION(jsonObject.getString(CONSUMABLEDEFVERSION));
+                consumeInboundData.setWAREHOUSEID(jsonObject.getString(WAREHOUSEID));
+                consumeInboundData.setORDERNO(jsonObject.getString(ORDERNO));
+                consumeInboundData.setORDERTYPE(jsonObject.getString(ORDERTYPE));
+                consumeInboundData.setLINENO(jsonObject.getString(LINENO));
                 consumeInboundData.setINQTY(jsonObject.getString(INQTY));
                 consumeInboundData.setUNIT(jsonObject.getString(Constant.UNIT));
                 consumeInboundData.setPLANQTY(jsonObject.getString(PLANQTY));
+                consumeInboundData.setORDERCOMPANY(jsonObject.getString(ORDERCOMPANY));
                 updateTableSF_CONSUMEINBOUND(consumeInboundData, CONSUMEINBOUND_insert.toString());
             }
         } catch (JSONException e) {
@@ -209,10 +233,16 @@ public class UpdateSqlite {
     private void updateTableSF_CONSUMEINBOUND(ConsumeInboundData consumeInboundData, String CONSUMEINBOUND_insert) {
         SQLiteStatement statement = db.compileStatement(CONSUMEINBOUND_insert);
         statement.bindString(1, consumeInboundData.getINBOUNDNO());
-        statement.bindString(2, consumeInboundData.getCONSUMABLEDEFNAME());
-        statement.bindString(3, consumeInboundData.getINQTY());
-        statement.bindString(4, consumeInboundData.getUNIT());
-        statement.bindString(5, consumeInboundData.getPLANQTY());
+        statement.bindString(2, consumeInboundData.getCONSUMABLEDEFID());
+        statement.bindString(3, consumeInboundData.getCONSUMABLEDEFVERSION());
+        statement.bindString(4, consumeInboundData.getWAREHOUSEID());
+        statement.bindString(5, consumeInboundData.getORDERNO());
+        statement.bindString(6, consumeInboundData.getORDERTYPE());
+        statement.bindString(7, consumeInboundData.getLINENO());
+        statement.bindString(8, consumeInboundData.getINQTY());
+        statement.bindString(9, consumeInboundData.getUNIT());
+        statement.bindString(10, consumeInboundData.getPLANQTY());
+        statement.bindString(11, consumeInboundData.getORDERCOMPANY());
         try {
             statement.executeInsert();
         } catch (Exception e) {
@@ -230,21 +260,37 @@ public class UpdateSqlite {
             StringBuffer CONSUMELOTINBOUND_insert = new StringBuffer();
             CONSUMELOTINBOUND_insert.append("INSERT OR REPLACE INTO " + Constant.SF_CONSUMELOTINBOUND + "("
                     + INBOUNDNO + ","
-                    + Constant.CONSUMABLELOTID + ","
-                    + CONSUMABLEDEFNAME + ","
+                    + CONSUMABLEDEFID + ","
+                    + CONSUMABLEDEFVERSION + ","
+                    + WAREHOUSEID + ","
+                    + ORDERNO + ","
+                    + ORDERTYPE + ","
+                    + LINENO + ","
                     + INQTY + ","
-                    + Constant.UNIT + ","
-                    + PLANQTY + ")");
-            CONSUMELOTINBOUND_insert.append(" VALUES( ?, ?, ?, ?, ?, ?)");
+                    + UNIT + ","
+                    + PLANQTY + ","
+                    + CONSUMABLELOTID + ","
+                    + TAGID + ","
+                    + TAGQTY + ","
+                    + ORDERCOMPANY+ ")");
+            CONSUMELOTINBOUND_insert.append(" VALUES( ?, ?, ?, ?, ? ,?, ?, ?, ?, ?,?,?,?,?)");
             for (int i = 0; i < array.length(); i++) {
                 ConsumeLotInboundData consumeLotInboundData = new ConsumeLotInboundData();
                 JSONObject jsonObject = array.getJSONObject(i);
-                consumeLotInboundData.setINBOUNDNO(jsonObject.getString(INBOUNDNO));
-                consumeLotInboundData.setCONSUMABLELOTID(jsonObject.getString(Constant.CONSUMABLELOTID));
-                consumeLotInboundData.setCONSUMABLEDEFNAME(jsonObject.getString(CONSUMABLEDEFNAME));
+                consumeLotInboundData. setINBOUNDNO(jsonObject.getString(INBOUNDNO));
+                consumeLotInboundData. setCONSUMABLELOTID(jsonObject.getString(CONSUMABLELOTID));
+                consumeLotInboundData.setCONSUMABLEDEFID(jsonObject.getString(CONSUMABLEDEFID));
+                consumeLotInboundData.setCONSUMABLEDEFVERSION(jsonObject.getString(CONSUMABLEDEFVERSION));
+                consumeLotInboundData.setWAREHOUSEID(jsonObject.getString(WAREHOUSEID));
+                consumeLotInboundData.setORDERNO(jsonObject.getString(ORDERNO));
+                consumeLotInboundData.setORDERTYPE(jsonObject.getString(ORDERTYPE));
+                consumeLotInboundData.setLINENO(jsonObject.getString(LINENO));
                 consumeLotInboundData.setINQTY(jsonObject.getString(INQTY));
                 consumeLotInboundData.setUNIT(jsonObject.getString(Constant.UNIT));
                 consumeLotInboundData.setPLANQTY(jsonObject.getString(PLANQTY));
+                consumeLotInboundData.setTAGID(jsonObject.getString(TAGID));
+                consumeLotInboundData.setTAGQTY(jsonObject.getString(TAGQTY));
+                consumeLotInboundData.setORDERCOMPANY(jsonObject.getString(ORDERCOMPANY));
                 updateTableSF_CONSUMELOTINBOUND(consumeLotInboundData, CONSUMELOTINBOUND_insert.toString());
             }
         } catch (JSONException e) {
@@ -255,11 +301,19 @@ public class UpdateSqlite {
     private void updateTableSF_CONSUMELOTINBOUND(ConsumeLotInboundData consumeLotInboundData, String CONSUMELOTINBOUND_insert) {
         SQLiteStatement statement = db.compileStatement(CONSUMELOTINBOUND_insert);
         statement.bindString(1, consumeLotInboundData.getINBOUNDNO());
-        statement.bindString(2, consumeLotInboundData.getCONSUMABLELOTID());
-        statement.bindString(3, consumeLotInboundData.getCONSUMABLEDEFNAME());
-        statement.bindString(4, consumeLotInboundData.getINQTY());
-        statement.bindString(5, consumeLotInboundData.getUNIT());
-        statement.bindString(6, consumeLotInboundData.getPLANQTY());
+        statement.bindString(2, consumeLotInboundData.getCONSUMABLEDEFID());
+        statement.bindString(3, consumeLotInboundData.getCONSUMABLEDEFVERSION());
+        statement.bindString(4, consumeLotInboundData.getWAREHOUSEID());
+        statement.bindString(5, consumeLotInboundData.getORDERNO());
+        statement.bindString(6, consumeLotInboundData.getORDERTYPE());
+        statement.bindString(7, consumeLotInboundData.getLINENO());
+        statement.bindString(8, consumeLotInboundData.getINQTY());
+        statement.bindString(9, consumeLotInboundData.getUNIT());
+        statement.bindString(10,consumeLotInboundData.getPLANQTY());
+        statement.bindString(11,consumeLotInboundData.getCONSUMABLELOTID());
+        statement.bindString(12,consumeLotInboundData.getTAGID());
+        statement.bindString(13,consumeLotInboundData.getTAGQTY());
+        statement.bindString(14,consumeLotInboundData.getORDERCOMPANY());
         try {
             statement.executeInsert();
         } catch (Exception e) {
@@ -425,7 +479,7 @@ public class UpdateSqlite {
             JSONArray array = new JSONArray(resultStr);
             StringBuffer CONSUMELOTOUTBOUND_insert = new StringBuffer();
             CONSUMELOTOUTBOUND_insert.append("INSERT OR REPLACE INTO " + Constant.SF_CONSUMELOTOUTBOUND + "("
-                    + Constant.CONSUMABLELOTID + ","
+                    + CONSUMABLELOTID + ","
                     + CONSUMABLEDEFID + ","
                     + CONSUMABLEDEFVERSION + ","
                     + WAREHOUSEID + ","
@@ -439,7 +493,7 @@ public class UpdateSqlite {
             for (int i = 0; i < array.length(); i++) {
                 ConsumeLotOutboundData consumeLotOutboundData = new ConsumeLotOutboundData();
                 JSONObject jsonObject = array.getJSONObject(i);
-                consumeLotOutboundData.setCONSUMABLELOTID(jsonObject.getString(Constant.CONSUMABLELOTID));
+                consumeLotOutboundData.setCONSUMABLELOTID(jsonObject.getString(CONSUMABLELOTID));
                 consumeLotOutboundData.setCONSUMABLEDEFID(jsonObject.getString(CONSUMABLEDEFID));
                 consumeLotOutboundData.setCONSUMABLEDEFVERSION(jsonObject.getString(CONSUMABLEDEFVERSION));
                 consumeLotOutboundData.setWAREHOUSEID(jsonObject.getString(WAREHOUSEID));
@@ -586,7 +640,7 @@ public class UpdateSqlite {
                     + WAREHOUSEID + ","
                     + Constant.CHECKMONTH + ","
                     + CONSUMABLEDEFNAME + ","
-                    + Constant.CONSUMABLELOTID + ","
+                    + CONSUMABLELOTID + ","
                     + Constant.UNIT + ","
                     + Constant.QTY + ","
                     + Constant.USERID + ","
@@ -599,7 +653,7 @@ public class UpdateSqlite {
                 stockLotCheckDetailData.setWAREHOUSEID(jsonObject.getString(WAREHOUSEID));
                 stockLotCheckDetailData.setCHECKMONTH(jsonObject.getString(Constant.CHECKMONTH));
                 stockLotCheckDetailData.setCONSUMEABLDEFNAME(jsonObject.getString(CONSUMABLEDEFNAME));
-                stockLotCheckDetailData.setCONSUMABLELOTID(jsonObject.getString(Constant.CONSUMABLELOTID));
+                stockLotCheckDetailData.setCONSUMABLELOTID(jsonObject.getString(CONSUMABLELOTID));
                 stockLotCheckDetailData.setUNIT(jsonObject.getString(Constant.UNIT));
                 stockLotCheckDetailData.setQTY(jsonObject.getString(Constant.QTY));
                 stockLotCheckDetailData.setUSERID(jsonObject.getString(Constant.USERID));
@@ -691,7 +745,7 @@ public class UpdateSqlite {
                     + Constant.QTY + ","
                     + Constant.CONSUMABLESTATE + ","
                     + Constant.CREATEDQTY + ","
-                    + Constant.CONSUMABLELOTID + ")");
+                    + CONSUMABLELOTID + ")");
             CONSUMABLELOT_insert.append(" VALUES( ?, ?, ?, ?, ?, ?, ?)");
             for (int i = 0; i < array.length(); i++) {
                 ConsumableLotData consumableLotData = new ConsumableLotData();
@@ -702,7 +756,7 @@ public class UpdateSqlite {
                 consumableLotData.setQTY(jsonObject.getString(Constant.QTY));
                 consumableLotData.setCONSUMABLESTATE(jsonObject.getString(Constant.CONSUMABLESTATE));
                 consumableLotData.setCREATEDQTY(jsonObject.getString(Constant.CREATEDQTY));
-                consumableLotData.setCONSUMABLELOTID(jsonObject.getString(Constant.CONSUMABLELOTID));
+                consumableLotData.setCONSUMABLELOTID(jsonObject.getString(CONSUMABLELOTID));
                 updateTableSF_CONSUMABLELOT(consumableLotData, CONSUMABLELOT_insert.toString());
             }
         } catch (JSONException e) {

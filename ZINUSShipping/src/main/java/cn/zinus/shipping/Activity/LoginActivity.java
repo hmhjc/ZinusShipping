@@ -113,6 +113,7 @@ public class LoginActivity extends BaseActivity {
         password = mPasswordView.getText().toString();
         Intent intent = new Intent(LoginActivity.this, MainNaviActivity.class);
         startActivity(intent);
+        this.finish();
     }
 
     public static String getAppVersionName(Context context) {

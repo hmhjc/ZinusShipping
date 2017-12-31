@@ -173,6 +173,10 @@
     <string name="LotNo">Lot No</string>
     <string name="product">产品</string>
     <string name="ContainerNo">货柜No</string>
-    <string name="SealNo">SealNo</string>
+    <string name="SealNo">封箱号</string>
+    <string name="ConsumableCount">品目数</string>
+    <string name="ORDERNO">指示号码</string>
+    <string name="ORDERTYPE">指示类型</string>
+    <string name="LINENO">产线编号</string>
 
 </resources>

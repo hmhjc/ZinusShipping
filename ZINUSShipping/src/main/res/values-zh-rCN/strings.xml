@@ -182,5 +182,15 @@
     <string name="ContainerSeq">货柜顺序</string>
     <string name="ShippedQTY">已经上车总数</string>
     <string name="ShipplanQTY">计划上车总数</string>
+    <string name="ShippingPlanDetail">计划信息</string>
+    <string name="BookingNo">提单号</string>
+    <string name="PlanDate">预计装柜日期</string>
+    <string name="ShippingPlanDate">预计装船日期</string>
+    <string name="ShippingEndPlanDate">入港截止日期</string>
+    <string name="ShippingEndDate">入港截止时间</string>
+    <string name="setContainerNoAndSealNo">设置柜号和封箱号</string>
+    <string name="productID">产品ID</string>
+    <string name="SKU">SKU</string>
+    <string name="trackOutTime">生产完成日</string>
 
 </resources>

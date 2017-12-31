@@ -42,6 +42,7 @@ public class ShippingFragment extends KeyDownFragment {
     protected List<KeyDownFragment> lstFrg = new ArrayList<KeyDownFragment>();
     protected List<String> lstTitles = new ArrayList<String>();
     public ShippingPlanFragment mShippingPlanFragment;
+    public ShippingPlanDetailFragment mShippingPlanDetailFragment;
     public LotShippingFragment mLotShippingFragment;
     private MainNaviActivity mContext;
     private String UserID;
@@ -126,8 +127,10 @@ public class ShippingFragment extends KeyDownFragment {
     //region initViewPageData
     private void initViewPageData() {
         lstFrg.add(mShippingPlanFragment);
+        lstFrg.add(mShippingPlanDetailFragment);
         lstFrg.add(mLotShippingFragment);
         lstTitles.add(getString(R.string.ShippingPlan));
+        lstTitles.add(getString(R.string.ShippingPlanDetail));
         lstTitles.add(getString(R.string.lotShipping));
     }
     //endregion
@@ -141,6 +144,7 @@ public class ShippingFragment extends KeyDownFragment {
     //region initview
     private void initview() {
         mShippingPlanFragment = new ShippingPlanFragment();
+        mShippingPlanDetailFragment = new ShippingPlanDetailFragment();
         mLotShippingFragment = new LotShippingFragment();
     }
     //endregion
@@ -164,7 +168,7 @@ public class ShippingFragment extends KeyDownFragment {
     @Override
     public void myOnKeyDown() {
         //当前页面是Item的时候才触发
-       if (viewPager.getCurrentItem() == 1) {
+       if (viewPager.getCurrentItem() == 2) {
             mLotShippingFragment.myOnKeyDown();
         }
         super.myOnKeyDown();
@@ -174,7 +178,7 @@ public class ShippingFragment extends KeyDownFragment {
 
     @Override
     public void myOnKeyuUp() {
-      if (viewPager.getCurrentItem() == 1) {
+      if (viewPager.getCurrentItem() == 2) {
             mLotShippingFragment.myOnKeyuUp();
         }
         super.myOnKeyuUp();

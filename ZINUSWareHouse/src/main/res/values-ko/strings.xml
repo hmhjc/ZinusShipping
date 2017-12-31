@@ -186,5 +186,9 @@
     <string name="product">product</string>
     <string name="ContainerNo">ContainerNo</string>
     <string name="SealNo">SealNo</string>
+    <string name="ConsumableCount">ConsumableCount</string>
+    <string name="ORDERNO">ORDERNO</string>
+    <string name="ORDERTYPE">ORDERTYPE</string>
+    <string name="LINENO">LINENO</string>
 
 </resources>

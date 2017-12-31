@@ -219,7 +219,7 @@ public class SettingFragment extends KeyDownFragment implements View.OnClickList
     }
 
     private void cleanDB() {
-        String DeleteTableLOTSHIPPING = "DELETE  FROM " + Constant.SF_LOTSHIPPING;
+        String DeleteTableLOTSHIPPING = "DELETE  FROM " + Constant.SF_SHIPPINGLOT;
         SQLiteStatement statementLOTSHIPPING = db.compileStatement(DeleteTableLOTSHIPPING);
         try {
             statementLOTSHIPPING.executeInsert();

@@ -10,21 +10,7 @@
         style="@style/listviewverticalsplit"/>
 
     <TextView
-        android:id="@+id/tv_PoNo"
-        style="@style/listviewcontext"/>
-
-    <View
-        style="@style/listviewverticalsplit"/>
-
-    <TextView
-        android:id="@+id/tv_ShippingPlanSeq"
-        style="@style/listviewcontext"/>
-
-    <View
-        style="@style/listviewverticalsplit"/>
-
-    <TextView
-        android:id="@+id/tv_ContainerSeq"
+        android:id="@+id/tv_BookingNo"
         style="@style/listviewcontext"/>
 
     <View
@@ -38,35 +24,28 @@
         style="@style/listviewverticalsplit"/>
 
     <TextView
-        android:id="@+id/tv_Product"
+        android:id="@+id/tv_PlanDate"
         style="@style/listviewcontext"/>
 
     <View
         style="@style/listviewverticalsplit"/>
 
     <TextView
-        android:id="@+id/tv_PlanQty"
+        android:id="@+id/tv_ShippingPlanDate"
         style="@style/listviewcontext"/>
 
     <View
         style="@style/listviewverticalsplit"/>
 
     <TextView
-        android:id="@+id/tv_ContainerSpec"
+        android:id="@+id/tv_ShippingEndPlanDate"
         style="@style/listviewcontext"/>
 
     <View
         style="@style/listviewverticalsplit"/>
 
     <TextView
-        android:id="@+id/tv_PlanStartTime"
-        style="@style/listviewcontext"/>
-
-    <View
-        style="@style/listviewverticalsplit"/>
-
-    <TextView
-        android:id="@+id/tv_PlanEndTime"
+        android:id="@+id/tv_ShippingEndDate"
         style="@style/listviewcontext"/>
 
     <View

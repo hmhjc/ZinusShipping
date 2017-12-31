@@ -45,14 +45,7 @@
         style="@style/listviewverticalsplit"/>
 
     <TextView
-        android:id="@+id/tv_Inspectionresult"
-        style="@style/listviewcontext"/>
-
-    <View
-        style="@style/listviewverticalsplit"/>
-
-    <TextView
-        android:id="@+id/tv_Urgencytype"
+        android:id="@+id/tv_ConsumableCount"
         style="@style/listviewcontext"/>
 
 </LinearLayout>

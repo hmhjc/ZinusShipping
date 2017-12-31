@@ -30,8 +30,7 @@ public class InboundorderListViewAdapter extends BaseAdapter {
         public TextView tvTempInboundDate;
         public TextView tvInboundDate;
         public TextView tvInboundState;
-        public TextView tvInspectionresult;
-        public TextView tvUrgencytype;
+        public TextView tvConsumableCount;
     }
 
     public InboundorderListViewAdapter(Context context, List<InboundOrderData> listMap) {
@@ -67,8 +66,7 @@ public class InboundorderListViewAdapter extends BaseAdapter {
             listItemView.tvTempInboundDate = (TextView) convertView.findViewById(R.id.tv_TempInboundDate);
             listItemView.tvInboundDate = (TextView) convertView.findViewById(R.id.tv_InboundDate);
             listItemView.tvInboundState = (TextView) convertView.findViewById(R.id.tv_InboundState);
-            listItemView.tvInspectionresult = (TextView) convertView.findViewById(R.id.tv_Inspectionresult);
-            listItemView.tvUrgencytype = (TextView) convertView.findViewById(R.id.tv_Urgencytype);
+            listItemView.tvConsumableCount = (TextView) convertView.findViewById(R.id.tv_ConsumableCount);
             convertView.setTag(listItemView);
         } else {
             listItemView = (ListItemView) convertView.getTag();
@@ -80,9 +78,8 @@ public class InboundorderListViewAdapter extends BaseAdapter {
         listItemView.tvScheduleDate.setText(data.getSCHEDULEDATE());
         listItemView.tvTempInboundDate.setText(data.getTEMPINBOUNDDATE());
         listItemView.tvInboundDate.setText(data.getINBOUNDDATE());
-        listItemView.tvInboundState.setText(data.getINBOUNDSTATE());
-        listItemView.tvInspectionresult.setText(data.getINSPECTIONRESULT());
-        listItemView.tvUrgencytype.setText(data.getURGENCYTYPE());
+        listItemView.tvInboundState.setText(data.getSTATENAME());
+        listItemView.tvConsumableCount.setText(data.getCONSUMABLECOUNT());
 
         return convertView;
     }

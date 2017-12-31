@@ -17,6 +17,25 @@ public class LotData implements Serializable {
     private String QTY;
     private String RFID;
     private String ISPDASHIPPING;
+    private String TRACKOUTTIME;
+    private String PRODUCTDEFID;
+    private String PRODUCTDEFNAME;
+
+    public String getPRODUCTDEFID() {
+        return PRODUCTDEFID;
+    }
+
+    public void setPRODUCTDEFID(String PRODUCTDEFID) {
+        this.PRODUCTDEFID = PRODUCTDEFID;
+    }
+
+    public String getPRODUCTDEFNAME() {
+        return PRODUCTDEFNAME;
+    }
+
+    public void setPRODUCTDEFNAME(String PRODUCTDEFNAME) {
+        this.PRODUCTDEFNAME = PRODUCTDEFNAME;
+    }
 
     @Override
     public String toString() {
@@ -29,7 +48,18 @@ public class LotData implements Serializable {
                 ", QTY='" + QTY + '\'' +
                 ", RFID='" + RFID + '\'' +
                 ", ISPDASHIPPING='" + ISPDASHIPPING + '\'' +
+                ", TRACKOUTTIME='" + TRACKOUTTIME + '\'' +
+                ", PRODUCTDEFID='" + PRODUCTDEFID + '\'' +
+                ", PRODUCTDEFNAME='" + PRODUCTDEFNAME + '\'' +
                 '}';
+    }
+
+    public String getTRACKOUTTIME() {
+        return TRACKOUTTIME;
+    }
+
+    public void setTRACKOUTTIME(String TRACKOUTTIME) {
+        this.TRACKOUTTIME = TRACKOUTTIME;
     }
 
     public String getISPDASHIPPING() {

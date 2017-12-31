@@ -22,6 +22,60 @@ public class ConsumeLotInboundData implements Serializable{
     private String CONSUMABLEDEFNAME;
     private String CONSUMABLELOTID;
     private int backgroundColor;
+    private String ORDERNO;
+    private String ORDERTYPE;
+    private String LINENO;
+    private String TAGID;
+    private String TAGQTY;
+    private String ORDERCOMPANY;
+
+    public String getORDERCOMPANY() {
+        return ORDERCOMPANY;
+    }
+
+    public void setORDERCOMPANY(String ORDERCOMPANY) {
+        this.ORDERCOMPANY = ORDERCOMPANY;
+    }
+
+    public String getTAGID() {
+        return TAGID;
+    }
+
+    public void setTAGID(String TAGID) {
+        this.TAGID = TAGID;
+    }
+
+    public String getTAGQTY() {
+        return TAGQTY;
+    }
+
+    public void setTAGQTY(String TAGQTY) {
+        this.TAGQTY = TAGQTY;
+    }
+
+    public String getORDERNO() {
+        return ORDERNO;
+    }
+
+    public void setORDERNO(String ORDERNO) {
+        this.ORDERNO = ORDERNO;
+    }
+
+    public String getORDERTYPE() {
+        return ORDERTYPE;
+    }
+
+    public void setORDERTYPE(String ORDERTYPE) {
+        this.ORDERTYPE = ORDERTYPE;
+    }
+
+    public String getLINENO() {
+        return LINENO;
+    }
+
+    public void setLINENO(String LINENO) {
+        this.LINENO = LINENO;
+    }
 
     public int getBackgroundColor() {
         return backgroundColor;
@@ -133,11 +187,24 @@ public class ConsumeLotInboundData implements Serializable{
     @Override
     public String toString() {
         return "ConsumeLotInboundData{" +
-                "INQTY='" + INQTY + '\'' +
+                "CONSUMABLEDEFID='" + CONSUMABLEDEFID + '\'' +
+                ", CONSUMABLEDEFVERSION='" + CONSUMABLEDEFVERSION + '\'' +
+                ", WAREHOUSEID='" + WAREHOUSEID + '\'' +
+                ", INQTY='" + INQTY + '\'' +
+                ", INBOUNDNO='" + INBOUNDNO + '\'' +
+                ", INBOUNDSTATE='" + INBOUNDSTATE + '\'' +
+                ", VALIDSTATE='" + VALIDSTATE + '\'' +
                 ", UNIT='" + UNIT + '\'' +
+                ", INBOUNDDATE='" + INBOUNDDATE + '\'' +
                 ", PLANQTY='" + PLANQTY + '\'' +
                 ", CONSUMABLEDEFNAME='" + CONSUMABLEDEFNAME + '\'' +
                 ", CONSUMABLELOTID='" + CONSUMABLELOTID + '\'' +
+                ", backgroundColor=" + backgroundColor +
+                ", ORDERNO='" + ORDERNO + '\'' +
+                ", ORDERTYPE='" + ORDERTYPE + '\'' +
+                ", LINENO='" + LINENO + '\'' +
+                ", TAGID='" + TAGID + '\'' +
+                ", TAGQTY='" + TAGQTY + '\'' +
                 '}';
     }
 }

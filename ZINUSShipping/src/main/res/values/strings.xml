@@ -196,6 +196,23 @@
     <string name="WarehouseSpinner">SELECT * FROM SF_WAREHOUSE \n ORDER BY WAREHOUSEID</string>
     <string name="AreaSpinner">SELECT AREAID,AREANAME FROM SF_AREA \n ORDER BY AREAID</string>
     <string name="ConsumabledefIDSpinner">SELECT distinct CONSUMABLEDEFID FROM SF_CONSUMABLEDEFINITION ORDER BY CONSUMABLEDEFID</string>
+    <string name="ShippingPlanSEQSpinner">SELECT distinct SHIPPINGPLANSEQ                          \n
+                                          FROM SF_SHIPPINGPLANDETAIL                               \n
+                                          WHERE 1 = 1                                       \n
+				                          AND SHIPPINGPLANNO = \'%1$s\'                 \n
+				                          ORDER BY SHIPPINGPLANSEQ
+    </string>
+
+    <string name="ContainerSEQSpinner">SELECT SHIPPINGPLANNO                                     \n
+                                      , SHIPPINGPLANSEQ                                           \n
+                                      , CONTAINERSEQ                                            \n
+				                      , CONTAINERSEQ || \' (QTY : \' || SUM(PLANQTY) || \')\' AS CODENAME  \n
+                                      FROM SF_SHIPPINGPLANDETAIL
+				                      WHERE 1 = 1
+				                        AND SHIPPINGPLANNO = \'%1$s\'
+				                        AND SHIPPINGPLANSEQ = \'%2$s\'
+				                        GROUP BY SHIPPINGPLANNO, SHIPPINGPLANSEQ, CONTAINERSEQ
+    </string>
 
     <!--StockCheck-->
     <string name="GetStockCheckQuery">SELECT * FROM SF_STOCKCHECK \n WHERE 1=1 \n AND CHECKMONTH  = \'%1$s\' \n</string>
@@ -262,71 +279,88 @@
     </string>
 
     <!--Shipping-->
-    <string name="GetShippingPlanQueryAll"> SELECT SHIPPINGPLANNO,POID,SHIPPINGPLANSEQ,CONTAINERSEQ,     \n
-                                                   CUSTOMERID,PRODUCTDEFNAME,PLANQTY,      \n
-                                                   CONTAINERSPEC,PLANSTARTTIME,             \n
-                                                   PLANENDTIME,STATE,LINENO,PRODUCTDEFID,PRODUCTDEFVERSION,ORDERTYPE,ORDERNO  \n                        \n
-                                            FROM SF_SHIPPINGPLAN                                \n
+    <string name="GetShippingPlanQueryAll"> SELECT SHIPPINGPLANNO,BOOKINGNO,CUSTOMERID,PLANDATE,  \n
+                                                   SHIPPINGPLANDATE,SHIPPINGENDPLANDATE,          \n
+                                                   SHIPPINGENDDATE,STATE                         \n
+                                            FROM SF_SHIPPINGPLAN                                  \n
                                             WHERE 1=1                                             \n
-                                            AND ISOISAVE IS NOT \'Y\'                          \n
-                                            AND PLANSTARTTIME &gt; \'%1$s\'                     \n
-                                            AND PLANSTARTTIME &lt; \'%2$s\'                     \n
-                                            UNION                                                 \n
-                                            SELECT SHIPPINGPLANNO,POID,SHIPPINGPLANSEQ,CONTAINERSEQ,      \n
-                                                   CUSTOMERID,PRODUCTDEFNAME,PLANQTY,      \n
-                                                   CONTAINERSPEC,PLANSTARTTIME,             \n
-                                                   PLANENDTIME,STATE ,LINENO,PRODUCTDEFID,PRODUCTDEFVERSION,ORDERTYPE,ORDERNO \n                       \n
-                                            FROM SF_SHIPPINGPLAN                                \n
-                                            WHERE 1=1                                             \n
-                                            AND STATE IS NOT \'Finished\'                          \n
-                                            AND ISOISAVE = \'Y\'                                 \n
-                                            AND PLANSTARTTIME &gt; \'%1$s\'                     \n
-                                            AND PLANSTARTTIME &lt; \'%2$s\'                     \n
+                                            AND PLANDATE &gt; \'%1$s\'                          \n
+                                            AND PLANDATE &lt; \'%2$s\'                          \n
     </string>
 
-    <string name="GetShippingPlanQueryFinished">
-                                            SELECT SP.SHIPPINGPLANNO,POID,SHIPPINGPLANSEQ,CONTAINERSEQ,     \n
-                                                   SP.CUSTOMERID,SP.PRODUCTDEFNAME,SP.PLANQTY,      \n
-                                                   SP.CONTAINERSPEC,SP.PLANSTARTTIME,             \n
-                                                   SP.PLANENDTIME,SP.STATE,SP.LINENO,SP.PRODUCTDEFID,
-                                                   SP.PRODUCTDEFVERSION,SP.ORDERTYPE,SP.ORDERNO                         \n
-                                            FROM SF_SHIPPINGPLAN SP                               \n
+    <!--<string name="GetShippingPlanQueryFinished">-->
+                                            <!--SELECT SP.SHIPPINGPLANNO,POID,SHIPPINGPLANSEQ,CONTAINERSEQ,     \n-->
+                                                   <!--SP.CUSTOMERID,SP.PRODUCTDEFNAME,SP.PLANQTY,      \n-->
+                                                   <!--SP.CONTAINERSPEC,SP.PLANSTARTTIME,             \n-->
+                                                   <!--SP.PLANENDTIME,SP.STATE,SP.LINENO,SP.PRODUCTDEFID,-->
+                                                   <!--SP.PRODUCTDEFVERSION,SP.ORDERTYPE,SP.ORDERNO                         \n-->
+                                            <!--FROM SF_SHIPPINGPLAN SP                               \n-->
+                                            <!--WHERE 1=1                                             \n-->
+                                            <!--AND SP.STATE = \'Finished\'                               \n-->
+                                            <!--AND SP.ISOISAVE IS NOT \'Y\'                            \n-->
+                                            <!--AND SP.PLANSTARTTIME &gt; \'%1$s\'                     \n-->
+                                            <!--AND SP.PLANSTARTTIME &lt; \'%2$s\'                     \n-->
+    <!--</string>-->
+    <string name="GetShippingPlanQueryNormal">SELECT SHIPPINGPLANNO,BOOKINGNO,CUSTOMERID,PLANDATE,  \n
+                                                   SHIPPINGPLANDATE,SHIPPINGENDPLANDATE,          \n
+                                                   SHIPPINGENDDATE,STATE                        \n
+                                            FROM SF_SHIPPINGPLAN                                  \n
                                             WHERE 1=1                                             \n
-                                            AND SP.STATE = \'Finished\'                               \n
-                                            AND SP.ISOISAVE IS NOT \'Y\'                            \n
-                                            AND SP.PLANSTARTTIME &gt; \'%1$s\'                     \n
-                                            AND SP.PLANSTARTTIME &lt; \'%2$s\'                     \n
-    </string>
-    <string name="GetShippingPlanQueryNormal">
-                                            SELECT SP.SHIPPINGPLANNO,POID,SHIPPINGPLANSEQ,CONTAINERSEQ,    \n
-                                                   SP.CUSTOMERID,SP.PRODUCTDEFNAME,SP.PLANQTY,      \n
-                                                   SP.CONTAINERSPEC,SP.PLANSTARTTIME,             \n
-                                                   SP.PLANENDTIME,SP.STATE,SP.LINENO,SP.PRODUCTDEFID,
-                                                   SP.PRODUCTDEFVERSION,SP.ORDERTYPE,SP.ORDERNO                         \n
-                                            FROM SF_SHIPPINGPLAN SP                               \n
-                                            WHERE 1=1                                             \n
-                                            AND SP.PLANSTARTTIME &gt; \'%1$s\'                     \n
-                                            AND SP.PLANSTARTTIME &lt; \'%2$s\'                     \n
-                                            AND SP.STATE = \'%3$s\'                           \n
+                                            AND STATE = \'%1$s\'                               \n
+                                            AND PLANDATE &gt; \'%2$s\'                          \n
+                                            AND PLANDATE &lt; \'%3$s\'                          \n
     </string>
     <string name="gspOrderBy">ORDER BY SHIPPINGPLANNO</string>
 
-    <string name="GetlOTShippingQuery">SELECT  A.LOTID,A.RFID ,A.QTY            \n
+    <string name="GetPOQuery"> SELECT SHIPPINGPLANNO                                   \n
+			           	            , SHIPPINGPLANSEQ                                   \n
+			           	            , CONTAINERSEQ                                   \n
+			           	            , POID                                   \n
+                                    , PRODUCTDEFID                            \n
+                                    , PRODUCTDEFVERSION                            \n
+                                    , PRODUCTDEFNAME                      \n
+                                    , ORDERNO                                     \n
+                                    , ORDERTYPE                                     \n
+                                    , LINENO                                      \n
+			           	            , SUM(PLANQTY) AS QTY                                   \n
+                                    , MAX(CONTAINERNO) AS CONTAINERNO                            \n
+                                    , MAX(SEALNO) AS SEALNO                                 \n
+			           	       FROM SF_SHIPPINGPLANDETAIL                                   \n
+			           	       WHERE 1 = 1                                   \n
+			           	       AND SHIPPINGPLANNO = \'%1$s\'                                   \n
+			           	       AND SHIPPINGPLANSEQ = \'%2$s\'                                   \n
+			           	       AND CONTAINERSEQ = \'%3$s\'                                   \n
+			           	       GROUP BY SHIPPINGPLANNO, SHIPPINGPLANSEQ, CONTAINERSEQ, POID
+    </string>
+
+    <string name="GetlOTNoShippingQuery">SELECT  A.LOTID,A.RFID ,A.QTY,A.TRACKOUTTIME               \n
                                            FROM SF_LOT A                                          \n
                                         WHERE 1=1                                                 \n
                                         AND A.PURCHASEORDERID = \'%1$s\'                          \n
-                                        AND A.LOTSTATE = \'Finished\'                             \n
+                                        AND A.LOTID NOT IN (SELECT LOTID FROM SF_SHIPPINGLOT       \n
+                                                               WHERE VALIDSTATE = \'Valid\' )     \n
                                         ORDER BY A.LOTID                                          \n
     </string>
 
-    <string name="GetlOTShipedQuery">SELECT LS.LOTID,LS.CONTAINERNO,LS.SEALNO,LS.QTY    \n
-                                           FROM SF_LOTSHIPPING LS                                 \n
+    <string name="GetlOTShippingQuery">SELECT  A.LOTID,A.RFID ,A.QTY,A.TRACKOUTTIME               \n
+                                           FROM SF_LOT A                                          \n
                                         WHERE 1=1                                                 \n
-                                        AND LS.SHIPPINGPLANNO  = \'%1$s\'                          \n
-                                        AND LS.SHIPPINGPLANSEQ  = \'%2$s\'                          \n
-                                        AND LS.CONTAINERSEQ  = \'%3$s\'                          \n
-                                        AND LS.VALIDSTATE = \'Valid\'                             \n
-                                        ORDER BY LS.LOTID                                          \n
+                                        AND A.PURCHASEORDERID = \'%1$s\'                          \n
+                                        AND A.LOTID IN (SELECT LOTID FROM SF_SHIPPINGLOT           \n
+                                                                WHERE VALIDSTATE = \'Valid\' )     \n
+                                        ORDER BY A.LOTID                                          \n
+    </string>
+
+    <string name="GetlOTShipedQuery">SELECT SL.LOTID,SL.PRODUCTDEFID,L.TRACKOUTTIME,SL.QTY    \n
+                                           FROM SF_SHIPPINGLOT SL                           \n
+                                     LEFT JOIN SF_LOT L ON L.LOTID = SL.LOTID                            \n
+                                        WHERE 1=1                                                  \n
+                                        AND SL.SHIPPINGPLANNO  =\'%1$s\'                      \n
+                                        AND SL.SHIPPINGPLANSEQ  = \'%2$s\'                     \n
+                                        AND SL.CONTAINERSEQ  = \'%3$s\'                           \n
+                                        AND SL.POID  = \'%4$s\'                           \n
+                                        AND SL.VALIDSTATE = \'Valid\'                              \n
+                                        ORDER BY SL.LOTID                                          \n
     </string>
 
     <string name="GetShippinglOTQuery">SELECT  A.LOTID,A.RFID ,B.CONTAINERNO ,                    \n
@@ -424,6 +458,16 @@
     <string name="ContainerSeq">ContainerSeq</string>
     <string name="ShippedQTY">ShippedQTY</string>
     <string name="ShipplanQTY">ShipplanQTY</string>
+    <string name="ShippingPlanDetail">ShippingPlanDetail</string>
+    <string name="BookingNo">BookingNo</string>
+    <string name="PlanDate">PlanDate</string>
+    <string name="ShippingPlanDate">ShippingPlanDate</string>
+    <string name="ShippingEndPlanDate">ShippingEndPlanDate</string>
+    <string name="ShippingEndDate">ShippingEndDate</string>
+    <string name="setContainerNoAndSealNo">setContainerNoAndSealNo</string>
+    <string name="productID">productID</string>
+    <string name="SKU">productName</string>
+    <string name="trackOutTime">trackOutTime</string>
 
 
 </resources>

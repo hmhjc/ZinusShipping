@@ -93,10 +93,11 @@ public class MainMenuFragment extends KeyDownFragment implements View.OnClickLis
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Intent intent = new Intent(mContext, LoginActivity.class);
-                        mContext.startActivity(intent);
                         mContext.freeBarcode();
                         mContext.freeUHF();
                         mContext.finish();
+                        mContext.startActivity(intent);
+                        android.os.Process.killProcess(android.os.Process.myPid());
                     }
                 }).
                 setNeutralButton("取消", new DialogInterface.OnClickListener() {
