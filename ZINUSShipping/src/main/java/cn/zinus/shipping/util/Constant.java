@@ -272,9 +272,11 @@ public class Constant {
     public static final String IYNCSF_LOT = "718";
     public static final String IYNCSF_SHIPPINGPLANDETAIL = "719";
 
+    public static final String UPLOADSHIPPINGPLANDETAILINFO = "600";
     public static final String UPLOADSHIPPINGPLANINFO = "601";
     public static final String UPLOADLOTSHIPPINGINFO = "602";
 
+    public static final String UPLOADSHIPPINGPLANDETAIL = "680";
     public static final String UPLOADSHIPPINGPLAN = "681";
     public static final String UPLOADLOTSHIPPING = "682";
 

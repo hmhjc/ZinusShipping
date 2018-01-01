@@ -3,7 +3,6 @@ package cn.zinus.shipping.Fragment;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -13,7 +12,6 @@ import android.widget.LinearLayout;
 
 import org.greenrobot.eventbus.EventBus;
 
-import cn.zinus.shipping.Activity.LoginActivity;
 import cn.zinus.shipping.Activity.MainNaviActivity;
 import cn.zinus.shipping.R;
 
@@ -92,11 +90,7 @@ public class MainMenuFragment extends KeyDownFragment implements View.OnClickLis
                 setNegativeButton("确定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(mContext, LoginActivity.class);
-                        mContext.freeBarcode();
-                        mContext.freeUHF();
                         mContext.finish();
-                        mContext.startActivity(intent);
                         android.os.Process.killProcess(android.os.Process.myPid());
                     }
                 }).

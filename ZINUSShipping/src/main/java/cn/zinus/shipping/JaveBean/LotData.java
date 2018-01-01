@@ -11,7 +11,6 @@ import java.io.Serializable;
 public class LotData implements Serializable {
     private String LOTID;
     private String PURCHASEORDERID;
-    private String PROCESSSEGMENTID;
     private String LOTSTATE;
     private String VALIDSTATE;
     private String QTY;
@@ -20,6 +19,22 @@ public class LotData implements Serializable {
     private String TRACKOUTTIME;
     private String PRODUCTDEFID;
     private String PRODUCTDEFNAME;
+
+    @Override
+    public String toString() {
+        return "LotData{" +
+                "LOTID='" + LOTID + '\'' +
+                ", PURCHASEORDERID='" + PURCHASEORDERID + '\'' +
+                ", LOTSTATE='" + LOTSTATE + '\'' +
+                ", VALIDSTATE='" + VALIDSTATE + '\'' +
+                ", QTY='" + QTY + '\'' +
+                ", RFID='" + RFID + '\'' +
+                ", ISPDASHIPPING='" + ISPDASHIPPING + '\'' +
+                ", TRACKOUTTIME='" + TRACKOUTTIME + '\'' +
+                ", PRODUCTDEFID='" + PRODUCTDEFID + '\'' +
+                ", PRODUCTDEFNAME='" + PRODUCTDEFNAME + '\'' +
+                '}';
+    }
 
     public String getPRODUCTDEFID() {
         return PRODUCTDEFID;
@@ -35,23 +50,6 @@ public class LotData implements Serializable {
 
     public void setPRODUCTDEFNAME(String PRODUCTDEFNAME) {
         this.PRODUCTDEFNAME = PRODUCTDEFNAME;
-    }
-
-    @Override
-    public String toString() {
-        return "LotData{" +
-                "LOTID='" + LOTID + '\'' +
-                ", PURCHASEORDERID='" + PURCHASEORDERID + '\'' +
-                ", PROCESSSEGMENTID='" + PROCESSSEGMENTID + '\'' +
-                ", LOTSTATE='" + LOTSTATE + '\'' +
-                ", VALIDSTATE='" + VALIDSTATE + '\'' +
-                ", QTY='" + QTY + '\'' +
-                ", RFID='" + RFID + '\'' +
-                ", ISPDASHIPPING='" + ISPDASHIPPING + '\'' +
-                ", TRACKOUTTIME='" + TRACKOUTTIME + '\'' +
-                ", PRODUCTDEFID='" + PRODUCTDEFID + '\'' +
-                ", PRODUCTDEFNAME='" + PRODUCTDEFNAME + '\'' +
-                '}';
     }
 
     public String getTRACKOUTTIME() {
@@ -100,14 +98,6 @@ public class LotData implements Serializable {
 
     public void setLOTID(String LOTID) {
         this.LOTID = LOTID;
-    }
-
-    public String getPROCESSSEGMENTID() {
-        return PROCESSSEGMENTID;
-    }
-
-    public void setPROCESSSEGMENTID(String PROCESSSEGMENTID) {
-        this.PROCESSSEGMENTID = PROCESSSEGMENTID;
     }
 
     public String getLOTSTATE() {

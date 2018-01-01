@@ -43,6 +43,15 @@ public class ShippingPlanDetailData implements Serializable {
     private String STATE ;
     private String WORKINGSHIFT ;
     private String AREAID ;
+    private String LOADEDQTY ;
+
+    public String getLOADEDQTY() {
+        return LOADEDQTY;
+    }
+
+    public void setLOADEDQTY(String LOADEDQTY) {
+        this.LOADEDQTY = LOADEDQTY;
+    }
 
     public String getPRODUCTDEFNAME() {
         return PRODUCTDEFNAME;

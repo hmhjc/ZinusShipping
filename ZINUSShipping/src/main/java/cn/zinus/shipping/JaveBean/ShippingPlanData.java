@@ -33,6 +33,23 @@ public class ShippingPlanData implements Serializable {
     private String  ISPDASHIPPING ;
     private String  ISOISAVE ;
 
+    @Override
+    public String toString() {
+        return "ShippingPlanData{" +
+                "SHIPPINGPLANNO='" + SHIPPINGPLANNO + '\'' +
+                ", PLANTID='" + PLANTID + '\'' +
+                ", CUSTOMERID='" + CUSTOMERID + '\'' +
+                ", BOOKINGNO='" + BOOKINGNO + '\'' +
+                ", PLANDATE='" + PLANDATE + '\'' +
+                ", SHIPPINGPLANDATE='" + SHIPPINGPLANDATE + '\'' +
+                ", SHIPPINGENDPLANDATE='" + SHIPPINGENDPLANDATE + '\'' +
+                ", SHIPPINGENDDATE='" + SHIPPINGENDDATE + '\'' +
+                ", STATE='" + STATE + '\'' +
+                ", ISPDASHIPPING='" + ISPDASHIPPING + '\'' +
+                ", ISOISAVE='" + ISOISAVE + '\'' +
+                '}';
+    }
+
     public String getSHIPPINGPLANNO() {
         return SHIPPINGPLANNO;
     }

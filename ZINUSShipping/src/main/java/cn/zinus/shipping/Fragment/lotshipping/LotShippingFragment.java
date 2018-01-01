@@ -366,6 +366,7 @@ public class LotShippingFragment extends KeyDownFragment implements View.OnClick
                 mLotData.setTRACKOUTTIME(cursorNoShippingLotDatalist.getString(cursorNoShippingLotDatalist.getColumnIndex(Constant.TRACKOUTTIME)));
                 mLotData.setPRODUCTDEFID(mPODate.getPRODUCTDEFID());
                 mLotData.setPRODUCTDEFNAME(mPODate.getPRODUCTDEFNAME());
+                mLotData.setPURCHASEORDERID(mPODate.getPOID());
                 mLotData.setVALIDSTATE(INVALID);
                 Log.e("没有装车的lot数据", mLotData.toString());
                 mLotDataList.add(mLotData);
@@ -384,6 +385,7 @@ public class LotShippingFragment extends KeyDownFragment implements View.OnClick
                 mLotData.setTRACKOUTTIME(cursorLotDatalist.getString(cursorLotDatalist.getColumnIndex(Constant.TRACKOUTTIME)));
                 mLotData.setPRODUCTDEFID(mPODate.getPRODUCTDEFID());
                 mLotData.setPRODUCTDEFNAME(mPODate.getPRODUCTDEFNAME());
+                mLotData.setPURCHASEORDERID(mPODate.getPOID());
                 mLotData.setVALIDSTATE(VALID);
                 Log.e("已经装车的lot数据", mLotData.toString());
                 mLotDataList.add(mLotData);
@@ -520,7 +522,7 @@ public class LotShippingFragment extends KeyDownFragment implements View.OnClick
                 break;
             case -1:
                 //已经存在了.
-                showToast(mContext, tagID + "在列表里已经存在了", 0);
+                showToast(mContext, tagID + "这个LOT已经装过车了", 0);
                 Log.e("已经存在了", "已经存在了");
                 break;
             default:

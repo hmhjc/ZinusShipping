@@ -1,6 +1,7 @@
 package cn.zinus.shipping.Fragment.lotshipping;
 
 import android.annotation.SuppressLint;
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.ColorDrawable;
@@ -43,6 +44,8 @@ import cn.zinus.shipping.util.Constant;
 import cn.zinus.shipping.util.DBManger;
 import cn.zinus.shipping.util.MyDateBaseHelper;
 
+import static cn.zinus.shipping.util.Constant.CONTAINERNO;
+import static cn.zinus.shipping.util.Constant.SEALNO;
 import static cn.zinus.shipping.util.Constant.UPDATEUI;
 
 /**
@@ -258,7 +261,16 @@ public class ShippingPlanDetailFragment extends KeyDownFragment {
                     date.setCONTAINERNO(etContainerNo.getText().toString());
                     date.setSEALNO(etSealNo.getText().toString());
                     mPODataList.set(i,date);
-                }
+               }
+                //修改sqlite中
+                ContentValues shippingPlanDetailValues = new ContentValues();
+                shippingPlanDetailValues.put(CONTAINERNO, etContainerNo.getText().toString());
+                shippingPlanDetailValues.put(SEALNO, etSealNo.getText().toString());
+                db.update(Constant.SF_SHIPPINGPLANDETAIL, shippingPlanDetailValues,
+                        "SHIPPINGPLANNO = ? AND SHIPPINGPLANSEQ = ? AND CONTAINERSEQ = ?"
+                        , new String[]{mShippingPlanData.getSHIPPINGPLANNO()
+                                ,((CodeData) spShippingPlanSEQ.getSelectedItem()).getCODEID()
+                                ,((CodeData) spContainerSEQ.getSelectedItem()).getCODEID()});
                 mPOListViewAdapter.notifyDataSetChanged();
 //                mcomsumeInboundDataList.set(position, tempdata);
 //                mConsumeInboundListViewAdapter.notifyDataSetChanged();

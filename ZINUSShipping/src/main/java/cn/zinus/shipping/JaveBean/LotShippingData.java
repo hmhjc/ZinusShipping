@@ -11,8 +11,6 @@ import java.io.Serializable;
 public class LotShippingData implements Serializable {
     private String LOTID;
     private String SHIPPINGPLANNO;
-    private String CONTAINERNO;
-    private String SEALNO;
     private String VALIDSTATE;
     private String QTY;
     private String SHIPPINGPLANSEQ;
@@ -22,7 +20,34 @@ public class LotShippingData implements Serializable {
     private String ORDERNO;
     private String PRODUCTDEFID;
     private String PRODUCTDEFVERSION;
+    private String PRODUCTDEFNAME;
     private String LINENO;
+    private String POID;
+    private String TRACKOUTTIME;
+
+    public String getTRACKOUTTIME() {
+        return TRACKOUTTIME;
+    }
+
+    public void setTRACKOUTTIME(String TRACKOUTTIME) {
+        this.TRACKOUTTIME = TRACKOUTTIME;
+    }
+
+    public String getPRODUCTDEFNAME() {
+        return PRODUCTDEFNAME;
+    }
+
+    public void setPRODUCTDEFNAME(String PRODUCTDEFNAME) {
+        this.PRODUCTDEFNAME = PRODUCTDEFNAME;
+    }
+
+    public String getPOID() {
+        return POID;
+    }
+
+    public void setPOID(String POID) {
+        this.POID = POID;
+    }
 
     public String getORDERTYPE() {
         return ORDERTYPE;
@@ -69,8 +94,6 @@ public class LotShippingData implements Serializable {
         return "LotShippingData{" +
                 "LOTID='" + LOTID + '\'' +
                 ", SHIPPINGPLANNO='" + SHIPPINGPLANNO + '\'' +
-                ", CONTAINERNO='" + CONTAINERNO + '\'' +
-                ", SEALNO='" + SEALNO + '\'' +
                 ", VALIDSTATE='" + VALIDSTATE + '\'' +
                 ", QTY='" + QTY + '\'' +
                 ", SHIPPINGPLANSEQ='" + SHIPPINGPLANSEQ + '\'' +
@@ -125,22 +148,6 @@ public class LotShippingData implements Serializable {
 
     public void setSHIPPINGPLANNO(String SHIPPINGPLANNO) {
         this.SHIPPINGPLANNO = SHIPPINGPLANNO;
-    }
-
-    public String getCONTAINERNO() {
-        return CONTAINERNO;
-    }
-
-    public void setCONTAINERNO(String CONTAINERNO) {
-        this.CONTAINERNO = CONTAINERNO;
-    }
-
-    public String getSEALNO() {
-        return SEALNO;
-    }
-
-    public void setSEALNO(String SEALNO) {
-        this.SEALNO = SEALNO;
     }
 
     public String getVALIDSTATE() {

@@ -384,22 +384,49 @@
                                     ORDER BY A.LOTID                                              \n
     </string>
 
-    <string name="GetUploadShipplanQuery"> SELECT   SHIPPINGPLANNO ,POID,LINENO,SHIPPINGPLANSEQ,
-                                                    CONTAINERSEQ,STATE,PRODUCTDEFID,PRODUCTDEFVERSION,
-                                                    ORDERTYPE,ORDERNO                             \n
-                                                 FROM SF_SHIPPINGPLAN A                           \n
-                                           WHERE 1=1                                              \n
-                                           AND ISPDASHIPPING = \'Y\'
+    <string name="GetUploadShipplanQuery"> SELECT   SHIPPINGPLANNO ,CUSTOMERID,BOOKINGNO   \n
+                                                   ,PLANDATE,SHIPPINGPLANDATE,SHIPPINGENDPLANDATE  \n
+                                                   ,SHIPPINGENDDATE,STATE                          \n
+                                                 FROM SF_SHIPPINGPLAN                              \n
+                                           WHERE 1=1                                               \n
+                                           AND ISPDASHIPPING = \'Y\'                               \n
     </string>
 
-    <string name="GetUploadlOTShipQuery"> SELECT LS.*,SP.PRODUCTDEFID,SP.PRODUCTDEFVERSION,SP.ORDERNO,SP.ORDERTYPE,SP.LINENO FROM
-                                          SF_LOTSHIPPING LS                           \n
-                                          INNER JOIN SF_SHIPPINGPLAN SP       \n
-                                          ON SP.SHIPPINGPLANNO = LS.SHIPPINGPLANNO       \n
-                                          AND SP.SHIPPINGPLANSEQ = LS.SHIPPINGPLANSEQ
-                                          AND SP.CONTAINERSEQ = LS.CONTAINERSEQ
-                                          WHERE 1=1
-                                          AND LS.VALIDSTATE = \'Valid\'                            \n
+    <string name="GetUploadShipplanDetailQuery"> SELECT SPD.SHIPPINGPLANNO,SPD.SHIPPINGPLANSEQ,SPD.CONTAINERSEQ    \n
+                                                  ,SPD.POID,SPD.CONTAINERSPEC,SPD.CONTAINERNO,SPD.SEALNO    \n
+                                                  ,SPD.COMPLETETIME,SPD.PLANQTY,SPD.PRODUCTDEFNAME    \n
+                                                  ,SPD.ORDERTYPE,SPD.ORDERNO,SPD.LINENO,SPD.PRODUCTDEFID,SPD.PRODUCTDEFVERSION    \n
+                                                  ,SPL.QTY AS LOADEDQTY   \n
+                                                  FROM SF_SHIPPINGPLANDETAIL SPD   \n
+                                                  LEFT JOIN (                                            \n
+                                                                               SELECT SHIPPINGPLANNO   \n
+                                                                                    , SHIPPINGPLANSEQ   \n
+                                                                                    , CONTAINERSEQ     \n
+                                                                                    , SUM(QTY) AS QTY     \n
+                                                                               FROM SF_SHIPPINGLOT     \n
+                                                                               WHERE 1 = 1     \n
+                                                                               AND VALIDSTATE = \'Valid\'     \n
+                                                                               GROUP BY SHIPPINGPLANNO, SHIPPINGPLANSEQ, CONTAINERSEQ        \n
+                                                                                    ) SPL     \n
+                                                                                   ON SPL.SHIPPINGPLANNO = SPD.SHIPPINGPLANNO     \n
+                                                                                  AND SPL.SHIPPINGPLANSEQ = SPD.SHIPPINGPLANSEQ     \n
+                                                                                  AND SPL.CONTAINERSEQ = SPD.CONTAINERSEQ     \n
+                                                                                   WHERE SPD.SHIPPINGPLANNO IN (SELECT SHIPPINGPLANNO      \n
+                                                                                   FROM SF_SHIPPINGPLAN      \n
+                                                                                   WHERE ISPDASHIPPING = \'Y\')     \n
+    </string>
+
+    <string name="GetUploadlOTShipQuery"> SELECT SL.*,SPD.PRODUCTDEFNAME,L.TRACKOUTTIME FROM                              \n
+                                          SF_SHIPPINGLOT SL                           \n
+                                          INNER JOIN SF_LOT L ON L.LOTID = SL.LOTID                 \n
+                                          INNER JOIN SF_SHIPPINGPLANDETAIL SPD                 \n
+                                          ON SPD.SHIPPINGPLANNO = SL.SHIPPINGPLANNO                  \n
+                                          AND SPD.SHIPPINGPLANSEQ = SL.SHIPPINGPLANSEQ                  \n
+                                          AND SPD.CONTAINERSEQ = SL.CONTAINERSEQ                  \n
+                                          AND SPD.POID = SL.POID                  \n
+                                          WHERE SL.SHIPPINGPLANNO IN (SELECT SHIPPINGPLANNO    \n
+                                                                             FROM SF_SHIPPINGPLAN    \n
+                                                                             WHERE  ISPDASHIPPING = \'Y\')    \n
     </string>
 
     <string name="ChangeLanguage">ChangeLanguage</string>
