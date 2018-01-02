@@ -168,6 +168,7 @@ public class Constant {
     public static final String SHIPPINGENDPLANDATE  = "SHIPPINGENDPLANDATE";
     public static final String SHIPPINGENDDATE  = "SHIPPINGENDDATE";
     public static final String TRACKOUTTIME  = "TRACKOUTTIME";
+    public static final String COUNT  = "COUNT";
 
     //SF_SHIPPINGPLANDETAIL
     public static final String SF_SHIPPINGPLANDETAIL = "SF_SHIPPINGPLANDETAIL";
@@ -219,6 +220,8 @@ public class Constant {
 
     //通过USB Socket通信
     public static final int SOCKETLENGTH = 3;
+     public static final String PDAALUPLOAD = "Y";
+     public static final String PDANOTALUPLOAD = "N";
     public static final String UPDATESHIPPINGSTART = "880";
     public static final String UPDATESTOCKINSTART = "881";
     public static final String UPDATESTOCKOUTSTART = "882";
@@ -251,6 +254,7 @@ public class Constant {
     public static final String SYNCSF_WAREHOUSE = "817";
     public static final String SYNCSF_LOT = "818";
     public static final String SYNCSF_SHIPPINGPLANDETAIL = "819";
+    public static final String SYNCPDASAVING = "820";
 
     public static final String IYNCSF_CODE = "701";
     public static final String IYNCSF_INBOUNDORDER = "702";
@@ -271,6 +275,7 @@ public class Constant {
     public static final String IYNCSF_WAREHOUSE = "717";
     public static final String IYNCSF_LOT = "718";
     public static final String IYNCSF_SHIPPINGPLANDETAIL = "719";
+    public static final String IYNCPDASAVING = "720";
 
     public static final String UPLOADSHIPPINGPLANDETAILINFO = "600";
     public static final String UPLOADSHIPPINGPLANINFO = "601";

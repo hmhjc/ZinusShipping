@@ -204,13 +204,17 @@
     <string name="gscOrderBy">ORDER BY CHECKMONTH,WAREHOUSEID,STATENAME</string>
 
     <string name="GetStockCheckDetailQuery">SELECT SC.WAREHOUSEID, SC.UNIT, SC.QTY, SC.CHECKQTY, SC.CONSUMABLEDEFNAME \n
+                                                   ,SC.CONSUMABLEDEFID,SC.CONSUMABLEDEFVERSION,SC.CHECKMONTH     \n
                                             FROM SF_STOCKCHECKDETAIL SC \n
                                             WHERE 1=1 AND CHECKMONTH = \'%1$s\' AND WAREHOUSEID = \'%2$s\'
     </string>
 
-    <string name="GetStockLotCheckDetailQuery">SELECT SLC.WAREHOUSEID, SLC.CONSUMABLELOTID, SLC.UNIT, SLC.QTY, SLC.CHECKQTY, SLC.CONSUMABLEDEFNAME \n
+    <string name="GetStockLotCheckDetailQuery">SELECT SLC.WAREHOUSEID, SLC.CONSUMABLELOTID, SLC.UNIT    \n
+                                                    , SLC.QTY, SLC.CHECKQTY, SLC.CONSUMABLEDEFNAME       \n
+                                                    ,SLC.TAGID,SLC.TAGQTY,SLC.CONSUMABLEDEFID,SLC.CONSUMABLEDEFVERSION,SLC.CHECKMONTH     \n
                                                FROM SF_STOCKLOTCHECKDETAIL SLC \n
-                                            WHERE 1=1 AND CHECKMONTH = \'%1$s\' AND WAREHOUSEID = \'%2$s\'
+                                            WHERE 1=1 AND SLC.CHECKMONTH = \'%1$s\' AND SLC.WAREHOUSEID = \'%2$s\' \n
+                                            ORDER BY SLC.CONSUMABLELOTID
     </string>
 
     <!--Inbound-->
@@ -249,6 +253,63 @@
                                                 FROM SF_CONSUMELOTINBOUND CLI                         \n
                                                 INNER JOIN SF_INBOUNDORDER IO ON IO.INBOUNDNO = CLI.INBOUNDNO    \n
                                                  AND IO.ISPDASAVE = \'Y\'
+    </string>
+
+    <string name="GetUploadStockCheckQuery">SELECT                              \n
+                                                  WAREHOUSEID                              \n
+                                                , WAREHOUSENAME                             \n
+                                                , CHECKMONTH                             \n
+                                                , STATE                             \n
+                                                , STATENAME                             \n
+                                                , STARTDATE                             \n
+                                                , ENDDATE                             \n
+                                             FROM SF_STOCKCHECK                             \n
+                                             WHERE ISPDASAVE = \'Y\'                             \n
+    </string>
+
+    <string name="GetUploadStockCheckDetailQuery">SELECT     \n
+                                                      SCD.CONSUMABLEDEFID     \n
+                                                    , SCD.CONSUMABLEDEFNAME     \n
+                                                    , SCD.CONSUMABLEDEFVERSION     \n
+                                                    , SCD.UNIT     \n
+                                                    , SCD.QTY     \n
+                                                    , SCD.CHECKQTY     \n
+                                                    , SCD.WAREHOUSEID     \n
+                                                    , SCD.CHECKMONTH     \n
+                                                    , SCD.USERID     \n
+                                                    , U.USERNAME     \n
+                                                    FROM     \n
+                                                    SF_STOCKCHECKDETAIL SCD     \n
+                                                    LEFT JOIN SF_USER U ON U.USERID = SCD.USERID     \n
+                                                    WHERE SCD.CHECKMONTH IN (SELECT CHECKMONTH FROM     \n
+                                                                             SF_STOCKCHECK     \n
+                                                                              WHERE ISPDASAVE = \'Y\')     \n
+                                                    AND SCD.WAREHOUSEID IN (SELECT WAREHOUSEID FROM     \n
+                                                                             SF_STOCKCHECK     \n
+                                                                              WHERE ISPDASAVE = \'Y\')     \n
+    </string>
+
+    <string name="GetUploadStockLotCheckDetailQuery">SELECT     \n
+                                                      SLD.CONSUMABLELOTID     \n
+                                                    , SLD.CONSUMABLEDEFID     \n
+                                                    , SLD.CONSUMABLEDEFNAME     \n
+                                                    , SLD.CONSUMABLEDEFVERSION     \n
+                                                    , SLD.UNIT     \n
+                                                    , SLD.QTY     \n
+                                                    , SLD.CHECKQTY     \n
+                                                    , SLD.WAREHOUSEID     \n
+                                                    , SLD.CHECKMONTH     \n
+                                                    , SLD.USERID     \n
+                                                    , U.USERNAME     \n
+                                                    FROM     \n
+                                                    SF_STOCKLOTCHECKDETAIL SLD     \n
+                                                    LEFT JOIN SF_USER U ON U.USERID = SLD.USERID     \n
+                                                    WHERE SLD.CHECKMONTH IN (SELECT CHECKMONTH FROM     \n
+                                                                             SF_STOCKCHECK     \n
+                                                                              WHERE ISPDASAVE = \'Y\')     \n
+                                                    AND SLD.WAREHOUSEID IN (SELECT WAREHOUSEID FROM     \n
+                                                                             SF_STOCKCHECK     \n
+                                                                              WHERE ISPDASAVE = \'Y\')     \n
     </string>
 
     <!--ConsumeRequest-->

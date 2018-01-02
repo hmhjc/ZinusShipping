@@ -10,11 +10,29 @@ import java.io.Serializable;
 
 public class StockCheckData implements Serializable {
     private String WAREHOUSEID;
+    private String WAREHOUSENAME;
     private String CHECKMONTH;
     private String STARTDATE;
     private String ENDDATE;
+    private String STATE;
     private String STATENAME;
     private String VALIDSTATE;
+
+    public String getWAREHOUSENAME() {
+        return WAREHOUSENAME;
+    }
+
+    public void setWAREHOUSENAME(String WAREHOUSENAME) {
+        this.WAREHOUSENAME = WAREHOUSENAME;
+    }
+
+    public String getSTATE() {
+        return STATE;
+    }
+
+    public void setSTATE(String STATE) {
+        this.STATE = STATE;
+    }
 
     public String getWAREHOUSEID() {
         return WAREHOUSEID;

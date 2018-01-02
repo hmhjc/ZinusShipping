@@ -111,9 +111,14 @@ public class SyncPC implements Runnable {
 
                             //region updateShipping
                             case Constant.UPDATESHIPPINGSTART:
-                                //先给pc端传需要更新的表的标志
-                                out.write(Constant.SYNCSF_SHIPPINGPLAN.getBytes());
-                                out.flush();
+                                //判断是否有未上传的内容
+                                if (checkShippingIsAllUpload()) {
+                                    out.write((Constant.UPDATEEXIT + Constant.PDANOTALUPLOAD).getBytes());
+                                    out.flush();
+                                } else {
+                                    out.write((Constant.SYNCSF_SHIPPINGPLAN + Constant.PDAALUPLOAD).getBytes());
+                                    out.flush();
+                                }
                                 break;
                             case Constant.SYNCSF_SHIPPINGPLAN:
                                 int lengthSF_SHIPPINGPLAN = Integer.parseInt(resultStr);
@@ -201,22 +206,21 @@ public class SyncPC implements Runnable {
                             //endregion
 
                             //region 返回出货保存的plan号,修改状态
-//                            case Constant.RETURNSHIPPINGSAVESTART:
-//                                //先给pc端传需要更新的表的标志
-//                                out.write(Constant.SYNCSHIPPINGSAVE.getBytes());
-//                                out.flush();
-//                                break;
-//                            case Constant.SYNCSHIPPINGSAVE:
-//                                int lengthSHIPPINGSAVE = Integer.parseInt(resultStr);
-//                                out.write(Constant.IYNCSHIPPINGSAVE.getBytes());
-//                                out.flush();
-//                                Log.e("更新SHIPPINGSAVE", resultStr);
-//                                String strSHIPPINGSAVE = receiveFileFromSocket(in, out, lengthSHIPPINGSAVE);
-//                                Log.e("更新SHIPPINGSAVE", strSHIPPINGSAVE.length() + ":" + strSHIPPINGSAVE);
-//                                mUpdateSqlite.updateSHIPPINGSAVE(strSHIPPINGSAVE);
-//                                out.write(Constant.UPDATEEXIT.getBytes());
-//                                out.flush();
-//                                break;
+                            case Constant.RETURNSHIPPINGSAVESTART:
+                                out.write(Constant.SYNCPDASAVING.getBytes());
+                                out.flush();
+                                break;
+                            case Constant.SYNCPDASAVING:
+                                int lengthSHIPPINGSAVE = Integer.parseInt(resultStr);
+                                out.write(Constant.IYNCPDASAVING.getBytes());
+                                out.flush();
+                                Log.e("更新SHIPPINGSAVE", resultStr);
+                                String strSHIPPINGSAVE = receiveFileFromSocket(in, out, lengthSHIPPINGSAVE);
+                                Log.e("更新SHIPPINGSAVE", strSHIPPINGSAVE.length() + ":" + strSHIPPINGSAVE);
+                                mUpdateSqlite.updateSHIPPINGSAVE(strSHIPPINGSAVE);
+                                out.write(Constant.UPDATEEXIT.getBytes());
+                                out.flush();
+                                break;
                             //endregion
                         }
                     }
@@ -233,7 +237,7 @@ public class SyncPC implements Runnable {
             try {
                 if (client != null) {
                     client.close();
-                    Log.e("shipping","结束关闭client");
+                    Log.e("shipping", "结束关闭client");
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -278,6 +282,23 @@ public class SyncPC implements Runnable {
         }
         return returnstr;
 
+    }
+
+    private boolean checkShippingIsAllUpload() {
+        boolean returnflag = false;
+        ArrayList<ShippingPlanData> shipplanlist = new ArrayList<>();
+        db = mHelper.getWritableDatabase();
+        String selectDataListsql = String.format(mContext.getString(R.string.checkShippingIsAllUpload));
+        Log.e("checkIsAllUpload", selectDataListsql);
+        Cursor cursorDatalist = DBManger.selectDatBySql(db, selectDataListsql, null);
+        if (cursorDatalist.getCount() != 0) {
+            Log.e("查到了", "111111111");
+            while (cursorDatalist.moveToNext()) {
+                if (!cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.COUNT)).equals("0"))
+                    returnflag = true;
+            }
+        }
+        return returnflag;
     }
 
     private String getShippingPlanData() {

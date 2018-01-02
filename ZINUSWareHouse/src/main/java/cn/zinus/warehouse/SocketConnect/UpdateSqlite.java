@@ -32,6 +32,9 @@ import cn.zinus.warehouse.util.DBManger;
 import cn.zinus.warehouse.util.MyDateBaseHelper;
 
 import static cn.zinus.warehouse.util.Constant.AREAID;
+import static cn.zinus.warehouse.util.Constant.CHECKMONTH;
+import static cn.zinus.warehouse.util.Constant.CHECKQTY;
+import static cn.zinus.warehouse.util.Constant.CHECKUNIT;
 import static cn.zinus.warehouse.util.Constant.CONSUMABLECOUNT;
 import static cn.zinus.warehouse.util.Constant.CONSUMABLEDEFID;
 import static cn.zinus.warehouse.util.Constant.CONSUMABLEDEFNAME;
@@ -55,6 +58,7 @@ import static cn.zinus.warehouse.util.Constant.PLANTID;
 import static cn.zinus.warehouse.util.Constant.PRODUCTDEFID;
 import static cn.zinus.warehouse.util.Constant.PRODUCTDEFVERSION;
 import static cn.zinus.warehouse.util.Constant.PRODUCTIONORDERNAME;
+import static cn.zinus.warehouse.util.Constant.QTY;
 import static cn.zinus.warehouse.util.Constant.SCHEDULEDATE;
 import static cn.zinus.warehouse.util.Constant.SHIPPINGPLANNO;
 import static cn.zinus.warehouse.util.Constant.STATE;
@@ -63,6 +67,7 @@ import static cn.zinus.warehouse.util.Constant.TAGID;
 import static cn.zinus.warehouse.util.Constant.TAGQTY;
 import static cn.zinus.warehouse.util.Constant.TEMPINBOUNDDATE;
 import static cn.zinus.warehouse.util.Constant.UNIT;
+import static cn.zinus.warehouse.util.Constant.USERID;
 import static cn.zinus.warehouse.util.Constant.VALIDSTATE;
 import static cn.zinus.warehouse.util.Constant.WAREHOUSEID;
 import static cn.zinus.warehouse.util.Constant.WAREHOUSENAME;
@@ -540,20 +545,23 @@ public class UpdateSqlite {
             StringBuffer STOCKCHECK_insert = new StringBuffer();
             STOCKCHECK_insert.append("INSERT OR REPLACE INTO " + Constant.SF_STOCKCHECK + "("
                     + WAREHOUSEID + ","
-                    + Constant.CHECKMONTH + ","
+                    + CHECKMONTH + ","
                     + Constant.STARTDATE + ","
                     + Constant.ENDDATE + ","
+                    + Constant.WAREHOUSENAME + ","
+                    + Constant.STATE + ","
                     + STATENAME +")");
-            STOCKCHECK_insert.append(" VALUES( ?, ?, ?, ?, ?)");
+            STOCKCHECK_insert.append(" VALUES( ?, ?, ?, ?, ?, ?, ?)");
             for (int i = 0; i < array.length(); i++) {
                 StockCheckData stockCheckData = new StockCheckData();
                 JSONObject jsonObject = array.getJSONObject(i);
                 stockCheckData.setWAREHOUSEID(jsonObject.getString(WAREHOUSEID));
-                stockCheckData.setCHECKMONTH(jsonObject.getString(Constant.CHECKMONTH));
+                stockCheckData.setWAREHOUSENAME(jsonObject.getString(WAREHOUSENAME));
+                stockCheckData.setCHECKMONTH(jsonObject.getString(CHECKMONTH));
                 stockCheckData.setSTARTDATE(jsonObject.getString(Constant.STARTDATE));
                 stockCheckData.setENDDATE(jsonObject.getString(Constant.ENDDATE));
+                stockCheckData.setSTATE(jsonObject.getString(STATE));
                 stockCheckData.setSTATENAME(jsonObject.getString(STATENAME));
-
                 updateTableSF_STOCKCHECK(stockCheckData, STOCKCHECK_insert.toString());
             }
         } catch (JSONException e) {
@@ -567,7 +575,9 @@ public class UpdateSqlite {
         statement.bindString(2, stockCheckData.getCHECKMONTH());
         statement.bindString(3, stockCheckData.getSTARTDATE());
         statement.bindString(4, stockCheckData.getENDDATE());
-        statement.bindString(5, stockCheckData.getSTATENAME());
+        statement.bindString(5, stockCheckData.getWAREHOUSENAME());
+        statement.bindString(6, stockCheckData.getSTATE());
+        statement.bindString(7, stockCheckData.getSTATENAME());
 
         try {
             statement.executeInsert();
@@ -585,25 +595,29 @@ public class UpdateSqlite {
             StringBuffer STOCKCHECKDETAIL_insert = new StringBuffer();
             STOCKCHECKDETAIL_insert.append("INSERT OR REPLACE INTO " + Constant.SF_STOCKCHECKDETAIL + "("
                     + WAREHOUSEID + ","
-                    + Constant.CHECKMONTH + ","
+                    + CHECKMONTH + ","
                     + CONSUMABLEDEFNAME + ","
-                    + Constant.UNIT + ","
-                    + Constant.QTY + ","
-                    + Constant.USERID + ","
-                  //  + Constant.CHECKUNIT + ","
-                    + Constant.CHECKQTY + ")");
-            STOCKCHECKDETAIL_insert.append(" VALUES( ?, ?, ?, ?, ?, ?, ?)");
+                    + CONSUMABLEDEFID + ","
+                    + CONSUMABLEDEFVERSION + ","
+                    + UNIT + ","
+                    + QTY + ","
+                    + USERID + ","
+                    + CHECKUNIT + ","
+                    + CHECKQTY + ")");
+            STOCKCHECKDETAIL_insert.append(" VALUES( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
             for (int i = 0; i < array.length(); i++) {
-                StockCheckDeatilData stockCheckDetailData = new StockCheckDeatilData();
                 JSONObject jsonObject = array.getJSONObject(i);
+                StockCheckDeatilData stockCheckDetailData = new StockCheckDeatilData();
                 stockCheckDetailData.setWAREHOUSEID(jsonObject.getString(WAREHOUSEID));
-                stockCheckDetailData.setCHECKMONTH(jsonObject.getString(Constant.CHECKMONTH));
+                stockCheckDetailData.setCHECKMONTH(jsonObject.getString(CHECKMONTH));
                 stockCheckDetailData.setCONSUMEABLDEFNAME(jsonObject.getString(CONSUMABLEDEFNAME));
+                stockCheckDetailData.setCONSUMEABLDEFID(jsonObject.getString(CONSUMABLEDEFID));
+                stockCheckDetailData.setCONSUMEABLDEFVERSION(jsonObject.getString(CONSUMABLEDEFVERSION));
                 stockCheckDetailData.setUNIT(jsonObject.getString(Constant.UNIT));
-                stockCheckDetailData.setQTY(jsonObject.getString(Constant.QTY));
-                stockCheckDetailData.setUSERID(jsonObject.getString(Constant.USERID));
-               // stockCheckDetailData.setCHECKUNIT(jsonObject.getString(Constant.CHECKUNIT));
-                stockCheckDetailData.setCHECKQTY(jsonObject.getString(Constant.CHECKQTY));
+                stockCheckDetailData.setQTY(jsonObject.getString(QTY));
+                stockCheckDetailData.setUSERID(jsonObject.getString(USERID));
+                stockCheckDetailData.setCHECKUNIT(jsonObject.getString(Constant.CHECKUNIT));
+                stockCheckDetailData.setCHECKQTY(jsonObject.getString(CHECKQTY));
                 updateTableSF_STOCKCHECKDETAIL(stockCheckDetailData, STOCKCHECKDETAIL_insert.toString());
             }
         } catch (JSONException e) {
@@ -616,12 +630,13 @@ public class UpdateSqlite {
         statement.bindString(1, stockCheckDetailData.getWAREHOUSEID());
         statement.bindString(2, stockCheckDetailData.getCHECKMONTH());
         statement.bindString(3, stockCheckDetailData.getCONSUMEABLDEFNAME());
-      //  statement.bindString(4, stockCheckDetailData.getCONSUMEABLDEFVERSION());
-        statement.bindString(4, stockCheckDetailData.getUNIT());
-        statement.bindString(5, stockCheckDetailData.getQTY());
-        statement.bindString(6, stockCheckDetailData.getUSERID());
-       // statement.bindString(8, stockCheckDetailData.getCHECKUNIT());
-        statement.bindString(7, stockCheckDetailData.getCHECKQTY());
+        statement.bindString(4, stockCheckDetailData.getCONSUMEABLDEFID());
+        statement.bindString(5, stockCheckDetailData.getCONSUMEABLDEFVERSION());
+        statement.bindString(6, stockCheckDetailData.getUNIT());
+        statement.bindString(7, stockCheckDetailData.getQTY());
+        statement.bindString(8, stockCheckDetailData.getUSERID());
+        statement.bindString(9, stockCheckDetailData.getCHECKUNIT());
+        statement.bindString(10, stockCheckDetailData.getCHECKQTY());
         try {
             statement.executeInsert();
         } catch (Exception e) {
@@ -638,27 +653,35 @@ public class UpdateSqlite {
             StringBuffer STOCKLOTCHECKDETAIL_insert = new StringBuffer();
             STOCKLOTCHECKDETAIL_insert.append("INSERT OR REPLACE INTO " + Constant.SF_STOCKLOTCHECKDETAIL + "("
                     + WAREHOUSEID + ","
-                    + Constant.CHECKMONTH + ","
+                    + CHECKMONTH + ","
                     + CONSUMABLEDEFNAME + ","
+                    + CONSUMABLEDEFID + ","
+                    + CONSUMABLEDEFVERSION + ","
+                    + UNIT + ","
+                    + QTY + ","
+                    + USERID + ","
+                    + CHECKUNIT + ","
+                    + CHECKQTY + ","
                     + CONSUMABLELOTID + ","
-                    + Constant.UNIT + ","
-                    + Constant.QTY + ","
-                    + Constant.USERID + ","
-                  //  + Constant.CHECKUNIT + ","
-                    + Constant.CHECKQTY + ")");
-            STOCKLOTCHECKDETAIL_insert.append(" VALUES( ?, ?, ?, ?, ?, ?, ?, ?)");
+                    + TAGID + ","
+                    + TAGQTY + ")");
+            STOCKLOTCHECKDETAIL_insert.append(" VALUES( ?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ?, ?, ?)");
             for (int i = 0; i < array.length(); i++) {
-                StockLotCheckDeatilData stockLotCheckDetailData = new StockLotCheckDeatilData();
                 JSONObject jsonObject = array.getJSONObject(i);
+                StockLotCheckDeatilData stockLotCheckDetailData = new StockLotCheckDeatilData();
                 stockLotCheckDetailData.setWAREHOUSEID(jsonObject.getString(WAREHOUSEID));
-                stockLotCheckDetailData.setCHECKMONTH(jsonObject.getString(Constant.CHECKMONTH));
+                stockLotCheckDetailData.setCHECKMONTH(jsonObject.getString(CHECKMONTH));
                 stockLotCheckDetailData.setCONSUMEABLDEFNAME(jsonObject.getString(CONSUMABLEDEFNAME));
-                stockLotCheckDetailData.setCONSUMABLELOTID(jsonObject.getString(CONSUMABLELOTID));
+                stockLotCheckDetailData.setCONSUMEABLDEFID(jsonObject.getString(CONSUMABLEDEFID));
+                stockLotCheckDetailData.setCONSUMEABLDEFVERSION(jsonObject.getString(CONSUMABLEDEFVERSION));
                 stockLotCheckDetailData.setUNIT(jsonObject.getString(Constant.UNIT));
-                stockLotCheckDetailData.setQTY(jsonObject.getString(Constant.QTY));
-                stockLotCheckDetailData.setUSERID(jsonObject.getString(Constant.USERID));
-            //    stockLotCheckDetailData.setCHECKUNIT(jsonObject.getString(Constant.CHECKUNIT));
-                stockLotCheckDetailData.setCHECKQTY(jsonObject.getString(Constant.CHECKQTY));
+                stockLotCheckDetailData.setQTY(jsonObject.getString(QTY));
+                stockLotCheckDetailData.setUSERID(jsonObject.getString(USERID));
+                stockLotCheckDetailData.setCHECKUNIT(jsonObject.getString(Constant.CHECKUNIT));
+                stockLotCheckDetailData.setCHECKQTY(jsonObject.getString(CHECKQTY));
+                stockLotCheckDetailData.setCONSUMABLELOTID(jsonObject.getString(CONSUMABLELOTID));
+                stockLotCheckDetailData.setTAGID(jsonObject.getString(TAGID));
+                stockLotCheckDetailData.setTAGQTY(jsonObject.getString(TAGQTY));
                 updateTableSF_STOCKLOTCHECKDETAIL(stockLotCheckDetailData, STOCKLOTCHECKDETAIL_insert.toString());
             }
         } catch (JSONException e) {
@@ -671,13 +694,16 @@ public class UpdateSqlite {
         statement.bindString(1, stockLotCheckDetailData.getWAREHOUSEID());
         statement.bindString(2, stockLotCheckDetailData.getCHECKMONTH());
         statement.bindString(3, stockLotCheckDetailData.getCONSUMEABLDEFNAME());
-       // statement.bindString(4, stockLotCheckDetailData.getCONSUMEABLDEFVERSION());
-        statement.bindString(4, stockLotCheckDetailData.getCONSUMABLELOTID());
-        statement.bindString(5, stockLotCheckDetailData.getUNIT());
-        statement.bindString(6, stockLotCheckDetailData.getQTY());
-        statement.bindString(7, stockLotCheckDetailData.getUSERID());
-     //   statement.bindString(9, stockLotCheckDetailData.getCHECKUNIT());
-        statement.bindString(8, stockLotCheckDetailData.getCHECKQTY());
+        statement.bindString(4, stockLotCheckDetailData.getCONSUMEABLDEFID());
+        statement.bindString(5, stockLotCheckDetailData.getCONSUMEABLDEFVERSION());
+        statement.bindString(6, stockLotCheckDetailData.getUNIT());
+        statement.bindString(7, stockLotCheckDetailData.getQTY());
+        statement.bindString(8, stockLotCheckDetailData.getUSERID());
+        statement.bindString(9, stockLotCheckDetailData.getCHECKUNIT());
+        statement.bindString(10,stockLotCheckDetailData.getCHECKQTY());
+        statement.bindString(11,stockLotCheckDetailData.getCONSUMABLELOTID());
+        statement.bindString(12,stockLotCheckDetailData.getTAGID());
+        statement.bindString(13,stockLotCheckDetailData.getTAGQTY());
         try {
             statement.executeInsert();
         } catch (Exception e) {
@@ -697,7 +723,7 @@ public class UpdateSqlite {
                     + CONSUMABLEDEFVERSION + ","
                     + WAREHOUSEID + ","
                     + Constant.UNIT + ","
-                    + Constant.QTY + ","
+                    + QTY + ","
                     + VALIDSTATE + ")");
             CONSUMESTOCK_insert.append(" VALUES( ?, ?, ?, ?, ?, ?)");
             for (int i = 0; i < array.length(); i++) {
@@ -707,7 +733,7 @@ public class UpdateSqlite {
                 consumeStockData.setCONSUMABLEDEFVERSION(jsonObject.getString(CONSUMABLEDEFVERSION));
                 consumeStockData.setWAREHOUSEID(jsonObject.getString(WAREHOUSEID));
                 consumeStockData.setUNIT(jsonObject.getString(Constant.UNIT));
-                consumeStockData.setQTY(jsonObject.getString(Constant.QTY));
+                consumeStockData.setQTY(jsonObject.getString(QTY));
                 consumeStockData.setVALIDSTATE(jsonObject.getString(VALIDSTATE));
                 updateTableSF_CONSUMESTOCK(consumeStockData, CONSUMESTOCK_insert.toString());
             }
@@ -742,7 +768,7 @@ public class UpdateSqlite {
                     + CONSUMABLEDEFID + ","
                     + CONSUMABLEDEFVERSION + ","
                     + WAREHOUSEID + ","
-                    + Constant.QTY + ","
+                    + QTY + ","
                     + Constant.CONSUMABLESTATE + ","
                     + Constant.CREATEDQTY + ","
                     + CONSUMABLELOTID + ")");
@@ -753,7 +779,7 @@ public class UpdateSqlite {
                 consumableLotData.setCONSUMABLEDEFID(jsonObject.getString(CONSUMABLEDEFID));
                 consumableLotData.setCONSUMABLEDEFVERSION(jsonObject.getString(CONSUMABLEDEFVERSION));
                 consumableLotData.setWAREHOUSEID(jsonObject.getString(WAREHOUSEID));
-                consumableLotData.setQTY(jsonObject.getString(Constant.QTY));
+                consumableLotData.setQTY(jsonObject.getString(QTY));
                 consumableLotData.setCONSUMABLESTATE(jsonObject.getString(Constant.CONSUMABLESTATE));
                 consumableLotData.setCREATEDQTY(jsonObject.getString(Constant.CREATEDQTY));
                 consumableLotData.setCONSUMABLELOTID(jsonObject.getString(CONSUMABLELOTID));
@@ -992,7 +1018,7 @@ public class UpdateSqlite {
                     + Constant.PROCESSSEGMENTID + ","
                     + Constant.LOTSTATE + ","
                     + Constant.RFID + ","
-                    + Constant.QTY + ","
+                    + QTY + ","
                     + VALIDSTATE + ")");
             LOT_insert.append(" VALUES( ?, ?, ?, ? , ? , ? , ? )");
             for (int i = 0; i < array.length(); i++) {
@@ -1003,7 +1029,7 @@ public class UpdateSqlite {
                 lotData.setPROCESSSEGMENTID(jsonObject.getString(Constant.PROCESSSEGMENTID));
                 lotData.setLOTSTATE(jsonObject.getString(Constant.LOTSTATE));
                 lotData.setRFID(jsonObject.getString(Constant.RFID));
-                lotData.setQTY(jsonObject.getString(Constant.QTY));
+                lotData.setQTY(jsonObject.getString(QTY));
                 lotData.setVALIDSTATE(jsonObject.getString(VALIDSTATE));
                 updateTableSF_LOT(lotData, LOT_insert.toString());
             }

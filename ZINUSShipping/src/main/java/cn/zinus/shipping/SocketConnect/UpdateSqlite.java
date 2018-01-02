@@ -1,6 +1,5 @@
 package cn.zinus.shipping.SocketConnect;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
@@ -33,7 +32,6 @@ import cn.zinus.shipping.util.Constant;
 import cn.zinus.shipping.util.DBManger;
 import cn.zinus.shipping.util.MyDateBaseHelper;
 
-import static cn.zinus.shipping.util.Constant.ISOISAVE;
 import static cn.zinus.shipping.util.Constant.VALID;
 
 /**
@@ -1104,17 +1102,15 @@ public class UpdateSqlite {
 
     //endregion
 
-    public void updateSHIPPINGSAVE(String resultStr) {
-        Log.e("更新SHIPPINGSAVE", resultStr);
+    public void updateSHIPPINGSAVE(String savedShippingPlanNo) {
+        Log.e("保存的计划是", savedShippingPlanNo);
         try {
-            JSONArray array = new JSONArray(resultStr);
-            for (int i = 0; i < array.length(); i++) {
-                JSONObject jsonObject = array.getJSONObject(i);
-                ContentValues values = new ContentValues();
-                values.put(ISOISAVE, "Y");
-                db.update(Constant.SF_SHIPPINGPLAN, values, "SHIPPINGPLANNO = ?", new String[]{jsonObject.getString(Constant.SHIPPINGPLANNO)});
-            }
-        } catch (JSONException e) {
+//                ContentValues values = new ContentValues();
+//                values.put(ISOISAVE, "Y");
+                db.delete(Constant.SF_SHIPPINGPLAN, "SHIPPINGPLANNO = ?", new String[]{savedShippingPlanNo});
+                db.delete(Constant.SF_SHIPPINGPLANDETAIL, "SHIPPINGPLANNO = ?", new String[]{savedShippingPlanNo});
+                db.delete(Constant.SF_SHIPPINGLOT, "SHIPPINGPLANNO = ?", new String[]{savedShippingPlanNo});
+        } catch (Exception e) {
             Log.e("SHIPPINGSAVE更新出错", e.getMessage().toString());
         }
     }

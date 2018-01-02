@@ -95,7 +95,6 @@ public class StockCheckFragment extends KeyDownFragment {
         super.onActivityCreated(savedInstanceState);
         initData();
         initview();
-        //UpDateShippingPlan();
     }
 
     //endregion

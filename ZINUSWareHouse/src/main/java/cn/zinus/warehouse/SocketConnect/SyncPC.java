@@ -21,6 +21,9 @@ import cn.zinus.warehouse.Fragment.Event;
 import cn.zinus.warehouse.JaveBean.UploadConsumeInbound;
 import cn.zinus.warehouse.JaveBean.UploadConsumeLotInbound;
 import cn.zinus.warehouse.JaveBean.UploadInboundOrder;
+import cn.zinus.warehouse.JaveBean.UploadStockCheckData;
+import cn.zinus.warehouse.JaveBean.UploadStockCheckDetail;
+import cn.zinus.warehouse.JaveBean.UploadStockLotCheckDetail;
 import cn.zinus.warehouse.R;
 import cn.zinus.warehouse.util.Constant;
 import cn.zinus.warehouse.util.DBManger;
@@ -42,9 +45,13 @@ public class SyncPC implements Runnable {
     MyDateBaseHelper mHelper;
     private SQLiteDatabase db;
     Context mContext;
+    //上传字符串
     String inboundOrderData;
     String consumeInboundData;
     String consumeLotInboundData;
+    String stockcheckData;
+    String stockcheckDetailData;
+    String stocklotcheckDetailData;
 
     public SyncPC(Socket client, ArrayList<?> list, Context mContext) {
         this.client = client;
@@ -174,7 +181,7 @@ public class SyncPC implements Runnable {
                                 out.flush();
                                 break;
                             case Constant.UPLOADCONSUMELOTINBOUNDINFO:
-                                consumeLotInboundData= getConsumeLotInboundData();
+                                consumeLotInboundData = getConsumeLotInboundData();
                                 String consumeLotInboundData1 = Constant.UPLOADCONSUMELOTINBOUNDINFO + consumeLotInboundData.getBytes().length;
                                 Log.e("准备上传consumeLotInbound", consumeLotInboundData1);
                                 out.write(consumeLotInboundData1.getBytes());
@@ -234,6 +241,8 @@ public class SyncPC implements Runnable {
                                 break;
                             //endregion
 
+                            //region 盘点相关
+
                             //region UpdateStockcheck
                             case Constant.UPDATESTOCKCHECKSTART:
                                 /**
@@ -277,28 +286,47 @@ public class SyncPC implements Runnable {
                                 out.write(Constant.UPDATEEXIT.getBytes());
                                 out.flush();
                                 break;
-//                            case Constant.SYNCSF_CONSUMESTOCK:
-//                                int lengthSF_CONSUMESTOCK = Integer.parseInt(resultStr);
-//                                out.write(Constant.IYNCSF_CONSUMESTOCK.getBytes());
-//                                out.flush();
-//                                Log.e("更新SF_CONSUMESTOCK", resultStr);
-//                                String strSF_CONSUMESTOCK = receiveFileFromSocket(in, out, lengthSF_CONSUMESTOCK);
-//                                Log.e("更新SF_CONSUMESTOCK", strSF_CONSUMESTOCK.length() + ":" + strSF_CONSUMESTOCK);
-//                                mUpdateSqlite.updateConsumeStock(strSF_CONSUMESTOCK);
-//                                out.write(Constant.SYNCSF_CONSUMABLELOT.getBytes());
-//                                out.flush();
-//                                break;
-//                            case Constant.SYNCSF_CONSUMABLELOT:
-//                                int lengthSF_CONSUMABLELOT = Integer.parseInt(resultStr);
-//                                out.write(Constant.IYNCSF_CONSUMABLELOT.getBytes());
-//                                out.flush();
-//                                Log.e("更新SF_CONSUMABLELOT", resultStr);
-//                                String strSF_CONSUMABLELOT = receiveFileFromSocket(in, out, lengthSF_CONSUMABLELOT);
-//                                Log.e("更新SF_CONSUMABLELOT", strSF_CONSUMABLELOT.length() + ":" + strSF_CONSUMABLELOT);
-//                                mUpdateSqlite.updateConsumableLot(strSF_CONSUMABLELOT);
-//                                out.write(Constant.UPDATEEXIT.getBytes());
-//                                out.flush();
-//                                break;
+                            //endregion
+
+                            //region UploadStockin
+                            case Constant.UPLOADSTOCKCHECKSTART:
+                                stockcheckData = getstockcheckData();
+                                String StockCheckData1 = Constant.UPLOADSTOCKCHECKINFO + stockcheckData.getBytes().length;
+                                Log.e("准备上传StockCheck", StockCheckData1);
+                                out.write(StockCheckData1.getBytes());
+                                out.flush();
+                                break;
+                            case Constant.UPLOADSTOCKCHECK:
+                                Log.e("上传StockCheck", stockcheckData);
+                                out.write((Constant.UPLOADSTOCKCHECK + stockcheckData).getBytes());
+                                out.flush();
+                                break;
+                            case Constant.UPLOADSTOCKCHECKDETAILINFO:
+                                stockcheckDetailData = getStockcheckDetailData();
+                                String stockcheckDetailData1 = Constant.UPLOADSTOCKCHECKDETAILINFO + stockcheckDetailData.getBytes().length;
+                                Log.e("准备上传stockcheckdetail", stockcheckDetailData1);
+                                out.write(stockcheckDetailData1.getBytes());
+                                out.flush();
+                                break;
+                            case Constant.UPLOADSTOCKCHECKDETAIL:
+                                Log.e("上传stockcheckdetail", stockcheckDetailData);
+                                out.write((Constant.UPLOADSTOCKCHECKDETAIL + stockcheckDetailData).getBytes());
+                                out.flush();
+                                break;
+                            case Constant.UPLOADSTOCKLOTCHECKDETAILINFO:
+                                stocklotcheckDetailData = getStocklotcheckDetailData();
+                                String stocklotcheckDetailData1 = Constant.UPLOADSTOCKLOTCHECKDETAILINFO + stocklotcheckDetailData.getBytes().length;
+                                Log.e("准备上传stocklotcheckdetail", stocklotcheckDetailData1);
+                                out.write(stocklotcheckDetailData1.getBytes());
+                                out.flush();
+                                break;
+                            case Constant.UPLOADSTOCKLOTCHECKDETAIL:
+                                Log.e("上传stocklotcheckdetail", stocklotcheckDetailData);
+                                out.write((Constant.UPLOADSTOCKLOTCHECKDETAIL + stocklotcheckDetailData).getBytes());
+                                out.flush();
+                                break;
+                            //endregion
+
                             //endregion
 
                             //region UpdateCommon
@@ -373,7 +401,7 @@ public class SyncPC implements Runnable {
             try {
                 if (client != null) {
                     client.close();
-                    Log.e("warehouse","关闭");
+                    Log.e("warehouse", "关闭");
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -414,8 +442,8 @@ public class SyncPC implements Runnable {
             Log.e("1111111", Thread.currentThread().getName()
                     + "---->" + "read file OK:file size=" + filebytes.length);
 
-            returnstr = new String(filebytes,"UTF8");
-            Log.e("read file长度",returnstr.length()+"");
+            returnstr = new String(filebytes, "UTF8");
+            Log.e("read file长度", returnstr.length() + "");
 //            out.write("read file ok".getBytes("utf-8"));
 //            out.flush();
         } catch (Exception e) {
@@ -515,6 +543,90 @@ public class SyncPC implements Runnable {
         }
         Gson shipplanjson = new Gson();
         a = shipplanjson.toJson(uploadConsumeLotInboundslist);
+        return a;
+    }
+
+    private String getstockcheckData() {
+        String a = "";
+        ArrayList<UploadStockCheckData> uploadStockCheckDatas = new ArrayList<>();
+        String selectDataListsql = String.format(mContext.getString(R.string.GetUploadStockCheckQuery));
+        Log.e("GetStockCheckQuery", selectDataListsql);
+        Cursor cursorDatalist = DBManger.selectDatBySql(db, selectDataListsql, null);
+        if (cursorDatalist.getCount() != 0) {
+            Log.e("查到了", "111111111");
+            while (cursorDatalist.moveToNext()) {
+                UploadStockCheckData uploadStockCheckData = new UploadStockCheckData();
+                uploadStockCheckData.setWAREHOUSEID(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.WAREHOUSEID)));
+                uploadStockCheckData.setWAREHOUSENAME(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.WAREHOUSENAME)));
+                uploadStockCheckData.setCHECKMONTH(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.CHECKMONTH)));
+                uploadStockCheckData.setSTATE(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.STATE)));
+                uploadStockCheckData.setSTATENAME(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.STATENAME)));
+                uploadStockCheckData.setSTARTDATE(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.STARTDATE)));
+                uploadStockCheckData.setENDDATE(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.ENDDATE)));
+                uploadStockCheckDatas.add(uploadStockCheckData);
+            }
+        }
+        Gson shipplanjson = new Gson();
+        a = shipplanjson.toJson(uploadStockCheckDatas);
+        return a;
+    }
+
+    private String getStockcheckDetailData() {
+        String a = "";
+        ArrayList<UploadStockCheckDetail> stockCheckDetails = new ArrayList<>();
+        db = mHelper.getWritableDatabase();
+        String selectDataListsql = String.format(mContext.getString(R.string.GetUploadStockCheckDetailQuery));
+        Log.e("GetUploadInbORQuery", selectDataListsql);
+        Cursor cursorDatalist = DBManger.selectDatBySql(db, selectDataListsql, null);
+        if (cursorDatalist.getCount() != 0) {
+            Log.e("查到了", "111111111");
+            while (cursorDatalist.moveToNext()) {
+                UploadStockCheckDetail uploadStockCheckDetail = new UploadStockCheckDetail();
+                uploadStockCheckDetail.setCONSUMABLEDEFID(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.CONSUMABLEDEFID)));
+                uploadStockCheckDetail.setCONSUMABLEDEFNAME(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.CONSUMABLEDEFNAME)));
+                uploadStockCheckDetail.setCONSUMABLEDEFVERSION(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.CONSUMABLEDEFVERSION)));
+                uploadStockCheckDetail.setUNIT(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.UNIT)));
+                uploadStockCheckDetail.setQTY(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.QTY)));
+                uploadStockCheckDetail.setCHECKQTY(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.CHECKQTY)));
+                uploadStockCheckDetail.setWAREHOUSEID(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.WAREHOUSEID)));
+                uploadStockCheckDetail.setCHECKMONTH(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.CHECKMONTH)));
+                uploadStockCheckDetail.setUSERID(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.USERID)));
+                uploadStockCheckDetail.setUSERNAME(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.USERNAME)));
+                stockCheckDetails.add(uploadStockCheckDetail);
+            }
+        }
+        Gson shipplanjson = new Gson();
+        a = shipplanjson.toJson(stockCheckDetails);
+        return a;
+    }
+
+    private String getStocklotcheckDetailData() {
+        String a = "";
+        ArrayList<UploadStockLotCheckDetail> uploadStockLotCheckDetailArrayList = new ArrayList<>();
+        db = mHelper.getWritableDatabase();
+        String selectDataListsql = String.format(mContext.getString(R.string.GetUploadStockLotCheckDetailQuery));
+        Log.e("GetStockLotCheckDetail", selectDataListsql);
+        Cursor cursorDatalist = DBManger.selectDatBySql(db, selectDataListsql, null);
+        if (cursorDatalist.getCount() != 0) {
+            Log.e("查到了", "111111111");
+            while (cursorDatalist.moveToNext()) {
+                UploadStockLotCheckDetail stockLotCheckDetail = new UploadStockLotCheckDetail();
+                stockLotCheckDetail.setCONSUMABLELOTID(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.CONSUMABLELOTID)));
+                stockLotCheckDetail.setCONSUMABLEDEFID(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.CONSUMABLEDEFID)));
+                stockLotCheckDetail.setCONSUMABLEDEFNAME(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.CONSUMABLEDEFNAME)));
+                stockLotCheckDetail.setCONSUMABLEDEFVERSION(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.CONSUMABLEDEFVERSION)));
+                stockLotCheckDetail.setUNIT(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.UNIT)));
+                stockLotCheckDetail.setQTY(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.QTY)));
+                stockLotCheckDetail.setCHECKQTY(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.CHECKQTY)));
+                stockLotCheckDetail.setWAREHOUSEID(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.WAREHOUSEID)));
+                stockLotCheckDetail.setCHECKMONTH(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.CHECKMONTH)));
+                stockLotCheckDetail.setUSERID(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.USERID)));
+                stockLotCheckDetail.setUSERNAME(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.USERNAME)));
+                uploadStockLotCheckDetailArrayList.add(stockLotCheckDetail);
+            }
+        }
+        Gson shipplanjson = new Gson();
+        a = shipplanjson.toJson(uploadStockLotCheckDetailArrayList);
         return a;
     }
 

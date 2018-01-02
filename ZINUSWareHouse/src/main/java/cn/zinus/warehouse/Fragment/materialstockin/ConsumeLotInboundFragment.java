@@ -319,7 +319,7 @@ public class ConsumeLotInboundFragment extends KeyDownFragment implements View.O
         }, 500);
     }
 
-    //region getLotShippingByShippingPlan
+    //region getConsumeLotInboundByInboundOrder
     public void getConsumeLotInboundByInboundOrder(String inboundNo) {
         SQLiteDatabase db = mHelper.getWritableDatabase();
         String selectDataListsql = String.format(getString(R.string.GetConsumeLotInboundQuery), inboundNo);

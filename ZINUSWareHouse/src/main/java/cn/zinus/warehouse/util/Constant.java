@@ -122,6 +122,7 @@ public class Constant {
     public static final String CONSUMEREQNO = "CONSUMEREQNO";
     public static final String AREAID = "AREAID";
     public static final String USERID = "USERID";
+    public static final String USERNAME = "USERNAME";
     public static final String REQUESTDATE = "REQUESTDATE";
     public static final String OUTBOUNDSTATE = "OUTBOUNDSTATE";
 
@@ -263,9 +264,15 @@ public class Constant {
     public static final String UPLOADINBOUNDORDERINFO = "603";
     public static final String UPLOADCONSUMEINBOUNDINFO = "604";
     public static final String UPLOADCONSUMELOTINBOUNDINFO = "605";
+    public static final String UPLOADSTOCKCHECKINFO = "606";
+    public static final String UPLOADSTOCKCHECKDETAILINFO = "607";
+    public static final String UPLOADSTOCKLOTCHECKDETAILINFO = "608";
 
     public static final String UPLOADINBOUNDORDER = "683";
     public static final String UPLOADCONSUMEINBOUND = "684";
     public static final String UPLOADCONSUMELOTINBOUND = "685";
+    public static final String UPLOADSTOCKCHECK= "686";
+    public static final String UPLOADSTOCKCHECKDETAIL = "687";
+    public static final String UPLOADSTOCKLOTCHECKDETAIL = "688";
 
 }

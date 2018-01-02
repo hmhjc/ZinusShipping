@@ -22,6 +22,45 @@ public class StockLotCheckDeatilData implements Serializable {
     private String VALIDSTATE;
     private String CONSUMEABLDEFNAME;
     private int backgroundColor;
+    private String TAGID;
+    private String TAGQTY;
+
+    @Override
+    public String toString() {
+        return "StockLotCheckDeatilData{" +
+                "WAREHOUSEID='" + WAREHOUSEID + '\'' +
+                ", CHECKMONTH='" + CHECKMONTH + '\'' +
+                ", CONSUMEABLDEFID='" + CONSUMEABLDEFID + '\'' +
+                ", CONSUMEABLDEFVERSION='" + CONSUMEABLDEFVERSION + '\'' +
+                ", CONSUMABLELOTID='" + CONSUMABLELOTID + '\'' +
+                ", UNIT='" + UNIT + '\'' +
+                ", QTY='" + QTY + '\'' +
+                ", USERID='" + USERID + '\'' +
+                ", CHECKUNIT='" + CHECKUNIT + '\'' +
+                ", CHECKQTY='" + CHECKQTY + '\'' +
+                ", VALIDSTATE='" + VALIDSTATE + '\'' +
+                ", CONSUMEABLDEFNAME='" + CONSUMEABLDEFNAME + '\'' +
+                ", backgroundColor=" + backgroundColor +
+                ", TAGID='" + TAGID + '\'' +
+                ", TAGQTY='" + TAGQTY + '\'' +
+                '}';
+    }
+
+    public String getTAGID() {
+        return TAGID;
+    }
+
+    public void setTAGID(String TAGID) {
+        this.TAGID = TAGID;
+    }
+
+    public String getTAGQTY() {
+        return TAGQTY;
+    }
+
+    public void setTAGQTY(String TAGQTY) {
+        this.TAGQTY = TAGQTY;
+    }
 
     public int getBackgroundColor() {
         return backgroundColor;

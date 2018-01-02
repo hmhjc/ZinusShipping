@@ -429,6 +429,12 @@
                                                                              WHERE  ISPDASHIPPING = \'Y\')    \n
     </string>
 
+    <string name="checkShippingIsAllUpload"> SELECT COUNT(*)    AS COUNT                            \n
+                                                 FROM SF_SHIPPINGPLAN                              \n
+                                           WHERE 1=1                                               \n
+                                           AND ISPDASHIPPING = \'Y\'                               \n
+    </string>
+
     <string name="ChangeLanguage">ChangeLanguage</string>
     <string name="ZH_CN">Chinese</string>
     <string name="EN_US">EN_US</string>

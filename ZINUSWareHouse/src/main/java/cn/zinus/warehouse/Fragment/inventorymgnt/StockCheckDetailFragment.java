@@ -1,5 +1,6 @@
 package cn.zinus.warehouse.Fragment.inventorymgnt;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -104,7 +105,16 @@ public class StockCheckDetailFragment extends KeyDownFragment {
             public void handleMessage(Message msg) {
                 switch (msg.what) {
                     case UPDATEUI:
-                        mlvStockCheckDetail.setSelection((Integer) msg.obj);
+                        int position = (Integer) msg.obj;
+                        if (position == -1) {
+                            //-1代表第一次搜索
+                            mlvStockCheckDetail.setSelection(0);
+                        } else {
+                            mlvStockCheckDetail.setSelection(position);
+                            //修改好数字以后，更新数据库的数据
+                            Log.e("保存了", "kaishi");
+                            UpdateSF_STOCKCHECKDETAIL(mStockCheckDeatilDataArrayList.get(position));
+                        }
                         break;
                 }
             }
@@ -139,7 +149,6 @@ public class StockCheckDetailFragment extends KeyDownFragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_save:
-                actionSave();
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -178,6 +187,8 @@ public class StockCheckDetailFragment extends KeyDownFragment {
 
     //endregion
 
+    //region fixQty
+    @SuppressLint("WrongConstant")
     private void fixQty(View view, final int position) {
         final StockCheckDeatilData tempdata = mStockCheckDeatilDataArrayList.get(position);
         Button btnConfirm = (Button) mViewFixQty.findViewById(R.id.btnfqty);
@@ -188,9 +199,9 @@ public class StockCheckDetailFragment extends KeyDownFragment {
             @Override
             public void onClick(View v) {
                 tempdata.setCHECKQTY(etFixQty.getText().toString());
-                if (Integer.parseInt(tempdata.getCHECKQTY()) > Integer.parseInt(tempdata.getQTY())) {
+                if (Float.parseFloat(tempdata.getCHECKQTY()) > Float.parseFloat(tempdata.getQTY())) {
                     tempdata.setBackgroundColor(R.color.qtymore);
-                } else if (Integer.parseInt(tempdata.getCHECKQTY()) == Integer.parseInt(tempdata.getQTY())) {
+                } else if (Float.parseFloat(tempdata.getCHECKQTY()) == Float.parseFloat(tempdata.getQTY())) {
                     tempdata.setBackgroundColor(R.color.qtymatch);
                 } else {
                     tempdata.setBackgroundColor(R.color.qtyless);
@@ -201,9 +212,6 @@ public class StockCheckDetailFragment extends KeyDownFragment {
                 message.what = UPDATEUI;
                 message.obj = position;
                 handler.sendMessage(message);
-                mpopFixQty.dismiss();
-//                mlvStockCheckDetail.setSelection(position);
-//                tvtagqty.setText( ""+ mStockCheckDeatilDataArrayList.size());
                 mpopFixQty.dismiss();
             }
         });
@@ -229,6 +237,7 @@ public class StockCheckDetailFragment extends KeyDownFragment {
             }
         }, 500);
     }
+    //endregion
 
     //region getStockCheckDetailbyCheckMonth
     public void getStockCheckDetailbyCheckMonth(StockCheckData stockCheck) {
@@ -244,20 +253,27 @@ public class StockCheckDetailFragment extends KeyDownFragment {
                 stockCheckDetailData.setWAREHOUSEID(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.WAREHOUSEID)));
                 stockCheckDetailData.setUNIT(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.UNIT)));
                 stockCheckDetailData.setQTY(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.QTY)));
+                stockCheckDetailData.setCONSUMEABLDEFID(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.CONSUMABLEDEFID)));
+                stockCheckDetailData.setCONSUMEABLDEFVERSION(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.CONSUMABLEDEFVERSION)));
+                stockCheckDetailData.setCHECKMONTH(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.CHECKMONTH)));
                 if (cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.CHECKQTY)).equals("null") ||
                         cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.CHECKQTY)).equals("")) {
                     stockCheckDetailData.setCHECKQTY("0");
                 } else {
                     stockCheckDetailData.setCHECKQTY(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.CHECKQTY)));
                 }
-                if (Integer.parseInt(stockCheckDetailData.getCHECKQTY()) > Integer.parseInt(stockCheckDetailData.getQTY())) {
+                if (Float.parseFloat(stockCheckDetailData.getCHECKQTY()) > Float.parseFloat(stockCheckDetailData.getQTY())) {
                     stockCheckDetailData.setBackgroundColor(R.color.qtymore);
-                } else if (Integer.parseInt(stockCheckDetailData.getCHECKQTY()) == Integer.parseInt(stockCheckDetailData.getQTY())) {
+                } else if (Float.parseFloat(stockCheckDetailData.getCHECKQTY()) == Float.parseFloat(stockCheckDetailData.getQTY())) {
                     stockCheckDetailData.setBackgroundColor(R.color.qtymatch);
                 } else {
                     stockCheckDetailData.setBackgroundColor(R.color.qtyless);
                 }
                 mStockCheckDeatilDataArrayList.add(stockCheckDetailData);
+                Message message = new Message();
+                message.what = UPDATEUI;
+                message.obj = -1;
+                handler.sendMessage(message);
             }
         }
         tvtagqty.setText(mStockCheckDeatilDataArrayList.size() + "");
@@ -266,48 +282,16 @@ public class StockCheckDetailFragment extends KeyDownFragment {
     }
     //endregion
 
-    //region checkIsExist
-    private int checkIsExist(String tagid) {
-        int returnint = -1;
-        for (int i = 0; i < IDlist.size(); i++)
-            if (IDlist.get(i).equals(tagid)) {
-                returnint = i;
-            }
-        return returnint;
+    //region UpdateSF_STOCKCHECKDETAIL
+    private void UpdateSF_STOCKCHECKDETAIL(StockCheckDeatilData data){
+        ContentValues values = new ContentValues();
+        values.put(Constant.CHECKQTY, data.getCHECKQTY());
+        db.update(Constant.SF_STOCKCHECKDETAIL, values, "WAREHOUSEID = ? AND CHECKMONTH = ?" +
+                " AND CONSUMABLEDEFID = ? AND CONSUMABLEDEFVERSION = ?"
+                , new String[]{data.getWAREHOUSEID(),data.getCHECKMONTH()
+                        ,data.getCONSUMEABLDEFID(),data.getCONSUMEABLDEFVERSION()});
     }
     //endregion
-
-    //region checkAndSearchWeb
-    private void checkAndSearchWeb(String tagID) {
-        if (checkIsExist(tagID) == -1) {
-            Log.e("indexhand", "列表里不存在" + tagID + "查询数据库");
-            IDlist.add(tagID);
-        } else {
-            Log.e("indexhand", "列表里存在" + tagID + "继续读");
-        }
-    }
-    //endregion
-
-    private void actionSave() {
-        Log.e("保存", "保存StockCheckDetail");
-        //修改
-        for (int i = 0;i<mStockCheckDeatilDataArrayList.size();i++){
-            StockCheckDeatilData data = mStockCheckDeatilDataArrayList.get(i);
-            ContentValues values = new ContentValues();
-            values.put(Constant.CHECKQTY, data.getCHECKQTY());
-            db.update(Constant.SF_STOCKCHECKDETAIL, values, "CONSUMEABLDEFNAME = ?", new String[]{data.getCONSUMEABLDEFNAME()});
-        }
-
-//        ContentValues values = new ContentValues();
-//        values.put(Constant.ISPDASHIPPING, "Y");
-//        if (tvlotshippingqty.getText().toString().equals(tvtagqty.getText().toString())) {
-//            values.put(Constant.STATE, "Finished");
-//        } else {
-//            values.put(Constant.STATE, "Run");
-//        }
-//
-//        db.update(Constant.SF_SHIPPINGPLAN, values, "SHIPPINGPLANNO = ?", new String[]{tvshippingPlanNo.getText().toString()});
-    }
 
     //region actionClearAll
     public void actionClearAll() {
