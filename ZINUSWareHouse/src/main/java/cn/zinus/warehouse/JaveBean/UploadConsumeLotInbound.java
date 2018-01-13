@@ -6,7 +6,7 @@ import java.io.Serializable;
  * Created by huangjiechun on 2017/12/28.
  */
 
-public class UploadConsumeLotInbound implements Serializable{
+public class UploadConsumeLotInbound implements Serializable {
     private String INBOUNDNO;
     private String CONSUMABLEDEFID;
     private String CONSUMABLEDEFVERSION;
@@ -19,6 +19,24 @@ public class UploadConsumeLotInbound implements Serializable{
     private String PLANQTY;
     private String CONSUMABLELOTID;
     private String ORDERCOMPANY;
+    private String DIVERSIONUNIT;
+    private String DIVERSIONQTY;
+
+    public String getDIVERSIONUNIT() {
+        return DIVERSIONUNIT;
+    }
+
+    public void setDIVERSIONUNIT(String DIVERSIONUNIT) {
+        this.DIVERSIONUNIT = DIVERSIONUNIT;
+    }
+
+    public String getDIVERSIONQTY() {
+        return DIVERSIONQTY;
+    }
+
+    public void setDIVERSIONQTY(String DIVERSIONQTY) {
+        this.DIVERSIONQTY = DIVERSIONQTY;
+    }
 
     public String getORDERCOMPANY() {
         return ORDERCOMPANY;

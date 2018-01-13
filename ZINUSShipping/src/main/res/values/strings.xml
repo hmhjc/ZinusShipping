@@ -288,19 +288,6 @@
                                             AND PLANDATE &lt; \'%2$s\'                          \n
     </string>
 
-    <!--<string name="GetShippingPlanQueryFinished">-->
-                                            <!--SELECT SP.SHIPPINGPLANNO,POID,SHIPPINGPLANSEQ,CONTAINERSEQ,     \n-->
-                                                   <!--SP.CUSTOMERID,SP.PRODUCTDEFNAME,SP.PLANQTY,      \n-->
-                                                   <!--SP.CONTAINERSPEC,SP.PLANSTARTTIME,             \n-->
-                                                   <!--SP.PLANENDTIME,SP.STATE,SP.LINENO,SP.PRODUCTDEFID,-->
-                                                   <!--SP.PRODUCTDEFVERSION,SP.ORDERTYPE,SP.ORDERNO                         \n-->
-                                            <!--FROM SF_SHIPPINGPLAN SP                               \n-->
-                                            <!--WHERE 1=1                                             \n-->
-                                            <!--AND SP.STATE = \'Finished\'                               \n-->
-                                            <!--AND SP.ISOISAVE IS NOT \'Y\'                            \n-->
-                                            <!--AND SP.PLANSTARTTIME &gt; \'%1$s\'                     \n-->
-                                            <!--AND SP.PLANSTARTTIME &lt; \'%2$s\'                     \n-->
-    <!--</string>-->
     <string name="GetShippingPlanQueryNormal">SELECT SHIPPINGPLANNO,BOOKINGNO,CUSTOMERID,PLANDATE,  \n
                                                    SHIPPINGPLANDATE,SHIPPINGENDPLANDATE,          \n
                                                    SHIPPINGENDDATE,STATE                        \n
@@ -418,7 +405,7 @@
 
     <string name="GetUploadlOTShipQuery"> SELECT SL.*,SPD.PRODUCTDEFNAME,L.TRACKOUTTIME FROM                              \n
                                           SF_SHIPPINGLOT SL                           \n
-                                          INNER JOIN SF_LOT L ON L.LOTID = SL.LOTID                 \n
+                                          LEFT JOIN SF_LOT L ON L.LOTID = SL.LOTID                 \n
                                           INNER JOIN SF_SHIPPINGPLANDETAIL SPD                 \n
                                           ON SPD.SHIPPINGPLANNO = SL.SHIPPINGPLANNO                  \n
                                           AND SPD.SHIPPINGPLANSEQ = SL.SHIPPINGPLANSEQ                  \n

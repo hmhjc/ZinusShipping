@@ -24,11 +24,26 @@ public class ConsumeRequestListViewAdapter extends BaseAdapter {
     private List<ConsumeRequestData> listMap;
 
     public final class ListItemView {
-        public TextView tvConsumeRequestNo;
-        public TextView tvAreaID;
-        public TextView tvUserID;
-        public TextView tvRequestDate;
-        public TextView tvOutBoundState;
+        public TextView tvCONSUMEREQNO;
+        public TextView tvCONSUMABLECOUNT;
+        public TextView tvUSERNAME;
+        public TextView tvLOCATIONNAME;
+        public TextView tvREQUESTUSERNAME;
+        public TextView tvFROMWAREHOUSENAME;
+        public TextView tvTOWAREHOUSENAME;
+        public TextView tvREQUESTDATE;
+        public TextView tvFINISHPLANDATE;
+
+//         public TextView tvCONSUMEREQNO
+//         public TextView tvCONSUMABLECOUNT
+//         public TextView tvUSERNAME
+//         public TextView tvLOCATIONNAME
+//         public TextView tvREQUESTUSERNAME
+//         public TextView tvFROMWAREHOUSENAME
+//         public TextView tvTOWAREHOUSENAME
+//         public TextView tvREQUESTDATE
+//         public TextView tvFINISHPLANDATE
+
     }
 
     public ConsumeRequestListViewAdapter(Context context, List<ConsumeRequestData> listMap) {
@@ -58,22 +73,30 @@ public class ConsumeRequestListViewAdapter extends BaseAdapter {
         if (convertView == null) {
             listItemView = new ListItemView();
             convertView = mInflater.inflate(R.layout.lv_item_consumerequest, null);
-            listItemView.tvConsumeRequestNo = (TextView) convertView.findViewById(R.id.tv_ConsumeRequestNo);
-            listItemView.tvAreaID = (TextView) convertView.findViewById(R.id.tv_AreaID);
-            listItemView.tvUserID = (TextView) convertView.findViewById(R.id.tv_UserID);
-            listItemView.tvRequestDate = (TextView) convertView.findViewById(R.id.tv_RequestDate);
-            listItemView.tvOutBoundState = (TextView) convertView.findViewById(R.id.tv_OutBoundState);
+            listItemView.tvCONSUMEREQNO = (TextView) convertView.findViewById(R.id.tv_CONSUMEREQNO);
+            listItemView.tvCONSUMABLECOUNT = (TextView) convertView.findViewById(R.id.tv_CONSUMABLECOUNT);
+            listItemView.tvUSERNAME = (TextView) convertView.findViewById(R.id.tv_USERNAME);
+            listItemView.tvLOCATIONNAME = (TextView) convertView.findViewById(R.id.tv_LOCATIONNAME);
+            listItemView.tvREQUESTUSERNAME = (TextView) convertView.findViewById(R.id.tv_REQUESTUSERNAME);
+            listItemView.tvFROMWAREHOUSENAME = (TextView) convertView.findViewById(R.id.tv_FROMWAREHOUSENAME);
+            listItemView.tvTOWAREHOUSENAME = (TextView) convertView.findViewById(R.id.tv_TOWAREHOUSENAME);
+            listItemView.tvREQUESTDATE = (TextView) convertView.findViewById(R.id.tv_REQUESTDATE);
+            listItemView.tvFINISHPLANDATE = (TextView) convertView.findViewById(R.id.tv_FINISHPLANDATE);
+
             convertView.setTag(listItemView);
         } else {
             listItemView = (ListItemView) convertView.getTag();
         }
         ConsumeRequestData data = listMap.get(position);
-        listItemView.tvConsumeRequestNo.setText(data.getCONSUMEREQNO());
-        listItemView.tvAreaID.setText(data.getAREAID());
-        listItemView.tvUserID.setText(data.getUSERID());
-        listItemView.tvRequestDate.setText(data.getREQUESTDATE());
-        listItemView.tvOutBoundState.setText(data.getOUTBOUNDSTATE());
-
+        listItemView.tvCONSUMEREQNO.setText(data.getCONSUMEREQNO());
+        listItemView.tvCONSUMABLECOUNT.setText(data.getCONSUMABLECOUNT());
+        listItemView.tvUSERNAME.setText(data.getUSERNAME());
+        listItemView.tvLOCATIONNAME.setText(data.getLOCATIONNAME());
+        listItemView.tvREQUESTUSERNAME.setText(data.getREQUESTUSERNAME());
+        listItemView.tvFROMWAREHOUSENAME.setText(data.getFROMWAREHOUSENAME());
+        listItemView.tvTOWAREHOUSENAME.setText(data.getTOWAREHOUSENAME());
+        listItemView.tvREQUESTDATE.setText(data.getREQUESTDATE());
+        listItemView.tvFINISHPLANDATE.setText(data.getFINISHPLANDATE());
         return convertView;
     }
 }

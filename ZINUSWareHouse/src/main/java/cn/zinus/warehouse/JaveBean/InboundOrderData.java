@@ -21,6 +21,7 @@ public class InboundOrderData implements Serializable{
     private String WAREHOUSENAME;
     private String STATENAME;
     private String CONSUMABLECOUNT;
+    private String INBOUNDTYPE;
 
     @Override
     public String toString() {
@@ -37,7 +38,16 @@ public class InboundOrderData implements Serializable{
                 ", WAREHOUSENAME='" + WAREHOUSENAME + '\'' +
                 ", STATENAME='" + STATENAME + '\'' +
                 ", CONSUMABLECOUNT='" + CONSUMABLECOUNT + '\'' +
+                ", INBOUNDTYPE='" + INBOUNDTYPE + '\'' +
                 '}';
+    }
+
+    public String getINBOUNDTYPE() {
+        return INBOUNDTYPE;
+    }
+
+    public void setINBOUNDTYPE(String INBOUNDTYPE) {
+        this.INBOUNDTYPE = INBOUNDTYPE;
     }
 
     public String getWAREHOUSENAME() {

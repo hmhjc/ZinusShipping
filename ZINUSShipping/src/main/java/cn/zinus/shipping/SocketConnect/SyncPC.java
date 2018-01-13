@@ -169,38 +169,38 @@ public class SyncPC implements Runnable {
                             //region uploadShipping
                             case Constant.UPLOADSHIPPINGSTART:
                                 ShippingPlanData = getShippingPlanData();
-                                String ShippingPlanData1 = Constant.UPLOADSHIPPINGPLANINFO + ShippingPlanData.getBytes().length;
+                                String ShippingPlanData1 = Constant.UPLOADSHIPPINGPLANINFO + ShippingPlanData.getBytes("UTF8").length;
                                 Log.e("准备上传ShippingPlan", ShippingPlanData1);
                                 out.write(ShippingPlanData1.getBytes());
                                 out.flush();
                                 break;
                             case Constant.UPLOADSHIPPINGPLAN:
                                 Log.e("上传ShippingPlan", ShippingPlanData);
-                                out.write((Constant.UPLOADSHIPPINGPLAN + ShippingPlanData).getBytes());
+                                out.write((ShippingPlanData).getBytes("UTF8"));
                                 out.flush();
                                 break;
                             case Constant.UPLOADSHIPPINGPLANDETAILINFO:
                                 ShippingPlanDetailData = getShippingPlanDetailData();
-                                String ShippingPlanDetailData1 = Constant.UPLOADSHIPPINGPLANDETAILINFO + ShippingPlanDetailData.getBytes().length;
-                                Log.e("准备上传ShippingPlan", ShippingPlanDetailData1);
+                                String ShippingPlanDetailData1 = Constant.UPLOADSHIPPINGPLANDETAILINFO + ShippingPlanDetailData.getBytes("UTF8").length;
+                                Log.e("准备上传ShippingPlanDetail", ShippingPlanDetailData1);
                                 out.write(ShippingPlanDetailData1.getBytes());
                                 out.flush();
                                 break;
                             case Constant.UPLOADSHIPPINGPLANDETAIL:
-                                Log.e("上传ShippingPlan", ShippingPlanDetailData);
-                                out.write((Constant.UPLOADSHIPPINGPLANDETAIL + ShippingPlanDetailData).getBytes());
+                                Log.e("上传ShippingPlanDetail", ShippingPlanDetailData);
+                                out.write((ShippingPlanDetailData).getBytes("UTF8"));
                                 out.flush();
                                 break;
                             case Constant.UPLOADLOTSHIPPINGINFO:
                                 LotShippingdata = getLotShippingData();
-                                String LotShippingData1 = Constant.UPLOADLOTSHIPPINGINFO + LotShippingdata.getBytes().length;
+                                String LotShippingData1 = Constant.UPLOADLOTSHIPPINGINFO + LotShippingdata.getBytes("UTF8").length;
                                 Log.e("准备上传LotShipping", LotShippingData1);
                                 out.write(LotShippingData1.getBytes());
                                 out.flush();
                                 break;
                             case Constant.UPLOADLOTSHIPPING:
                                 Log.e("上传LotShipping", LotShippingdata);
-                                out.write((Constant.UPLOADLOTSHIPPING + LotShippingdata).getBytes());
+                                out.write((LotShippingdata).getBytes("UTF8"));
                                 out.flush();
                                 break;
                             //endregion
@@ -286,17 +286,22 @@ public class SyncPC implements Runnable {
 
     private boolean checkShippingIsAllUpload() {
         boolean returnflag = false;
-        ArrayList<ShippingPlanData> shipplanlist = new ArrayList<>();
         db = mHelper.getWritableDatabase();
         String selectDataListsql = String.format(mContext.getString(R.string.checkShippingIsAllUpload));
         Log.e("checkIsAllUpload", selectDataListsql);
         Cursor cursorDatalist = DBManger.selectDatBySql(db, selectDataListsql, null);
-        if (cursorDatalist.getCount() != 0) {
-            Log.e("查到了", "111111111");
-            while (cursorDatalist.moveToNext()) {
-                if (!cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.COUNT)).equals("0"))
-                    returnflag = true;
+        if (cursorDatalist != null) {
+            if (cursorDatalist.getCount() != 0) {
+                Log.e("查到了", "111111111");
+                while (cursorDatalist.moveToNext()) {
+                    if (!cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.COUNT)).equals("0"))
+                        returnflag = true;
+                }
+            } else {
+                Log.e("没有符合条件的", "111111111");
             }
+        }else {
+            returnflag = false;
         }
         return returnflag;
     }
@@ -312,15 +317,14 @@ public class SyncPC implements Runnable {
             Log.e("查到了", "111111111");
             while (cursorDatalist.moveToNext()) {
                 ShippingPlanData shippingPlanData = new ShippingPlanData();
-                shippingPlanData.setSHIPPINGPLANNO(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.SHIPPINGPLANNO)));
-                shippingPlanData.setCUSTOMERID(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.CUSTOMERID)));
-                shippingPlanData.setBOOKINGNO(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.BOOKINGNO)));
-                shippingPlanData.setPLANDATE(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.PLANDATE)));
-                shippingPlanData.setSHIPPINGPLANDATE(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.SHIPPINGPLANDATE)));
-                shippingPlanData.setSHIPPINGENDPLANDATE(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.SHIPPINGENDPLANDATE)));
-                shippingPlanData.setSHIPPINGENDDATE(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.SHIPPINGENDDATE)));
-                shippingPlanData.setSTATE(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.STATE)));
-                //SHIPPINGPLANNO ,PLANTID,CUSTOMERID,BOOKINGNO,PLANDATE,SHIPPINGPLANDATE,SHIPPINGENDPLANDATE,SHIPPINGENDDATE,STATE
+                shippingPlanData.setSHIPPINGPLANNO(getcursorData(cursorDatalist, Constant.SHIPPINGPLANNO));
+                shippingPlanData.setCUSTOMERID(getcursorData(cursorDatalist, Constant.CUSTOMERID));
+                shippingPlanData.setBOOKINGNO(getcursorData(cursorDatalist, Constant.BOOKINGNO));
+                shippingPlanData.setPLANDATE(getcursorData(cursorDatalist, Constant.PLANDATE));
+                shippingPlanData.setSHIPPINGPLANDATE(getcursorData(cursorDatalist, Constant.SHIPPINGPLANDATE));
+                shippingPlanData.setSHIPPINGENDPLANDATE(getcursorData(cursorDatalist, Constant.SHIPPINGENDPLANDATE));
+                shippingPlanData.setSHIPPINGENDDATE(getcursorData(cursorDatalist, Constant.SHIPPINGENDDATE));
+                shippingPlanData.setSTATE(getcursorData(cursorDatalist, Constant.STATE));
                 Log.e("查到了shippingPlanData", shippingPlanData.toString());
                 shipplanlist.add(shippingPlanData);
             }
@@ -341,27 +345,25 @@ public class SyncPC implements Runnable {
             Log.e("查到了", "111111111");
             while (cursorDatalist.moveToNext()) {
                 ShippingPlanDetailData uploadshipplandetail = new ShippingPlanDetailData();
-                uploadshipplandetail.setSHIPPINGPLANNO(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.SHIPPINGPLANNO)));
-                uploadshipplandetail.setSHIPPINGPLANSEQ(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.SHIPPINGPLANSEQ)));
-                uploadshipplandetail.setORDERTYPE(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.ORDERTYPE)));
-                uploadshipplandetail.setORDERNO(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.ORDERNO)));
-                uploadshipplandetail.setLINENO(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.LINENO)));
-                uploadshipplandetail.setPRODUCTDEFID(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.PRODUCTDEFID)));
-                uploadshipplandetail.setPRODUCTDEFVERSION(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.PRODUCTDEFVERSION)));
-                uploadshipplandetail.setPRODUCTDEFNAME(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.PRODUCTDEFNAME)));
-                uploadshipplandetail.setCONTAINERSEQ(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.CONTAINERSEQ)));
-                uploadshipplandetail.setPOID(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.POID)));
-                uploadshipplandetail.setCONTAINERSPEC(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.CONTAINERSPEC)));
-                uploadshipplandetail.setCONTAINERNO(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.CONTAINERNO)));
-                uploadshipplandetail.setSEALNO(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.SEALNO)));
-                uploadshipplandetail.setCOMPLETETIME(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.COMPLETETIME)));
-                uploadshipplandetail.setPLANQTY(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.PLANQTY)));
-                uploadshipplandetail.setLOADEDQTY(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.LOADEDQTY)));
-//                SHIPPINGPLANNO,SHIPPINGPLANSEQ,CONTAINERSEQ     \n
-//                        ,POID,CONTAINERSPEC,CONTAINERNO,SEALNO     \n
-//                        ,COMPLETETIME,PLANQTY,     \n
-//                ORDERTYPE,ORDERNO,LINENO     \n
+
+                uploadshipplandetail.setSHIPPINGPLANNO(getcursorData(cursorDatalist, Constant.SHIPPINGPLANNO));
+                uploadshipplandetail.setSHIPPINGPLANSEQ(getcursorData(cursorDatalist, Constant.SHIPPINGPLANSEQ));
+                uploadshipplandetail.setORDERTYPE(getcursorData(cursorDatalist, Constant.ORDERTYPE));
+                uploadshipplandetail.setORDERNO(getcursorData(cursorDatalist, Constant.ORDERNO));
+                uploadshipplandetail.setLINENO(getcursorData(cursorDatalist, Constant.LINENO));
+                uploadshipplandetail.setPRODUCTDEFID(getcursorData(cursorDatalist, Constant.PRODUCTDEFID));
+                uploadshipplandetail.setPRODUCTDEFVERSION(getcursorData(cursorDatalist, Constant.PRODUCTDEFVERSION));
+                uploadshipplandetail.setPRODUCTDEFNAME(getcursorData(cursorDatalist, Constant.PRODUCTDEFNAME));
+                uploadshipplandetail.setCONTAINERSEQ(getcursorData(cursorDatalist, Constant.CONTAINERSEQ));
+                uploadshipplandetail.setPOID(getcursorData(cursorDatalist, Constant.POID));
+                uploadshipplandetail.setCONTAINERSPEC(getcursorData(cursorDatalist, Constant.CONTAINERSPEC));
+                uploadshipplandetail.setCONTAINERNO(getcursorData(cursorDatalist, Constant.CONTAINERNO));
+                uploadshipplandetail.setSEALNO(getcursorData(cursorDatalist, Constant.SEALNO));
+                uploadshipplandetail.setCOMPLETETIME(getcursorData(cursorDatalist, Constant.COMPLETETIME));
+                uploadshipplandetail.setPLANQTY(getcursorData(cursorDatalist, Constant.PLANQTY));
+                uploadshipplandetail.setLOADEDQTY(getcursorData(cursorDatalist, Constant.LOADEDQTY));
                 shipplanlist.add(uploadshipplandetail);
+                Log.e("查到的detail信息", uploadshipplandetail.toString());
             }
         }
         Gson shipplanjson = new Gson();
@@ -380,7 +382,7 @@ public class SyncPC implements Runnable {
             Log.e("查到了", "111111111");
             while (cursorDatalist.moveToNext()) {
                 LotShippingData data = new LotShippingData();
-                data.setLOTID(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.LOTID)));
+                data.setLOTID(getcursorData(cursorDatalist, Constant.LOTID));
                 data.setSHIPPINGPLANNO(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.SHIPPINGPLANNO)));
                 data.setSHIPPINGPLANSEQ(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.SHIPPINGPLANSEQ)));
                 data.setCONTAINERSEQ(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.CONTAINERSEQ)));
@@ -388,14 +390,15 @@ public class SyncPC implements Runnable {
                 data.setPOID(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.POID)));
                 data.setVALIDSTATE(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.VALIDSTATE)));
                 data.setQTY(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.QTY)));
-                data.setLINENO(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.LINENO)));
-                data.setPRODUCTDEFID(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.PRODUCTDEFID)));
-                data.setPRODUCTDEFNAME(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.PRODUCTDEFNAME)));
-                data.setPRODUCTDEFVERSION(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.PRODUCTDEFVERSION)));
-                data.setORDERNO(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.ORDERNO)));
-                data.setORDERTYPE(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.ORDERTYPE)));
-                data.setTRACKOUTTIME(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.TRACKOUTTIME)));
+                data.setORDERTYPE(getcursorData(cursorDatalist, Constant.ORDERTYPE));
+                data.setORDERNO(getcursorData(cursorDatalist, Constant.ORDERNO));
+                data.setLINENO(getcursorData(cursorDatalist, Constant.LINENO));
+                data.setPRODUCTDEFID(getcursorData(cursorDatalist, Constant.PRODUCTDEFID));
+                data.setPRODUCTDEFVERSION(getcursorData(cursorDatalist, Constant.PRODUCTDEFVERSION));
+                data.setPRODUCTDEFNAME(getcursorData(cursorDatalist, Constant.PRODUCTDEFNAME));
+                data.setTRACKOUTTIME(getcursorData(cursorDatalist, Constant.TRACKOUTTIME));
                 lotshiplist.add(data);
+                Log.e("上传的shippinglot数据", data.toString());
             }
         }
         Gson shipplanjson = new Gson();
@@ -403,93 +406,13 @@ public class SyncPC implements Runnable {
         return a;
     }
 
+    private String getcursorData(Cursor cursorDatalist, String ColumnIndex) {
+        String returnstr = "";
+        String a = cursorDatalist.getString(cursorDatalist.getColumnIndex(ColumnIndex));
+        if (a != null) {
+            returnstr = a;
+        }
+        return returnstr;
+    }
+
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-
-
-    string SHIPPINGPLANNO;
-    string SHIPPINGPLANSEQ;
-    string CONTAINERSEQ;
-    string POID;
-    string LOTID;
-    string QTY;
-    string SHIPPINGDATE;
-    string PLANQTY;
-    string ORDERTYPE;
-    string ORDERNO;
-    string LINENO;
-    string PRODUCTDEFID;
-    string PRODUCTDEFNAME;
-    string PRODUCTDEFVERSION;
-
-
-
- tblDatas.Columns.Add("SHIPPINGPLANNO", Type.GetType("System.String"));
- tblDatas.Columns.Add("SHIPPINGPLANSEQ", Type.GetType("System.String"));
- tblDatas.Columns.Add("CONTAINERSEQ", Type.GetType("System.String"));
- tblDatas.Columns.Add("POID", Type.GetType("System.String"));
- tblDatas.Columns.Add("LOTID", Type.GetType("System.String"));
- tblDatas.Columns.Add("QTY", Type.GetType("System.String"));
- tblDatas.Columns.Add("SHIPPINGDATE", Type.GetType("System.String"));
- tblDatas.Columns.Add("PLANQTY", Type.GetType("System.String"));
- tblDatas.Columns.Add("ORDERTYPE", Type.GetType("System.String"));
- tblDatas.Columns.Add("ORDERNO", Type.GetType("System.String"));
- tblDatas.Columns.Add("LINENO", Type.GetType("System.String"));
- tblDatas.Columns.Add("PRODUCTDEFID", Type.GetType("System.String"));
- tblDatas.Columns.Add("PRODUCTDEFNAME", Type.GetType("System.String"));
- tblDatas.Columns.Add("PRODUCTDEFVERSION", Type.GetType("System.String"));
-
-
-SHIPPINGPLANNO = ((JObject)item)["SHIPPINGPLANNO"].ToString();
-SHIPPINGPLANSEQ = ((JObject)item)["SHIPPINGPLANSEQ"].ToString();
-CONTAINERSEQ = ((JObject)item)["CONTAINERSEQ"].ToString();
-POID = ((JObject)item)["POID"].ToString();
-LOTID = ((JObject)item)["LOTID"].ToString();
-QTY = ((JObject)item)["QTY"].ToString();
-SHIPPINGDATE = ((JObject)item)["SHIPPINGDATE"].ToString();
-PLANQTY = ((JObject)item)["PLANQTY"].ToString();
-ORDERTYPE = ((JObject)item)["ORDERTYPE"].ToString();
-ORDERNO = ((JObject)item)["ORDERNO"].ToString();
-LINENO = ((JObject)item)["LINENO"].ToString();
-PRODUCTDEFID = ((JObject)item)["PRODUCTDEFID"].ToString();
-PRODUCTDEFNAME = ((JObject)item)["PRODUCTDEFNAME"].ToString();
-PRODUCTDEFVERSION = ((JObject)item)["PRODUCTDEFVERSION"].ToString();
-
-
-
-
-
-
-*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

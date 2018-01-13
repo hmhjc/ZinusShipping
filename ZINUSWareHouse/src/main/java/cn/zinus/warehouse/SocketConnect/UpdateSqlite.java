@@ -13,65 +13,20 @@ import cn.zinus.warehouse.JaveBean.AreaData;
 import cn.zinus.warehouse.JaveBean.CodeData;
 import cn.zinus.warehouse.JaveBean.ConsumableLotData;
 import cn.zinus.warehouse.JaveBean.ConsumabledefinitionData;
-import cn.zinus.warehouse.JaveBean.ConsumeInboundData;
-import cn.zinus.warehouse.JaveBean.ConsumeLotInboundData;
-import cn.zinus.warehouse.JaveBean.ConsumeLotOutboundData;
-import cn.zinus.warehouse.JaveBean.ConsumeOutboundData;
-import cn.zinus.warehouse.JaveBean.ConsumeRequestData;
 import cn.zinus.warehouse.JaveBean.ConsumeStockData;
-import cn.zinus.warehouse.JaveBean.InboundOrderData;
-import cn.zinus.warehouse.JaveBean.LotShippingData;
-import cn.zinus.warehouse.JaveBean.ShippingPlanData;
-import cn.zinus.warehouse.JaveBean.StockCheckData;
-import cn.zinus.warehouse.JaveBean.StockCheckDeatilData;
-import cn.zinus.warehouse.JaveBean.StockLotCheckDeatilData;
 import cn.zinus.warehouse.JaveBean.WareHouseData;
-import cn.zinus.warehouse.JaveBean.lotData;
 import cn.zinus.warehouse.util.Constant;
 import cn.zinus.warehouse.util.DBManger;
 import cn.zinus.warehouse.util.MyDateBaseHelper;
 
 import static cn.zinus.warehouse.util.Constant.AREAID;
-import static cn.zinus.warehouse.util.Constant.CHECKMONTH;
-import static cn.zinus.warehouse.util.Constant.CHECKQTY;
-import static cn.zinus.warehouse.util.Constant.CHECKUNIT;
-import static cn.zinus.warehouse.util.Constant.CONSUMABLECOUNT;
 import static cn.zinus.warehouse.util.Constant.CONSUMABLEDEFID;
-import static cn.zinus.warehouse.util.Constant.CONSUMABLEDEFNAME;
 import static cn.zinus.warehouse.util.Constant.CONSUMABLEDEFVERSION;
 import static cn.zinus.warehouse.util.Constant.CONSUMABLELOTID;
-import static cn.zinus.warehouse.util.Constant.CONTAINERSPEC;
-import static cn.zinus.warehouse.util.Constant.CUSTOMERID;
-import static cn.zinus.warehouse.util.Constant.INBOUNDDATE;
-import static cn.zinus.warehouse.util.Constant.INBOUNDNO;
-import static cn.zinus.warehouse.util.Constant.INBOUNDSTATE;
-import static cn.zinus.warehouse.util.Constant.INBOUNDSTATENAME;
-import static cn.zinus.warehouse.util.Constant.INQTY;
-import static cn.zinus.warehouse.util.Constant.LINENO;
-import static cn.zinus.warehouse.util.Constant.ORDERCOMPANY;
-import static cn.zinus.warehouse.util.Constant.ORDERNO;
-import static cn.zinus.warehouse.util.Constant.ORDERTYPE;
-import static cn.zinus.warehouse.util.Constant.PLANENDTIME;
-import static cn.zinus.warehouse.util.Constant.PLANQTY;
-import static cn.zinus.warehouse.util.Constant.PLANSTARTTIME;
 import static cn.zinus.warehouse.util.Constant.PLANTID;
-import static cn.zinus.warehouse.util.Constant.PRODUCTDEFID;
-import static cn.zinus.warehouse.util.Constant.PRODUCTDEFVERSION;
-import static cn.zinus.warehouse.util.Constant.PRODUCTIONORDERNAME;
 import static cn.zinus.warehouse.util.Constant.QTY;
-import static cn.zinus.warehouse.util.Constant.SCHEDULEDATE;
-import static cn.zinus.warehouse.util.Constant.SHIPPINGPLANNO;
-import static cn.zinus.warehouse.util.Constant.STATE;
-import static cn.zinus.warehouse.util.Constant.STATENAME;
-import static cn.zinus.warehouse.util.Constant.TAGID;
-import static cn.zinus.warehouse.util.Constant.TAGQTY;
-import static cn.zinus.warehouse.util.Constant.TEMPINBOUNDDATE;
-import static cn.zinus.warehouse.util.Constant.UNIT;
-import static cn.zinus.warehouse.util.Constant.USERID;
 import static cn.zinus.warehouse.util.Constant.VALIDSTATE;
 import static cn.zinus.warehouse.util.Constant.WAREHOUSEID;
-import static cn.zinus.warehouse.util.Constant.WAREHOUSENAME;
-import static cn.zinus.warehouse.util.Constant.WORKINGSHIFT;
 
 /**
  * Developer:Spring
@@ -87,6 +42,307 @@ public class UpdateSqlite {
         mHelper = DBManger.getIntance(mContext);
         db = mHelper.getWritableDatabase();
     }
+
+    //region 入库表更新
+    //region Table_InboundOrder
+
+    public void updateInboundOrder(String resultStr) {
+        Log.e("更新本地数据库InboundOrder", resultStr);
+        try {
+            db.beginTransaction();
+            JSONArray array = new JSONArray(resultStr);
+            for (int i = 0; i < array.length(); i++) {
+                JSONObject jsonObject = array.getJSONObject(i);
+                String insertSQL = String.format(Constant.InsertIntoINBOUNDORDER
+                        , jsonObject.getString(Constant.INBOUNDNO)
+                        , jsonObject.getString(Constant.WAREHOUSEID)
+                        , jsonObject.getString(Constant.WAREHOUSENAME)
+                        , jsonObject.getString(Constant.SCHEDULEDATE)
+                        , jsonObject.getString(Constant.INBOUNDDATE)
+                        , jsonObject.getString(Constant.TEMPINBOUNDDATE)
+                        , jsonObject.getString(Constant.INBOUNDSTATE)
+                        , jsonObject.getString(Constant.INBOUNDSTATENAME)
+                        , jsonObject.getString(Constant.INBOUNDTYPE)
+                        , jsonObject.getString(Constant.CONSUMABLECOUNT));
+                db.execSQL(insertSQL);
+            }
+            db.setTransactionSuccessful();
+            db.endTransaction();
+        } catch (JSONException e) {
+            Log.e("INBOUNDORDER更新出错", e.getMessage().toString());
+        }
+
+    }
+
+    //endregion
+
+    //region TableSF_CONSUMEINBOUND
+
+    public void updateConsumeInbound(String resultStr) {
+        Log.e("更新本地数据库ConsumeInbound", resultStr);
+        try {
+            db.beginTransaction();
+            JSONArray array = new JSONArray(resultStr);
+            for (int i = 0; i < array.length(); i++) {
+                JSONObject jsonObject = array.getJSONObject(i);
+                String insertSQL = String.format(Constant.InsertIntoCONSUMEINBOUND
+                        , jsonObject.getString(Constant.INBOUNDNO)
+                        , jsonObject.getString(Constant.CONSUMABLEDEFID)
+                        , jsonObject.getString(Constant.CONSUMABLEDEFNAME)
+                        , jsonObject.getString(Constant.CONSUMABLEDEFVERSION)
+                        , jsonObject.getString(Constant.WAREHOUSEID)
+                        , jsonObject.getString(Constant.ORDERNO)
+                        , jsonObject.getString(Constant.ORDERTYPE)
+                        , jsonObject.getString(Constant.LINENO)
+                        , jsonObject.getString(Constant.ORDERCOMPANY)
+                        , jsonObject.getString(Constant.UNIT)
+                        , jsonObject.getString(Constant.DIVERSIONUNIT)
+                        , jsonObject.getString(Constant.PLANQTY)
+                        , jsonObject.getString(Constant.INQTY)
+                        , jsonObject.getString(Constant.DIVERSIONQTY)
+                        , jsonObject.getString(Constant.RATE));
+                db.execSQL(insertSQL);
+            }
+            db.setTransactionSuccessful();
+            db.endTransaction();
+        } catch (JSONException e) {
+            Log.e("CONSUMEINBOUND更新出错", e.getMessage().toString());
+        }
+    }
+
+    //endregion
+
+    //region Table_SF_CONSUMELOTINBOUND
+    public void updateConsumeLotInbound(String resultStr) {
+        Log.e("更新ConsumeLotInbound", resultStr);
+        try {
+            db.beginTransaction();
+            JSONArray array = new JSONArray(resultStr);
+            for (int i = 0; i < array.length(); i++) {
+                JSONObject jsonObject = array.getJSONObject(i);
+                String insertSQL = String.format(Constant.InsertIntoCONSUMELOTINBOUND
+                        , jsonObject.getString(Constant.INBOUNDNO)
+                        , jsonObject.getString(Constant.CONSUMABLELOTID)
+                        , jsonObject.getString(Constant.CONSUMABLEDEFID)
+                        , jsonObject.getString(Constant.CONSUMABLEDEFNAME)
+                        , jsonObject.getString(Constant.CONSUMABLEDEFVERSION)
+                        , jsonObject.getString(Constant.WAREHOUSEID)
+                        , jsonObject.getString(Constant.ORDERNO)
+                        , jsonObject.getString(Constant.ORDERTYPE)
+                        , jsonObject.getString(Constant.LINENO)
+                        , jsonObject.getString(Constant.ORDERCOMPANY)
+                        , jsonObject.getString(Constant.UNIT)
+                        , jsonObject.getString(Constant.DIVERSIONUNIT)
+                        , jsonObject.getString(Constant.PLANQTY)
+                        , jsonObject.getString(Constant.INQTY)
+                        , jsonObject.getString(Constant.DIVERSIONQTY)
+                        , jsonObject.getString(Constant.RATE)
+                        , jsonObject.getString(Constant.TAGID)
+                        , jsonObject.getString(Constant.TAGQTY));
+                db.execSQL(insertSQL);
+            }
+            db.setTransactionSuccessful();
+            db.endTransaction();
+        } catch (JSONException e) {
+            Log.e("CONSUMELOTINBOUND更新出错", e.getMessage().toString());
+        }
+    }
+
+    //endregion
+    //endregion
+
+    //region 出库表更新
+    //region Table_SF_CONSUMEREQUEST
+    public void updateConsumeRequest(String resultStr) {
+        Log.e("更新ConsumeRequest", resultStr);
+        try {
+            db.beginTransaction();
+            JSONArray array = new JSONArray(resultStr);
+            for (int i = 0; i < array.length(); i++) {
+                JSONObject jsonObject = array.getJSONObject(i);
+                String insertSQL = String.format(Constant.InsertIntoCONSUMEREQUEST
+                        , jsonObject.getString(Constant.CONSUMEREQNO)
+                        , jsonObject.getString(Constant.CONSUMABLECOUNT)
+                        , jsonObject.getString(Constant.USERID)
+                        , jsonObject.getString(Constant.USERNAME)
+                        , jsonObject.getString(Constant.LOCATIONID)
+                        , jsonObject.getString(Constant.LOCATIONNAME)
+                        , jsonObject.getString(Constant.REQUESTUSERID)
+                        , jsonObject.getString(Constant.REQUESTUSERNAME)
+                        , jsonObject.getString(Constant.FROMWAREHOUSEID)
+                        , jsonObject.getString(Constant.FROMWAREHOUSENAME)
+                        , jsonObject.getString(Constant.WAREHOUSEID)
+                        , jsonObject.getString(Constant.TOWAREHOUSENAME)
+                        , jsonObject.getString(Constant.REQUESTDATE)
+                        , jsonObject.getString(Constant.FINISHPLANDATE));
+                db.execSQL(insertSQL);
+            }
+            db.setTransactionSuccessful();
+            db.endTransaction();
+        } catch (JSONException e) {
+            Log.e("CONSUMEREQUEST更新出错", e.getMessage().toString());
+        }
+    }
+
+    //endregion
+
+    //region Table_SF_CONSUMEOUTBOUND
+    public void updateConsumeOutbound(String resultStr) {
+        Log.e("更新ConsumeOutBound", resultStr);
+        try {
+            db.beginTransaction();
+            JSONArray array = new JSONArray(resultStr);
+            for (int i = 0; i < array.length(); i++) {
+                JSONObject jsonObject = array.getJSONObject(i);
+                String insertShippingPlan = String.format(Constant.InsertIntoCONSUMEOUTBOUND
+                        , jsonObject.getString(Constant.CONSUMABLEDEFID)
+                        , jsonObject.getString(Constant.CONSUMABLEDEFVERSION)
+                        , jsonObject.getString(Constant.WAREHOUSEID)
+                        , jsonObject.getString(Constant.CONSUMEREQNO)
+                        , jsonObject.getString(Constant.UNIT)
+                        , jsonObject.getString(Constant.OUTBOUNDSTATE)
+                        , jsonObject.getString(Constant.FROMWAREHOUSEID)
+                        , jsonObject.getString(Constant.REQUESTQTY)
+                        , jsonObject.getString(Constant.OUTQTY));
+                db.execSQL(insertShippingPlan);
+            }
+            db.setTransactionSuccessful();
+            db.endTransaction();
+        } catch (JSONException e) {
+            Log.e("CONSUMEOUTBOUND更新出错", e.getMessage().toString());
+        }
+    }
+
+    //endregion
+
+    //region Table_SF_CONSUMELOTOUTBOUND
+    public void updateConsumeLotOutbound(String resultStr) {
+        Log.e("更新ConsumeLotOutbound", resultStr);
+        try {
+            db.beginTransaction();
+            JSONArray array = new JSONArray(resultStr);
+            for (int i = 0; i < array.length(); i++) {
+                JSONObject jsonObject = array.getJSONObject(i);
+                String insertShippingPlan = String.format(Constant.InsertIntoCONSUMELOTOUTBOUND
+                        , jsonObject.getString(Constant.CONSUMABLELOTID)
+                        , jsonObject.getString(Constant.CONSUMABLEDEFID)
+                        , jsonObject.getString(Constant.CONSUMABLEDEFVERSION)
+                        , jsonObject.getString(Constant.WAREHOUSEID)
+                        , jsonObject.getString(Constant.CONSUMEREQNO)
+                        , jsonObject.getString(Constant.UNIT)
+                        , jsonObject.getString(Constant.OUTBOUNDSTATE)
+                        , jsonObject.getString(Constant.OUTQTY)
+                        , jsonObject.getString(Constant.TAGID)
+                        , jsonObject.getString(Constant.TAGQTY));
+                db.execSQL(insertShippingPlan);
+            }
+            db.setTransactionSuccessful();
+            db.endTransaction();
+        } catch (JSONException e) {
+            Log.e("CONSUMELOTOUTBOUND更新出错", e.getMessage().toString());
+        }
+    }
+
+    //endregion
+    //endregion
+
+    //region 盘点表更新
+    //region Table_SF_STOCKCHECK
+    public void updateStockCheck(String resultStr) {
+        Log.e("更新StockCheck", resultStr);
+        try {
+            db.beginTransaction();
+            JSONArray array = new JSONArray(resultStr);
+            for (int i = 0; i < array.length(); i++) {
+                JSONObject jsonObject = array.getJSONObject(i);
+                String insertShippingPlan = String.format(Constant.InsertIntoSTOCKCHECK
+                        , jsonObject.getString(Constant.WAREHOUSEID)
+                        , jsonObject.getString(Constant.CHECKMONTH)
+                        , jsonObject.getString(Constant.STARTDATE)
+                        , jsonObject.getString(Constant.ENDDATE)
+                        , jsonObject.getString(Constant.WAREHOUSENAME)
+                        , jsonObject.getString(Constant.STATE)
+                        , jsonObject.getString(Constant.STATENAME));
+                db.execSQL(insertShippingPlan);
+            }
+            db.setTransactionSuccessful();
+            db.endTransaction();
+        } catch (JSONException e) {
+            Log.e("STOCKCHECK更新出错", e.getMessage().toString());
+        }
+    }
+
+    //endregion
+
+    //region Table_SF_STOCKCHECKDETAIL
+    public void updateStockCheckDetail(String resultStr) {
+        Log.e("更新StockCheckDetail", resultStr);
+        try {
+            db.beginTransaction();
+            JSONArray array = new JSONArray(resultStr);
+            for (int i = 0; i < array.length(); i++) {
+                JSONObject jsonObject = array.getJSONObject(i);
+                String insertShippingPlan = String.format(Constant.InsertIntoSTOCKCHECKDETAIL
+                        , jsonObject.getString(Constant.WAREHOUSEID)
+                        , jsonObject.getString(Constant.CHECKMONTH)
+                        , jsonObject.getString(Constant.CONSUMABLEDEFNAME)
+                        , jsonObject.getString(Constant.CONSUMABLEDEFID)
+                        , jsonObject.getString(Constant.CONSUMABLEDEFVERSION)
+                        , jsonObject.getString(Constant.UNIT)
+                        , jsonObject.getString(Constant.QTY)
+                        , jsonObject.getString(Constant.USERID)
+                        , jsonObject.getString(Constant.CHECKUNIT)
+                        , jsonObject.getString(Constant.CHECKQTY));
+                db.execSQL(insertShippingPlan);
+            }
+            db.setTransactionSuccessful();
+            db.endTransaction();
+        } catch (JSONException e) {
+            Log.e("STOCKCHECKDETAIL更新出错", e.getMessage().toString());
+        }
+    }
+
+    //endregion
+
+    //region Table_SF_STOCKLOTCHECKDETAIL
+    public void updateStockLotCheckDetail(String resultStr) {
+        Log.e("更新StockLotCheckDetail", resultStr);
+        try {
+            db.beginTransaction();
+            JSONArray array = new JSONArray(resultStr);
+            String tagqty = "";
+            for (int i = 0; i < array.length(); i++) {
+                JSONObject jsonObject = array.getJSONObject(i);
+                tagqty = jsonObject.getString(Constant.TAGQTY);
+                if (tagqty == null || tagqty.equals("")) {
+                    tagqty = "0";
+                }
+                String insertShippingPlan = String.format(Constant.InsertIntoSTOCKLOTCHECKDETAIL
+                        , jsonObject.getString(Constant.WAREHOUSEID)
+                        , jsonObject.getString(Constant.CHECKMONTH)
+                        , jsonObject.getString(Constant.CONSUMABLEDEFNAME)
+                        , jsonObject.getString(Constant.CONSUMABLEDEFID)
+                        , jsonObject.getString(Constant.CONSUMABLEDEFVERSION)
+                        , jsonObject.getString(Constant.UNIT)
+                        , jsonObject.getString(Constant.QTY)
+                        , jsonObject.getString(Constant.USERID)
+                        , jsonObject.getString(Constant.CHECKUNIT)
+                        , jsonObject.getString(Constant.CHECKQTY)
+                        , jsonObject.getString(Constant.CONSUMABLELOTID)
+                        , jsonObject.getString(Constant.TAGID)
+                        , tagqty);
+                db.execSQL(insertShippingPlan);
+            }
+            db.setTransactionSuccessful();
+            db.endTransaction();
+        } catch (JSONException e) {
+            Log.e("STOCKLOTCHECKDETAIL更新出错", e.getMessage().toString());
+        }
+    }
+    //endregion
+    //endregion
+
+    //region 其他
 
     //region Table_Code
 
@@ -135,199 +391,6 @@ public class UpdateSqlite {
 
     //endregion
 
-    //region Table_InboundOrder
-
-    public void updateInboundOrder(String resultStr) {
-        Log.e("更新本地数据库InboundOrder", resultStr);
-        try {
-            JSONArray array = new JSONArray(resultStr);
-            StringBuffer INBOUNDORDER_insert = new StringBuffer();
-            INBOUNDORDER_insert.append("INSERT OR REPLACE INTO " + Constant.SF_INBOUNDORDER + "("
-                    + INBOUNDNO + ","             //计划号
-                    + WAREHOUSEID + ","           //仓库id
-                    + WAREHOUSENAME + ","         //仓库名
-                    + SCHEDULEDATE + ","          //计划入库时间
-                    + INBOUNDDATE + ","           //入库时间
-                    + TEMPINBOUNDDATE + ","       //暂入库时间
-                    + INBOUNDSTATE + ","          //入库状态
-                    + STATENAME + ","             //入库状态名
-                    + CONSUMABLECOUNT + ")");     //品目数
-            INBOUNDORDER_insert.append(" VALUES( ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            Log.e("更新语句", new String(INBOUNDORDER_insert));
-            for (int i = 0; i < array.length(); i++) {
-                InboundOrderData inboundOrderTableData = new InboundOrderData();
-                JSONObject jsonObject = array.getJSONObject(i);
-                inboundOrderTableData.setINBOUNDNO(jsonObject.getString(INBOUNDNO));
-                inboundOrderTableData.setWAREHOUSEID(jsonObject.getString(WAREHOUSEID));
-                inboundOrderTableData.setWAREHOUSENAME(jsonObject.getString(WAREHOUSENAME));
-                inboundOrderTableData.setSCHEDULEDATE(jsonObject.getString(SCHEDULEDATE));
-                inboundOrderTableData.setINBOUNDDATE(jsonObject.getString(INBOUNDDATE));
-                inboundOrderTableData.setTEMPINBOUNDDATE(jsonObject.getString(TEMPINBOUNDDATE));
-                inboundOrderTableData.setINBOUNDSTATE(jsonObject.getString(INBOUNDSTATE));
-                inboundOrderTableData.setSTATENAME(jsonObject.getString(INBOUNDSTATENAME));
-                inboundOrderTableData.setCONSUMABLECOUNT(jsonObject.getString(CONSUMABLECOUNT));
-                updateTableSF_INBOUNDORDER(inboundOrderTableData, INBOUNDORDER_insert.toString());
-            }
-        } catch (JSONException e) {
-            Log.e("INBOUNDORDER更新出错", e.getMessage().toString());
-        }
-
-    }
-
-    private void updateTableSF_INBOUNDORDER(InboundOrderData inboundOrderData, String INBOUNDORDER_insert) {
-        SQLiteStatement statement = db.compileStatement(INBOUNDORDER_insert);
-        statement.bindString(1, inboundOrderData.getINBOUNDNO());
-        statement.bindString(2, inboundOrderData.getWAREHOUSEID());
-        statement.bindString(3, inboundOrderData.getWAREHOUSENAME());
-        statement.bindString(4, inboundOrderData.getSCHEDULEDATE());
-        statement.bindString(5, inboundOrderData.getINBOUNDDATE());
-        statement.bindString(6, inboundOrderData.getTEMPINBOUNDDATE());
-        statement.bindString(7, inboundOrderData.getINBOUNDSTATE());
-        statement.bindString(8, inboundOrderData.getSTATENAME());
-        statement.bindString(9, inboundOrderData.getCONSUMABLECOUNT());
-        try {
-            statement.executeInsert();
-        } catch (Exception e) {
-            Log.e("INBOUNDORDER更新出错", e.getMessage().toString());
-        }
-    }
-
-    //endregion
-
-    //region TableSF_CONSUMEINBOUND
-
-    public void updateConsumeInbound(String resultStr) {
-        Log.e("更新本地数据库ConsumeInbound", resultStr);
-        try {
-            JSONArray array = new JSONArray(resultStr);
-            StringBuffer CONSUMEINBOUND_insert = new StringBuffer();
-            CONSUMEINBOUND_insert.append("INSERT OR REPLACE INTO " + Constant.SF_CONSUMEINBOUND + "("
-                    + INBOUNDNO + ","
-                    + CONSUMABLEDEFID + ","
-                    + CONSUMABLEDEFVERSION + ","
-                    + WAREHOUSEID + ","
-                    + ORDERNO + ","
-                    + ORDERTYPE + ","
-                    + LINENO + ","
-                    + INQTY + ","
-                    + UNIT + ","
-                    + PLANQTY + ","
-                    + ORDERCOMPANY + ")");
-            CONSUMEINBOUND_insert.append(" VALUES( ?, ?, ?, ?, ? ,?, ?, ?, ?, ?,?)");
-            for (int i = 0; i < array.length(); i++) {
-                ConsumeInboundData consumeInboundData = new ConsumeInboundData();
-                JSONObject jsonObject = array.getJSONObject(i);
-                consumeInboundData.setINBOUNDNO(jsonObject.getString(INBOUNDNO));
-                consumeInboundData.setCONSUMABLEDEFID(jsonObject.getString(CONSUMABLEDEFID));
-                consumeInboundData.setCONSUMABLEDEFVERSION(jsonObject.getString(CONSUMABLEDEFVERSION));
-                consumeInboundData.setWAREHOUSEID(jsonObject.getString(WAREHOUSEID));
-                consumeInboundData.setORDERNO(jsonObject.getString(ORDERNO));
-                consumeInboundData.setORDERTYPE(jsonObject.getString(ORDERTYPE));
-                consumeInboundData.setLINENO(jsonObject.getString(LINENO));
-                consumeInboundData.setINQTY(jsonObject.getString(INQTY));
-                consumeInboundData.setUNIT(jsonObject.getString(Constant.UNIT));
-                consumeInboundData.setPLANQTY(jsonObject.getString(PLANQTY));
-                consumeInboundData.setORDERCOMPANY(jsonObject.getString(ORDERCOMPANY));
-                updateTableSF_CONSUMEINBOUND(consumeInboundData, CONSUMEINBOUND_insert.toString());
-            }
-        } catch (JSONException e) {
-            Log.e("CONSUMEINBOUND更新出错", e.getMessage().toString());
-        }
-    }
-
-    private void updateTableSF_CONSUMEINBOUND(ConsumeInboundData consumeInboundData, String CONSUMEINBOUND_insert) {
-        SQLiteStatement statement = db.compileStatement(CONSUMEINBOUND_insert);
-        statement.bindString(1, consumeInboundData.getINBOUNDNO());
-        statement.bindString(2, consumeInboundData.getCONSUMABLEDEFID());
-        statement.bindString(3, consumeInboundData.getCONSUMABLEDEFVERSION());
-        statement.bindString(4, consumeInboundData.getWAREHOUSEID());
-        statement.bindString(5, consumeInboundData.getORDERNO());
-        statement.bindString(6, consumeInboundData.getORDERTYPE());
-        statement.bindString(7, consumeInboundData.getLINENO());
-        statement.bindString(8, consumeInboundData.getINQTY());
-        statement.bindString(9, consumeInboundData.getUNIT());
-        statement.bindString(10, consumeInboundData.getPLANQTY());
-        statement.bindString(11, consumeInboundData.getORDERCOMPANY());
-        try {
-            statement.executeInsert();
-        } catch (Exception e) {
-            Log.e("CONSUMEINBOUND更新出错", e.getMessage().toString());
-        }
-    }
-
-    //endregion
-
-    //region Table_SF_CONSUMELOTINBOUND
-    public void updateConsumeLotInbound(String resultStr) {
-        Log.e("更新ConsumeLotInbound", resultStr);
-        try {
-            JSONArray array = new JSONArray(resultStr);
-            StringBuffer CONSUMELOTINBOUND_insert = new StringBuffer();
-            CONSUMELOTINBOUND_insert.append("INSERT OR REPLACE INTO " + Constant.SF_CONSUMELOTINBOUND + "("
-                    + INBOUNDNO + ","
-                    + CONSUMABLEDEFID + ","
-                    + CONSUMABLEDEFVERSION + ","
-                    + WAREHOUSEID + ","
-                    + ORDERNO + ","
-                    + ORDERTYPE + ","
-                    + LINENO + ","
-                    + INQTY + ","
-                    + UNIT + ","
-                    + PLANQTY + ","
-                    + CONSUMABLELOTID + ","
-                    + TAGID + ","
-                    + TAGQTY + ","
-                    + ORDERCOMPANY+ ")");
-            CONSUMELOTINBOUND_insert.append(" VALUES( ?, ?, ?, ?, ? ,?, ?, ?, ?, ?,?,?,?,?)");
-            for (int i = 0; i < array.length(); i++) {
-                ConsumeLotInboundData consumeLotInboundData = new ConsumeLotInboundData();
-                JSONObject jsonObject = array.getJSONObject(i);
-                consumeLotInboundData. setINBOUNDNO(jsonObject.getString(INBOUNDNO));
-                consumeLotInboundData. setCONSUMABLELOTID(jsonObject.getString(CONSUMABLELOTID));
-                consumeLotInboundData.setCONSUMABLEDEFID(jsonObject.getString(CONSUMABLEDEFID));
-                consumeLotInboundData.setCONSUMABLEDEFVERSION(jsonObject.getString(CONSUMABLEDEFVERSION));
-                consumeLotInboundData.setWAREHOUSEID(jsonObject.getString(WAREHOUSEID));
-                consumeLotInboundData.setORDERNO(jsonObject.getString(ORDERNO));
-                consumeLotInboundData.setORDERTYPE(jsonObject.getString(ORDERTYPE));
-                consumeLotInboundData.setLINENO(jsonObject.getString(LINENO));
-                consumeLotInboundData.setINQTY(jsonObject.getString(INQTY));
-                consumeLotInboundData.setUNIT(jsonObject.getString(Constant.UNIT));
-                consumeLotInboundData.setPLANQTY(jsonObject.getString(PLANQTY));
-                consumeLotInboundData.setTAGID(jsonObject.getString(TAGID));
-                consumeLotInboundData.setTAGQTY(jsonObject.getString(TAGQTY));
-                consumeLotInboundData.setORDERCOMPANY(jsonObject.getString(ORDERCOMPANY));
-                updateTableSF_CONSUMELOTINBOUND(consumeLotInboundData, CONSUMELOTINBOUND_insert.toString());
-            }
-        } catch (JSONException e) {
-            Log.e("CONSUMELOTINBOUND更新出错JS", e.getMessage().toString());
-        }
-    }
-
-    private void updateTableSF_CONSUMELOTINBOUND(ConsumeLotInboundData consumeLotInboundData, String CONSUMELOTINBOUND_insert) {
-        SQLiteStatement statement = db.compileStatement(CONSUMELOTINBOUND_insert);
-        statement.bindString(1, consumeLotInboundData.getINBOUNDNO());
-        statement.bindString(2, consumeLotInboundData.getCONSUMABLEDEFID());
-        statement.bindString(3, consumeLotInboundData.getCONSUMABLEDEFVERSION());
-        statement.bindString(4, consumeLotInboundData.getWAREHOUSEID());
-        statement.bindString(5, consumeLotInboundData.getORDERNO());
-        statement.bindString(6, consumeLotInboundData.getORDERTYPE());
-        statement.bindString(7, consumeLotInboundData.getLINENO());
-        statement.bindString(8, consumeLotInboundData.getINQTY());
-        statement.bindString(9, consumeLotInboundData.getUNIT());
-        statement.bindString(10,consumeLotInboundData.getPLANQTY());
-        statement.bindString(11,consumeLotInboundData.getCONSUMABLELOTID());
-        statement.bindString(12,consumeLotInboundData.getTAGID());
-        statement.bindString(13,consumeLotInboundData.getTAGQTY());
-        statement.bindString(14,consumeLotInboundData.getORDERCOMPANY());
-        try {
-            statement.executeInsert();
-        } catch (Exception e) {
-            Log.e("CONSUMELOTINBOUND更新出错", e.getMessage().toString());
-        }
-    }
-
-    //endregion
-
     //region Table_SF_CONSUMABLEDEFINITION
     public void updateConsumabledefinition(String resultStr) {
         Log.e("更新ConsumableDefinition", resultStr);
@@ -368,348 +431,6 @@ public class UpdateSqlite {
     }
 
 
-    //endregion
-
-    //region Table_SF_CONSUMEREQUEST
-    public void updateConsumeRequest(String resultStr) {
-        Log.e("更新ConsumeRequest", resultStr);
-        try {
-            JSONArray array = new JSONArray(resultStr);
-            StringBuffer CONSUMEREQUEST_insert = new StringBuffer();
-            CONSUMEREQUEST_insert.append("INSERT OR REPLACE INTO " + Constant.SF_CONSUMEREQUEST + "("
-                    + Constant.CONSUMEREQNO + ","
-                    + Constant.AREAID + ","
-                    //   + Constant.USERID + ","
-                    + Constant.REQUESTDATE + ","
-                    + Constant.OUTBOUNDSTATE + ","
-                    + Constant.VALIDSTATE + ")");
-            CONSUMEREQUEST_insert.append(" VALUES( ?, ?, ?, ?, ?)");
-            for (int i = 0; i < array.length(); i++) {
-                ConsumeRequestData consumeRequestData = new ConsumeRequestData();
-                JSONObject jsonObject = array.getJSONObject(i);
-                consumeRequestData.setCONSUMEREQNO(jsonObject.getString(Constant.CONSUMEREQNO));
-                consumeRequestData.setAREAID(jsonObject.getString(Constant.AREAID));
-                //  consumeRequestData.setUSERID(jsonObject.getString(Constant.USERID));
-                consumeRequestData.setREQUESTDATE(jsonObject.getString(Constant.REQUESTDATE));
-                consumeRequestData.setOUTBOUNDSTATE(jsonObject.getString(Constant.OUTBOUNDSTATE));
-                consumeRequestData.setVALIDSTATE(jsonObject.getString(Constant.VALIDSTATE));
-                updateTableSF_CONSUMEREQUEST(consumeRequestData, CONSUMEREQUEST_insert.toString());
-            }
-        } catch (JSONException e) {
-            Log.e("CONSUMEREQUEST更新出错", e.getMessage().toString());
-        }
-    }
-
-    private void updateTableSF_CONSUMEREQUEST(ConsumeRequestData consumeRequestData, String CONSUMEREQUEST_insert) {
-        SQLiteStatement statement = db.compileStatement(CONSUMEREQUEST_insert);
-        statement.bindString(1, consumeRequestData.getCONSUMEREQNO());
-        statement.bindString(2, consumeRequestData.getAREAID());
-        //  statement.bindString(3, consumeRequestData.getUSERID());
-        statement.bindString(3, consumeRequestData.getREQUESTDATE());
-        statement.bindString(4, consumeRequestData.getOUTBOUNDSTATE());
-        statement.bindString(5, consumeRequestData.getVALIDSTATE());
-        try {
-            statement.executeInsert();
-        } catch (Exception e) {
-            Log.e("CONSUMEREQUEST更新出错", e.getMessage().toString());
-        }
-    }
-    //endregion
-
-    //region Table_SF_CONSUMEOUTBOUND
-    public void updateConsumeOutbound(String resultStr) {
-        Log.e("更新ConsumeOutBound", resultStr);
-        try {
-            JSONArray array = new JSONArray(resultStr);
-            StringBuffer CONSUMEOUTBOUND_insert = new StringBuffer();
-            CONSUMEOUTBOUND_insert.append("INSERT OR REPLACE INTO " + Constant.SF_CONSUMEOUTBOUND + "("
-                    + CONSUMABLEDEFID + ","
-                    + CONSUMABLEDEFVERSION + ","
-                    + WAREHOUSEID + ","
-                    + Constant.CONSUMEREQNO + ","
-                    + Constant.UNIT + ","
-                    + Constant.OUTBOUNDSTATE + ","
-                    + Constant.FROMWAREHOUSEID + ","
-                    + VALIDSTATE + ","
-                    + Constant.REQUESTQTY + ","
-                    + Constant.OUTQTY + ","
-                    + VALIDSTATE + ")");
-            CONSUMEOUTBOUND_insert.append(" VALUES( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            for (int i = 0; i < array.length(); i++) {
-                ConsumeOutboundData consumeOutboundData = new ConsumeOutboundData();
-                JSONObject jsonObject = array.getJSONObject(i);
-                consumeOutboundData.setCONSUMABLEDEFID(jsonObject.getString(CONSUMABLEDEFID));
-                consumeOutboundData.setCONSUMABLEDEFVERSION(jsonObject.getString(CONSUMABLEDEFVERSION));
-                consumeOutboundData.setWAREHOUSEID(jsonObject.getString(WAREHOUSEID));
-                consumeOutboundData.setCONSUMEREQNO(jsonObject.getString(Constant.CONSUMEREQNO));
-                consumeOutboundData.setUNIT(jsonObject.getString(Constant.UNIT));
-                consumeOutboundData.setOUTBOUNDSTATE(jsonObject.getString(Constant.OUTBOUNDSTATE));
-                consumeOutboundData.setFROMWAREHOUSEID(jsonObject.getString(Constant.FROMWAREHOUSEID));
-                consumeOutboundData.setVALIDSTATE(jsonObject.getString(VALIDSTATE));
-                consumeOutboundData.setREQUESTQTY(jsonObject.getString(Constant.REQUESTQTY));
-                consumeOutboundData.setOUTQTY(jsonObject.getString(Constant.OUTQTY));
-                consumeOutboundData.setVALIDSTATE(jsonObject.getString(VALIDSTATE));
-                updateTableSF_CONSUMEOUTBOUND(consumeOutboundData, CONSUMEOUTBOUND_insert.toString());
-            }
-        } catch (JSONException e) {
-            Log.e("CONSUMEOUTBOUND更新出错", e.getMessage().toString());
-        }
-    }
-
-    private void updateTableSF_CONSUMEOUTBOUND(ConsumeOutboundData consumeOutboundData, String CONSUMEOUTBOUND_insert) {
-        SQLiteStatement statement = db.compileStatement(CONSUMEOUTBOUND_insert);
-        statement.bindString(1, consumeOutboundData.getCONSUMABLEDEFID());
-        statement.bindString(2, consumeOutboundData.getCONSUMABLEDEFVERSION());
-        statement.bindString(3, consumeOutboundData.getWAREHOUSEID());
-        statement.bindString(4, consumeOutboundData.getCONSUMEREQNO());
-        statement.bindString(5, consumeOutboundData.getUNIT());
-        statement.bindString(6, consumeOutboundData.getOUTBOUNDSTATE());
-        statement.bindString(7, consumeOutboundData.getFROMWAREHOUSEID());
-        statement.bindString(8, consumeOutboundData.getVALIDSTATE());
-        statement.bindString(9, consumeOutboundData.getREQUESTQTY());
-        statement.bindString(10, consumeOutboundData.getOUTQTY());
-        statement.bindString(11, consumeOutboundData.getVALIDSTATE());
-        try {
-            statement.executeInsert();
-        } catch (Exception e) {
-            Log.e("CONSUMEOUTBOUND更新出错", e.getMessage().toString());
-        }
-    }
-    //endregion
-
-    //region Table_SF_CONSUMELOTOUTBOUND
-    public void updateConsumeLotOutbound(String resultStr) {
-        Log.e("更新ConsumeLotOutbound", resultStr);
-        try {
-            JSONArray array = new JSONArray(resultStr);
-            StringBuffer CONSUMELOTOUTBOUND_insert = new StringBuffer();
-            CONSUMELOTOUTBOUND_insert.append("INSERT OR REPLACE INTO " + Constant.SF_CONSUMELOTOUTBOUND + "("
-                    + CONSUMABLELOTID + ","
-                    + CONSUMABLEDEFID + ","
-                    + CONSUMABLEDEFVERSION + ","
-                    + WAREHOUSEID + ","
-                    + Constant.CONSUMEREQNO + ","
-                    + Constant.UNIT + ","
-                    + Constant.OUTBOUNDSTATE + ","
-                    + VALIDSTATE + ","
-                    + Constant.OUTQTY + ","
-                    + VALIDSTATE + ")");
-            CONSUMELOTOUTBOUND_insert.append(" VALUES( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            for (int i = 0; i < array.length(); i++) {
-                ConsumeLotOutboundData consumeLotOutboundData = new ConsumeLotOutboundData();
-                JSONObject jsonObject = array.getJSONObject(i);
-                consumeLotOutboundData.setCONSUMABLELOTID(jsonObject.getString(CONSUMABLELOTID));
-                consumeLotOutboundData.setCONSUMABLEDEFID(jsonObject.getString(CONSUMABLEDEFID));
-                consumeLotOutboundData.setCONSUMABLEDEFVERSION(jsonObject.getString(CONSUMABLEDEFVERSION));
-                consumeLotOutboundData.setWAREHOUSEID(jsonObject.getString(WAREHOUSEID));
-                consumeLotOutboundData.setCONSUMEREQNO(jsonObject.getString(Constant.CONSUMEREQNO));
-                consumeLotOutboundData.setUNIT(jsonObject.getString(Constant.UNIT));
-                consumeLotOutboundData.setOUTBOUNDSTATE(jsonObject.getString(Constant.OUTBOUNDSTATE));
-                consumeLotOutboundData.setVALIDSTATE(jsonObject.getString(VALIDSTATE));
-                consumeLotOutboundData.setOUTQTY(jsonObject.getString(Constant.OUTQTY));
-                consumeLotOutboundData.setVALIDSTATE(jsonObject.getString(VALIDSTATE));
-                updateTableSF_CONSUMELOTOUTBOUND(consumeLotOutboundData, CONSUMELOTOUTBOUND_insert.toString());
-            }
-        } catch (JSONException e) {
-            Log.e("CONSUMELOTOUTBOUND更新出错", e.getMessage().toString());
-        }
-    }
-
-    private void updateTableSF_CONSUMELOTOUTBOUND(ConsumeLotOutboundData consumeLotOutboundData, String CONSUMELOTOUTBOUND_insert) {
-        SQLiteStatement statement = db.compileStatement(CONSUMELOTOUTBOUND_insert);
-        statement.bindString(1, consumeLotOutboundData.getCONSUMABLELOTID());
-        statement.bindString(2, consumeLotOutboundData.getCONSUMABLEDEFID());
-        statement.bindString(3, consumeLotOutboundData.getCONSUMABLEDEFVERSION());
-        statement.bindString(4, consumeLotOutboundData.getWAREHOUSEID());
-        statement.bindString(5, consumeLotOutboundData.getCONSUMEREQNO());
-        statement.bindString(6, consumeLotOutboundData.getUNIT());
-        statement.bindString(7, consumeLotOutboundData.getOUTBOUNDSTATE());
-        statement.bindString(8, consumeLotOutboundData.getVALIDSTATE());
-        statement.bindString(9, consumeLotOutboundData.getOUTQTY());
-        statement.bindString(10, consumeLotOutboundData.getVALIDSTATE());
-        try {
-            statement.executeInsert();
-        } catch (Exception e) {
-            Log.e("CONSUMELOTOUTBOUND更新出错", e.getMessage().toString());
-        }
-    }
-
-
-    //endregion
-
-    //region Table_SF_STOCKCHECK
-    public void updateStockCheck(String resultStr) {
-        Log.e("更新StockCheck", resultStr);
-        try {
-            JSONArray array = new JSONArray(resultStr);
-            StringBuffer STOCKCHECK_insert = new StringBuffer();
-            STOCKCHECK_insert.append("INSERT OR REPLACE INTO " + Constant.SF_STOCKCHECK + "("
-                    + WAREHOUSEID + ","
-                    + CHECKMONTH + ","
-                    + Constant.STARTDATE + ","
-                    + Constant.ENDDATE + ","
-                    + Constant.WAREHOUSENAME + ","
-                    + Constant.STATE + ","
-                    + STATENAME +")");
-            STOCKCHECK_insert.append(" VALUES( ?, ?, ?, ?, ?, ?, ?)");
-            for (int i = 0; i < array.length(); i++) {
-                StockCheckData stockCheckData = new StockCheckData();
-                JSONObject jsonObject = array.getJSONObject(i);
-                stockCheckData.setWAREHOUSEID(jsonObject.getString(WAREHOUSEID));
-                stockCheckData.setWAREHOUSENAME(jsonObject.getString(WAREHOUSENAME));
-                stockCheckData.setCHECKMONTH(jsonObject.getString(CHECKMONTH));
-                stockCheckData.setSTARTDATE(jsonObject.getString(Constant.STARTDATE));
-                stockCheckData.setENDDATE(jsonObject.getString(Constant.ENDDATE));
-                stockCheckData.setSTATE(jsonObject.getString(STATE));
-                stockCheckData.setSTATENAME(jsonObject.getString(STATENAME));
-                updateTableSF_STOCKCHECK(stockCheckData, STOCKCHECK_insert.toString());
-            }
-        } catch (JSONException e) {
-            Log.e("STOCKCHECK更新出错", e.getMessage().toString());
-        }
-    }
-
-    private void updateTableSF_STOCKCHECK(StockCheckData stockCheckData, String STOCKCHECK_insert) {
-        SQLiteStatement statement = db.compileStatement(STOCKCHECK_insert);
-        statement.bindString(1, stockCheckData.getWAREHOUSEID());
-        statement.bindString(2, stockCheckData.getCHECKMONTH());
-        statement.bindString(3, stockCheckData.getSTARTDATE());
-        statement.bindString(4, stockCheckData.getENDDATE());
-        statement.bindString(5, stockCheckData.getWAREHOUSENAME());
-        statement.bindString(6, stockCheckData.getSTATE());
-        statement.bindString(7, stockCheckData.getSTATENAME());
-
-        try {
-            statement.executeInsert();
-        } catch (Exception e) {
-            Log.e("STOCKCHECK更新出错", e.getMessage().toString());
-        }
-    }
-    //endregion
-
-    //region Table_SF_STOCKCHECKDETAIL
-    public void updateStockCheckDetail(String resultStr) {
-        Log.e("更新StockCheckDetail", resultStr);
-        try {
-            JSONArray array = new JSONArray(resultStr);
-            StringBuffer STOCKCHECKDETAIL_insert = new StringBuffer();
-            STOCKCHECKDETAIL_insert.append("INSERT OR REPLACE INTO " + Constant.SF_STOCKCHECKDETAIL + "("
-                    + WAREHOUSEID + ","
-                    + CHECKMONTH + ","
-                    + CONSUMABLEDEFNAME + ","
-                    + CONSUMABLEDEFID + ","
-                    + CONSUMABLEDEFVERSION + ","
-                    + UNIT + ","
-                    + QTY + ","
-                    + USERID + ","
-                    + CHECKUNIT + ","
-                    + CHECKQTY + ")");
-            STOCKCHECKDETAIL_insert.append(" VALUES( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            for (int i = 0; i < array.length(); i++) {
-                JSONObject jsonObject = array.getJSONObject(i);
-                StockCheckDeatilData stockCheckDetailData = new StockCheckDeatilData();
-                stockCheckDetailData.setWAREHOUSEID(jsonObject.getString(WAREHOUSEID));
-                stockCheckDetailData.setCHECKMONTH(jsonObject.getString(CHECKMONTH));
-                stockCheckDetailData.setCONSUMEABLDEFNAME(jsonObject.getString(CONSUMABLEDEFNAME));
-                stockCheckDetailData.setCONSUMEABLDEFID(jsonObject.getString(CONSUMABLEDEFID));
-                stockCheckDetailData.setCONSUMEABLDEFVERSION(jsonObject.getString(CONSUMABLEDEFVERSION));
-                stockCheckDetailData.setUNIT(jsonObject.getString(Constant.UNIT));
-                stockCheckDetailData.setQTY(jsonObject.getString(QTY));
-                stockCheckDetailData.setUSERID(jsonObject.getString(USERID));
-                stockCheckDetailData.setCHECKUNIT(jsonObject.getString(Constant.CHECKUNIT));
-                stockCheckDetailData.setCHECKQTY(jsonObject.getString(CHECKQTY));
-                updateTableSF_STOCKCHECKDETAIL(stockCheckDetailData, STOCKCHECKDETAIL_insert.toString());
-            }
-        } catch (JSONException e) {
-            Log.e("STOCKCHECKDETAIL更新出错", e.getMessage().toString());
-        }
-    }
-
-    private void updateTableSF_STOCKCHECKDETAIL(StockCheckDeatilData stockCheckDetailData, String STOCKCHECKDETAIL_insert) {
-        SQLiteStatement statement = db.compileStatement(STOCKCHECKDETAIL_insert);
-        statement.bindString(1, stockCheckDetailData.getWAREHOUSEID());
-        statement.bindString(2, stockCheckDetailData.getCHECKMONTH());
-        statement.bindString(3, stockCheckDetailData.getCONSUMEABLDEFNAME());
-        statement.bindString(4, stockCheckDetailData.getCONSUMEABLDEFID());
-        statement.bindString(5, stockCheckDetailData.getCONSUMEABLDEFVERSION());
-        statement.bindString(6, stockCheckDetailData.getUNIT());
-        statement.bindString(7, stockCheckDetailData.getQTY());
-        statement.bindString(8, stockCheckDetailData.getUSERID());
-        statement.bindString(9, stockCheckDetailData.getCHECKUNIT());
-        statement.bindString(10, stockCheckDetailData.getCHECKQTY());
-        try {
-            statement.executeInsert();
-        } catch (Exception e) {
-            Log.e("STOCKCHECKDETAIL更新出错", e.getMessage().toString());
-        }
-    }
-    //endregion
-
-    //region Table_SF_STOCKLOTCHECKDETAIL
-    public void updateStockLotCheckDetail(String resultStr) {
-        Log.e("更新StockLotCheckDetail", resultStr);
-        try {
-            JSONArray array = new JSONArray(resultStr);
-            StringBuffer STOCKLOTCHECKDETAIL_insert = new StringBuffer();
-            STOCKLOTCHECKDETAIL_insert.append("INSERT OR REPLACE INTO " + Constant.SF_STOCKLOTCHECKDETAIL + "("
-                    + WAREHOUSEID + ","
-                    + CHECKMONTH + ","
-                    + CONSUMABLEDEFNAME + ","
-                    + CONSUMABLEDEFID + ","
-                    + CONSUMABLEDEFVERSION + ","
-                    + UNIT + ","
-                    + QTY + ","
-                    + USERID + ","
-                    + CHECKUNIT + ","
-                    + CHECKQTY + ","
-                    + CONSUMABLELOTID + ","
-                    + TAGID + ","
-                    + TAGQTY + ")");
-            STOCKLOTCHECKDETAIL_insert.append(" VALUES( ?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ?, ?, ?)");
-            for (int i = 0; i < array.length(); i++) {
-                JSONObject jsonObject = array.getJSONObject(i);
-                StockLotCheckDeatilData stockLotCheckDetailData = new StockLotCheckDeatilData();
-                stockLotCheckDetailData.setWAREHOUSEID(jsonObject.getString(WAREHOUSEID));
-                stockLotCheckDetailData.setCHECKMONTH(jsonObject.getString(CHECKMONTH));
-                stockLotCheckDetailData.setCONSUMEABLDEFNAME(jsonObject.getString(CONSUMABLEDEFNAME));
-                stockLotCheckDetailData.setCONSUMEABLDEFID(jsonObject.getString(CONSUMABLEDEFID));
-                stockLotCheckDetailData.setCONSUMEABLDEFVERSION(jsonObject.getString(CONSUMABLEDEFVERSION));
-                stockLotCheckDetailData.setUNIT(jsonObject.getString(Constant.UNIT));
-                stockLotCheckDetailData.setQTY(jsonObject.getString(QTY));
-                stockLotCheckDetailData.setUSERID(jsonObject.getString(USERID));
-                stockLotCheckDetailData.setCHECKUNIT(jsonObject.getString(Constant.CHECKUNIT));
-                stockLotCheckDetailData.setCHECKQTY(jsonObject.getString(CHECKQTY));
-                stockLotCheckDetailData.setCONSUMABLELOTID(jsonObject.getString(CONSUMABLELOTID));
-                stockLotCheckDetailData.setTAGID(jsonObject.getString(TAGID));
-                stockLotCheckDetailData.setTAGQTY(jsonObject.getString(TAGQTY));
-                updateTableSF_STOCKLOTCHECKDETAIL(stockLotCheckDetailData, STOCKLOTCHECKDETAIL_insert.toString());
-            }
-        } catch (JSONException e) {
-            Log.e("STOCKLOTCHECKDETAIL更新出错", e.getMessage().toString());
-        }
-    }
-
-    private void updateTableSF_STOCKLOTCHECKDETAIL(StockLotCheckDeatilData stockLotCheckDetailData, String STOCKLOTCHECKDETAIL_insert) {
-        SQLiteStatement statement = db.compileStatement(STOCKLOTCHECKDETAIL_insert);
-        statement.bindString(1, stockLotCheckDetailData.getWAREHOUSEID());
-        statement.bindString(2, stockLotCheckDetailData.getCHECKMONTH());
-        statement.bindString(3, stockLotCheckDetailData.getCONSUMEABLDEFNAME());
-        statement.bindString(4, stockLotCheckDetailData.getCONSUMEABLDEFID());
-        statement.bindString(5, stockLotCheckDetailData.getCONSUMEABLDEFVERSION());
-        statement.bindString(6, stockLotCheckDetailData.getUNIT());
-        statement.bindString(7, stockLotCheckDetailData.getQTY());
-        statement.bindString(8, stockLotCheckDetailData.getUSERID());
-        statement.bindString(9, stockLotCheckDetailData.getCHECKUNIT());
-        statement.bindString(10,stockLotCheckDetailData.getCHECKQTY());
-        statement.bindString(11,stockLotCheckDetailData.getCONSUMABLELOTID());
-        statement.bindString(12,stockLotCheckDetailData.getTAGID());
-        statement.bindString(13,stockLotCheckDetailData.getTAGQTY());
-        try {
-            statement.executeInsert();
-        } catch (Exception e) {
-            Log.e("STOCKLOTCHECKDETAIL更新出错", e.getMessage().toString());
-        }
-    }
     //endregion
 
     //region Table_SF_CONSUMESTOCK
@@ -895,164 +616,32 @@ public class UpdateSqlite {
         }
     }
     //endregion
+    //endregion
 
-    //region Table_SF_SHIPPINGPLAN
-    public void updateShippingPlan(String resultStr) {
-        Log.e("更新SF_SHIPPINGPLAN", resultStr);
+    //region 删除保存好的数据
+    public void updateSTOCKCHECKSAVE(String stockcheckresult) {
+        Log.e("保存的计划是", stockcheckresult);
+        String[] aa = stockcheckresult.split(";");
+        String WAREHOUSEID = aa[0];
+        String CHECKMONTH = aa[1];
         try {
-            JSONArray array = new JSONArray(resultStr);
-            StringBuffer SHIPPINGPLAN_insert = new StringBuffer();
-            SHIPPINGPLAN_insert.append("INSERT OR REPLACE INTO " + Constant.SF_SHIPPINGPLAN + "("
-                    + SHIPPINGPLANNO + ","
-                    + PRODUCTIONORDERNAME + ","
-                    + PLANTID + ","
-                    + CUSTOMERID + ","
-                    + PRODUCTDEFID + ","
-                    + PRODUCTDEFVERSION + ","
-                    + PLANSTARTTIME + ","
-                    + PLANENDTIME + ","
-                    + PLANQTY + ","
-                    + CONTAINERSPEC + ","
-                    + WORKINGSHIFT + ","
-                    + AREAID + ","
-                    + STATE + ","
-                    + VALIDSTATE + ")");
-            SHIPPINGPLAN_insert.append(" VALUES( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            for (int i = 0; i < array.length(); i++) {
-                ShippingPlanData shippingPlanData = new ShippingPlanData();
-                JSONObject jsonObject = array.getJSONObject(i);
-                shippingPlanData.setSHIPPINGPLANNO(jsonObject.getString(SHIPPINGPLANNO));
-                shippingPlanData.setPRODUCTIONORDERNAME(jsonObject.getString(PRODUCTIONORDERNAME));
-                shippingPlanData.setPLANTID(jsonObject.getString(PLANTID));
-                shippingPlanData.setCUSTOMERID(jsonObject.getString(CUSTOMERID));
-                shippingPlanData.setPRODUCTDEFID(jsonObject.getString(PRODUCTDEFID));
-                shippingPlanData.setPRODUCTDEFVERSION(jsonObject.getString(PRODUCTDEFVERSION));
-                shippingPlanData.setPLANSTARTTIME(jsonObject.getString(PLANSTARTTIME));
-                shippingPlanData.setPLANENDTIME(jsonObject.getString(PLANENDTIME));
-                shippingPlanData.setPLANQTY(jsonObject.getString(PLANQTY));
-                shippingPlanData.setCONTAINERSPEC(jsonObject.getString(CONTAINERSPEC));
-                shippingPlanData.setWORKINGSHIFT(jsonObject.getString(WORKINGSHIFT));
-                shippingPlanData.setAREAID(jsonObject.getString(AREAID));
-                shippingPlanData.setSTATE(jsonObject.getString(STATE));
-                shippingPlanData.setVALIDSTATE(jsonObject.getString(VALIDSTATE));
-                updateTableSF_SHIPPINGPLAN(shippingPlanData, SHIPPINGPLAN_insert.toString());
-            }
-        } catch (JSONException e) {
-            Log.e("SHIPPINGPLAN更新出错", e.getMessage().toString());
+            db.delete(Constant.SF_STOCKCHECK, "WAREHOUSEID = ? AND CHECKMONTH = ?", new String[]{WAREHOUSEID, CHECKMONTH});
+            db.delete(Constant.SF_STOCKCHECKDETAIL, "WAREHOUSEID = ? AND CHECKMONTH = ?", new String[]{WAREHOUSEID, CHECKMONTH});
+            db.delete(Constant.SF_STOCKLOTCHECKDETAIL, "WAREHOUSEID = ? AND CHECKMONTH = ?", new String[]{WAREHOUSEID, CHECKMONTH});
+        } catch (Exception e) {
+            Log.e("STOCKCHECKsave更新出错", e.getMessage().toString());
         }
     }
 
-    private void updateTableSF_SHIPPINGPLAN(ShippingPlanData shippingPlanData, String SHIPPINGPLAN_insert) {
-        SQLiteStatement statement = db.compileStatement(SHIPPINGPLAN_insert);
-        statement.bindString(1, shippingPlanData.getSHIPPINGPLANNO());
-        statement.bindString(2, shippingPlanData.getPRODUCTIONORDERNAME());
-        statement.bindString(3, shippingPlanData.getPLANTID());
-        statement.bindString(4, shippingPlanData.getCUSTOMERID());
-        statement.bindString(5, shippingPlanData.getPRODUCTDEFID());
-        statement.bindString(6, shippingPlanData.getPRODUCTDEFVERSION());
-        statement.bindString(7, shippingPlanData.getPLANSTARTTIME());
-        statement.bindString(8, shippingPlanData.getPLANENDTIME());
-        statement.bindString(9, shippingPlanData.getPLANQTY());
-        statement.bindString(10, shippingPlanData.getCONTAINERSPEC());
-        statement.bindString(11, shippingPlanData.getWORKINGSHIFT());
-        statement.bindString(12, shippingPlanData.getAREAID());
-        statement.bindString(13, shippingPlanData.getSTATE());
-        statement.bindString(14, shippingPlanData.getVALIDSTATE());
+    public void updateSTOCKINSAVE(String stockinresult) {
+        Log.e("删除的计划是", stockinresult);
         try {
-            statement.executeInsert();
+            db.delete(Constant.SF_INBOUNDORDER, "INBOUNDNO = ?", new String[]{stockinresult});
+            db.delete(Constant.SF_CONSUMEINBOUND, "INBOUNDNO = ?", new String[]{stockinresult});
+            db.delete(Constant.SF_CONSUMELOTINBOUND, "INBOUNDNO = ?", new String[]{stockinresult});
         } catch (Exception e) {
-            Log.e("SHIPPINGPLAN更新出错", e.getMessage().toString());
+            Log.e("STOCKinsave更新出错", e.getMessage().toString());
         }
     }
     //endregion
-
-    //region Table_SF_LOTSHIPPING
-    public void updateLotShipping(String resultStr) {
-        Log.e("更新SF_LOTSHIPPING", resultStr);
-        try {
-            JSONArray array = new JSONArray(resultStr);
-            StringBuffer LOTSHIPPING_insert = new StringBuffer();
-            LOTSHIPPING_insert.append("INSERT OR REPLACE INTO " + Constant.SF_LOTSHIPPING + "("
-                    + Constant.LOTID + ","
-                    + SHIPPINGPLANNO + ","
-                    + Constant.CONTAINERNO + ","
-                    + VALIDSTATE + ")");
-            LOTSHIPPING_insert.append(" VALUES( ?, ?, ?, ?)");
-            for (int i = 0; i < array.length(); i++) {
-                LotShippingData lotShippingData = new LotShippingData();
-                JSONObject jsonObject = array.getJSONObject(i);
-                lotShippingData.setLOTID(jsonObject.getString(Constant.LOTID));
-                lotShippingData.setSHIPPINGPLANNO(jsonObject.getString(SHIPPINGPLANNO));
-                lotShippingData.setCONTAINERNO(jsonObject.getString(Constant.CONTAINERNO));
-                lotShippingData.setVALIDSTATE(jsonObject.getString(VALIDSTATE));
-                updateTableSF_LOTSHIPPING(lotShippingData, LOTSHIPPING_insert.toString());
-            }
-        } catch (JSONException e) {
-            Log.e("LOTSHIPPING更新出错", e.getMessage().toString());
-        }
-    }
-
-    private void updateTableSF_LOTSHIPPING(LotShippingData lotShippingData, String LOTSHIPPING_insert) {
-        SQLiteStatement statement = db.compileStatement(LOTSHIPPING_insert);
-        statement.bindString(1, lotShippingData.getLOTID());
-        statement.bindString(2, lotShippingData.getSHIPPINGPLANNO());
-        statement.bindString(3, lotShippingData.getCONTAINERNO());
-        statement.bindString(4, lotShippingData.getVALIDSTATE());
-        try {
-            statement.executeInsert();
-        } catch (Exception e) {
-            Log.e("LOTSHIPPING更新出错", e.getMessage().toString());
-        }
-    }
-    //endregion
-
-    //region Table_SF_LOT
-    public void updateLot(String resultStr) {
-        Log.e("更新SF_LOT", resultStr);
-        try {
-            JSONArray array = new JSONArray(resultStr);
-            StringBuffer LOT_insert = new StringBuffer();
-            LOT_insert.append("INSERT OR REPLACE INTO " + Constant.SF_LOT + "("
-                    + Constant.LOTID + ","
-                    + Constant.SALESORDERID + ","
-                    + Constant.PROCESSSEGMENTID + ","
-                    + Constant.LOTSTATE + ","
-                    + Constant.RFID + ","
-                    + QTY + ","
-                    + VALIDSTATE + ")");
-            LOT_insert.append(" VALUES( ?, ?, ?, ? , ? , ? , ? )");
-            for (int i = 0; i < array.length(); i++) {
-                lotData lotData = new lotData();
-                JSONObject jsonObject = array.getJSONObject(i);
-                lotData.setLOTID(jsonObject.getString(Constant.LOTID));
-                lotData.setSALESORDERID(jsonObject.getString(Constant.SALESORDERID));
-                lotData.setPROCESSSEGMENTID(jsonObject.getString(Constant.PROCESSSEGMENTID));
-                lotData.setLOTSTATE(jsonObject.getString(Constant.LOTSTATE));
-                lotData.setRFID(jsonObject.getString(Constant.RFID));
-                lotData.setQTY(jsonObject.getString(QTY));
-                lotData.setVALIDSTATE(jsonObject.getString(VALIDSTATE));
-                updateTableSF_LOT(lotData, LOT_insert.toString());
-            }
-        } catch (JSONException e) {
-            Log.e("LOT更新出错", e.getMessage().toString());
-        }
-    }
-
-    private void updateTableSF_LOT(lotData lotData, String LOTSHIPPING_insert) {
-        SQLiteStatement statement = db.compileStatement(LOTSHIPPING_insert);
-        statement.bindString(1, lotData.getLOTID());
-        statement.bindString(2, lotData.getSALESORDERID());
-        statement.bindString(3, lotData.getPROCESSSEGMENTID());
-        statement.bindString(4, lotData.getLOTSTATE());
-        statement.bindString(5, lotData.getRFID());
-        statement.bindString(6, lotData.getQTY());
-        statement.bindString(7, lotData.getVALIDSTATE());
-        try {
-            statement.executeInsert();
-        } catch (Exception e) {
-            Log.e("LOT更新出错", e.getMessage().toString());
-        }
-    }
-    //endregion
-
 }

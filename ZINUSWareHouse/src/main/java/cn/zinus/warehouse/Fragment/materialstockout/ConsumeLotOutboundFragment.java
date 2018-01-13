@@ -1,5 +1,6 @@
 package cn.zinus.warehouse.Fragment.materialstockout;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -27,8 +28,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupWindow;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.zebra.adc.decoder.Barcode2DWithSoft;
@@ -77,10 +76,6 @@ public class ConsumeLotOutboundFragment extends KeyDownFragment implements View.
     //
     private EditText etTagID;
     private int BRFlag = 1;
-    //RadioGroup
-    private RadioGroup RgInventory;
-    private RadioButton rbSingle;
-    private RadioButton rbAuto;
     // private Handler handler;
     private boolean threadStop = true;
     private Thread thread;
@@ -197,7 +192,6 @@ public class ConsumeLotOutboundFragment extends KeyDownFragment implements View.
             case R.id.btnrfid:
                 //选择R&B的popupwindow里面的RFID按钮
                 BRFlag = 1;
-                RgInventory.setVisibility(View.VISIBLE);
                 showToast(mContext, "RFID", 0);
                 mivchoose.setImageResource(R.drawable.rfidicon);
                 if (BaecodeReader != null) {
@@ -207,7 +201,6 @@ public class ConsumeLotOutboundFragment extends KeyDownFragment implements View.
                 break;
             case R.id.btnbarcode:
                 //选择R&B的popupwindow里面的Barcode按钮
-                RgInventory.setVisibility(View.GONE);
                 showToast(mContext, "Barcode", 0);
                 BRFlag = 2;
                 mivchoose.setImageResource(R.drawable.barcodeicon);
@@ -250,10 +243,6 @@ public class ConsumeLotOutboundFragment extends KeyDownFragment implements View.
         tvConsumeRequestNo = (TextView) getView().findViewById(R.id.ConsumeRequestNo);
         mivchoose = (ImageView) getView().findViewById(R.id.iv_choose);
         mivchoose.setOnClickListener(this);
-        RgInventory = (RadioGroup) getView().findViewById(R.id.rgRfidScan);
-        RgInventory.setOnCheckedChangeListener(new RgInventoryCheckedListener());
-        rbSingle = (RadioButton) getView().findViewById(R.id.rbSingle);
-        rbAuto = (RadioButton) getView().findViewById(R.id.rbAuto);
         //Choose RFID or Barcode popupwindow
         mViewChooseBorR = mContext.getLayoutInflater().inflate(R.layout.chooseborr, null);
         mViewFixQty = mContext.getLayoutInflater().inflate(R.layout.fixqty, null);
@@ -271,6 +260,7 @@ public class ConsumeLotOutboundFragment extends KeyDownFragment implements View.
     }
     //endregion
 
+    @SuppressLint("WrongConstant")
     private void fixQty(View view, final int position) {
         final ConsumeLotOutboundData tempdata = mcomsumeLotOutboundDataList.get(position);
         Button btnConfirm = (Button) mViewFixQty.findViewById(R.id.btnfqty);
@@ -379,7 +369,6 @@ public class ConsumeLotOutboundFragment extends KeyDownFragment implements View.
                 if (!scanFlag) {
                     scanFlag = true;
                     if (mContext.mRFIDWithUHF.startInventoryTag((byte) 0, (byte) 0)) {
-                        setViewEnabled(false);
                         myDialog = new ProgressDialog(mContext);
                         myDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                         myDialog.setMessage(getString(R.string.Scaning));
@@ -402,8 +391,9 @@ public class ConsumeLotOutboundFragment extends KeyDownFragment implements View.
                         });
                         new TagThread(10).start();
                     } else {
-                        mContext.mRFIDWithUHF.stopInventory();
-                        setViewEnabled(true);
+                        Log.e("扫描出问题了", "重啟");
+                        mContext.freeUHF();
+                        mContext.initUHF();
                     }
                 } else {
                     stopInventory();
@@ -414,13 +404,6 @@ public class ConsumeLotOutboundFragment extends KeyDownFragment implements View.
         } else if (BRFlag == 2) {
             readBarcodeTag();
         }
-    }
-    //endregion
-
-    //region setViewEnabled
-    private void setViewEnabled(boolean enabled) {
-        rbAuto.setEnabled(enabled);
-        rbSingle.setEnabled(enabled);
     }
     //endregion
 
@@ -522,22 +505,6 @@ public class ConsumeLotOutboundFragment extends KeyDownFragment implements View.
 
     //endregion
 
-    //region RadioGroup CheckedChangeListener
-    public class RgInventoryCheckedListener implements RadioGroup.OnCheckedChangeListener {
-
-        @Override
-        public void onCheckedChanged(RadioGroup group, int checkedId) {
-            if (checkedId == rbSingle.getId()) {
-                //单次识别
-                loopFlag = false;
-            } else if (checkedId == rbAuto.getId()) {
-                //循环识别
-                loopFlag = true;
-            }
-        }
-    }
-    //endregion
-
     //endregion
 
     //region ◆ Barcode相关
@@ -632,8 +599,6 @@ public class ConsumeLotOutboundFragment extends KeyDownFragment implements View.
             if (myDialog != null) {
                 myDialog.dismiss();
             }
-            setViewEnabled(true);
-
             if (mContext.mRFIDWithUHF.stopInventory()) {
                 //BtnReadTag.setText(mContext.getString(R.string.title_start_Inventory));
             } else {

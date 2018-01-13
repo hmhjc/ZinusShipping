@@ -59,7 +59,7 @@ public class ShippingPlanDetailFragment extends KeyDownFragment {
     //上下文
     private MainNaviActivity mContext;
     //这个画面的ShippingPlan的信息
-    private ShippingPlanData mShippingPlanData;
+    private ShippingPlanData _mShippingPlanData;
     //ShippingPlanSEQSpinner
     protected Spinner spShippingPlanSEQ;
     private ArrayAdapter mShippingPlanSEQAdapter;
@@ -81,7 +81,7 @@ public class ShippingPlanDetailFragment extends KeyDownFragment {
     SQLiteDatabase db;
     private Handler handler = null;
     public void setShippingPlanData(ShippingPlanData shippingPlanData) {
-        mShippingPlanData = shippingPlanData;
+        _mShippingPlanData = shippingPlanData;
     }
 
     //endregion
@@ -109,7 +109,7 @@ public class ShippingPlanDetailFragment extends KeyDownFragment {
                         break;
                     case 123:
                         if ( spContainerSEQ.getSelectedItem()!=null){
-                            searchPOlist(mShippingPlanData,((CodeData) spShippingPlanSEQ.getSelectedItem()).getCODEID(),((CodeData) spContainerSEQ.getSelectedItem()).getCODEID());
+                            searchPOlist(_mShippingPlanData,((CodeData) spShippingPlanSEQ.getSelectedItem()).getCODEID(),((CodeData) spContainerSEQ.getSelectedItem()).getCODEID());
                         }
                         break;
                 }
@@ -162,7 +162,7 @@ public class ShippingPlanDetailFragment extends KeyDownFragment {
 
     //region initData
     private void initData() {
-        mShippingPlanData = new ShippingPlanData();
+        _mShippingPlanData = new ShippingPlanData();
         ShippingPlanSEQList = new ArrayList<>();
         ContainerSEQList = new ArrayList<>();
         mPODataList = new ArrayList<>();
@@ -181,7 +181,7 @@ public class ShippingPlanDetailFragment extends KeyDownFragment {
         spShippingPlanSEQ.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                searchContainerSEQ(mShippingPlanData.getSHIPPINGPLANNO(),((CodeData) spShippingPlanSEQ.getSelectedItem()).getCODEID());
+                searchContainerSEQ(_mShippingPlanData.getSHIPPINGPLANNO(),((CodeData) spShippingPlanSEQ.getSelectedItem()).getCODEID());
             }
 
             @Override
@@ -198,7 +198,7 @@ public class ShippingPlanDetailFragment extends KeyDownFragment {
         spContainerSEQ.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                searchPOlist(mShippingPlanData,((CodeData) spShippingPlanSEQ.getSelectedItem()).getCODEID(),((CodeData) spContainerSEQ.getSelectedItem()).getCODEID());
+                searchPOlist(_mShippingPlanData,((CodeData) spShippingPlanSEQ.getSelectedItem()).getCODEID(),((CodeData) spContainerSEQ.getSelectedItem()).getCODEID());
             }
 
             @Override
@@ -215,7 +215,7 @@ public class ShippingPlanDetailFragment extends KeyDownFragment {
         mlvPOList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                EventBus.getDefault().post(new Event.LotShippingByPOEvent(mShippingPlanData,mPODataList.get(position)));
+                EventBus.getDefault().post(new Event.LotShippingByPOEvent(_mShippingPlanData,mPODataList.get(position)));
             }
         });
 
@@ -268,9 +268,13 @@ public class ShippingPlanDetailFragment extends KeyDownFragment {
                 shippingPlanDetailValues.put(SEALNO, etSealNo.getText().toString());
                 db.update(Constant.SF_SHIPPINGPLANDETAIL, shippingPlanDetailValues,
                         "SHIPPINGPLANNO = ? AND SHIPPINGPLANSEQ = ? AND CONTAINERSEQ = ?"
-                        , new String[]{mShippingPlanData.getSHIPPINGPLANNO()
+                        , new String[]{_mShippingPlanData.getSHIPPINGPLANNO()
                                 ,((CodeData) spShippingPlanSEQ.getSelectedItem()).getCODEID()
                                 ,((CodeData) spContainerSEQ.getSelectedItem()).getCODEID()});
+               //修改plan的ispdashipping为Y
+                ContentValues shippingplanValues = new ContentValues();
+                shippingplanValues.put(Constant.ISPDASHIPPING, "Y");
+                db.update(Constant.SF_SHIPPINGPLAN, shippingplanValues, "SHIPPINGPLANNO = ?", new String[]{_mShippingPlanData.getSHIPPINGPLANNO()});
                 mPOListViewAdapter.notifyDataSetChanged();
 //                mcomsumeInboundDataList.set(position, tempdata);
 //                mConsumeInboundListViewAdapter.notifyDataSetChanged();
@@ -352,7 +356,7 @@ public class ShippingPlanDetailFragment extends KeyDownFragment {
         message.what = UPDATEUI;
         handler.sendMessage(message);
         if ( spShippingPlanSEQ.getSelectedItem()!=null){
-            searchContainerSEQ(mShippingPlanData.getSHIPPINGPLANNO(),((CodeData) spShippingPlanSEQ.getSelectedItem()).getCODEID());
+            searchContainerSEQ(_mShippingPlanData.getSHIPPINGPLANNO(),((CodeData) spShippingPlanSEQ.getSelectedItem()).getCODEID());
         }
     }
 

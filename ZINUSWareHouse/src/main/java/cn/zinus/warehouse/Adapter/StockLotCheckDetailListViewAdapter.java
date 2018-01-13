@@ -25,12 +25,11 @@ public class StockLotCheckDetailListViewAdapter extends BaseAdapter {
     private List<StockLotCheckDeatilData> listMap;
 
     public final class ListItemView {
-        public TextView tvconsuabledefnamme;
-        public TextView tvWarehouseID;
         public TextView tvconsumablelotid;
         public TextView tvunit;
         public TextView tvqty;
-        public TextView etcheckqty;
+        public TextView tvcheckusername;
+        public TextView tvcheckqty;
     }
 
     public StockLotCheckDetailListViewAdapter(Context context, List<StockLotCheckDeatilData> listMap) {
@@ -60,24 +59,22 @@ public class StockLotCheckDetailListViewAdapter extends BaseAdapter {
         if (convertView == null) {
             listItemView = new ListItemView();
             convertView = mInflater.inflate(R.layout.lv_item_stocklotcheckdetail, null);
-            listItemView.tvconsuabledefnamme = (TextView) convertView.findViewById(R.id.tv_consuabledefnamme);
-            listItemView.tvWarehouseID = (TextView) convertView.findViewById(R.id.tv_WarehouseID);
             listItemView.tvconsumablelotid = (TextView) convertView.findViewById(R.id.tv_consuablelotid);
             listItemView.tvunit = (TextView) convertView.findViewById(R.id.tv_unit);
             listItemView.tvqty = (TextView) convertView.findViewById(R.id.tv_qty);
-            listItemView.etcheckqty = (TextView) convertView.findViewById(R.id.et_checkqty);
+            listItemView.tvcheckqty = (TextView) convertView.findViewById(R.id.et_checkqty);
+            listItemView.tvcheckusername = (TextView) convertView.findViewById(R.id.tv_CheckUsername);
             convertView.setTag(listItemView);
         } else {
             listItemView = (ListItemView) convertView.getTag();
         }
         StockLotCheckDeatilData data = listMap.get(position);
-        listItemView.tvconsuabledefnamme.setText(data.getCONSUMEABLDEFNAME());
-        listItemView.tvWarehouseID.setText(data.getWAREHOUSEID());
         listItemView.tvconsumablelotid.setText(data.getCONSUMABLELOTID());
         listItemView.tvunit.setText(data.getUNIT());
-        listItemView.etcheckqty.setText(data.getCHECKQTY());
+        listItemView.tvcheckqty.setText(data.getCHECKQTY());
         listItemView.tvqty.setText(data.getQTY());
-        listItemView.etcheckqty.setTextColor(ContextCompat.getColor(mContext, data.getBackgroundColor()));
+        listItemView.tvcheckusername.setText(data.getUSERNAME());
+        listItemView.tvcheckqty.setTextColor(ContextCompat.getColor(mContext, data.getBackgroundColor()));
         return convertView;
     }
 

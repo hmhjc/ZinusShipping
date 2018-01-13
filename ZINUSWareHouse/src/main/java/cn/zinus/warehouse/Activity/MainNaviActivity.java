@@ -186,17 +186,17 @@ public class MainNaviActivity extends BaseActivity
     }
 
     public void initBarCode() {
-        barcodeHelper = new BarCode2DHelper(MainNaviActivity.this);
-        barcodeHelper.iniBarCode2D();
-//        try {
-//            mBarcode2DWithSoft = Barcode2DWithSoft.getInstance();
-//        } catch (Exception ex) {
-//            showToast(MainNaviActivity.this, ex.getMessage(), 0);
-//            return;
-//        }
-//        if (mBarcode2DWithSoft != null) {
-//            new InitBarCodeTask().execute();
-//        }
+//        barcodeHelper = new BarCode2DHelper(MainNaviActivity.this);
+//        barcodeHelper.iniBarCode2D();
+        try {
+            mBarcode2DWithSoft = Barcode2DWithSoft.getInstance();
+        } catch (Exception ex) {
+            showToast(MainNaviActivity.this, ex.getMessage(), 0);
+            return;
+        }
+        if (mBarcode2DWithSoft != null) {
+            new InitBarCodeTask().execute();
+        }
     }
 
     public void freeBarcode() {
@@ -368,14 +368,14 @@ public class MainNaviActivity extends BaseActivity
 //            isMenuSave = true;
 //            isMenuTemp = true;
 //        }
-        else if (id == R.id.item_registtag) {
-            if (mRegisterTagFragment == null) {
-                mRegisterTagFragment = new RegisterTagFragment();
-            }
-            switchContent(isFragment, mRegisterTagFragment);
-            isMenuSave = true;
-            isMenuTemp = true;
-        }
+//        else if (id == R.id.item_registtag) {
+//            if (mRegisterTagFragment == null) {
+//                mRegisterTagFragment = new RegisterTagFragment();
+//            }
+//            switchContent(isFragment, mRegisterTagFragment);
+//            isMenuSave = true;
+//            isMenuTemp = true;
+//        }
         invalidateOptionsMenu();
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -448,9 +448,23 @@ public class MainNaviActivity extends BaseActivity
     public void onEventMainThread(Event.ConsumeInboundByOrderEvent event) {
         mInboundFragment.mConsumeInboundFragment.actionClearAll();
         mInboundFragment.mConsumeInboundFragment.getConsumeInboundByInboundOrder(event.getInboundOrderNo());
-        mInboundFragment.mConsumeLotInboundFragment.actionClearAll();
-        mInboundFragment.mConsumeLotInboundFragment.getConsumeLotInboundByInboundOrder(event.getInboundOrderNo());
+//        mInboundFragment.mConsumeLotInboundFragment.actionClearAll();
+//        mInboundFragment.mConsumeLotInboundFragment.getConsumeLotInboundByConsumeDefID(event.getInboundOrderNo());
         mInboundFragment.jump(1);
+    }
+
+    //查询ConsumeLotInbound
+    @Subscribe
+    public void onEventMainThread(Event.ConsumeLotInboundByConsumeDefIDEvent event) {
+        mInboundFragment.mConsumeLotInboundFragment.actionClearAll();
+        mInboundFragment.mConsumeLotInboundFragment.getConsumeLotInboundByConsumeDefID(event.getConsumeInboundData());
+        mInboundFragment.jump(2);
+    }
+
+    //stockcheckLotdetail数据变化之后，修改stockcheckdetail的数据
+    @Subscribe
+    public void onEventMainThread(Event.ConsumeInboundbyLotCheckEvent event) {
+        mInboundFragment.mConsumeInboundFragment.updaCheckQtyByLot(event.getConsumeLotInboundData(),event.getSumqty());
     }
 
     //查询ConsumeOutbound
@@ -468,10 +482,27 @@ public class MainNaviActivity extends BaseActivity
     public void onEventMainThread(Event.StockCheckDetailbyCheckMonthEvent event) {
         mStockTakingFragment.mStockCheckDetailFragment.actionClearAll();
         mStockTakingFragment.mStockCheckDetailFragment.getStockCheckDetailbyCheckMonth(event.getStockCheck());
-        mStockTakingFragment.mStockLotCheckDetailFragment.actionClearAll();
-        mStockTakingFragment.mStockLotCheckDetailFragment.getStockLotCheckDetailbyCheckMonth(event.getStockCheck());
+
         mStockTakingFragment.jump(1);
     }
+
+
+    //查询LotStockCheck
+    @Subscribe
+    public void onEventMainThread(Event.StockLotCheckDetailbyConsumedefidEvent event) {
+        mStockTakingFragment.mStockLotCheckDetailFragment.actionClearAll();
+        mStockTakingFragment.mStockLotCheckDetailFragment.getStockLotCheckDetailbystockCheckDeatilData(event.getStockCheckDeatilData());
+        mStockTakingFragment.jump(2);
+    }
+
+    //stockcheckLotdetail数据变化之后，修改stockcheckdetail的数据
+    @Subscribe
+    public void onEventMainThread(Event.StockCheckDetailbyLotCheckEvent event) {
+        mStockTakingFragment.mStockCheckDetailFragment.updaCheckQtyByLot(event.getStockCheckDeatilData(),event.getSumqty());
+    }
+
+
+
 
     //查询ConsumeInbound
     @Subscribe
@@ -485,17 +516,8 @@ public class MainNaviActivity extends BaseActivity
     @Subscribe
     public void onEventMainThread(Event.RefreshActivityEvent event) {
         //刷新界面
-        //freeUHF();
-        //freeBarcode();
-//        ActivityManager manager = (ActivityManager)this.getSystemService(Context.ACTIVITY_SERVICE);
-//        manager.restartPackage(getApplication().getPackageName());
-   //final Intent intent1 = MainNaviActivity.this.getPackageManager().getLaunchIntentForPackage(MainNaviActivity.this.getPackageName());
-        //intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        //startActivity(intent1);
-
-//        Intent intent = getIntent();
-//        finish();
-//        startActivity(intent);
+        finish();
+        android.os.Process.killProcess(android.os.Process.myPid());
     }
 
     //endregion

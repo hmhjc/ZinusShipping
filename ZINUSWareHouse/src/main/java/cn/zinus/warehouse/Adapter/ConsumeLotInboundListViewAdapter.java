@@ -25,14 +25,12 @@ public class ConsumeLotInboundListViewAdapter extends BaseAdapter {
     private List<ConsumeLotInboundData> listMap;
 
     public final class ListItemView {
-        public TextView tvconsuabledefnamme;
         public TextView tvconsuablelotid;
         public TextView tvunit;
         public TextView tvinqty;
         public TextView tvplantqty;
-        public TextView tvORDERNO;
-        public TextView tvORDERTYPE;
-        public TextView tvLINENO;
+        public TextView tvDiversionUnit;
+        public TextView tvDiversionQTY;
     }
 
     public ConsumeLotInboundListViewAdapter(Context context, List<ConsumeLotInboundData> listMap) {
@@ -62,28 +60,24 @@ public class ConsumeLotInboundListViewAdapter extends BaseAdapter {
         if (convertView == null) {
             listItemView = new ListItemView();
             convertView = mInflater.inflate(R.layout.lv_item_consumelotinbound, null);
-            listItemView.tvconsuabledefnamme = (TextView) convertView.findViewById(R.id.tv_consuabledefnamme);
             listItemView.tvconsuablelotid = (TextView) convertView.findViewById(R.id.tv_consuablelotid);
             listItemView.tvunit = (TextView) convertView.findViewById(R.id.tv_unit);
             listItemView.tvinqty = (TextView) convertView.findViewById(R.id.tv_inqty);
             listItemView.tvplantqty = (TextView) convertView.findViewById(R.id.tv_plantqty);
-            listItemView.tvORDERNO = (TextView) convertView.findViewById(R.id.tv_ORDERNO);
-            listItemView.tvORDERTYPE = (TextView) convertView.findViewById(R.id.tv_ORDERTYPE);
-            listItemView.tvLINENO = (TextView) convertView.findViewById(R.id.tv_LINENO);
+            listItemView.tvDiversionUnit = (TextView) convertView.findViewById(R.id.tv_DiversionUnit);
+            listItemView.tvDiversionQTY = (TextView) convertView.findViewById(R.id.tv_DiversionQTY);
             convertView.setTag(listItemView);
         } else {
             listItemView = (ListItemView) convertView.getTag();
         }
         ConsumeLotInboundData data = listMap.get(position);
-        listItemView.tvconsuabledefnamme.setText(data.getCONSUMABLEDEFNAME());
         listItemView.tvconsuablelotid.setText(data.getCONSUMABLELOTID());
         listItemView.tvunit.setText(data.getUNIT());
         listItemView.tvinqty.setText(data.getINQTY());
         listItemView.tvinqty.setTextColor(ContextCompat.getColor(mContext, data.getBackgroundColor()));
         listItemView.tvplantqty.setText(data.getPLANQTY());
-        listItemView.tvORDERNO .setText(data.getORDERNO());
-        listItemView.tvORDERTYPE.setText(data.getORDERTYPE());
-        listItemView.tvLINENO .setText(data.getLINENO());
+        listItemView.tvDiversionUnit .setText(data.getDIVERSIONUNIT());
+        listItemView.tvDiversionQTY .setText(data.getDIVERSIONQTY());
         return convertView;
     }
 }

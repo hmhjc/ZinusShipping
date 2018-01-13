@@ -217,6 +217,40 @@ public class Constant {
     public static final String VALID = "Valid";
     public static final String INVALID = "Invalid";
 
+    public static final String InsertIntoSHIPPINGPLAN ="INSERT OR REPLACE INTO SF_SHIPPINGPLAN (" +
+            "SHIPPINGPLANNO ,CUSTOMERID ,BOOKINGNO ,PLANDATE ,SHIPPINGPLANDATE,SHIPPINGENDPLANDATE ,SHIPPINGENDDATE ,STATE ,ISPDASHIPPING) "
+            +"VALUES( '%1$s', '%2$s', '%3$s', '%4$s' ,'%5$s', '%6$s', '%7$s', '%8$s', '%9$s') ";
+
+    public static final String InsertIntoSHIPPINGPLANDETAIL ="INSERT OR REPLACE INTO SF_SHIPPINGPLANDETAIL (" +
+            "SHIPPINGPLANNO ,SHIPPINGPLANSEQ ,ORDERTYPE ,ORDERNO ,LINENO , PRODUCTDEFID, PRODUCTDEFVERSION ," +
+            "CONTAINERSEQ ,POID ,CONTAINERSPEC ,CONTAINERNO ,SEALNO ,COMPLETETIME,PLANQTY  ,STATE ,WORKINGSHIFT,AREAID ,PRODUCTDEFNAME ) "
+            +"VALUES( '%1$s', '%2$s', '%3$s', '%4$s' ,'%5$s', '%6$s', '%7$s', '%8$s', '%9$s'," +
+            "'%10$s', '%11$s', '%12$s', '%13$s', '%14$s' ,'%15$s', '%16$s', '%17$s', '%18$s') ";
+
+    public static final String InsertIntoSHIPPINGLOT ="INSERT OR REPLACE INTO SF_SHIPPINGLOT (" +
+            "SHIPPINGPLANNO,\n" +
+            "SHIPPINGPLANSEQ,\n" +
+            "ORDERTYPE,\n" +
+            "ORDERNO,\n" +
+            "LINENO,\n" +
+            "PRODUCTDEFID,\n" +
+            "PRODUCTDEFVERSION,\n" +
+            "CONTAINERSEQ,\n" +
+            "POID,\n" +
+            "LOTID,\n" +
+            "QTY,\n" +
+            "VALIDSTATE,\n" +
+            "SHIPPINGDATE)"
+            +"VALUES( '%1$s', '%2$s', '%3$s', '%4$s' ,'%5$s', '%6$s', '%7$s', '%8$s', '%9$s','%10$s', '%11$s', '%12$s', '%13$s') ";
+
+    public static final String InsertIntoLOT ="INSERT OR REPLACE INTO SF_LOT (" +
+            "LOTID\n" +
+            ",PURCHASEORDERID\n" +
+            ",LOTSTATE\n" +
+            ",RFID\n" +
+            ",QTY\n" +
+            ",TRACKOUTTIME)"
+            +"VALUES( '%1$s', '%2$s', '%3$s', '%4$s' ,'%5$s', '%6$s') ";
 
     //通过USB Socket通信
     public static final int SOCKETLENGTH = 3;

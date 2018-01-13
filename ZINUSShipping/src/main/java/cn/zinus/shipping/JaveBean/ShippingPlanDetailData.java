@@ -45,20 +45,29 @@ public class ShippingPlanDetailData implements Serializable {
     private String AREAID ;
     private String LOADEDQTY ;
 
-    public String getLOADEDQTY() {
-        return LOADEDQTY;
-    }
-
-    public void setLOADEDQTY(String LOADEDQTY) {
-        this.LOADEDQTY = LOADEDQTY;
-    }
-
-    public String getPRODUCTDEFNAME() {
-        return PRODUCTDEFNAME;
-    }
-
-    public void setPRODUCTDEFNAME(String PRODUCTDEFNAME) {
-        this.PRODUCTDEFNAME = PRODUCTDEFNAME;
+    @Override
+    public String toString() {
+        return "ShippingPlanDetailData{" +
+                "SHIPPINGPLANNO='" + SHIPPINGPLANNO + '\'' +
+                ", SHIPPINGPLANSEQ='" + SHIPPINGPLANSEQ + '\'' +
+                ", ORDERTYPE='" + ORDERTYPE + '\'' +
+                ", ORDERNO='" + ORDERNO + '\'' +
+                ", LINENO='" + LINENO + '\'' +
+                ", PRODUCTDEFID='" + PRODUCTDEFID + '\'' +
+                ", PRODUCTDEFVERSION='" + PRODUCTDEFVERSION + '\'' +
+                ", PRODUCTDEFNAME='" + PRODUCTDEFNAME + '\'' +
+                ", CONTAINERSEQ='" + CONTAINERSEQ + '\'' +
+                ", POID='" + POID + '\'' +
+                ", CONTAINERSPEC='" + CONTAINERSPEC + '\'' +
+                ", CONTAINERNO='" + CONTAINERNO + '\'' +
+                ", SEALNO='" + SEALNO + '\'' +
+                ", COMPLETETIME='" + COMPLETETIME + '\'' +
+                ", PLANQTY='" + PLANQTY + '\'' +
+                ", STATE='" + STATE + '\'' +
+                ", WORKINGSHIFT='" + WORKINGSHIFT + '\'' +
+                ", AREAID='" + AREAID + '\'' +
+                ", LOADEDQTY='" + LOADEDQTY + '\'' +
+                '}';
     }
 
     public String getSHIPPINGPLANNO() {
@@ -115,6 +124,14 @@ public class ShippingPlanDetailData implements Serializable {
 
     public void setPRODUCTDEFVERSION(String PRODUCTDEFVERSION) {
         this.PRODUCTDEFVERSION = PRODUCTDEFVERSION;
+    }
+
+    public String getPRODUCTDEFNAME() {
+        return PRODUCTDEFNAME;
+    }
+
+    public void setPRODUCTDEFNAME(String PRODUCTDEFNAME) {
+        this.PRODUCTDEFNAME = PRODUCTDEFNAME;
     }
 
     public String getCONTAINERSEQ() {
@@ -195,5 +212,13 @@ public class ShippingPlanDetailData implements Serializable {
 
     public void setAREAID(String AREAID) {
         this.AREAID = AREAID;
+    }
+
+    public String getLOADEDQTY() {
+        return LOADEDQTY;
+    }
+
+    public void setLOADEDQTY(String LOADEDQTY) {
+        this.LOADEDQTY = LOADEDQTY;
     }
 }

@@ -11,16 +11,17 @@ import java.io.Serializable;
 public class StockLotCheckDeatilData implements Serializable {
     private String WAREHOUSEID;
     private String CHECKMONTH;
-    private String CONSUMEABLDEFID;
-    private String CONSUMEABLDEFVERSION;
+    private String CONSUMABLEDEFNAME;
+    private String CONSUMABLEDEFID;
     private String CONSUMABLELOTID;
     private String UNIT;
     private String QTY;
     private String USERID;
+    private String USERNAME;
     private String CHECKUNIT;
     private String CHECKQTY;
     private String VALIDSTATE;
-    private String CONSUMEABLDEFNAME;
+    private String CONSUMABLEDEFVERSION;
     private int backgroundColor;
     private String TAGID;
     private String TAGQTY;
@@ -30,52 +31,29 @@ public class StockLotCheckDeatilData implements Serializable {
         return "StockLotCheckDeatilData{" +
                 "WAREHOUSEID='" + WAREHOUSEID + '\'' +
                 ", CHECKMONTH='" + CHECKMONTH + '\'' +
-                ", CONSUMEABLDEFID='" + CONSUMEABLDEFID + '\'' +
-                ", CONSUMEABLDEFVERSION='" + CONSUMEABLDEFVERSION + '\'' +
+                ", CONSUMABLEDEFNAME='" + CONSUMABLEDEFNAME + '\'' +
+                ", CONSUMABLEDEFID='" + CONSUMABLEDEFID + '\'' +
                 ", CONSUMABLELOTID='" + CONSUMABLELOTID + '\'' +
                 ", UNIT='" + UNIT + '\'' +
                 ", QTY='" + QTY + '\'' +
                 ", USERID='" + USERID + '\'' +
+                ", USERNAME='" + USERNAME + '\'' +
                 ", CHECKUNIT='" + CHECKUNIT + '\'' +
                 ", CHECKQTY='" + CHECKQTY + '\'' +
                 ", VALIDSTATE='" + VALIDSTATE + '\'' +
-                ", CONSUMEABLDEFNAME='" + CONSUMEABLDEFNAME + '\'' +
+                ", CONSUMABLEDEFVERSION='" + CONSUMABLEDEFVERSION + '\'' +
                 ", backgroundColor=" + backgroundColor +
                 ", TAGID='" + TAGID + '\'' +
                 ", TAGQTY='" + TAGQTY + '\'' +
                 '}';
     }
 
-    public String getTAGID() {
-        return TAGID;
+    public String getUSERNAME() {
+        return USERNAME;
     }
 
-    public void setTAGID(String TAGID) {
-        this.TAGID = TAGID;
-    }
-
-    public String getTAGQTY() {
-        return TAGQTY;
-    }
-
-    public void setTAGQTY(String TAGQTY) {
-        this.TAGQTY = TAGQTY;
-    }
-
-    public int getBackgroundColor() {
-        return backgroundColor;
-    }
-
-    public void setBackgroundColor(int backgroundColor) {
-        this.backgroundColor = backgroundColor;
-    }
-
-    public String getCONSUMEABLDEFNAME() {
-        return CONSUMEABLDEFNAME;
-    }
-
-    public void setCONSUMEABLDEFNAME(String CONSUMEABLDEFNAME) {
-        this.CONSUMEABLDEFNAME = CONSUMEABLDEFNAME;
+    public void setUSERNAME(String USERNAME) {
+        this.USERNAME = USERNAME;
     }
 
     public String getWAREHOUSEID() {
@@ -94,20 +72,20 @@ public class StockLotCheckDeatilData implements Serializable {
         this.CHECKMONTH = CHECKMONTH;
     }
 
-    public String getCONSUMEABLDEFID() {
-        return CONSUMEABLDEFID;
+    public String getCONSUMABLEDEFNAME() {
+        return CONSUMABLEDEFNAME;
     }
 
-    public void setCONSUMEABLDEFID(String CONSUMEABLDEFID) {
-        this.CONSUMEABLDEFID = CONSUMEABLDEFID;
+    public void setCONSUMABLEDEFNAME(String CONSUMABLEDEFNAME) {
+        this.CONSUMABLEDEFNAME = CONSUMABLEDEFNAME;
     }
 
-    public String getCONSUMEABLDEFVERSION() {
-        return CONSUMEABLDEFVERSION;
+    public String getCONSUMABLEDEFID() {
+        return CONSUMABLEDEFID;
     }
 
-    public void setCONSUMEABLDEFVERSION(String CONSUMEABLDEFVERSION) {
-        this.CONSUMEABLDEFVERSION = CONSUMEABLDEFVERSION;
+    public void setCONSUMABLEDEFID(String CONSUMABLEDEFID) {
+        this.CONSUMABLEDEFID = CONSUMABLEDEFID;
     }
 
     public String getCONSUMABLELOTID() {
@@ -164,5 +142,37 @@ public class StockLotCheckDeatilData implements Serializable {
 
     public void setVALIDSTATE(String VALIDSTATE) {
         this.VALIDSTATE = VALIDSTATE;
+    }
+
+    public String getCONSUMABLEDEFVERSION() {
+        return CONSUMABLEDEFVERSION;
+    }
+
+    public void setCONSUMABLEDEFVERSION(String CONSUMABLEDEFVERSION) {
+        this.CONSUMABLEDEFVERSION = CONSUMABLEDEFVERSION;
+    }
+
+    public int getBackgroundColor() {
+        return backgroundColor;
+    }
+
+    public void setBackgroundColor(int backgroundColor) {
+        this.backgroundColor = backgroundColor;
+    }
+
+    public String getTAGID() {
+        return TAGID;
+    }
+
+    public void setTAGID(String TAGID) {
+        this.TAGID = TAGID;
+    }
+
+    public String getTAGQTY() {
+        return TAGQTY;
+    }
+
+    public void setTAGQTY(String TAGQTY) {
+        this.TAGQTY = TAGQTY;
     }
 }

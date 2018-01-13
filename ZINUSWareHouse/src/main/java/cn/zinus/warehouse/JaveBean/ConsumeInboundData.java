@@ -25,7 +25,59 @@ public class ConsumeInboundData implements Serializable {
     private String ORDERTYPE;
     private String LINENO;
     private String ORDERCOMPANY;
+    private String DIVERSIONQTY;
+    private String DIVERSIONUNIT;
+    private String RATE;
     private int backgroundColor;
+
+    @Override
+    public String toString() {
+        return "ConsumeInboundData{" +
+                "CONSUMABLEDEFID='" + CONSUMABLEDEFID + '\'' +
+                ", CONSUMABLEDEFVERSION='" + CONSUMABLEDEFVERSION + '\'' +
+                ", CONSUMABLEDEFNAME='" + CONSUMABLEDEFNAME + '\'' +
+                ", WAREHOUSEID='" + WAREHOUSEID + '\'' +
+                ", INQTY='" + INQTY + '\'' +
+                ", INBOUNDNO='" + INBOUNDNO + '\'' +
+                ", INBOUNDSTATE='" + INBOUNDSTATE + '\'' +
+                ", VALIDSTATE='" + VALIDSTATE + '\'' +
+                ", UNIT='" + UNIT + '\'' +
+                ", INBOUNDDATE='" + INBOUNDDATE + '\'' +
+                ", PLANQTY='" + PLANQTY + '\'' +
+                ", ORDERNO='" + ORDERNO + '\'' +
+                ", ORDERTYPE='" + ORDERTYPE + '\'' +
+                ", LINENO='" + LINENO + '\'' +
+                ", ORDERCOMPANY='" + ORDERCOMPANY + '\'' +
+                ", DIVERSIONQTY='" + DIVERSIONQTY + '\'' +
+                ", DIVERSIONUNIT='" + DIVERSIONUNIT + '\'' +
+                ", RATE='" + RATE + '\'' +
+                ", backgroundColor=" + backgroundColor +
+                '}';
+    }
+
+    public String getRATE() {
+        return RATE;
+    }
+
+    public void setRATE(String RATE) {
+        this.RATE = RATE;
+    }
+
+    public String getDIVERSIONQTY() {
+        return DIVERSIONQTY;
+    }
+
+    public void setDIVERSIONQTY(String DIVERSIONQTY) {
+        this.DIVERSIONQTY = DIVERSIONQTY;
+    }
+
+    public String getDIVERSIONUNIT() {
+        return DIVERSIONUNIT;
+    }
+
+    public void setDIVERSIONUNIT(String DIVERSIONUNIT) {
+        this.DIVERSIONUNIT = DIVERSIONUNIT;
+    }
 
     public String getORDERCOMPANY() {
         return ORDERCOMPANY;
@@ -158,19 +210,4 @@ public class ConsumeInboundData implements Serializable {
         this.PLANQTY = PLANQTY;
     }
 
-    @Override
-    public String toString() {
-        return "ConsumeInboundData{" +
-                "CONSUMABLEDEFID='" + CONSUMABLEDEFID + '\'' +
-                ", CONSUMABLEDEFVERSION='" + CONSUMABLEDEFVERSION + '\'' +
-                ", WAREHOUSEID='" + WAREHOUSEID + '\'' +
-                ", INQTY='" + INQTY + '\'' +
-                ", INBOUNDNO='" + INBOUNDNO + '\'' +
-                ", INBOUNDSTATE='" + INBOUNDSTATE + '\'' +
-                ", VALIDSTATE='" + VALIDSTATE + '\'' +
-                ", UNIT='" + UNIT + '\'' +
-                ", INBOUNDDATE='" + INBOUNDDATE + '\'' +
-                ", PLANQTY='" + PLANQTY + '\'' +
-                '}';
-    }
 }

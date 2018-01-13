@@ -30,38 +30,38 @@
 
         <LinearLayout style="@style/MessageMarginTopLayout"/>
 
-        <RadioGroup
-            android:id="@+id/rgRfidScan"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="5dp"
-            android:visibility="visible"
-            >
+        <!--<RadioGroup-->
+            <!--android:id="@+id/rgRfidScan"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:orientation="horizontal"-->
+            <!--android:padding="5dp"-->
+            <!--android:visibility="visible"-->
+            <!--&gt;-->
 
-            <RadioButton
-                android:id="@+id/rbSingle"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/Single"
-                android:textColor="@color/micubegray"
-                android:textSize="15sp"
-                />
+            <!--<RadioButton-->
+                <!--android:id="@+id/rbSingle"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_weight="1"-->
+                <!--android:text="@string/Single"-->
+                <!--android:textColor="@color/micubegray"-->
+                <!--android:textSize="15sp"-->
+                <!--/>-->
 
-            <RadioButton
-                android:id="@+id/rbAuto"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:checked="true"
-                android:text="@string/Auto"
-                android:textColor="@color/micubegray"
-                android:textSize="15sp"
-                />
-        </RadioGroup>
+            <!--<RadioButton-->
+                <!--android:id="@+id/rbAuto"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_weight="1"-->
+                <!--android:checked="true"-->
+                <!--android:text="@string/Auto"-->
+                <!--android:textColor="@color/micubegray"-->
+                <!--android:textSize="15sp"-->
+                <!--/>-->
+        <!--</RadioGroup>-->
 
-        <LinearLayout style="@style/MessageMarginTopLayout"/>
+        <!--<LinearLayout style="@style/MessageMarginTopLayout"/>-->
 
     </LinearLayout>
 

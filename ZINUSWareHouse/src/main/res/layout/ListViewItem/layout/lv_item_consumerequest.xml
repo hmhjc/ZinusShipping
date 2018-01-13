@@ -3,35 +3,62 @@
               style="@style/listviewitem">
 
     <TextView
-        android:id="@+id/tv_ConsumeRequestNo"
+        android:id="@+id/tv_CONSUMEREQNO"
         style="@style/listviewcontext"/>
 
     <View
         style="@style/listviewverticalsplit"/>
 
     <TextView
-        android:id="@+id/tv_AreaID"
+        android:id="@+id/tv_CONSUMABLECOUNT"
         style="@style/listviewcontext"/>
 
     <View
         style="@style/listviewverticalsplit"/>
 
     <TextView
-        android:id="@+id/tv_UserID"
+        android:id="@+id/tv_USERNAME"
         style="@style/listviewcontext"/>
 
     <View
         style="@style/listviewverticalsplit"/>
 
     <TextView
-        android:id="@+id/tv_RequestDate"
+        android:id="@+id/tv_LOCATIONNAME"
         style="@style/listviewcontext"/>
 
     <View
         style="@style/listviewverticalsplit"/>
 
     <TextView
-        android:id="@+id/tv_OutBoundState"
+        android:id="@+id/tv_REQUESTUSERNAME"
+        style="@style/listviewcontext"/>
+
+    <View
+        style="@style/listviewverticalsplit"/>
+
+    <TextView
+        android:id="@+id/tv_FROMWAREHOUSENAME"
+        style="@style/listviewcontext"/>
+    <View
+        style="@style/listviewverticalsplit"/>
+
+    <TextView
+        android:id="@+id/tv_TOWAREHOUSENAME"
+        style="@style/listviewcontext"/>
+
+    <View
+        style="@style/listviewverticalsplit"/>
+
+    <TextView
+        android:id="@+id/tv_REQUESTDATE"
+        style="@style/listviewcontext"/>
+
+    <View
+        style="@style/listviewverticalsplit"/>
+
+    <TextView
+        android:id="@+id/tv_FINISHPLANDATE"
         style="@style/listviewcontext"/>
 
 </LinearLayout>

@@ -154,20 +154,20 @@ public class StockLotConsumeSearchFragment extends KeyDownFragment {
     private void initview() {
 
         //region Spinner
-        spStockCheckState = (Spinner) getView().findViewById(R.id.sp_StockCheckState);
-        mStockCheckStateAdapter = new ArrayAdapter(mContext, android.R.layout.simple_list_item_1, StockCheckStateList);
-        spStockCheckState.setAdapter(mStockCheckStateAdapter);
-        spStockCheckState.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                UpDateOrder();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
+//        spStockCheckState = (Spinner) getView().findViewById(R.id.sp_StockCheckState);
+//        mStockCheckStateAdapter = new ArrayAdapter(mContext, android.R.layout.simple_list_item_1, StockCheckStateList);
+//        spStockCheckState.setAdapter(mStockCheckStateAdapter);
+//        spStockCheckState.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                UpDateOrder();
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parent) {
+//
+//            }
+//        });
         //endregion
 
         //region Date

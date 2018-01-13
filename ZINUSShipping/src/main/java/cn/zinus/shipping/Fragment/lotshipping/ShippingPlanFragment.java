@@ -195,14 +195,30 @@ public class ShippingPlanFragment extends KeyDownFragment {
         pmonth = theCa.get(Calendar.MONTH);
         pday = theCa.get(Calendar.DAY_OF_MONTH);
         if (pmonth < 9) {
-            tvFromDate.setText("" + pyear + "-0" + (pmonth + 1) + "-" + pday);
+            if (pday < 10) {
+                tvFromDate.setText("" + pyear + "-0" + (pmonth + 1) + "-0" + pday);
+            } else {
+                tvFromDate.setText("" + pyear + "-0" + (pmonth + 1) + "-" + pday);
+            }
         } else {
-            tvFromDate.setText("" + pyear + "-" + (pmonth + 1) + "-" + pday);
+            if (pday < 10) {
+                tvFromDate.setText("" + pyear + "-" + (pmonth + 1) + "-0" + pday);
+            } else {
+                tvFromDate.setText("" + pyear + "-" + (pmonth + 1) + "-" + pday);
+            }
         }
         if (month < 9) {
-            tvToDate.setText("" + year + "-0" + (month + 1) + "-" + day);
+            if (day < 10) {
+                tvToDate.setText("" + year + "-0" + (month + 1) + "-0" + day);
+            } else {
+                tvToDate.setText("" + year + "-0" + (month + 1) + "-" + day);
+            }
         } else {
-            tvToDate.setText("" + year + "-" + (month + 1) + "-" + day);
+            if (day < 10) {
+                tvToDate.setText("" + year + "-" + (month + 1) + "-0" + day);
+            } else {
+                tvToDate.setText("" + year + "-" + (month + 1) + "-" + day);
+            }
         }
         //endregion
 
@@ -308,6 +324,8 @@ public class ShippingPlanFragment extends KeyDownFragment {
                     d = "" + day;
                 }
                 tvToDate.setText("" + year + "-" + m + "-" + d);
+
+
                 UpDateShippingPlan();
             }
         }

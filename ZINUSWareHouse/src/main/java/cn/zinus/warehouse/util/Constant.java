@@ -10,6 +10,7 @@ public class Constant {
     public static final String VERSIONURL = "VERSIONURL";
     public static final String APKURL = "APKURL";
     public static final String UserID = "UserID";
+    public static final String UserName = "UserName";
 
     //LanguageType
     public static final String ZH_CN = "zh-CN";
@@ -87,6 +88,9 @@ public class Constant {
     public static final String CONSUMABLECOUNT = "CONSUMABLECOUNT";
     public static final String ConsumeInboundState = "ConsumeInboundState";
     public static final String INBOUNDSTATENAME = "INBOUNDSTATENAME";
+    public static final String COUNT = "COUNT";
+    public static final String INBOUNDTYPE = "INBOUNDTYPE";
+
 
     //SF_CONSUMEINBOUND
     public static final String SF_CONSUMEINBOUND = "SF_CONSUMEINBOUND";
@@ -99,8 +103,10 @@ public class Constant {
     public static final String ORDERNO = "ORDERNO";
     public static final String ORDERTYPE = "ORDERTYPE";
     public static final String LINENO = "LINENO";
-    public static final String ORDERCOMPANY= "ORDERCOMPANY";
-
+    public static final String ORDERCOMPANY = "ORDERCOMPANY";
+    public static final String DIVERSIONUNIT = "DIVERSIONUNIT";
+    public static final String DIVERSIONQTY = "DIVERSIONQTY";
+    public static final String RATE = "RATE";
 
     //public static final String INBOUNDDATE = "INBOUNDDATE";
 
@@ -125,6 +131,13 @@ public class Constant {
     public static final String USERNAME = "USERNAME";
     public static final String REQUESTDATE = "REQUESTDATE";
     public static final String OUTBOUNDSTATE = "OUTBOUNDSTATE";
+    public static final String LOCATIONNAME = "LOCATIONNAME";
+    public static final String REQUESTUSERID = "REQUESTUSERID";
+    public static final String REQUESTUSERNAME = "REQUESTUSERNAME";
+    public static final String FROMWAREHOUSENAME = "FROMWAREHOUSENAME";
+    public static final String TOWAREHOUSENAME = "TOWAREHOUSENAME";
+    public static final String FINISHPLANDATE = "FINISHPLANDATE";
+
 
     //SF_CONSUMEOUTBOUND
     public static final String SF_CONSUMEOUTBOUND = "SF_CONSUMEOUTBOUND";
@@ -204,11 +217,142 @@ public class Constant {
     //public static final String QTY = "QTY";
     public static final String RFID = "RFID";
 
+    public static final String InsertIntoSTOCKCHECK = "INSERT OR REPLACE INTO SF_STOCKCHECK (" +
+            " WAREHOUSEID,\n" +
+            " CHECKMONTH,\n" +
+            " STARTDATE,\n" +
+            " ENDDATE,\n" +
+            " WAREHOUSENAME,\n" +
+            " STATE,\n" +
+            " STATENAME) "
+            + "VALUES( '%1$s', '%2$s', '%3$s', '%4$s' ,'%5$s', '%6$s', '%7$s') ";
 
+    public static final String InsertIntoSTOCKCHECKDETAIL = "INSERT OR REPLACE INTO SF_STOCKCHECKDETAIL (" +
+            " WAREHOUSEID,\n" +
+            " CHECKMONTH,\n" +
+            " CONSUMABLEDEFNAME,\n" +
+            " CONSUMABLEDEFID,\n" +
+            " CONSUMABLEDEFVERSION,\n" +
+            " UNIT,\n" +
+            " QTY,\n" +
+            " USERID,\n" +
+            " CHECKUNIT,\n" +
+            " CHECKQTY) "
+            + "VALUES( '%1$s', '%2$s', '%3$s', '%4$s' ,'%5$s', '%6$s', '%7$s' ,'%8$s', '%9$s', '%10$s') ";
 
+    public static final String InsertIntoSTOCKLOTCHECKDETAIL = "INSERT OR REPLACE INTO SF_STOCKLOTCHECKDETAIL (" +
+            "WAREHOUSEID,\n" +
+            "CHECKMONTH,\n" +
+            "CONSUMABLEDEFNAME,\n" +
+            "CONSUMABLEDEFID,\n" +
+            "CONSUMABLEDEFVERSION,\n" +
+            "UNIT,\n" +
+            "QTY,\n" +
+            "USERID,\n" +
+            "CHECKUNIT,\n" +
+            "CHECKQTY,\n" +
+            "CONSUMABLELOTID,\n" +
+            "TAGID,\n" +
+            "TAGQTY) "
+            + "VALUES( '%1$s', '%2$s', '%3$s', '%4$s' ,'%5$s', '%6$s', '%7$s','%8$s', '%9$s', '%10$s','%11$s', '%12$s', '%13$s') ";
 
+    public static final String InsertIntoCONSUMEREQUEST = "INSERT OR REPLACE INTO SF_CONSUMEREQUEST (" +
+            "CONSUMEREQNO,\n" +
+            "CONSUMABLECOUNT,\n" +
+            "USERID,\n" +
+            "USERNAME,\n" +
+            "LOCATIONID,\n" +
+            "LOCATIONNAME,\n" +
+            "REQUESTUSERID,\n" +
+            "REQUESTUSERNAME,\n" +
+            "FROMWAREHOUSEID,\n" +
+            "FROMWAREHOUSENAME,\n" +
+            "WAREHOUSEID,\n" +
+            "TOWAREHOUSENAME,\n" +
+            "REQUESTDATE,\n" +
+            "FINISHPLANDATE)"
+            + "VALUES( '%1$s', '%2$s', '%3$s', '%4$s' ,'%5$s', '%6$s', '%7$s','%8$s', '%9$s', '%10$s','%11$s', '%12$s', '%13$s', '%14$s') ";
+
+    public static final String InsertIntoCONSUMEOUTBOUND = "INSERT OR REPLACE INTO SF_CONSUMEOUTBOUND (" +
+            "CONSUMABLEDEFID,\n" +
+            "CONSUMABLEDEFVERSION,\n" +
+            "WAREHOUSEID,\n" +
+            "CONSUMEREQNO,\n" +
+            "UNIT,\n" +
+            "OUTBOUNDSTATE,\n" +
+            "FROMWAREHOUSEID,\n" +
+            "REQUESTQTY,\n" +
+            "OUTQTY)"
+            + "VALUES( '%1$s', '%2$s', '%3$s', '%4$s' ,'%5$s', '%6$s', '%7$s','%8$s', '%9$s') ";
+    public static final String InsertIntoCONSUMELOTOUTBOUND = "INSERT OR REPLACE INTO SF_CONSUMELOTOUTBOUND (" +
+            "CONSUMABLELOTID,\n" +
+            "CONSUMABLEDEFID,\n" +
+            "CONSUMABLEDEFVERSION,\n" +
+            "WAREHOUSEID,\n" +
+            "CONSUMEREQNO,\n" +
+            "UNIT,\n" +
+            "OUTBOUNDSTATE,\n" +
+            "OUTQTY,\n" +
+            "TAGID,\n" +
+            "TAGQTY)"
+            + "VALUES( '%1$s', '%2$s', '%3$s', '%4$s' ,'%5$s', '%6$s', '%7$s','%8$s', '%9$s','%10$s', '%11$s') ";
+
+    public static final String InsertIntoINBOUNDORDER = "INSERT OR REPLACE INTO SF_INBOUNDORDER (" +
+            "INBOUNDNO,\n" +
+            "WAREHOUSEID,\n" +
+            "WAREHOUSENAME,\n" +
+            "SCHEDULEDATE,\n" +
+            "INBOUNDDATE,\n" +
+            "TEMPINBOUNDDATE,\n" +
+            "INBOUNDSTATE,\n" +
+            "STATENAME,\n" +
+            "INBOUNDTYPE,\n" +
+            "CONSUMABLECOUNT)"
+            + "VALUES( '%1$s', '%2$s', '%3$s', '%4$s' ,'%5$s', '%6$s', '%7$s','%8$s', '%9$s', '%10$s') ";
+
+    public static final String InsertIntoCONSUMEINBOUND = "INSERT OR REPLACE INTO SF_CONSUMEINBOUND (" +
+            "INBOUNDNO,\n" +
+            "CONSUMABLEDEFID,\n" +
+            "CONSUMABLEDEFNAME,\n" +
+            "CONSUMABLEDEFVERSION,\n" +
+            "WAREHOUSEID,\n" +
+            "ORDERNO,\n" +
+            "ORDERTYPE,\n" +
+            "LINENO,\n" +
+            "ORDERCOMPANY,\n" +
+            "UNIT,\n" +
+            "DIVERSIONUNIT,\n" +
+            "PLANQTY,\n" +
+            "INQTY,\n" +
+            "DIVERSIONQTY,\n" +
+            "RATE)"
+            + "VALUES( '%1$s', '%2$s', '%3$s', '%4$s' ,'%5$s', '%6$s', '%7$s','%8$s', '%9$s','%10$s'" +
+            ", '%11$s','%12$s', '%13$s', '%14$s','%15$s') ";
+    public static final String InsertIntoCONSUMELOTINBOUND = "INSERT OR REPLACE INTO SF_CONSUMELOTINBOUND (" +
+            "INBOUNDNO,\n" +
+            "CONSUMABLELOTID,\n"+
+            "CONSUMABLEDEFID,\n" +
+            "CONSUMABLEDEFNAME,\n" +
+            "CONSUMABLEDEFVERSION,\n" +
+            "WAREHOUSEID,\n" +
+            "ORDERNO,\n" +
+            "ORDERTYPE,\n" +
+            "LINENO,\n" +
+            "ORDERCOMPANY,\n" +
+            "UNIT,\n" +
+            "DIVERSIONUNIT,\n" +
+            "PLANQTY,\n" +
+            "INQTY,\n" +
+            "DIVERSIONQTY,\n" +
+            "RATE,\n" +
+            "TAGID,\n" +
+            "TAGQTY)"
+            + "VALUES( '%1$s', '%2$s', '%3$s', '%4$s' ,'%5$s', '%6$s', '%7$s','%8$s', '%9$s','%10$s'" +
+            ", '%11$s','%12$s', '%13$s', '%14$s','%15$s', '%16$s', '%17$s','%18$s') ";
     //通过USB Socket通信
     public static final int SOCKETLENGTH = 3;
+    public static final String PDAALUPLOAD = "Y";
+    public static final String PDANOTALUPLOAD = "N";
     public static final String UPDATESHIPPINGSTART = "880";
     public static final String UPDATESTOCKINSTART = "881";
     public static final String UPDATESTOCKOUTSTART = "882";
@@ -220,7 +364,8 @@ public class Constant {
     public static final String UPLOADSTOCKCHECKSTART = "888";
     public static final String UPLOADEXIT = "889";
     public static final String UPDATEEXIT = "890";
-
+    public static final String RETURNSTOCKCHECKSAVESTART = "892";
+    public static final String RETURNSTOCKINSAVESTART = "893";
 
 
     public static final String SYNCSF_CODE = "801";
@@ -240,7 +385,8 @@ public class Constant {
     public static final String SYNCSF_CONSUMABLELOT = "815";
     public static final String SYNCSF_AREA = "816";
     public static final String SYNCSF_WAREHOUSE = "817";
-    public static final String SYNCSF_LOT = "818";
+    public static final String SYNCPDASTOCKCHECKSAVING = "821";
+    public static final String SYNCPDASTOCKINSAVING = "822";
 
     public static final String IYNCSF_CODE = "701";
     public static final String IYNCSF_INBOUNDORDER = "702";
@@ -260,6 +406,8 @@ public class Constant {
     public static final String IYNCSF_AREA = "716";
     public static final String IYNCSF_WAREHOUSE = "717";
     public static final String IYNCSF_LOT = "718";
+    public static final String IYNCPDASTOCKCHECKSAVING = "721";
+    public static final String IYNCPDASTOCKINSAVING = "722";
 
     public static final String UPLOADINBOUNDORDERINFO = "603";
     public static final String UPLOADCONSUMEINBOUNDINFO = "604";
@@ -271,7 +419,7 @@ public class Constant {
     public static final String UPLOADINBOUNDORDER = "683";
     public static final String UPLOADCONSUMEINBOUND = "684";
     public static final String UPLOADCONSUMELOTINBOUND = "685";
-    public static final String UPLOADSTOCKCHECK= "686";
+    public static final String UPLOADSTOCKCHECK = "686";
     public static final String UPLOADSTOCKCHECKDETAIL = "687";
     public static final String UPLOADSTOCKLOTCHECKDETAIL = "688";
 

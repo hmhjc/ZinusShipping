@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+
+              android:weightSum="1">
+
+    <RelativeLayout
+        android:layout_width="235dp"
+        android:layout_height="172dp"
+        android:layout_weight="0.00"
+        android:background="@drawable/listviewtype">
+
+        <TextView
+            android:id="@+id/tvfqtytitle"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:paddingTop="5dp"
+            android:text="@string/confirmQty"
+            />
+
+        <LinearLayout
+            android:id="@+id/qq"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_below="@id/tvfqtytitle"
+            android:gravity="center"
+            android:layout_centerHorizontal="true"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/consumablelotid"/>
+
+            <TextView
+                android:id="@+id/tv_consumablelotid"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/lyet"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_below="@id/qq"
+            android:layout_centerHorizontal="true"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
+                android:text="@string/QTY"/>
+
+            <EditText
+                android:id="@+id/etfqty"
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:inputType="none"
+                android:numeric="decimal"
+                android:selectAllOnFocus="true"
+                android:singleLine="true"
+                android:text="@string/QTY"
+                android:textSize="15sp"
+                />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnfqty"
+            android:layout_width="70dp"
+            android:layout_height="30dp"
+            android:layout_below="@id/lyet"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/button_bg"
+            android:text="@string/ok"/>
+    </RelativeLayout>
+</LinearLayout>

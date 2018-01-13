@@ -26,7 +26,6 @@ import java.util.Date;
 
 import cn.zinus.warehouse.Activity.MainNaviActivity;
 import cn.zinus.warehouse.Adapter.InboundorderListViewAdapter;
-import cn.zinus.warehouse.Config.AppConfig;
 import cn.zinus.warehouse.Fragment.Event;
 import cn.zinus.warehouse.Fragment.KeyDownFragment;
 import cn.zinus.warehouse.JaveBean.CodeData;
@@ -35,6 +34,8 @@ import cn.zinus.warehouse.R;
 import cn.zinus.warehouse.util.Constant;
 import cn.zinus.warehouse.util.DBManger;
 import cn.zinus.warehouse.util.MyDateBaseHelper;
+
+import static cn.zinus.warehouse.util.DBManger.getCursorData;
 
 /**
  * Created by Spring on 2017/2/18.
@@ -46,14 +47,14 @@ public class InboundOrderFragment extends KeyDownFragment {
     static SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd");//设置日期格式
     //上下文
     private MainNaviActivity mContext;
-    //ConsumeInboundStateSpinner
-    protected Spinner spConsumeInboundState;
-    private ArrayAdapter mConsumeInboundStateAdapter;
-    private ArrayList<CodeData> ConsumeInboundStateList;
+//    //ConsumeInboundStateSpinner
+//    protected Spinner spConsumeInboundState;
+//    private ArrayAdapter mConsumeInboundStateAdapter;
+//    private ArrayList<CodeData> ConsumeInboundStateList;
     //ConsumabledefIdSpinner
-    protected Spinner spConsumabledefId;
-    private ArrayAdapter mConsumabledefIdAdapter;
-    private ArrayList<String> ConsumabledefIdList;
+    protected Spinner spWarehouse;
+    private ArrayAdapter mWarehouseAdapter;
+    private ArrayList<CodeData> WarehouseList;
     //Data
     protected TextView tvFromDate;
     protected TextView tvToDate;
@@ -69,6 +70,7 @@ public class InboundOrderFragment extends KeyDownFragment {
     protected InboundOrderData mSelectInboundOrderdata = new InboundOrderData();
     //数据库
     MyDateBaseHelper mHelper;
+    SQLiteDatabase db;
     //endregion
 
     //region ◆ 생성자(Creator)
@@ -80,6 +82,7 @@ public class InboundOrderFragment extends KeyDownFragment {
         mContext = (MainNaviActivity) getActivity();
         setHasOptionsMenu(true);
         mHelper = DBManger.getIntance(mContext);
+        db = mHelper.getWritableDatabase();
     }
     //endregion
 
@@ -130,31 +133,34 @@ public class InboundOrderFragment extends KeyDownFragment {
     private void initData() {
         //初始化Spinner数据
         //region ConsumeInboundStateList
-        ConsumeInboundStateList = new ArrayList<>();
-        ConsumeInboundStateList.add(new CodeData("",getString(R.string.SpinnerDefault)));
-        SQLiteDatabase db = mHelper.getWritableDatabase();
-        String selectDataListsql = String.format(getString(R.string.codeSpinner),Constant.CONSUMEINBOUNDSTATE,AppConfig.getInstance().getLanuageType());
-        Log.e("ConsumeInboundState", selectDataListsql);
-        Cursor cursorDatalist = DBManger.selectDatBySql(db, selectDataListsql, null);
-        if (cursorDatalist.getCount() != 0) {
-            while (cursorDatalist.moveToNext()) {
-                CodeData spinnerData = new CodeData();
-                spinnerData.setCODEID(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.CODEID)));
-                spinnerData.setDICTIONARYNAME(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.DICTIONARYNAME)));
-                ConsumeInboundStateList.add(spinnerData);
-            }
-        }
+//        ConsumeInboundStateList = new ArrayList<>();
+//        ConsumeInboundStateList.add(new CodeData("",getString(R.string.SpinnerDefault)));
+//        SQLiteDatabase db = mHelper.getWritableDatabase();
+//        String selectDataListsql = String.format(getString(R.string.codeSpinner),Constant.CONSUMEINBOUNDSTATE,AppConfig.getInstance().getLanuageType());
+//        Log.e("ConsumeInboundState", selectDataListsql);
+//        Cursor cursorDatalist = DBManger.selectDatBySql(db, selectDataListsql, null);
+//        if (cursorDatalist.getCount() != 0) {
+//            while (cursorDatalist.moveToNext()) {
+//                CodeData spinnerData = new CodeData();
+//                spinnerData.setCODEID(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.CODEID)));
+//                spinnerData.setDICTIONARYNAME(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.DICTIONARYNAME)));
+//                ConsumeInboundStateList.add(spinnerData);
+//            }
+//        }
         //endregion
 
-        //region ConsumabledefIdList
-        ConsumabledefIdList = new ArrayList<>();
-        ConsumabledefIdList.add(0, getString(R.string.SpinnerDefault));
-        String selectConsumabledefId = getString(R.string.ConsumabledefIDSpinner);
-        Log.e("ConsumabledefId", selectConsumabledefId);
-        Cursor cursorConsumabledefId = DBManger.selectDatBySql(db, selectConsumabledefId, null);
-        if (cursorConsumabledefId.getCount() != 0) {
-            while (cursorConsumabledefId.moveToNext()) {
-                ConsumabledefIdList.add(cursorConsumabledefId.getString(cursorConsumabledefId.getColumnIndex(Constant.CONSUMABLEDEFID)));
+        //region WarehouseList
+        WarehouseList = new ArrayList<>();
+        WarehouseList.add(new CodeData("",getString(R.string.SpinnerDefault)));
+        String selectWarehouse = getString(R.string.WarehouseSpinner);
+        Log.e("WarehouseSpinner", selectWarehouse);
+        Cursor cursorWarehouse = DBManger.selectDatBySql(db, selectWarehouse, null);
+        if (cursorWarehouse.getCount() != 0) {
+            while (cursorWarehouse.moveToNext()) {
+                CodeData spinnerData = new CodeData();
+                spinnerData.setCODEID(cursorWarehouse.getString(cursorWarehouse.getColumnIndex(Constant.WAREHOUSEID)));
+                spinnerData.setDICTIONARYNAME(cursorWarehouse.getString(cursorWarehouse.getColumnIndex(Constant.WAREHOUSENAME)));
+                WarehouseList.add(spinnerData);
             }
         }
         //endregion
@@ -167,27 +173,27 @@ public class InboundOrderFragment extends KeyDownFragment {
     private void initview() {
 
         //region ConsumeInboundStateSpinner
-        spConsumeInboundState = (Spinner) getView().findViewById(R.id.sp_ConsumeInboundState);
-        mConsumeInboundStateAdapter = new ArrayAdapter(mContext, android.R.layout.simple_list_item_1, ConsumeInboundStateList);
-        spConsumeInboundState.setAdapter(mConsumeInboundStateAdapter);
-        spConsumeInboundState.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                UpDateOrder();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
+//        spConsumeInboundState = (Spinner) getView().findViewById(R.id.sp_ConsumeInboundState);
+//        mConsumeInboundStateAdapter = new ArrayAdapter(mContext, android.R.layout.simple_list_item_1, ConsumeInboundStateList);
+//        spConsumeInboundState.setAdapter(mConsumeInboundStateAdapter);
+//        spConsumeInboundState.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                UpDateOrder();
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parent) {
+//
+//            }
+//        });
         //endregion
 
         //region ConsumabledefIdSpinner
-        spConsumabledefId = (Spinner) getView().findViewById(R.id.sp_ConsumabledefId);
-        mConsumabledefIdAdapter = new ArrayAdapter(mContext, android.R.layout.simple_list_item_1, ConsumabledefIdList);
-        spConsumabledefId.setAdapter(mConsumabledefIdAdapter);
-        spConsumabledefId.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        spWarehouse = (Spinner) getView().findViewById(R.id.sp_Warehouse);
+        mWarehouseAdapter = new ArrayAdapter(mContext, android.R.layout.simple_list_item_1, WarehouseList);
+        spWarehouse.setAdapter(mWarehouseAdapter);
+        spWarehouse.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 UpDateOrder();
@@ -230,14 +236,30 @@ public class InboundOrderFragment extends KeyDownFragment {
         pmonth = theCa.get(Calendar.MONTH);
         pday = theCa.get(Calendar.DAY_OF_MONTH);
         if (pmonth < 9) {
-            tvFromDate.setText("" + pyear + "-0" + (pmonth + 1) + "-" + pday);
+            if (pday < 10) {
+                tvFromDate.setText("" + pyear + "-0" + (pmonth + 1) + "-0" + pday);
+            } else {
+                tvFromDate.setText("" + pyear + "-0" + (pmonth + 1) + "-" + pday);
+            }
         } else {
-            tvFromDate.setText("" + pyear + "-" + (pmonth + 1) + "-" + pday);
+            if (pday < 10) {
+                tvFromDate.setText("" + pyear + "-" + (pmonth + 1) + "-0" + pday);
+            } else {
+                tvFromDate.setText("" + pyear + "-" + (pmonth + 1) + "-" + pday);
+            }
         }
         if (month < 9) {
-            tvToDate.setText("" + year + "-0" + (month + 1) + "-" + day);
+            if (day < 10) {
+                tvToDate.setText("" + year + "-0" + (month + 1) + "-0" + day);
+            } else {
+                tvToDate.setText("" + year + "-0" + (month + 1) + "-" + day);
+            }
         } else {
-            tvToDate.setText("" + year + "-" + (month + 1) + "-" + day);
+            if (day < 10) {
+                tvToDate.setText("" + year + "-" + (month + 1) + "-0" + day);
+            } else {
+                tvToDate.setText("" + year + "-" + (month + 1) + "-" + day);
+            }
         }
         //endregion
 
@@ -260,19 +282,19 @@ public class InboundOrderFragment extends KeyDownFragment {
 
     //region UpDateShippingPlan
     protected void UpDateOrder() {
-        String ConsumeInboundState =((CodeData) spConsumeInboundState.getSelectedItem()).getCODEID();
-        String ConsumabledefId = spConsumabledefId.getSelectedItem().toString();
+      //  String ConsumeInboundState =((CodeData) spConsumeInboundState.getSelectedItem()).getCODEID();
+        String WarehouseID =((CodeData)spWarehouse.getSelectedItem()).getCODEID();
         String OrderFromDate = tvFromDate.getText().toString();
         String OrderToDate = tvToDate.getText().toString();
-        getInboundOrder(ConsumeInboundState,ConsumabledefId, OrderFromDate, OrderToDate);
+        getInboundOrder(WarehouseID, OrderFromDate, OrderToDate);
         EventBus.getDefault().post(new Event.InboundClearOrderItemEvent());
     }
 
-    private void getInboundOrder(String ConsumeInboundState,String ConsumabledefId, String orderFromDate, String orderToDate) {
+    private void getInboundOrder(String WarehouseID, String orderFromDate, String orderToDate) {
         SQLiteDatabase db = mHelper.getWritableDatabase();
         String selectDataListsql = String.format(getString(R.string.GetInboundOrderQuery),orderFromDate,orderToDate);
-        if (!ConsumeInboundState.equals("")) {
-            selectDataListsql =selectDataListsql + String.format(getString(R.string.gioConditionState),ConsumeInboundState);
+        if (!WarehouseID.equals("")) {
+            selectDataListsql = selectDataListsql + String.format(getString(R.string.gioConditionWAREHOUSEID),WarehouseID);
         }
         selectDataListsql = selectDataListsql+getString(R.string.gioOrderBy);
         Log.e("InboundOrder语句", selectDataListsql);
@@ -281,15 +303,16 @@ public class InboundOrderFragment extends KeyDownFragment {
         if (cursorDatalist.getCount() != 0) {
             while (cursorDatalist.moveToNext()) {
                 InboundOrderData inboundOrderData = new InboundOrderData();
-                inboundOrderData.setINBOUNDNO(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.INBOUNDNO)));
-                inboundOrderData.setWAREHOUSEID(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.WAREHOUSEID)));
-                inboundOrderData.setWAREHOUSENAME(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.WAREHOUSENAME)));
-                inboundOrderData.setSCHEDULEDATE(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.SCHEDULEDATE)));
-                inboundOrderData.setTEMPINBOUNDDATE(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.TEMPINBOUNDDATE)));
-                inboundOrderData.setINBOUNDDATE(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.INBOUNDDATE)));
-                inboundOrderData.setINBOUNDSTATE(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.INBOUNDSTATE)));
-                inboundOrderData.setSTATENAME(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.STATENAME)));
-                inboundOrderData.setCONSUMABLECOUNT(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.CONSUMABLECOUNT)));
+                inboundOrderData.setINBOUNDNO(getCursorData(cursorDatalist, Constant.INBOUNDNO).trim());
+                inboundOrderData.setWAREHOUSEID(getCursorData(cursorDatalist, Constant.WAREHOUSEID).trim());
+                inboundOrderData.setWAREHOUSENAME(getCursorData(cursorDatalist, Constant.WAREHOUSENAME).trim());
+                inboundOrderData.setSCHEDULEDATE(getCursorData(cursorDatalist, Constant.SCHEDULEDATE).trim());
+                inboundOrderData.setINBOUNDDATE(getCursorData(cursorDatalist, Constant.INBOUNDDATE).trim());
+                inboundOrderData.setTEMPINBOUNDDATE(getCursorData(cursorDatalist, Constant.TEMPINBOUNDDATE).trim());
+                inboundOrderData.setINBOUNDTYPE(getCursorData(cursorDatalist, Constant.INBOUNDTYPE).trim());
+                inboundOrderData.setINBOUNDSTATE(getCursorData(cursorDatalist, Constant.INBOUNDSTATE).trim());
+                inboundOrderData.setSTATENAME(getCursorData(cursorDatalist, Constant.STATENAME).trim());
+                inboundOrderData.setCONSUMABLECOUNT(getCursorData(cursorDatalist, Constant.CONSUMABLECOUNT).trim());
                 Log.e("inboundOrderData",inboundOrderData.toString());
                 mInboundOrderDataList.add(inboundOrderData);
             }

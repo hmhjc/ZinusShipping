@@ -8,7 +8,7 @@ import java.io.Serializable;
  * Main Change:
  */
 
-public class ConsumeLotInboundData implements Serializable{
+public class ConsumeLotInboundData implements Serializable {
     private String CONSUMABLEDEFID;
     private String CONSUMABLEDEFVERSION;
     private String WAREHOUSEID;
@@ -27,7 +27,62 @@ public class ConsumeLotInboundData implements Serializable{
     private String LINENO;
     private String TAGID;
     private String TAGQTY;
+    private String DIVERSIONQTY;
+    private String DIVERSIONUNIT;
     private String ORDERCOMPANY;
+    private String RATE;
+
+    @Override
+    public String toString() {
+        return "ConsumeLotInboundData{" +
+                "CONSUMABLEDEFID='" + CONSUMABLEDEFID + '\'' +
+                ", CONSUMABLEDEFVERSION='" + CONSUMABLEDEFVERSION + '\'' +
+                ", WAREHOUSEID='" + WAREHOUSEID + '\'' +
+                ", INQTY='" + INQTY + '\'' +
+                ", INBOUNDNO='" + INBOUNDNO + '\'' +
+                ", INBOUNDSTATE='" + INBOUNDSTATE + '\'' +
+                ", VALIDSTATE='" + VALIDSTATE + '\'' +
+                ", UNIT='" + UNIT + '\'' +
+                ", INBOUNDDATE='" + INBOUNDDATE + '\'' +
+                ", PLANQTY='" + PLANQTY + '\'' +
+                ", CONSUMABLEDEFNAME='" + CONSUMABLEDEFNAME + '\'' +
+                ", CONSUMABLELOTID='" + CONSUMABLELOTID + '\'' +
+                ", backgroundColor=" + backgroundColor +
+                ", ORDERNO='" + ORDERNO + '\'' +
+                ", ORDERTYPE='" + ORDERTYPE + '\'' +
+                ", LINENO='" + LINENO + '\'' +
+                ", TAGID='" + TAGID + '\'' +
+                ", TAGQTY='" + TAGQTY + '\'' +
+                ", DIVERSIONQTY='" + DIVERSIONQTY + '\'' +
+                ", DIVERSIONUNIT='" + DIVERSIONUNIT + '\'' +
+                ", ORDERCOMPANY='" + ORDERCOMPANY + '\'' +
+                ", RATE='" + RATE + '\'' +
+                '}';
+    }
+
+    public String getRATE() {
+        return RATE;
+    }
+
+    public void setRATE(String RATE) {
+        this.RATE = RATE;
+    }
+
+    public String getDIVERSIONQTY() {
+        return DIVERSIONQTY;
+    }
+
+    public void setDIVERSIONQTY(String DIVERSIONQTY) {
+        this.DIVERSIONQTY = DIVERSIONQTY;
+    }
+
+    public String getDIVERSIONUNIT() {
+        return DIVERSIONUNIT;
+    }
+
+    public void setDIVERSIONUNIT(String DIVERSIONUNIT) {
+        this.DIVERSIONUNIT = DIVERSIONUNIT;
+    }
 
     public String getORDERCOMPANY() {
         return ORDERCOMPANY;
@@ -184,27 +239,4 @@ public class ConsumeLotInboundData implements Serializable{
         this.PLANQTY = PLANQTY;
     }
 
-    @Override
-    public String toString() {
-        return "ConsumeLotInboundData{" +
-                "CONSUMABLEDEFID='" + CONSUMABLEDEFID + '\'' +
-                ", CONSUMABLEDEFVERSION='" + CONSUMABLEDEFVERSION + '\'' +
-                ", WAREHOUSEID='" + WAREHOUSEID + '\'' +
-                ", INQTY='" + INQTY + '\'' +
-                ", INBOUNDNO='" + INBOUNDNO + '\'' +
-                ", INBOUNDSTATE='" + INBOUNDSTATE + '\'' +
-                ", VALIDSTATE='" + VALIDSTATE + '\'' +
-                ", UNIT='" + UNIT + '\'' +
-                ", INBOUNDDATE='" + INBOUNDDATE + '\'' +
-                ", PLANQTY='" + PLANQTY + '\'' +
-                ", CONSUMABLEDEFNAME='" + CONSUMABLEDEFNAME + '\'' +
-                ", CONSUMABLELOTID='" + CONSUMABLELOTID + '\'' +
-                ", backgroundColor=" + backgroundColor +
-                ", ORDERNO='" + ORDERNO + '\'' +
-                ", ORDERTYPE='" + ORDERTYPE + '\'' +
-                ", LINENO='" + LINENO + '\'' +
-                ", TAGID='" + TAGID + '\'' +
-                ", TAGQTY='" + TAGQTY + '\'' +
-                '}';
-    }
 }

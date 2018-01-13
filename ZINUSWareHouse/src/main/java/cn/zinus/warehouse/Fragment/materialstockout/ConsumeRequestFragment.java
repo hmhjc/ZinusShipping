@@ -26,16 +26,16 @@ import java.util.Date;
 
 import cn.zinus.warehouse.Activity.MainNaviActivity;
 import cn.zinus.warehouse.Adapter.ConsumeRequestListViewAdapter;
-import cn.zinus.warehouse.Config.AppConfig;
 import cn.zinus.warehouse.Fragment.Event;
 import cn.zinus.warehouse.Fragment.KeyDownFragment;
-import cn.zinus.warehouse.JaveBean.AreaData;
 import cn.zinus.warehouse.JaveBean.CodeData;
 import cn.zinus.warehouse.JaveBean.ConsumeRequestData;
 import cn.zinus.warehouse.R;
 import cn.zinus.warehouse.util.Constant;
 import cn.zinus.warehouse.util.DBManger;
 import cn.zinus.warehouse.util.MyDateBaseHelper;
+
+import static cn.zinus.warehouse.util.DBManger.getCursorData;
 
 /**
  * Created by Spring on 2017/2/18.
@@ -47,14 +47,10 @@ public class ConsumeRequestFragment extends KeyDownFragment {
     static SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd");//设置日期格式
     //上下文
     private MainNaviActivity mContext;
-    //ConsumeInboundStateSpinner
-    protected Spinner spConsumeOutboundState;
-    private ArrayAdapter mConsumeOutboundStateAdapter;
-    private ArrayList<CodeData> ConsumeOutboundStateList;
     //AreaSpinner
-    protected Spinner spArea;
-    private ArrayAdapter mAreaAdapter;
-    private ArrayList<AreaData> AreaList;
+    protected Spinner spLocation;
+    private ArrayAdapter mLocationAdapter;
+    private ArrayList<CodeData> LocationList;
     //Data
     protected TextView tvFromDate;
     protected TextView tvToDate;
@@ -70,6 +66,7 @@ public class ConsumeRequestFragment extends KeyDownFragment {
     protected ConsumeRequestData mSelectConsumeRequestdata = new ConsumeRequestData();
     //数据库
     MyDateBaseHelper mHelper;
+    SQLiteDatabase db;
     //endregion
 
     //region ◆ 생성자(Creator)
@@ -81,6 +78,7 @@ public class ConsumeRequestFragment extends KeyDownFragment {
         mContext = (MainNaviActivity) getActivity();
         setHasOptionsMenu(true);
         mHelper = DBManger.getIntance(mContext);
+        db = mHelper.getWritableDatabase();
     }
     //endregion
 
@@ -98,7 +96,6 @@ public class ConsumeRequestFragment extends KeyDownFragment {
         super.onActivityCreated(savedInstanceState);
         initData();
         initview();
-        //UpDateShippingPlan();
     }
 
     //endregion
@@ -130,35 +127,17 @@ public class ConsumeRequestFragment extends KeyDownFragment {
     //region initData
     private void initData() {
         //初始化Spinner数据
-        //region ConsumeOutboundStateList
-        ConsumeOutboundStateList = new ArrayList<>();
-        ConsumeOutboundStateList.add(new CodeData("",getString(R.string.SpinnerDefault)));
-        SQLiteDatabase db = mHelper.getWritableDatabase();
-        String selectDataListsql = String.format(getString(R.string.codeSpinner),Constant.CONSUMEOUTBOUNDSTATE,AppConfig.getInstance().getLanuageType());
-        Cursor cursorDatalist = DBManger.selectDatBySql(db, selectDataListsql, null);
-        if (cursorDatalist.getCount() != 0) {
-            Log.e("State_query", cursorDatalist.getCount() + "");
-            while (cursorDatalist.moveToNext()) {
-                CodeData spinnerData = new CodeData();
-                spinnerData.setCODEID(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.CODEID)));
-                spinnerData.setDICTIONARYNAME(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.DICTIONARYNAME)));
-                ConsumeOutboundStateList.add(spinnerData);
-            }
-        }
-        //endregion
-
-        //region AreaList
-        AreaList = new ArrayList<>();
-        AreaList.add(new AreaData("",getString(R.string.SpinnerDefault)));
-        String selectAreaList = String.format(getString(R.string.AreaSpinner));
+        //region LocationList
+        LocationList = new ArrayList<>();
+        LocationList.add(new CodeData("",getString(R.string.SpinnerDefault)));
+        String selectAreaList = String.format(getString(R.string.LocationSpinner));
         Cursor cursorAreaList = DBManger.selectDatBySql(db, selectAreaList, null);
         if (cursorAreaList.getCount() != 0) {
-            Log.e("Area_query", cursorDatalist.getCount() + "");
             while (cursorAreaList.moveToNext()) {
-                AreaData areaSpinnerData = new AreaData();
-                areaSpinnerData.setAREAID(cursorAreaList.getString(cursorAreaList.getColumnIndex(Constant.AREAID)));
-                areaSpinnerData.setAREANAME(cursorAreaList.getString(cursorAreaList.getColumnIndex(Constant.AREANAME)));
-                AreaList.add(areaSpinnerData);
+                CodeData LOCATIONSpinnerData = new CodeData();
+                LOCATIONSpinnerData.setCODEID(getCursorData(cursorAreaList,Constant.LOCATIONID));
+                LOCATIONSpinnerData.setDICTIONARYNAME(getCursorData(cursorAreaList,Constant.LOCATIONNAME));
+                LocationList.add(LOCATIONSpinnerData);
             }
         }
         //endregion
@@ -171,27 +150,27 @@ public class ConsumeRequestFragment extends KeyDownFragment {
     private void initview() {
 
         //region spConsumeOutboundState
-        spConsumeOutboundState = (Spinner) getView().findViewById(R.id.sp_ConsumeOutboundState);
-        mConsumeOutboundStateAdapter = new ArrayAdapter(mContext, android.R.layout.simple_list_item_1, ConsumeOutboundStateList);
-        spConsumeOutboundState.setAdapter(mConsumeOutboundStateAdapter);
-        spConsumeOutboundState.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                UpDateOrder();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
+//        spConsumeOutboundState = (Spinner) getView().findViewById(R.id.sp_ConsumeOutboundState);
+//        mConsumeOutboundStateAdapter = new ArrayAdapter(mContext, android.R.layout.simple_list_item_1, ConsumeOutboundStateList);
+//        spConsumeOutboundState.setAdapter(mConsumeOutboundStateAdapter);
+//        spConsumeOutboundState.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                UpDateOrder();
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parent) {
+//
+//            }
+//        });
         //endregion
 
-        //region spArea
-        spArea = (Spinner) getView().findViewById(R.id.sp_AreaID);
-        mAreaAdapter = new ArrayAdapter(mContext, android.R.layout.simple_list_item_1, AreaList);
-        spArea.setAdapter(mAreaAdapter);
-        spArea.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        //region spLocation
+        spLocation = (Spinner) getView().findViewById(R.id.sp_LocationID);
+        mLocationAdapter = new ArrayAdapter(mContext, android.R.layout.simple_list_item_1, LocationList);
+        spLocation.setAdapter(mLocationAdapter);
+        spLocation.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 UpDateOrder();
@@ -234,14 +213,30 @@ public class ConsumeRequestFragment extends KeyDownFragment {
         pmonth = theCa.get(Calendar.MONTH);
         pday = theCa.get(Calendar.DAY_OF_MONTH);
         if (pmonth < 9) {
-            tvFromDate.setText("" + pyear + "-0" + (pmonth + 1) + "-" + pday);
+            if (pday < 10) {
+                tvFromDate.setText("" + pyear + "-0" + (pmonth + 1) + "-0" + pday);
+            } else {
+                tvFromDate.setText("" + pyear + "-0" + (pmonth + 1) + "-" + pday);
+            }
         } else {
-            tvFromDate.setText("" + pyear + "-" + (pmonth + 1) + "-" + pday);
+            if (pday < 10) {
+                tvFromDate.setText("" + pyear + "-" + (pmonth + 1) + "-0" + pday);
+            } else {
+                tvFromDate.setText("" + pyear + "-" + (pmonth + 1) + "-" + pday);
+            }
         }
         if (month < 9) {
-            tvToDate.setText("" + year + "-0" + (month + 1) + "-" + day);
+            if (day < 10) {
+                tvToDate.setText("" + year + "-0" + (month + 1) + "-0" + day);
+            } else {
+                tvToDate.setText("" + year + "-0" + (month + 1) + "-" + day);
+            }
         } else {
-            tvToDate.setText("" + year + "-" + (month + 1) + "-" + day);
+            if (day < 10) {
+                tvToDate.setText("" + year + "-" + (month + 1) + "-0" + day);
+            } else {
+                tvToDate.setText("" + year + "-" + (month + 1) + "-" + day);
+            }
         }
         //endregion
 
@@ -263,22 +258,17 @@ public class ConsumeRequestFragment extends KeyDownFragment {
 
     //region UpDateShippingPlan
     protected void UpDateOrder() {
-        String ConsumeOutboundState =((CodeData) spConsumeOutboundState.getSelectedItem()).getCODEID();
-        String Areaid = ((AreaData)spArea.getSelectedItem()).getAREAID();
+        String LocationID = ((CodeData) spLocation.getSelectedItem()).getCODEID();
         String OrderFromDate = tvFromDate.getText().toString();
         String OrderToDate = tvToDate.getText().toString();
-        getConsumeRequest(ConsumeOutboundState,Areaid, OrderFromDate, OrderToDate);
+        getConsumeRequest(LocationID, OrderFromDate, OrderToDate);
         EventBus.getDefault().post(new Event.OutboundClearOrderItemEvent());
     }
 
-    private void getConsumeRequest(String ConsumeIOutboundState, String Areaid, String orderFromDate, String orderToDate) {
-        SQLiteDatabase db = mHelper.getWritableDatabase();
-        String selectDataListsql = String.format(getString(R.string.GetConsumeRequestQuery),orderFromDate,orderToDate);
-        if (!ConsumeIOutboundState.equals("")) {
-            selectDataListsql = selectDataListsql+String.format(getString(R.string.gcrConditionState),ConsumeIOutboundState);
-        }
-        if (!Areaid.equals("")) {
-            selectDataListsql = selectDataListsql + String.format(getString(R.string.gcrConditionAreaId),Areaid);
+    private void getConsumeRequest(String Locationid, String orderFromDate, String orderToDate) {
+        String selectDataListsql = String.format(getString(R.string.GetConsumeRequestQuery), orderFromDate, orderToDate);
+        if (!Locationid.equals("")) {
+            selectDataListsql = selectDataListsql + String.format(getString(R.string.gcrConditionLocationId), Locationid);
         }
         selectDataListsql = selectDataListsql + getString(R.string.gcrOrderBy);
         Log.e("查询ConsumeRequestsql语句", selectDataListsql);
@@ -286,13 +276,22 @@ public class ConsumeRequestFragment extends KeyDownFragment {
         mConsumeRequsetDataList.clear();
         if (cursorDatalist.getCount() != 0) {
             while (cursorDatalist.moveToNext()) {
-                ConsumeRequestData inboundOrderData = new ConsumeRequestData();
-                inboundOrderData.setCONSUMEREQNO(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.CONSUMEREQNO)));
-                inboundOrderData.setAREAID(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.AREAID)));
-                inboundOrderData.setUSERID(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.USERID)));
-                inboundOrderData.setREQUESTDATE(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.REQUESTDATE)));
-                inboundOrderData.setOUTBOUNDSTATE(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.OUTBOUNDSTATE)));
-                mConsumeRequsetDataList.add(inboundOrderData);
+                ConsumeRequestData consumeRequestData = new ConsumeRequestData();
+                consumeRequestData.setCONSUMEREQNO(getCursorData(cursorDatalist, Constant.CONSUMEREQNO));
+                consumeRequestData.setCONSUMABLECOUNT(getCursorData(cursorDatalist, Constant.CONSUMABLECOUNT));
+                consumeRequestData.setUSERID(getCursorData(cursorDatalist, Constant.USERID));
+                consumeRequestData.setUSERNAME(getCursorData(cursorDatalist, Constant.USERNAME));
+                consumeRequestData.setLOCATIONID(getCursorData(cursorDatalist, Constant.LOCATIONID));
+                consumeRequestData.setLOCATIONNAME(getCursorData(cursorDatalist, Constant.LOCATIONNAME));
+                consumeRequestData.setREQUESTUSERID(getCursorData(cursorDatalist, Constant.REQUESTUSERID));
+                consumeRequestData.setREQUESTUSERNAME(getCursorData(cursorDatalist, Constant.REQUESTUSERNAME));
+                consumeRequestData.setFROMWAREHOUSEID(getCursorData(cursorDatalist, Constant.FROMWAREHOUSEID));
+                consumeRequestData.setFROMWAREHOUSENAME(getCursorData(cursorDatalist, Constant.FROMWAREHOUSENAME));
+                consumeRequestData.setWAREHOUSEID(getCursorData(cursorDatalist, Constant.WAREHOUSEID));
+                consumeRequestData.setTOWAREHOUSENAME(getCursorData(cursorDatalist, Constant.TOWAREHOUSENAME));
+                consumeRequestData.setREQUESTDATE(getCursorData(cursorDatalist, Constant.REQUESTDATE));
+                consumeRequestData.setFINISHPLANDATE(getCursorData(cursorDatalist, Constant.FINISHPLANDATE));
+                mConsumeRequsetDataList.add(consumeRequestData);
             }
         }
         mConsumeRequestListViewAdapter.notifyDataSetChanged();

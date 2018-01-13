@@ -190,5 +190,27 @@
     <string name="ORDERNO">ORDERNO</string>
     <string name="ORDERTYPE">ORDERTYPE</string>
     <string name="LINENO">LINENO</string>
+    <string name="CONSUMEREQNO">CONSUMEREQNO</string>
+    <string name="CONSUMABLECOUNT">CONSUMABLECOUNT</string>
+    <string name="USERNAME">USERNAME</string>
+    <string name="LOCATIONNAME">LOCATIONNAME</string>
+    <string name="REQUESTUSERNAME">REQUESTUSERNAME</string>
+    <string name="FROMWAREHOUSENAME">FROMWAREHOUSENAME</string>
+    <string name="TOWAREHOUSENAME">TOWAREHOUSENAME</string>
+    <string name="REQUESTDATE">REQUESTDATE</string>
+    <string name="FINISHPLANDATE">FINISHPLANDATE</string>
+    <string name="isNormalConsume"/>
+    <string name="StockLotCheckSum">StockLotCheckSum</string>
+    <string name="stockchecklistSumQty">listSumQty</string>
+    <string name="StockLotCheckedSum">StockLotCheckedSum</string>
+    <string name="noStockChectLotQTY">noStockChectLotQTY</string>
+    <string name="confirmQty">confirmQty</string>
+    <string name="CheckUserName">CheckUserName</string>
+    <string name="ConsumeLotInboundSum">ConsumeLotInboundSum</string>
+    <string name="CLIlistSumQty">consumelotinboundlistSumQty</string>
+    <string name="noCLIQTY">noCLIQTY</string>
+    <string name="ORDERCOMPANY">订货公司号码</string>
+    <string name="DiversionQTY">库存数量</string>
+    <string name="DiversionUnit">库存单位</string>
 
 </resources>

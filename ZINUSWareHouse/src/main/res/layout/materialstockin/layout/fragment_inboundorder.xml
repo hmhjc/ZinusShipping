@@ -13,29 +13,29 @@
         android:orientation="vertical">
         <!--add 添加条件的地方-->
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:gravity="left"
-            android:orientation="horizontal"
-            android:paddingLeft="10dp">
+        <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="40dp"-->
+            <!--android:gravity="left"-->
+            <!--android:orientation="horizontal"-->
+            <!--android:paddingLeft="10dp">-->
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center|left"
-                android:text="@string/ConsumeInboundState"
-                android:textSize="@dimen/data_text"/>
+            <!--<TextView-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_weight="1"-->
+                <!--android:gravity="center|left"-->
+                <!--android:text="@string/ConsumeInboundState"-->
+                <!--android:textSize="@dimen/data_text"/>-->
 
-            <Spinner
-                android:id="@+id/sp_ConsumeInboundState"
-                android:layout_width="294px"
-                android:layout_height="60px"/>
+            <!--<Spinner-->
+                <!--android:id="@+id/sp_ConsumeInboundState"-->
+                <!--android:layout_width="294px"-->
+                <!--android:layout_height="60px"/>-->
 
-        </LinearLayout>
+        <!--</LinearLayout>-->
 
-        <LinearLayout style="@style/MessageMarginTopLayout"/>
+        <!--<LinearLayout style="@style/MessageMarginTopLayout"/>-->
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -49,11 +49,11 @@
                 android:layout_height="match_parent"
                 android:layout_weight="0.5"
                 android:gravity="center|left"
-                android:text="@string/ConsumabledefId"
+                android:text="@string/WareHouse"
                 android:textSize="@dimen/data_text"/>
 
             <Spinner
-                android:id="@+id/sp_ConsumabledefId"
+                android:id="@+id/sp_Warehouse"
                 android:layout_width="294px"
                 android:layout_height="60px"
 

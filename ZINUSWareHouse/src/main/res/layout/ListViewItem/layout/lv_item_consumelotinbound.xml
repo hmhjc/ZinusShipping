@@ -2,11 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               style="@style/listviewitem">
 
+
+
     <TextView
-        android:id="@+id/tv_consuabledefnamme"
+        android:id="@+id/tv_consuablelotid"
         style="@style/listviewcontext"
         android:layout_width="200px"/>
-
     <View
         style="@style/listviewverticalsplit"/>
 
@@ -35,15 +36,7 @@
         style="@style/listviewverticalsplit"/>
 
     <TextView
-        android:id="@+id/tv_consuablelotid"
-        style="@style/listviewcontext"
-        android:layout_width="200px"/>
-
-    <View
-        style="@style/listviewverticalsplit"/>
-
-    <TextView
-        android:id="@+id/tv_ORDERNO"
+        android:id="@+id/tv_DiversionUnit"
         style="@style/listviewcontext"
         android:layout_width="100px"/>
 
@@ -51,15 +44,7 @@
         style="@style/listviewverticalsplit"/>
 
     <TextView
-        android:id="@+id/tv_ORDERTYPE"
-        style="@style/listviewcontext"
-        android:layout_width="100px"/>
-
-    <View
-        style="@style/listviewverticalsplit"/>
-
-    <TextView
-        android:id="@+id/tv_LINENO"
+        android:id="@+id/tv_DiversionQTY"
         style="@style/listviewcontext"
         android:layout_width="100px"/>
 

@@ -23,9 +23,6 @@ public class MainMenuFragment extends KeyDownFragment implements View.OnClickLis
     MainNaviActivity mContext;
     LinearLayout mllSettings;
     LinearLayout mllShipping;
-//    LinearLayout mllRecepit;
-//    LinearLayout mllExport;
-//    LinearLayout mllCount;
 
     @Nullable
     @Override
@@ -47,14 +44,8 @@ public class MainMenuFragment extends KeyDownFragment implements View.OnClickLis
 
     private void initView() {
         mllSettings = (LinearLayout) getView().findViewById(R.id.llSettings);
-//        mllRecepit = (LinearLayout) getView().findViewById(R.id.llReceipt);
-//        mllExport = (LinearLayout) getView().findViewById(R.id.llExport);
-//        mllCount = (LinearLayout) getView().findViewById(R.id.llCount);
         mllShipping =  (LinearLayout) getView().findViewById(R.id.llShipping);
         mllSettings.setOnClickListener(this);
-//        mllRecepit.setOnClickListener(this);
-//        mllExport.setOnClickListener(this);
-//        mllCount.setOnClickListener(this);
         mllShipping.setOnClickListener(this);
     }
 
@@ -64,18 +55,6 @@ public class MainMenuFragment extends KeyDownFragment implements View.OnClickLis
             case R.id.llSettings:
                 EventBus.getDefault().post(new Event.ToFragmentEvent(R.id.item_setting, getString(R.string.Setting)));
                 break;
-//            case R.id.llReceipt:
-//                EventBus.getDefault().post(new Event.ToFragmentEvent(R.id.item_Receipt, getString(R.string.Receipt)));
-//                break;
-//            case R.id.llExport:
-//                EventBus.getDefault().post(new Event.ToFragmentEvent(R.id.item_Export, getString(R.string.Export)));
-//                break;
-//            case R.id.llCount:
-//                EventBus.getDefault().post(new Event.ToFragmentEvent(R.id.item_StockCheck, getString(R.string.Count)));
-//                break;
-//            case R.id.llStockSearch:
-//                EventBus.getDefault().post(new Event.ToFragmentEvent(R.id.item_StockSearch, getString(R.string.stockSearch)));
-//                break;
             case R.id.llShipping:
                 EventBus.getDefault().post(new Event.ToFragmentEvent(R.id.item_Shipping, getString(R.string.Shipping)));
                 break;

@@ -193,8 +193,9 @@
 
     <!--SpinnerQuery-->
     <string name="codeSpinner">SELECT * FROM SF_CODE WHERE CODECLASSID = \'%1$s\' and LANGUAGETYPE = \'%2$s\'</string>
-    <string name="WarehouseSpinner">SELECT * FROM SF_WAREHOUSE \n ORDER BY WAREHOUSEID</string>
+    <string name="WarehouseSpinner">SELECT WAREHOUSEID ,WAREHOUSENAME FROM SF_WAREHOUSE \n ORDER BY WAREHOUSEID</string>
     <string name="AreaSpinner">SELECT AREAID,AREANAME FROM SF_AREA \n ORDER BY AREAID</string>
+    <string name="LocationSpinner">SELECT LOCATIONID,LOCATIONNAME FROM SF_LOCATION \n ORDER BY LOCATIONID</string>
     <string name="ConsumabledefIDSpinner">SELECT distinct CONSUMABLEDEFID FROM SF_CONSUMABLEDEFINITION ORDER BY CONSUMABLEDEFID</string>
 
     <!--StockCheck-->
@@ -209,35 +210,43 @@
                                             WHERE 1=1 AND CHECKMONTH = \'%1$s\' AND WAREHOUSEID = \'%2$s\'
     </string>
 
-    <string name="GetStockLotCheckDetailQuery">SELECT SLC.WAREHOUSEID, SLC.CONSUMABLELOTID, SLC.UNIT    \n
-                                                    , SLC.QTY, SLC.CHECKQTY, SLC.CONSUMABLEDEFNAME       \n
-                                                    ,SLC.TAGID,SLC.TAGQTY,SLC.CONSUMABLEDEFID,SLC.CONSUMABLEDEFVERSION,SLC.CHECKMONTH     \n
-                                               FROM SF_STOCKLOTCHECKDETAIL SLC \n
-                                            WHERE 1=1 AND SLC.CHECKMONTH = \'%1$s\' AND SLC.WAREHOUSEID = \'%2$s\' \n
-                                            ORDER BY SLC.CONSUMABLELOTID
+    <string name="GetStockLotCheckDetailQuery">SELECT SL.*,U.USERNAME FROM SF_STOCKLOTCHECKDETAIL SL
+                                              LEFT JOIN SF_USER U ON U.USERID = SL.USERID  \n
+                                            WHERE 1=1 AND SL.CONSUMABLEDEFID = \'%1$s\' AND SL.CONSUMABLEDEFVERSION = \'%2$s\' \n
+                                            ORDER BY SL.CONSUMABLELOTID
+    </string>
+
+    <string name="GetStockCheckDetailQTYQuery">SELECT SUM(CHECKQTY)  AS SUM \n
+                                               FROM SF_STOCKLOTCHECKDETAIL  \n
+                                            WHERE 1=1 AND CONSUMABLEDEFID = \'%1$s\' AND CONSUMABLEDEFVERSION = \'%2$s\' \n
+    </string>
+
+    <string name="GetConsumeInboundQTYQuery">SELECT SUM(INQTY)  AS SUM \n
+                                               FROM SF_CONSUMELOTINBOUND  \n
+                                            WHERE 1=1 AND CONSUMABLEDEFID = \'%1$s\' AND CONSUMABLEDEFVERSION = \'%2$s\' \n
     </string>
 
     <!--Inbound-->
-    <string name="GetInboundOrderQuery">SELECT * FROM SF_INBOUNDORDER \n WHERE 1=1 \n AND SCHEDULEDATE  &gt; \'%1$s\' AND SCHEDULEDATE &lt;  \'%2$s\' \n</string>
-    <string name="gioConditionConsumabledefId">AND WAREHOUSEID = \'%1$s\' \n</string>
+    <string name="GetInboundOrderQuery">SELECT * FROM SF_INBOUNDORDER \n
+                                                 WHERE 1=1 \n
+                                                 AND SCHEDULEDATE  &gt; \'%1$s\'               \n
+                                                 AND SCHEDULEDATE &lt;  \'%2$s\'              \n
+                                              </string>
+    <string name="gioConditionWAREHOUSEID">AND WAREHOUSEID = \'%1$s\' \n</string>
     <string name="gioConditionState">AND INBOUNDSTATE = \'%1$s\' \n</string>
     <string name="gioOrderBy">ORDER BY INBOUNDNO,WAREHOUSEID,INBOUNDSTATE</string>
 
-    <string name="GetConsumeLotInboundQuery">SELECT CLI.PLANQTY,CLI.INQTY,CLI.UNIT,              \n
-                                              CLI.CONSUMABLELOTID,CLI.CONSUMABLEDEFID            \n
-                                              ,CLI.ORDERNO,CLI.ORDERTYPE,CLI.LINENO, CLI.INBOUNDNO              \n
-                                              ,CLI.CONSUMABLEDEFVERSION,CLI.WAREHOUSEID,CLI.TAGID,CLI.TAGQTY           \n
-                                            FROM SF_CONSUMELOTINBOUND CLI \n
-                                            WHERE 1=1 AND INBOUNDNO = \'%1$s\'
-                                            ORDER BY CLI.CONSUMABLEDEFID
+    <string name="GetConsumeLotInboundQuery">SELECT *   \n
+                                            FROM SF_CONSUMELOTINBOUND  \n
+                                            WHERE 1=1 AND CONSUMABLEDEFID = \'%1$s\'             \n
+                                            AND CONSUMABLEDEFVERSION = \'%2$s\'             \n
+                                            ORDER BY CONSUMABLELOTID             \n
     </string>
 
-    <string name="GetConsumeInboundQuery">SELECT CI.PLANQTY,CI.INQTY,CI.UNIT,CI.CONSUMABLEDEFID \n
-                                                 ,CI.ORDERNO,CI.ORDERTYPE,CI.LINENO,CI.INBOUNDNO   \n
-                                                 ,CI.CONSUMABLEDEFVERSION,CI.WAREHOUSEID
-                                            FROM SF_CONSUMEINBOUND CI                             \n
+    <string name="GetConsumeInboundQuery">SELECT *                                           \n
+                                            FROM SF_CONSUMEINBOUND                              \n
                                             WHERE 1=1 AND INBOUNDNO = \'%1$s\'                    \n
-                                            ORDER BY CI.CONSUMABLEDEFID
+                                            ORDER BY CONSUMABLEDEFID
     </string>
     <string name="GetUploadInboundOrderQuery">SELECT * FROM SF_INBOUNDORDER                       \n
                                               WHERE 1=1  AND ISPDASAVE = \'Y\'
@@ -314,9 +323,9 @@
 
     <!--ConsumeRequest-->
     <string name="GetConsumeRequestQuery">SELECT * FROM SF_CONSUMEREQUEST \n WHERE 1=1 \n AND REQUESTDATE  &gt; \'%1$s\' AND REQUESTDATE &lt;  \'%2$s\' \n</string>
-    <string name="gcrConditionAreaId">AND AREAID = \'%1$s\' \n</string>
+    <string name="gcrConditionLocationId">AND LOCATIONID = \'%1$s\' \n</string>
     <string name="gcrConditionState">AND OUTBOUNDSTATE = \'%1$s\' \n</string>
-    <string name="gcrOrderBy">ORDER BY CONSUMEREQNO,AREAID,OUTBOUNDSTATE</string>
+    <string name="gcrOrderBy">ORDER BY CONSUMEREQNO,LOCATIONID</string>
 
     <string name="GetConsumeLotOutboundQuery">SELECT CLO.REQUESTQTY,CLO.OUTQTY,CLO.UNIT,CLO.CONSUMABLELOTID,CD.CONSUMABLEDEFNAME \n
                                             FROM SF_CONSUMELOTOUTBOUND CLO \n
@@ -364,6 +373,34 @@
                                          AND T.TAGID = \'%1$s\'                                   \n
     </string>
 
+    <string name="checkStockCheckIsAllUpload"> SELECT COUNT(*)    AS COUNT                            \n
+                                                 FROM SF_STOCKCHECK                              \n
+                                           WHERE 1=1                                               \n
+                                           AND ISPDASAVE = \'Y\'                               \n
+    </string>
+
+    <string name="checkInboundIsAllUpload"> SELECT COUNT(*)    AS COUNT                            \n
+                                                 FROM SF_INBOUNDORDER                              \n
+                                           WHERE 1=1                                               \n
+                                           AND ISPDASAVE = \'Y\'                               \n
+    </string>
+
+    <string name="checkIsInStockLotCheck"> SELECT COUNT(*)    AS COUNT                            \n
+                                                 FROM SF_STOCKLOTCHECKDETAIL                              \n
+                                           WHERE 1=1                                               \n
+                                           AND CONSUMABLEDEFID = \'%1$s\'  AND CONSUMABLEDEFVERSION =  \'%2$s\' \n
+    </string>
+    <string name="checkisInconsumeLotInbound"> SELECT COUNT(*)    AS COUNT                            \n
+                                                 FROM SF_CONSUMELOTINBOUND                              \n
+                                           WHERE 1=1                                               \n
+                                           AND CONSUMABLEDEFID = \'%1$s\'  AND CONSUMABLEDEFVERSION =  \'%2$s\' \n
+    </string>
+
+    <string name="CheckUser"> SELECT USERNAME,PASSWORD,SEED                           \n
+                                                 FROM SF_USER                              \n
+                                           WHERE 1=1                                               \n
+                                           AND USERID = \'%1$s\'                         \n
+    </string>
 
     <string name="ChangeLanguage">ChangeLanguage</string>
     <string name="ZH_CN">Chinese</string>
@@ -417,5 +454,27 @@
     <string name="ORDERNO">ORDERNO</string>
     <string name="ORDERTYPE">ORDERTYPE</string>
     <string name="LINENO">LINENO</string>
+    <string name="CONSUMEREQNO">CONSUMEREQNO</string>
+    <string name="CONSUMABLECOUNT">CONSUMABLECOUNT</string>
+    <string name="USERNAME">USERNAME</string>
+    <string name="LOCATIONNAME">LOCATIONNAME</string>
+    <string name="REQUESTUSERNAME">REQUESTUSERNAME</string>
+    <string name="FROMWAREHOUSENAME">FROMWAREHOUSENAME</string>
+    <string name="TOWAREHOUSENAME">TOWAREHOUSENAME</string>
+    <string name="REQUESTDATE">REQUESTDATE</string>
+    <string name="FINISHPLANDATE">FINISHPLANDATE</string>
+    <string name="isNormalConsume"/>
+    <string name="StockLotCheckSum">StockLotCheckSum</string>
+    <string name="stockchecklistSumQty">listSumQty</string>
+    <string name="StockLotCheckedSum">StockLotCheckedSum</string>
+    <string name="noStockChectLotQTY">noStockChectLotQTY</string>
+    <string name="confirmQty">confirmQty</string>
+    <string name="CheckUserName">CheckUserName</string>
+    <string name="ConsumeLotInboundSum">ConsumeLotInboundSum</string>
+    <string name="CLIlistSumQty">已经入库标签数</string>
+    <string name="noCLIQTY">未入库标签数</string>
+    <string name="ORDERCOMPANY">订货公司号码</string>
+    <string name="DiversionQTY">入库数量</string>
+    <string name="DiversionUnit">入库单位</string>
 
 </resources>

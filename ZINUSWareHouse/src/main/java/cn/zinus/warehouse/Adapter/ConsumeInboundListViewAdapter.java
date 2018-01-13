@@ -33,6 +33,8 @@ public class ConsumeInboundListViewAdapter extends BaseAdapter {
         public TextView tvORDERNO;
         public TextView tvORDERTYPE;
         public TextView tvLINENO;
+        public TextView tvDiversionUnit;
+        public TextView tvDiversionQTY;
     }
 
     public ConsumeInboundListViewAdapter(Context context, List<ConsumeInboundData> listMap) {
@@ -69,6 +71,8 @@ public class ConsumeInboundListViewAdapter extends BaseAdapter {
             listItemView.tvORDERNO = (TextView) convertView.findViewById(R.id.tv_ORDERNO);
             listItemView.tvORDERTYPE = (TextView) convertView.findViewById(R.id.tv_ORDERTYPE);
             listItemView.tvLINENO = (TextView) convertView.findViewById(R.id.tv_LINENO);
+            listItemView.tvDiversionUnit = (TextView) convertView.findViewById(R.id.tv_DiversionUnit);
+            listItemView.tvDiversionQTY = (TextView) convertView.findViewById(R.id.tv_DiversionQTY);
             convertView.setTag(listItemView);
         } else {
             listItemView = (ListItemView) convertView.getTag();
@@ -82,6 +86,8 @@ public class ConsumeInboundListViewAdapter extends BaseAdapter {
         listItemView.tvORDERNO .setText(data.getORDERNO());
         listItemView.tvORDERTYPE.setText(data.getORDERTYPE());
         listItemView.tvLINENO .setText(data.getLINENO());
+        listItemView.tvDiversionUnit .setText(data.getDIVERSIONUNIT());
+        listItemView.tvDiversionQTY .setText(data.getDIVERSIONQTY());
         return convertView;
     }
 }

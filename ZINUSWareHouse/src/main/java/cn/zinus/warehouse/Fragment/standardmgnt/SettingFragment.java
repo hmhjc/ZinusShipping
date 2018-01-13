@@ -3,10 +3,8 @@ package cn.zinus.warehouse.Fragment.standardmgnt;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.media.AudioManager;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -27,7 +24,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import cn.zinus.warehouse.Activity.LoginActivity;
 import cn.zinus.warehouse.Activity.MainNaviActivity;
 import cn.zinus.warehouse.Config.AppConfig;
 import cn.zinus.warehouse.Fragment.Event;
@@ -56,23 +52,23 @@ public class SettingFragment extends KeyDownFragment implements View.OnClickList
     private TextView mVolume_System;
     private int maxVolume_System, currentVolume_System;
     //Change IP
-    private TextView mTvIP;
-    private Button mBtnChangeIP;
+//    private TextView mTvIP;
+//    private Button mBtnChangeIP;
     //Antenna
     private int arrPow; //输出功率
     private Spinner spPower;
     private Button mbtnSetPower;
     private Button mbtnGetPower;
     //Exit
-    private Button mbtnExitAccount;
+    //private Button mbtnExitAccount;
     //测试按钮
-    private Button mbtnTestQuery;
-    private Button mbtntestrule;
-    private Button mbtntestProcedure;
-    private Button mbtnChangeLanguage;
-    private Handler handler = null;
+//    private Button mbtnTestQuery;
+//    private Button mbtntestrule;
+//    private Button mbtntestProcedure;
+//    private Button mbtnChangeLanguage;
+//    private Handler handler = null;
     //语言选择
-    private int yourChoice;
+   // private int yourChoice;
     //sqlite
     MyDateBaseHelper mHelper;
     //endregion
@@ -207,31 +203,31 @@ public class SettingFragment extends KeyDownFragment implements View.OnClickList
             case R.id.btnGetPower:
                 getPower();
                 break;
-            case R.id.btnChangeIP:
-                changeIP(mTvIP.getText().toString());
-                break;
-            case R.id.btnExit:
-                Intent intent = new Intent(mContext, LoginActivity.class);
-                mContext.startActivity(intent);
-                mContext.freeBarcode();
-                mContext.freeUHF();
-                mContext.finish();
-                break;
-            case R.id.btnChangeLanguage:
-                //changeLanguage();
-                final Intent intent1 = mContext.getPackageManager().getLaunchIntentForPackage(mContext.getPackageName());
-                intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent1);
-                break;
-            case R.id.btntestquery:
-                //requestQuery();
-                break;
-            case R.id.btntestrule:
-               // requestRule();
-                break;
-            case R.id.btntestprocedure:
-                //updateSqlite();
-                break;
+//            case R.id.btnChangeIP:
+//                changeIP(mTvIP.getText().toString());
+//                break;
+//            case R.id.btnExit:
+//                Intent intent = new Intent(mContext, LoginActivity.class);
+//                mContext.startActivity(intent);
+//                mContext.freeBarcode();
+//                mContext.freeUHF();
+//                mContext.finish();
+//                break;
+//            case R.id.btnChangeLanguage:
+//                //changeLanguage();
+//                final Intent intent1 = mContext.getPackageManager().getLaunchIntentForPackage(mContext.getPackageName());
+//                intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                startActivity(intent1);
+//                break;
+//            case R.id.btntestquery:
+//                //requestQuery();
+//                break;
+//            case R.id.btntestrule:
+//               // requestRule();
+//                break;
+//            case R.id.btntestprocedure:
+//                //updateSqlite();
+//                break;
         }
     }
 
@@ -289,31 +285,31 @@ public class SettingFragment extends KeyDownFragment implements View.OnClickList
         spPower = (Spinner) getView().findViewById(R.id.spPower);
         mbtnSetPower = (Button) getView().findViewById(R.id.btnSetPower);
         mbtnGetPower = (Button) getView().findViewById(R.id.btnGetPower);
-        mBtnChangeIP = (Button) getView().findViewById(R.id.btnChangeIP);
-        mbtnExitAccount = (Button) getView().findViewById(R.id.btnExit);
-        mbtnTestQuery = (Button) getView().findViewById(R.id.btntestquery);
-        mbtntestrule = (Button) getView().findViewById(R.id.btntestrule);
-        mbtntestProcedure = (Button) getView().findViewById(R.id.btntestprocedure);
-        mbtnChangeLanguage = (Button) getView().findViewById(R.id.btnChangeLanguage);
+//        mBtnChangeIP = (Button) getView().findViewById(R.id.btnChangeIP);
+//        mbtnExitAccount = (Button) getView().findViewById(R.id.btnExit);
+//        mbtnTestQuery = (Button) getView().findViewById(R.id.btntestquery);
+//        mbtntestrule = (Button) getView().findViewById(R.id.btntestrule);
+//        mbtntestProcedure = (Button) getView().findViewById(R.id.btntestprocedure);
+//        mbtnChangeLanguage = (Button) getView().findViewById(R.id.btnChangeLanguage);
     }
 
     private void initListener() {
         mbtnSetPower.setOnClickListener(this);
         mbtnGetPower.setOnClickListener(this);
-        mBtnChangeIP.setOnClickListener(this);
-        mbtnExitAccount.setOnClickListener(this);
-        mbtnTestQuery.setOnClickListener(this);
-        mbtntestrule.setOnClickListener(this);
-        mbtntestProcedure.setOnClickListener(this);
-        mbtnChangeLanguage.setOnClickListener(this);
+//        mBtnChangeIP.setOnClickListener(this);
+//        mbtnExitAccount.setOnClickListener(this);
+//        mbtnTestQuery.setOnClickListener(this);
+//        mbtntestrule.setOnClickListener(this);
+//        mbtntestProcedure.setOnClickListener(this);
+//        mbtnChangeLanguage.setOnClickListener(this);
     }
 
     private void initSharedPreferences() {
-        mTvIP = (TextView) getView().findViewById(R.id.tvIp);
+      //  mTvIP = (TextView) getView().findViewById(R.id.tvIp);
         String IP = AppConfig.getInstance().getString(Constant.URL, null);
         IP = IP.substring(7, 22);
         String[] aa = IP.split(":");
-        mTvIP.setText(aa[0]);
+       // mTvIP.setText(aa[0]);
     }
     //endregion
 
@@ -341,66 +337,6 @@ public class SettingFragment extends KeyDownFragment implements View.OnClickList
             showToast(mContext, "设置失败", 0);
         }
     }
-
-    private void changeIP(String content) {
-        final EditText editText = new EditText(mContext);
-        editText.setText(content);
-        editText.setSelection(content.length());
-        AlertDialog.Builder inputDialog =
-                new AlertDialog.Builder(mContext);
-        inputDialog.setTitle("请输入IP").setView(editText);
-        inputDialog.setPositiveButton(getString(R.string.confirm),
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        mTvIP.setText(editText.getText().toString());
-                        AppConfig.getInstance().putString(Constant.URL, "http://" + editText.getText().toString() + getString(R.string.WEBURLend));
-                    }
-                }).show();
-    }
-
-    private void changeLanguage() {
-        final String[] items = {getString(R.string.ZH_CN), getString(R.string.EN_US), getString(R.string.KO_KR)};
-        yourChoice = 0;
-        AlertDialog.Builder singleChoiceDialog =
-                new AlertDialog.Builder(mContext);
-        singleChoiceDialog.setTitle(getString(R.string.ChooseLanguage));
-        singleChoiceDialog.setSingleChoiceItems(items, 0,
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        yourChoice = which;
-                    }
-                });
-        singleChoiceDialog.setPositiveButton(getString(R.string.confirm),
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        switch (yourChoice) {
-                            case 0:
-                                if (!AppConfig.getInstance().getLanuageType().equals(Constant.ZH_CN)) {
-                                    AppConfig.getInstance().setLanuageType(Constant.ZH_CN);
-                                    EventBus.getDefault().post(new Event.ChangeLanguageEvent());
-                                }
-                                break;
-                            case 1:
-                                if (!AppConfig.getInstance().getLanuageType().equals(Constant.EN_US)) {
-                                    AppConfig.getInstance().setLanuageType(Constant.EN_US);
-                                    EventBus.getDefault().post(new Event.ChangeLanguageEvent());
-                                }
-                                break;
-                            case 2:
-                                if (!AppConfig.getInstance().getLanuageType().equals(Constant.KO_KR)) {
-                                    AppConfig.getInstance().setLanuageType(Constant.KO_KR);
-                                    EventBus.getDefault().post(new Event.ChangeLanguageEvent());
-                                }
-                                break;
-                        }
-                    }
-                });
-        singleChoiceDialog.show();
-    }
-
 
     //endregion
 

@@ -1,47 +1,52 @@
 package cn.zinus.warehouse.Fragment.materialstockin;
 
-        import android.annotation.SuppressLint;
-        import android.content.ContentValues;
-        import android.content.Context;
-        import android.database.Cursor;
-        import android.database.sqlite.SQLiteDatabase;
-        import android.graphics.drawable.ColorDrawable;
-        import android.os.Bundle;
-        import android.os.Handler;
-        import android.os.Message;
-        import android.support.annotation.Nullable;
-        import android.util.Log;
-        import android.view.Gravity;
-        import android.view.LayoutInflater;
-        import android.view.MenuItem;
-        import android.view.MotionEvent;
-        import android.view.View;
-        import android.view.ViewGroup;
-        import android.view.WindowManager;
-        import android.view.inputmethod.InputMethodManager;
-        import android.widget.AdapterView;
-        import android.widget.Button;
-        import android.widget.EditText;
-        import android.widget.ListView;
-        import android.widget.PopupWindow;
-        import android.widget.TextView;
+import android.annotation.SuppressLint;
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.support.annotation.Nullable;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.PopupWindow;
+import android.widget.TextView;
 
-        import java.util.ArrayList;
-        import java.util.Timer;
-        import java.util.TimerTask;
+import org.greenrobot.eventbus.EventBus;
 
-        import cn.zinus.warehouse.Activity.MainNaviActivity;
-        import cn.zinus.warehouse.Adapter.ConsumeInboundListViewAdapter;
-        import cn.zinus.warehouse.Fragment.KeyDownFragment;
-        import cn.zinus.warehouse.JaveBean.ConsumeInboundData;
-        import cn.zinus.warehouse.JaveBean.TagInfoData;
-        import cn.zinus.warehouse.R;
-        import cn.zinus.warehouse.util.Constant;
-        import cn.zinus.warehouse.util.DBManger;
-        import cn.zinus.warehouse.util.MyDateBaseHelper;
-        import cn.zinus.warehouse.util.Utils;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
-        import static cn.zinus.warehouse.util.Constant.UPDATEUI;
+import cn.zinus.warehouse.Activity.MainNaviActivity;
+import cn.zinus.warehouse.Adapter.ConsumeInboundListViewAdapter;
+import cn.zinus.warehouse.Fragment.Event;
+import cn.zinus.warehouse.Fragment.KeyDownFragment;
+import cn.zinus.warehouse.JaveBean.ConsumeInboundData;
+import cn.zinus.warehouse.JaveBean.ConsumeLotInboundData;
+import cn.zinus.warehouse.R;
+import cn.zinus.warehouse.util.Constant;
+import cn.zinus.warehouse.util.DBManger;
+import cn.zinus.warehouse.util.MyDateBaseHelper;
+
+import static cn.zinus.warehouse.util.Constant.UPDATEUI;
+import static cn.zinus.warehouse.util.DBManger.getCursorData;
+import static cn.zinus.warehouse.util.Utils.showToast;
 
 /**
  * Created by Spring on 2017/2/18.
@@ -103,7 +108,13 @@ public class ConsumeInboundFragment extends KeyDownFragment {
             public void handleMessage(Message msg) {
                 switch (msg.what) {
                     case UPDATEUI:
-                        mlvComsumeInbound.setSelection((Integer) msg.obj);
+                        int position = (Integer) msg.obj;
+                        if (position == -1) {
+                            mlvComsumeInbound.setSelection(0);
+                        } else {
+                            mlvComsumeInbound.setSelection(position);
+                            UpdateSF_CONSUMEINBOUND(mcomsumeInboundDataList.get(position));
+                        }
                         break;
                 }
             }
@@ -143,7 +154,7 @@ public class ConsumeInboundFragment extends KeyDownFragment {
                 actionSearch();
                 break;
             case R.id.action_save:
-                actionSave();
+                //actionSave();
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -174,10 +185,41 @@ public class ConsumeInboundFragment extends KeyDownFragment {
         mlvComsumeInbound.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-                fixQty(view, position);
-                return false;
+                if (!isInconsumeLotInbound(mcomsumeInboundDataList.get(position).getCONSUMABLEDEFID()
+                        , mcomsumeInboundDataList.get(position).getCONSUMABLEDEFVERSION())) {
+                    fixQty(view, position);
+                }
+                return true;
             }
         });
+        mlvComsumeInbound.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                if (isInconsumeLotInbound(mcomsumeInboundDataList.get(position).getCONSUMABLEDEFID()
+                        , mcomsumeInboundDataList.get(position).getCONSUMABLEDEFVERSION())) {
+                    EventBus.getDefault().post(new Event.ConsumeLotInboundByConsumeDefIDEvent(mcomsumeInboundDataList.get(position)));
+                } else {
+                    showToast(mContext, mContext.getString(R.string.isNormalConsume), 0);
+                }
+            }
+        });
+    }
+
+    private boolean isInconsumeLotInbound(String CONSUMABLEDEFID, String CONSUMABLEDEFVERSION) {
+        //返回true说明是lot管理的资材，false说明不是lot管理的资材，需要长按修改数字
+        boolean returnflag = false;
+        String selectDataListsql = String.format(mContext.getString(R.string.checkisInconsumeLotInbound), CONSUMABLEDEFID, CONSUMABLEDEFVERSION);
+        Log.e("isInconsumeLotInbound", selectDataListsql);
+        Cursor cursorDatalist = DBManger.selectDatBySql(db, selectDataListsql, null);
+        if (cursorDatalist != null) {
+            if (cursorDatalist.getCount() != 0) {
+                while (cursorDatalist.moveToNext()) {
+                    if (!getCursorData(cursorDatalist, Constant.COUNT).equals("0"))
+                        returnflag = true;
+                }
+            }
+        }
+        return returnflag;
     }
 
     //endregion
@@ -194,12 +236,19 @@ public class ConsumeInboundFragment extends KeyDownFragment {
             @Override
             public void onClick(View v) {
                 tempdata.setINQTY(etFixQty.getText().toString());
+                tempdata.setDIVERSIONQTY(etFixQty.getText().toString());
                 if (Float.parseFloat(tempdata.getINQTY()) > Float.parseFloat(tempdata.getPLANQTY())) {
                     tempdata.setBackgroundColor(R.color.qtymore);
                 } else if (Float.parseFloat(tempdata.getINQTY()) == Float.parseFloat(tempdata.getPLANQTY())) {
                     tempdata.setBackgroundColor(R.color.qtymatch);
                 } else {
                     tempdata.setBackgroundColor(R.color.qtyless);
+                }
+                if(!tempdata.getRATE().equals("1")){
+                    float DIVERSIONQTY = Float.parseFloat(tempdata.getINQTY())*Float.parseFloat(tempdata.getRATE());
+                    DecimalFormat decimalFormat=new DecimalFormat(".00");
+                    String diversionqty=decimalFormat.format(DIVERSIONQTY);
+                    tempdata.setDIVERSIONQTY(diversionqty);
                 }
                 mcomsumeInboundDataList.set(position, tempdata);
                 mConsumeInboundListViewAdapter.notifyDataSetChanged();
@@ -234,6 +283,31 @@ public class ConsumeInboundFragment extends KeyDownFragment {
     }
     //endregion
 
+    public void updaCheckQtyByLot(ConsumeLotInboundData consumeLotInboundData, String sumqty) {
+        for (int i = 0; i < mcomsumeInboundDataList.size(); i++) {
+            ConsumeInboundData data = mcomsumeInboundDataList.get(i);
+            if (data.getCONSUMABLEDEFID().equals(consumeLotInboundData.getCONSUMABLEDEFID()) &&
+                    data.getCONSUMABLEDEFVERSION().equals(consumeLotInboundData.getCONSUMABLEDEFVERSION())) {
+                //找到对应的consumeInbound的数据，修改ui
+                data.setINQTY(sumqty);
+                data.setDIVERSIONQTY(sumqty);
+                if(!data.getRATE().equals("1")){
+                    float DIVERSIONQTY = Float.parseFloat(data.getINQTY())*Float.parseFloat(data.getRATE());
+                    DecimalFormat decimalFormat=new DecimalFormat(".00");
+                    String diversionqty=decimalFormat.format(DIVERSIONQTY);
+                    data.setDIVERSIONQTY(diversionqty);
+                }
+                mcomsumeInboundDataList.set(i, data);
+                mConsumeInboundListViewAdapter.notifyDataSetChanged();
+                Message message = new Message();
+                message.what = UPDATEUI;
+                message.obj = i;
+                handler.sendMessage(message);
+                break;
+            }
+        }
+    }
+
     //region getConsumeInboundByInboundOrder
     public void getConsumeInboundByInboundOrder(String inboundNo) {
         SQLiteDatabase db = mHelper.getWritableDatabase();
@@ -244,21 +318,22 @@ public class ConsumeInboundFragment extends KeyDownFragment {
         if (cursorDatalist.getCount() != 0) {
             while (cursorDatalist.moveToNext()) {
                 ConsumeInboundData consumeInboundData = new ConsumeInboundData();
-                consumeInboundData.setCONSUMABLEDEFID(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.CONSUMABLEDEFID)).trim());
-                consumeInboundData.setUNIT(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.UNIT)));
-                consumeInboundData.setORDERNO(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.ORDERNO)));
-                consumeInboundData.setORDERTYPE(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.ORDERTYPE)));
-                consumeInboundData.setLINENO(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.LINENO)));
-                consumeInboundData.setWAREHOUSEID(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.WAREHOUSEID)));
-                consumeInboundData.setCONSUMABLEDEFNAME(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.CONSUMABLEDEFID)));
-                consumeInboundData.setCONSUMABLEDEFVERSION(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.CONSUMABLEDEFVERSION)));
-                if (cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.INQTY)).equals("null")||
-                        cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.INQTY)).equals("")) {
-                    consumeInboundData.setINQTY("0");
-                } else {
-                    consumeInboundData.setINQTY(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.INQTY)));
-                }
-                consumeInboundData.setPLANQTY(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.PLANQTY)));
+                consumeInboundData.setCONSUMABLEDEFID(getCursorData(cursorDatalist, Constant.CONSUMABLEDEFID).trim());
+                consumeInboundData.setINBOUNDNO(getCursorData(cursorDatalist, Constant.INBOUNDNO).trim());
+                consumeInboundData.setCONSUMABLEDEFID(getCursorData(cursorDatalist, Constant.CONSUMABLEDEFID).trim());
+                consumeInboundData.setCONSUMABLEDEFNAME(getCursorData(cursorDatalist, Constant.CONSUMABLEDEFNAME).trim());
+                consumeInboundData.setCONSUMABLEDEFVERSION(getCursorData(cursorDatalist, Constant.CONSUMABLEDEFVERSION).trim());
+                consumeInboundData.setWAREHOUSEID(getCursorData(cursorDatalist, Constant.WAREHOUSEID).trim());
+                consumeInboundData.setORDERNO(getCursorData(cursorDatalist, Constant.ORDERNO).trim());
+                consumeInboundData.setORDERTYPE(getCursorData(cursorDatalist, Constant.ORDERTYPE).trim());
+                consumeInboundData.setLINENO(getCursorData(cursorDatalist, Constant.LINENO).trim());
+                consumeInboundData.setORDERCOMPANY(getCursorData(cursorDatalist, Constant.ORDERCOMPANY).trim());
+                consumeInboundData.setUNIT(getCursorData(cursorDatalist, Constant.UNIT).trim());
+                consumeInboundData.setPLANQTY(getCursorData(cursorDatalist, Constant.PLANQTY).trim());
+                consumeInboundData.setDIVERSIONUNIT(getCursorData(cursorDatalist, Constant.DIVERSIONUNIT).trim());
+                consumeInboundData.setRATE(getCursorData(cursorDatalist, Constant.RATE).trim());
+                consumeInboundData.setINQTY(getCursorData(cursorDatalist, Constant.INQTY).trim());
+                consumeInboundData.setDIVERSIONQTY(getCursorData(cursorDatalist, Constant.DIVERSIONQTY).trim());
                 if (Float.parseFloat(consumeInboundData.getINQTY()) > Float.parseFloat(consumeInboundData.getPLANQTY())) {
                     consumeInboundData.setBackgroundColor(R.color.qtymore);
                 } else if (Float.parseFloat(consumeInboundData.getINQTY()) == Float.parseFloat(consumeInboundData.getPLANQTY())) {
@@ -273,48 +348,16 @@ public class ConsumeInboundFragment extends KeyDownFragment {
         tvInboundOrderNo.setText(inboundNo);
         InboundOrderNo = inboundNo;
         mConsumeInboundListViewAdapter.notifyDataSetChanged();
-    }
-    //endregion
-
-    //region checkIsExist
-    private int checkIsExist(String tagid) {
-        int returnint = -1;
-        for (int i = 0; i < IDlist.size(); i++)
-            if (IDlist.get(i).equals(tagid)) {
-                returnint = i;
-            }
-        return returnint;
+        Message message = new Message();
+        message.what = UPDATEUI;
+        message.obj = -1;
+        handler.sendMessage(message);
     }
     //endregion
 
     //region actionSearch
     protected void actionSearch() {
 
-    }
-    //endregion
-
-    //region actionSave
-    private void  actionSave(){
-        Log.e("保存","保存ConsumeInbound");
-        try {
-            for (int i = 0; i < mcomsumeInboundDataList.size(); i++) {
-                ConsumeInboundData data = mcomsumeInboundDataList.get(i);
-                ContentValues values = new ContentValues();
-                values.put(Constant.INQTY, data.getINQTY());
-                db.update(Constant.SF_CONSUMEINBOUND, values, "INBOUNDNO = ? AND " +
-                                "CONSUMABLEDEFID =? AND CONSUMABLEDEFVERSION = ? AND WAREHOUSEID = ?" +
-                                "AND ORDERNO = ? AND ORDERTYPE = ? AND LINENO = ?",
-                        new String[]{InboundOrderNo,data.getCONSUMABLEDEFID(), data.getCONSUMABLEDEFVERSION(),
-                                data.getWAREHOUSEID(),data.getORDERNO(),data.getORDERTYPE(),
-                                data.getLINENO()});
-            }
-            ContentValues values = new ContentValues();
-            values.put(Constant.ISPDASAVE, "Y");
-            db.update(Constant.SF_INBOUNDORDER, values, "INBOUNDNO =?", new String[]{InboundOrderNo});
-            Utils.showToast(mContext,"保存成功",0);
-        }catch (Exception e){
-            Utils.showToast(mContext,e.getMessage(),0);
-        }
     }
     //endregion
 
@@ -326,11 +369,25 @@ public class ConsumeInboundFragment extends KeyDownFragment {
         tvtagqty.setText("0");
         tvInboundOrderNo.setText("");
         InboundOrderNo = "";
-        TagInfoData data = new TagInfoData();
-        data.setEnableFlag(true);
-        data.setClearFlag(true);
     }
     //endregion
+
+    private void UpdateSF_CONSUMEINBOUND(ConsumeInboundData data) {
+        //更新consumeinbound的数字
+        ContentValues values = new ContentValues();
+        values.put(Constant.INQTY, data.getINQTY());
+        values.put(Constant.DIVERSIONQTY, data.getDIVERSIONQTY());
+        db.update(Constant.SF_CONSUMEINBOUND, values, "INBOUNDNO = ? AND " +
+                        "CONSUMABLEDEFID =? AND CONSUMABLEDEFVERSION = ? AND WAREHOUSEID = ?" +
+                        "AND ORDERNO = ? AND ORDERTYPE = ? AND LINENO = ?",
+                new String[]{InboundOrderNo, data.getCONSUMABLEDEFID(), data.getCONSUMABLEDEFVERSION(),
+                        data.getWAREHOUSEID(), data.getORDERNO(), data.getORDERTYPE(),
+                        data.getLINENO()});
+        //更新inboundorder的标志位
+        ContentValues values1 = new ContentValues();
+        values1.put(Constant.ISPDASAVE, "Y");
+        db.update(Constant.SF_INBOUNDORDER, values1, "INBOUNDNO =?", new String[]{InboundOrderNo});
+    }
 
     //endregion
 

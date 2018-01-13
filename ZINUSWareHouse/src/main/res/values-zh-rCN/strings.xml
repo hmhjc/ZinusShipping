@@ -152,7 +152,7 @@
     <string name="CheckMonth">盘点月份</string>
     <string name="CheckQty">确认数量</string>
     <string name="stockSearch">库存查找</string>
-    <string name="ConsumabledefId">材料定义ID</string>
+    <string name="ConsumabledefId">资材ID</string>
     <string name="WarehousType">仓库类型</string>
     <string name="LocationId">位置ID</string>
     <string name="ConsumbleType">材料类型</string>
@@ -176,7 +176,29 @@
     <string name="SealNo">封箱号</string>
     <string name="ConsumableCount">品目数</string>
     <string name="ORDERNO">指示号码</string>
-    <string name="ORDERTYPE">指示类型</string>
+    <string name="ORDERTYPE">订单类型</string>
     <string name="LINENO">产线编号</string>
+    <string name="CONSUMEREQNO">出库邀请代码</string>
+    <string name="CONSUMABLECOUNT">品目数</string>
+    <string name="USERNAME">担当者</string>
+    <string name="LOCATIONNAME">车间</string>
+    <string name="REQUESTUSERNAME">邀请者</string>
+    <string name="FROMWAREHOUSENAME">发料仓</string>
+    <string name="TOWAREHOUSENAME">邀请仓</string>
+    <string name="REQUESTDATE">出库邀请日</string>
+    <string name="FINISHPLANDATE">领料截止日期</string>
+    <string name="isNormalConsume">不是LOT管理的资材，请长按来修改数量</string>
+    <string name="StockLotCheckSum">已经盘点LOT个数</string>
+    <string name="stockchecklistSumQty">已经盘点标签个数</string>
+    <string name="StockLotCheckedSum">盘点标签总个数</string>
+    <string name="noStockChectLotQTY">未盘点标签个数</string>
+    <string name="confirmQty">确认数量</string>
+    <string name="CheckUserName">担当者</string>
+    <string name="ConsumeLotInboundSum">入库标签数量</string>
+    <string name="CLIlistSumQty">已经入库标签数</string>
+    <string name="noCLIQTY">未入库标签数</string>
+    <string name="ORDERCOMPANY">订货公司号码</string>
+    <string name="DiversionQTY">入库数量</string>
+    <string name="DiversionUnit">入库单位</string>
 
 </resources>

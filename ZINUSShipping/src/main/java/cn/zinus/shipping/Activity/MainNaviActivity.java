@@ -174,17 +174,18 @@ public class MainNaviActivity extends BaseActivity
     }
 
     public void initBarCode() {
-        barcodeHelper = new BarCode2DHelper(MainNaviActivity.this);
-        barcodeHelper.iniBarCode2D();
-//        try {
-//            mBarcode2DWithSoft = Barcode2DWithSoft.getInstance();
-//        } catch (Exception ex) {
-//            showToast(MainNaviActivity.this, ex.getMessage(), 0);
-//            return;
-//        }
-//        if (mBarcode2DWithSoft != null) {
-//            new InitBarCodeTask().execute();
-//        }
+//        barcodeHelper = new BarCode2DHelper(MainNaviActivity.this);
+//        barcodeHelper.iniBarCode2D();
+        try {
+            mBarcode2DWithSoft = Barcode2DWithSoft.getInstance();
+        } catch (Exception ex) {
+            showToast(MainNaviActivity.this, ex.getMessage(), 0);
+            return;
+        }
+        if (mBarcode2DWithSoft != null) {
+            new InitBarCodeTask().execute();
+        }
+
     }
 
     public void freeBarcode() {

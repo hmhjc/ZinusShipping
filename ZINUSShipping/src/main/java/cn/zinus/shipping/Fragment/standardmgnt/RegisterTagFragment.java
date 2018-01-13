@@ -156,6 +156,7 @@ public class RegisterTagFragment extends KeyDownFragment implements View.OnClick
                     String EPC1 = hexStringToString(strUII);
                     Log.e("epcepce424pc", EPC1);
                     etread.setText(EPC1);
+
                 }
                 break;
         }

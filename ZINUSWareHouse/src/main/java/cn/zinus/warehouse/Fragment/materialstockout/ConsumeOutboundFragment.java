@@ -1,5 +1,6 @@
 package cn.zinus.warehouse.Fragment.materialstockout;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -56,7 +57,7 @@ public class ConsumeOutboundFragment extends KeyDownFragment {
     private ListView mlvComsumeOutbound;
     private ConsumeOutboundListViewAdapter mConsumeOutboundListViewAdapter;
     private ArrayList<ConsumeOutboundData> mcomsumeOutboundDataList;
-    private ArrayList<String> IDlist;
+     private ArrayList<String> IDlist;
     private TextView tvtagqty;
     private TextView tvConsumeRequestNo;
     private Handler handler = null;
@@ -170,6 +171,7 @@ public class ConsumeOutboundFragment extends KeyDownFragment {
     //endregion
 
     //region fixQty
+    @SuppressLint("WrongConstant")
     private void fixQty(View view, final int position) {
         final ConsumeOutboundData tempdata = mcomsumeOutboundDataList.get(position);
         Button btnConfirm = (Button) mViewFixQty.findViewById(R.id.btnfqty);
@@ -258,7 +260,7 @@ public class ConsumeOutboundFragment extends KeyDownFragment {
 
     //region actionSearch
     protected void actionSearch() {
-        //getConsumeOutboundByConsumeRequest("1111111");
+
     }
     //endregion
 

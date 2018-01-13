@@ -69,7 +69,7 @@ public class StockCheckListViewAdapter extends BaseAdapter {
         }
         StockCheckData data = listMap.get(position);
         listItemView.tvCheckMonth.setText(data.getCHECKMONTH());
-        listItemView.tvWarehouseID.setText(data.getWAREHOUSEID());
+        listItemView.tvWarehouseID.setText(data.getWAREHOUSENAME());
         listItemView.tvStartDate.setText(data.getSTARTDATE());
         listItemView.tvEndDate.setText(data.getENDDATE());
         listItemView.tvCheckState.setText(data.getSTATENAME());

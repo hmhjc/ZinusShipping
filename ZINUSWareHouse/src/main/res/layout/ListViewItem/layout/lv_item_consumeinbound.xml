@@ -36,6 +36,22 @@
         style="@style/listviewverticalsplit"/>
 
     <TextView
+        android:id="@+id/tv_DiversionUnit"
+        style="@style/listviewcontext"
+        android:layout_width="100px"/>
+
+    <View
+        style="@style/listviewverticalsplit"/>
+
+    <TextView
+        android:id="@+id/tv_DiversionQTY"
+        style="@style/listviewcontext"
+        android:layout_width="100px"/>
+
+    <View
+        style="@style/listviewverticalsplit"/>
+
+    <TextView
         android:id="@+id/tv_ORDERNO"
         style="@style/listviewcontext"
         android:layout_width="100px"/>

@@ -25,9 +25,9 @@ import java.util.Calendar;
 
 import cn.zinus.warehouse.Activity.MainNaviActivity;
 import cn.zinus.warehouse.Adapter.StockCheckListViewAdapter;
-import cn.zinus.warehouse.Config.AppConfig;
 import cn.zinus.warehouse.Fragment.Event;
 import cn.zinus.warehouse.Fragment.KeyDownFragment;
+import cn.zinus.warehouse.JaveBean.CodeData;
 import cn.zinus.warehouse.JaveBean.StockCheckData;
 import cn.zinus.warehouse.R;
 import cn.zinus.warehouse.util.Constant;
@@ -47,13 +47,13 @@ public class StockCheckFragment extends KeyDownFragment {
     //上下文
     private MainNaviActivity mContext;
     //StockCheckStateSpinner
-    protected Spinner spStockCheckState;
-    private ArrayAdapter mStockCheckStateAdapter;
-    private ArrayList<String> StockCheckStateList;
+//    protected Spinner spStockCheckState;
+//    private ArrayAdapter mStockCheckStateAdapter;
+//    private ArrayList<String> StockCheckStateList;
     //WarehouseSpinner
     protected Spinner spWarehouse;
     private ArrayAdapter mWarehouseAdapter;
-    private ArrayList<String> WarehouseList;
+    private ArrayList<CodeData> WarehouseList;
     //Data
     protected TextView tvCheckMonth;
     private int year;
@@ -67,6 +67,7 @@ public class StockCheckFragment extends KeyDownFragment {
     protected StockCheckData mSelectStockCheckData = new StockCheckData();
     //数据库
     MyDateBaseHelper mHelper;
+    SQLiteDatabase db;
     //endregion
 
     //region ◆ 생성자(Creator)
@@ -78,6 +79,7 @@ public class StockCheckFragment extends KeyDownFragment {
         mContext = (MainNaviActivity) getActivity();
         setHasOptionsMenu(true);
         mHelper = DBManger.getIntance(mContext);
+        db = mHelper.getWritableDatabase();
     }
     //endregion
 
@@ -126,27 +128,29 @@ public class StockCheckFragment extends KeyDownFragment {
     //region initData
     private void initData() {
         //初始化Spinner数据
-        SQLiteDatabase db = mHelper.getWritableDatabase();
         //region StockCheckStateList
-        StockCheckStateList = new ArrayList<>();
-        StockCheckStateList.add(0, getString(R.string.SpinnerDefault));
-        String selectDataListsql = String.format(getString(R.string.codeSpinner),Constant.CHECKSTATE,AppConfig.getInstance().getLanuageType());
-        Cursor cursorDatalist = DBManger.selectDatBySql(db, selectDataListsql, null);
-        if (cursorDatalist.getCount() != 0) {
-            while (cursorDatalist.moveToNext()) {
-                StockCheckStateList.add(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.DICTIONARYNAME)));
-            }
-        }
+//        StockCheckStateList = new ArrayList<>();
+//        StockCheckStateList.add(0, getString(R.string.SpinnerDefault));
+//        String selectDataListsql = String.format(getString(R.string.codeSpinner),Constant.CHECKSTATE,AppConfig.getInstance().getLanuageType());
+//        Cursor cursorDatalist = DBManger.selectDatBySql(db, selectDataListsql, null);
+//        if (cursorDatalist.getCount() != 0) {
+//            while (cursorDatalist.moveToNext()) {
+//                StockCheckStateList.add(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.DICTIONARYNAME)));
+//            }
+//        }
         //endregion
 
         //region StockCheckStateList
         WarehouseList = new ArrayList<>();
-        WarehouseList.add(0, getString(R.string.SpinnerDefault));
+        WarehouseList.add(new CodeData("",getString(R.string.SpinnerDefault)));
         String WarehouseListsql = String.format(getString(R.string.WarehouseSpinner));
         Cursor cursorWarehouseList = DBManger.selectDatBySql(db, WarehouseListsql, null);
         if (cursorWarehouseList.getCount() != 0) {
             while (cursorWarehouseList.moveToNext()) {
-                WarehouseList.add(cursorWarehouseList.getString(cursorWarehouseList.getColumnIndex(Constant.WAREHOUSEID)));
+                CodeData spinnerData = new CodeData();
+                spinnerData.setCODEID(cursorWarehouseList.getString(cursorWarehouseList.getColumnIndex(Constant.WAREHOUSEID)));
+                spinnerData.setDICTIONARYNAME(cursorWarehouseList.getString(cursorWarehouseList.getColumnIndex(Constant.WAREHOUSENAME)));
+                WarehouseList.add(spinnerData);
             }
         }
         //endregion
@@ -159,20 +163,20 @@ public class StockCheckFragment extends KeyDownFragment {
     private void initview() {
 
         //region StockCheckStateSpinner
-        spStockCheckState = (Spinner) getView().findViewById(R.id.sp_StockCheckState);
-        mStockCheckStateAdapter = new ArrayAdapter(mContext, android.R.layout.simple_list_item_1, StockCheckStateList);
-        spStockCheckState.setAdapter(mStockCheckStateAdapter);
-        spStockCheckState.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                UpDateOrder();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
+//        spStockCheckState = (Spinner) getView().findViewById(R.id.sp_StockCheckState);
+//        mStockCheckStateAdapter = new ArrayAdapter(mContext, android.R.layout.simple_list_item_1, StockCheckStateList);
+//        spStockCheckState.setAdapter(mStockCheckStateAdapter);
+//        spStockCheckState.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                UpDateOrder();
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parent) {
+//
+//            }
+//        });
         //endregion
 
         //region WarehouseSpinner
@@ -229,21 +233,17 @@ public class StockCheckFragment extends KeyDownFragment {
 
     //region UpDateShippingPlan
     protected void UpDateOrder() {
-        String StockCheckState = spStockCheckState.getSelectedItem().toString();
-        String Warehouse = spWarehouse.getSelectedItem().toString();
+      //  String StockCheckState = spStockCheckState.getSelectedItem().toString();
+        String Warehouse = ((CodeData)spWarehouse.getSelectedItem()).getCODEID();;
         String OrderFromDate = tvCheckMonth.getText().toString();
-        getStockCheck(StockCheckState, OrderFromDate,Warehouse);
+        getStockCheck(OrderFromDate,Warehouse);
         EventBus.getDefault().post(new Event.StockCheckClearOrderItemEvent());
     }
 
-    private void getStockCheck(String StockCheckState, String orderFromDate,String Warehouse) {
-        SQLiteDatabase db = mHelper.getWritableDatabase();
+    private void getStockCheck( String orderFromDate,String Warehouse) {
         String selectDataListsql;
         selectDataListsql = String.format(getString(R.string.GetStockCheckQuery),orderFromDate);
-        if (!StockCheckState.equals(getString(R.string.SpinnerDefault))) {
-            selectDataListsql  = selectDataListsql+ String.format(getString(R.string.gscConditionState),StockCheckState);
-        }
-        if (!Warehouse.equals(getString(R.string.SpinnerDefault))){
+        if (!Warehouse.equals("")){
             selectDataListsql  = selectDataListsql+ String.format(getString(R.string.gscConditionWarehouse),Warehouse);
         }
         selectDataListsql = selectDataListsql+getString(R.string.gscOrderBy);
@@ -256,6 +256,7 @@ public class StockCheckFragment extends KeyDownFragment {
                 StockCheckData stockCheckData = new StockCheckData();
                 stockCheckData.setCHECKMONTH(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.CHECKMONTH)));
                 stockCheckData.setWAREHOUSEID(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.WAREHOUSEID)));
+                stockCheckData.setWAREHOUSENAME(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.WAREHOUSENAME)));
                 stockCheckData.setSTARTDATE(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.STARTDATE)));
                 stockCheckData.setENDDATE(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.ENDDATE)));
                 stockCheckData.setSTATENAME(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.STATENAME)));

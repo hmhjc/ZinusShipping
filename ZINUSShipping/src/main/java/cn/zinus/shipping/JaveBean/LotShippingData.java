@@ -25,28 +25,81 @@ public class LotShippingData implements Serializable {
     private String POID;
     private String TRACKOUTTIME;
 
-    public String getTRACKOUTTIME() {
-        return TRACKOUTTIME;
+    @Override
+    public String toString() {
+        return "LotShippingData{" +
+                "LOTID='" + LOTID + '\'' +
+                ", SHIPPINGPLANNO='" + SHIPPINGPLANNO + '\'' +
+                ", VALIDSTATE='" + VALIDSTATE + '\'' +
+                ", QTY='" + QTY + '\'' +
+                ", SHIPPINGPLANSEQ='" + SHIPPINGPLANSEQ + '\'' +
+                ", CONTAINERSEQ='" + CONTAINERSEQ + '\'' +
+                ", SHIPPINGDATE='" + SHIPPINGDATE + '\'' +
+                ", ORDERTYPE='" + ORDERTYPE + '\'' +
+                ", ORDERNO='" + ORDERNO + '\'' +
+                ", PRODUCTDEFID='" + PRODUCTDEFID + '\'' +
+                ", PRODUCTDEFVERSION='" + PRODUCTDEFVERSION + '\'' +
+                ", PRODUCTDEFNAME='" + PRODUCTDEFNAME + '\'' +
+                ", LINENO='" + LINENO + '\'' +
+                ", POID='" + POID + '\'' +
+                ", TRACKOUTTIME='" + TRACKOUTTIME + '\'' +
+                '}';
     }
 
-    public void setTRACKOUTTIME(String TRACKOUTTIME) {
-        this.TRACKOUTTIME = TRACKOUTTIME;
+    public String getLOTID() {
+        return LOTID;
     }
 
-    public String getPRODUCTDEFNAME() {
-        return PRODUCTDEFNAME;
+    public void setLOTID(String LOTID) {
+        this.LOTID = LOTID;
     }
 
-    public void setPRODUCTDEFNAME(String PRODUCTDEFNAME) {
-        this.PRODUCTDEFNAME = PRODUCTDEFNAME;
+    public String getSHIPPINGPLANNO() {
+        return SHIPPINGPLANNO;
     }
 
-    public String getPOID() {
-        return POID;
+    public void setSHIPPINGPLANNO(String SHIPPINGPLANNO) {
+        this.SHIPPINGPLANNO = SHIPPINGPLANNO;
     }
 
-    public void setPOID(String POID) {
-        this.POID = POID;
+    public String getVALIDSTATE() {
+        return VALIDSTATE;
+    }
+
+    public void setVALIDSTATE(String VALIDSTATE) {
+        this.VALIDSTATE = VALIDSTATE;
+    }
+
+    public String getQTY() {
+        return QTY;
+    }
+
+    public void setQTY(String QTY) {
+        this.QTY = QTY;
+    }
+
+    public String getSHIPPINGPLANSEQ() {
+        return SHIPPINGPLANSEQ;
+    }
+
+    public void setSHIPPINGPLANSEQ(String SHIPPINGPLANSEQ) {
+        this.SHIPPINGPLANSEQ = SHIPPINGPLANSEQ;
+    }
+
+    public String getCONTAINERSEQ() {
+        return CONTAINERSEQ;
+    }
+
+    public void setCONTAINERSEQ(String CONTAINERSEQ) {
+        this.CONTAINERSEQ = CONTAINERSEQ;
+    }
+
+    public String getSHIPPINGDATE() {
+        return SHIPPINGDATE;
+    }
+
+    public void setSHIPPINGDATE(String SHIPPINGDATE) {
+        this.SHIPPINGDATE = SHIPPINGDATE;
     }
 
     public String getORDERTYPE() {
@@ -81,6 +134,14 @@ public class LotShippingData implements Serializable {
         this.PRODUCTDEFVERSION = PRODUCTDEFVERSION;
     }
 
+    public String getPRODUCTDEFNAME() {
+        return PRODUCTDEFNAME;
+    }
+
+    public void setPRODUCTDEFNAME(String PRODUCTDEFNAME) {
+        this.PRODUCTDEFNAME = PRODUCTDEFNAME;
+    }
+
     public String getLINENO() {
         return LINENO;
     }
@@ -89,72 +150,19 @@ public class LotShippingData implements Serializable {
         this.LINENO = LINENO;
     }
 
-    @Override
-    public String toString() {
-        return "LotShippingData{" +
-                "LOTID='" + LOTID + '\'' +
-                ", SHIPPINGPLANNO='" + SHIPPINGPLANNO + '\'' +
-                ", VALIDSTATE='" + VALIDSTATE + '\'' +
-                ", QTY='" + QTY + '\'' +
-                ", SHIPPINGPLANSEQ='" + SHIPPINGPLANSEQ + '\'' +
-                ", CONTAINERSEQ='" + CONTAINERSEQ + '\'' +
-                ", SHIPPINGDATE='" + SHIPPINGDATE + '\'' +
-                '}';
+    public String getPOID() {
+        return POID;
     }
 
-    public String getSHIPPINGPLANSEQ() {
-        return SHIPPINGPLANSEQ;
+    public void setPOID(String POID) {
+        this.POID = POID;
     }
 
-    public void setSHIPPINGPLANSEQ(String SHIPPINGPLANSEQ) {
-        this.SHIPPINGPLANSEQ = SHIPPINGPLANSEQ;
+    public String getTRACKOUTTIME() {
+        return TRACKOUTTIME;
     }
 
-    public String getCONTAINERSEQ() {
-        return CONTAINERSEQ;
-    }
-
-    public void setCONTAINERSEQ(String CONTAINERSEQ) {
-        this.CONTAINERSEQ = CONTAINERSEQ;
-    }
-
-    public String getSHIPPINGDATE() {
-        return SHIPPINGDATE;
-    }
-
-    public void setSHIPPINGDATE(String SHIPPINGDATE) {
-        this.SHIPPINGDATE = SHIPPINGDATE;
-    }
-
-    public String getQTY() {
-        return QTY;
-    }
-
-    public void setQTY(String QTY) {
-        this.QTY = QTY;
-    }
-
-    public String getLOTID() {
-        return LOTID;
-    }
-
-    public void setLOTID(String LOTID) {
-        this.LOTID = LOTID;
-    }
-
-    public String getSHIPPINGPLANNO() {
-        return SHIPPINGPLANNO;
-    }
-
-    public void setSHIPPINGPLANNO(String SHIPPINGPLANNO) {
-        this.SHIPPINGPLANNO = SHIPPINGPLANNO;
-    }
-
-    public String getVALIDSTATE() {
-        return VALIDSTATE;
-    }
-
-    public void setVALIDSTATE(String VALIDSTATE) {
-        this.VALIDSTATE = VALIDSTATE;
+    public void setTRACKOUTTIME(String TRACKOUTTIME) {
+        this.TRACKOUTTIME = TRACKOUTTIME;
     }
 }

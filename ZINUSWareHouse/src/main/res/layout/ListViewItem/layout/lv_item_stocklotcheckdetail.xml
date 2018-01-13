@@ -2,8 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               style="@style/listviewitem">
 
+
     <TextView
-        android:id="@+id/tv_consuabledefnamme"
+        android:id="@+id/tv_consuablelotid"
         style="@style/listviewcontext"
         android:layout_width="200px"/>
 
@@ -25,25 +26,16 @@
         style="@style/listviewverticalsplit"/>
 
     <TextView
-        android:id="@+id/tv_WarehouseID"
-        style="@style/listviewcontext"
-        android:layout_width="150px"/>
-
-    <View
-        style="@style/listviewverticalsplit"/>
-
-    <TextView
-        android:id="@+id/tv_consuablelotid"
-        style="@style/listviewcontext"
-        android:layout_width="350px"/>
-
-    <View
-        style="@style/listviewverticalsplit"/>
-
-    <TextView
         android:id="@+id/tv_unit"
         style="@style/listviewcontext"
         android:layout_width="50px"/>
 
+    <View
+        style="@style/listviewverticalsplit"/>
+
+    <TextView
+        android:id="@+id/tv_CheckUsername"
+        style="@style/listviewcontext"
+        android:layout_width="150px"/>
 
 </LinearLayout>

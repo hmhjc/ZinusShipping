@@ -44,5 +44,13 @@ public class DBManger {
         }
         return cursor;
     }
+    public static  String getCursorData(Cursor cursorDatalist, String ColumnIndex) {
+        String returnstr = "";
+        String a = cursorDatalist.getString(cursorDatalist.getColumnIndex(ColumnIndex));
+        if (a != null) {
+            returnstr = a;
+        }
+        return returnstr;
+    }
 
 }

@@ -16,6 +16,15 @@ public class UploadInboundOrder implements Serializable{
     private String INBOUNDSTATE;
     private String INBOUNDSTATENAME;
     private String CONSUMABLECOUNT;
+    private String INBOUNDTYPE;
+
+    public String getINBOUNDTYPE() {
+        return INBOUNDTYPE;
+    }
+
+    public void setINBOUNDTYPE(String INBOUNDTYPE) {
+        this.INBOUNDTYPE = INBOUNDTYPE;
+    }
 
     public String getINBOUNDSTATENAME() {
         return INBOUNDSTATENAME;
