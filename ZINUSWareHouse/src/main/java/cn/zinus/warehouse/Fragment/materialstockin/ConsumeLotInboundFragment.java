@@ -83,6 +83,7 @@ public class ConsumeLotInboundFragment extends KeyDownFragment implements View.O
     private ConsumeLotInboundListViewAdapter mConsumeLotInboundListViewAdapter;
     private ArrayList<ConsumeLotInboundData> mcomsumeLotInboundDataList;
     private ArrayList<ConsumeLotInboundData> _mcomsumeLotInboundDataList; //记录所有的lot
+    private TextView tvSpec_Desc;
     private TextView tvtagqty;
     private TextView tvInboundOrderNo;
     private TextView tvConsumabledefId;
@@ -242,7 +243,7 @@ public class ConsumeLotInboundFragment extends KeyDownFragment implements View.O
             case R.id.btnbarcode:
                 //选择R&B的popupwindow里面的Barcode按钮
                 showToast(mContext, "修改数据模式", 0);
-                //BRFlag = 2;
+                BRFlag = 2;
                 FIXFlag = 2;
                 mivchoose.setImageResource(R.drawable.fix);
                 mpopChooseBorR.dismiss();
@@ -286,6 +287,7 @@ public class ConsumeLotInboundFragment extends KeyDownFragment implements View.O
         etTagID = (EditText) getView().findViewById(R.id.etTagID);
         tvtagqty = (TextView) getView().findViewById(R.id.tvtagqty);
         tvInboundOrderNo = (TextView) getView().findViewById(R.id.InboundOrderNo);
+        tvSpec_Desc = (TextView) getView().findViewById(R.id.tv_spec_desc);
         tvConsumabledefId = (TextView) getView().findViewById(R.id.tv_ConsumabledefId);
         tvConsumabledefname= (TextView) getView().findViewById(R.id.tv_consumabledefname);
         tvConsumeLotInboundSum = (TextView) getView().findViewById(R.id.tv_ConsumeLotInboundSum);
@@ -437,7 +439,7 @@ public class ConsumeLotInboundFragment extends KeyDownFragment implements View.O
     }
     //endregion
 
-    //region getConsumeLotInboundByConsumeDefID
+    //region 进入这个tab的方法
     public void getConsumeLotInboundByConsumeDefID(ConsumeInboundData inboundData) {
         SQLiteDatabase db = mHelper.getWritableDatabase();
         String selectDataListsql = String.format(getString(R.string.GetConsumeLotInboundQuery)
@@ -469,6 +471,7 @@ public class ConsumeLotInboundFragment extends KeyDownFragment implements View.O
                 consumeLotInboundData.setPLANQTY(getCursorData(cursorDatalist,Constant.PLANQTY).trim());
                 consumeLotInboundData.setTAGID(getCursorData(cursorDatalist,Constant.TAGID).trim());
                 consumeLotInboundData.setTAGQTY(getCursorData(cursorDatalist,Constant.TAGQTY).trim());
+                consumeLotInboundData.setSPEC_DESC(getCursorData(cursorDatalist,Constant.SPEC_DESC).trim());
                 if (Float.parseFloat(consumeLotInboundData.getINQTY()) > Float.parseFloat(consumeLotInboundData.getPLANQTY())) {
                     consumeLotInboundData.setBackgroundColor(R.color.qtymore);
                 } else if (Float.parseFloat(consumeLotInboundData.getINQTY()) == Float.parseFloat(consumeLotInboundData.getPLANQTY())) {
@@ -486,6 +489,7 @@ public class ConsumeLotInboundFragment extends KeyDownFragment implements View.O
         mConsumeLotInboundListViewAdapter.notifyDataSetChanged();
         setQTYInfo();
         tvConsumabledefId.setText(inboundData.getCONSUMABLEDEFID());
+        tvSpec_Desc.setText(inboundData.getSPEC_DESC());
         tvConsumabledefname.setText(inboundData.getCONSUMABLEDEFNAME());
         tvConsumeLotInboundSum.setText(_mcomsumeLotInboundDataList.size()+"");
         tvORDERNO.setText(inboundData.getORDERNO());
@@ -593,8 +597,11 @@ public class ConsumeLotInboundFragment extends KeyDownFragment implements View.O
             boolean bContinuous = false;
             thread = new DecodeThread(bContinuous, 100);
             thread.start();
-
+            threadStop = false;
         } else {
+            if (BaecodeReader != null) {
+                BaecodeReader.stopScan();
+            }
             threadStop = true;
         }
     }

@@ -25,6 +25,7 @@ public class ConsumeLotInboundListViewAdapter extends BaseAdapter {
     private List<ConsumeLotInboundData> listMap;
 
     public final class ListItemView {
+
         public TextView tvconsuablelotid;
         public TextView tvunit;
         public TextView tvinqty;

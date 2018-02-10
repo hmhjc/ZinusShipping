@@ -1,5 +1,6 @@
 package cn.zinus.shipping.SocketConnect;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
@@ -844,16 +845,18 @@ public class UpdateSqlite {
     //endregion
 
     //region Table_SF_SHIPPINGPLAN
+
     public void updateShippingPlan(String resultStr) {
         Log.e("更新SF_SHIPPINGPLAN", resultStr);
         try {
             JSONArray array = new JSONArray(resultStr);
             db.beginTransaction();
+            db.execSQL(Constant.DELETESHIPPINGPLAN);
             for (int i = 0; i < array.length(); i++) {
                 JSONObject jsonObject = array.getJSONObject(i);
                 String insertShippingPlan = String.format(Constant.InsertIntoSHIPPINGPLAN
                         , jsonObject.getString(Constant.SHIPPINGPLANNO)
-                        , jsonObject.getString(Constant.CUSTOMERID)
+                        , jsonObject.getString(Constant.CUSTOMERNAME)
                         , jsonObject.getString(Constant.BOOKINGNO)
                         , jsonObject.getString(Constant.PLANDATE)
                         , jsonObject.getString(Constant.SHIPPINGPLANDATE)
@@ -877,6 +880,7 @@ public class UpdateSqlite {
         Log.e("更新SF_SHIPPINGPLANDetail", resultStr);
         try {
             db.beginTransaction();
+            db.execSQL(Constant.DELETESHIPPINGPLANDETAIL);
             JSONArray array = new JSONArray(resultStr);
             for (int i = 0; i < array.length(); i++) {
                 JSONObject jsonObject = array.getJSONObject(i);
@@ -900,6 +904,7 @@ public class UpdateSqlite {
                         , jsonObject.getString(Constant.AREAID)
                         , jsonObject.getString(Constant.PRODUCTDEFNAME));
                 db.execSQL(insertShippingPlan);
+            //    Log.e("插入语句",insertShippingPlan);
             }
             db.setTransactionSuccessful();
             db.endTransaction();
@@ -915,6 +920,7 @@ public class UpdateSqlite {
         Log.e("更新SF_SHIPPINGLOT", resultStr);
         try {
             db.beginTransaction();
+            db.execSQL(Constant.DELETESHIPPINGLOT);
             JSONArray array = new JSONArray(resultStr);
             for (int i = 0; i < array.length(); i++) {
                 JSONObject jsonObject = array.getJSONObject(i);
@@ -949,16 +955,21 @@ public class UpdateSqlite {
         try {
             db.beginTransaction();
             JSONArray array = new JSONArray(resultStr);
+            Log.e("LOT插入大小", array.length()+"");
+            db.execSQL(Constant.DELETELOT);
             for (int i = 0; i < array.length(); i++) {
                 JSONObject jsonObject = array.getJSONObject(i);
                 String insertShippingPlan = String.format(Constant.InsertIntoLOT
                         , jsonObject.getString(Constant.LOTID)
                         , jsonObject.getString(Constant.PURCHASEORDERID)
-                        , jsonObject.getString(Constant.LOTSTATE)
                         , jsonObject.getString(Constant.RFID)
                         , jsonObject.getString(Constant.QTY)
+                        , jsonObject.getString(Constant.PRODUCTDEFID)
+                        , jsonObject.getString(Constant.PRODUCTDEFNAME)
+                        , jsonObject.getString(Constant.PRODUCTDEFVERSION)
                         , jsonObject.getString(Constant.TRACKOUTTIME));
                 db.execSQL(insertShippingPlan);
+               // Log.e("LOT插入", insertShippingPlan);
             }
             db.setTransactionSuccessful();
             db.endTransaction();
@@ -973,9 +984,12 @@ public class UpdateSqlite {
     public void updateSHIPPINGSAVE(String savedShippingPlanNo) {
         Log.e("桌面已经保存的计划是", savedShippingPlanNo);
         try {
-            db.delete(Constant.SF_SHIPPINGPLAN, "SHIPPINGPLANNO = ?", new String[]{savedShippingPlanNo});
-            db.delete(Constant.SF_SHIPPINGPLANDETAIL, "SHIPPINGPLANNO = ?", new String[]{savedShippingPlanNo});
-            db.delete(Constant.SF_SHIPPINGLOT, "SHIPPINGPLANNO = ?", new String[]{savedShippingPlanNo});
+            ContentValues shippingplanetailValues = new ContentValues();
+            shippingplanetailValues.put(Constant.ISPDASHIPPING, "N");
+            String[] sArray=savedShippingPlanNo.split(":");
+            db.update(Constant.SF_SHIPPINGPLANDETAIL, shippingplanetailValues
+                    , "SHIPPINGPLANNO = ? AND CONTAINERSEQ = ? AND SHIPPINGPLANSEQ = ?"
+                    , new String[]{sArray[0],sArray[1],sArray[2]});
         } catch (Exception e) {
             Log.e("SHIPPINGSAVE更新出错", e.getMessage().toString());
         }

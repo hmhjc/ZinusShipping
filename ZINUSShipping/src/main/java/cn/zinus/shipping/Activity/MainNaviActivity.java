@@ -418,19 +418,23 @@ public class MainNaviActivity extends BaseActivity
         mShippingFragment.mLotShippingFragment.actionClearAll();
         mShippingFragment.mShippingPlanDetailFragment.clearall();
         mShippingFragment.mShippingPlanDetailFragment.setShippingPlanData(event.getShippingPlanData());
-        mShippingFragment.mShippingPlanDetailFragment.searchPlanSeq(event.getShippingPlanData().getSHIPPINGPLANNO());
-        //mShippingFragment.mLotShippingFragment.getLotShippingByShippingPlan(event.getShippingPlanData());
+        mShippingFragment.mShippingPlanDetailFragment.searchContainerSeq(event.getShippingPlanData().getSHIPPINGPLANNO());
         mShippingFragment.jump(1);
     }
 
     //查询ShippingPlanDetail
     @Subscribe
-    public void onEventMainThread(Event.LotShippingByPOEvent event) {
+    public void onEventMainThread(Event.LotShippingByContainerEvent event) {
         mShippingFragment.mLotShippingFragment.actionClearAll();
-        mShippingFragment.mLotShippingFragment.getLotShippingByPO(event.getShippingPlanData(),event.getPODate());
+        mShippingFragment.mLotShippingFragment.getLotShippingByContainer(event.getShippingPlanData(),event.getPlanSeqListData(),event.getShippingCommonData());
         mShippingFragment.jump(2);
     }
 
+    //查询ShippingPlanDetail
+    @Subscribe
+    public void onEventMainThread(Event.ReSearchShippingPlanDetail event) {
+        mShippingFragment.mShippingPlanDetailFragment.searchShippingPlanlist(event.getContainerSeq());
+    }
 
     //刷新界面
     @Subscribe

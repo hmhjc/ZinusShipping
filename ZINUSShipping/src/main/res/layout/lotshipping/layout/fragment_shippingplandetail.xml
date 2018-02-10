@@ -4,59 +4,44 @@
               android:layout_height="match_parent"
               android:orientation="vertical">
 
-<LinearLayout style="@style/MessageMarginTopLayout"/>
-
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal">
-
-    <LinearLayout
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:gravity="left"
-    android:orientation="vertical">
-    <!--add 添加条件的地方-->
-
-    <LinearLayout
-        style="@style/ll_Condition_line">
-
-        <TextView
-            android:text="@string/ShippingPlanSeq"
-            style="@style/ConditionInputLabel"/>
-
-        <Spinner
-            android:id="@+id/sp_ShippingPlanSeq"
-            style="@style/Condition_InputBox"/>
-
-    </LinearLayout>
-
     <LinearLayout style="@style/MessageMarginTopLayout"/>
 
     <LinearLayout
-        style="@style/ll_Condition_line">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
-        <TextView
-            android:text="@string/ContainerSeq"
-            style="@style/ConditionInputLabel"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:orientation="vertical">
+            <!--add 添加条件的地方-->
 
-        <Spinner
-            android:id="@+id/sp_ContainerSeq"
-            style="@style/Condition_InputBox"/>
+            <LinearLayout
+                style="@style/ll_Condition_line">
+
+                <TextView
+                    style="@style/ConditionInputLabel"
+                    android:text="@string/ContainerSeq"/>
+
+                <Spinner
+                    android:id="@+id/sp_ContainerSeq"
+                    style="@style/Condition_InputBox"/>
+
+            </LinearLayout>
+
+            <LinearLayout style="@style/MessageMarginTopLayout"/>
+
+        </LinearLayout>
+
 
     </LinearLayout>
-
-        <LinearLayout style="@style/MessageMarginTopLayout"/>
-
-    </LinearLayout>
-
-
-
-</LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -64,114 +49,346 @@
 
             <Button
                 android:id="@+id/btnSetContainerNoAndSealNo"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:layout_weight="1"
                 android:text="@string/setContainerNoAndSealNo"/>
+
+            <Button
+                android:id="@+id/btnScanContainerTag"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:text="@string/ScanContainerTag"/>
+
         </LinearLayout>
     </LinearLayout>
 
     <com.micube.control.controlUtil.CustomHorizontalScrollView
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:scrollbars="horizontal">
-
-    <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:orientation="vertical">
+        android:layout_height="300px"
+        android:scrollbars="horizontal">
 
         <LinearLayout
-            style="@style/GridMarginTopLayout"/>
-
-        <!--标题(Caption)-->
-        <LinearLayout
-            style="@style/GridCaption">
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical">
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/zinusdarkblue">
+                style="@style/GridMarginTopLayout"/>
+
+            <!--标题(Caption)-->
+            <LinearLayout
+                style="@style/GridCaption">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/zinusdarkblue">
 
-                    <TextView
-                        style="@style/listviewcaption"
-                        android:layout_width="150px"
-                        android:text="@string/PoNo"/>
 
                     <LinearLayout
-                        style="@style/border_bottom_style"/>
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
 
-                </LinearLayout>
+                        <TextView
+                            style="@style/listviewcaption"
+                            android:layout_width="150px"
+                            android:text="@string/PoNo"/>
 
-                <View
-                    style="@style/listviewverticalsplit"/>
+                        <LinearLayout
+                            style="@style/border_bottom_style"/>
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    </LinearLayout>
 
-                    <TextView
-                        style="@style/listviewcaption"
-                        android:layout_width="150px"
-                        android:text="@string/QTY"/>
-
-                    <LinearLayout
-                        style="@style/border_bottom_style"/>
-
-                </LinearLayout>
-
-                <View
-                    style="@style/listviewverticalsplit"/>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <TextView
-                        style="@style/listviewcaption"
-                        android:layout_width="150px"
-                        android:text="@string/ContainerNo"/>
+                    <View
+                        style="@style/listviewverticalsplit"/>
 
                     <LinearLayout
-                        style="@style/border_bottom_style"/>
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
 
-                </LinearLayout>
+                        <TextView
+                            style="@style/listviewcaption"
+                            android:layout_width="150px"
+                            android:text="@string/SKU"/>
 
-                <View
-                    style="@style/listviewverticalsplit"/>
+                        <LinearLayout
+                            style="@style/border_bottom_style"/>
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    </LinearLayout>
 
-                    <TextView
-                        style="@style/listviewcaption"
-                        android:layout_width="150px"
-                        android:text="@string/SealNo"/>
+                    <View
+                        style="@style/listviewverticalsplit"/>
 
                     <LinearLayout
-                        style="@style/border_bottom_style"/>
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/listviewcaption"
+                            android:layout_width="150px"
+                            android:text="@string/PlanQty"/>
+
+                        <LinearLayout
+                            style="@style/border_bottom_style"/>
+
+                    </LinearLayout>
+
+                    <View
+                        style="@style/listviewverticalsplit"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/listviewcaption"
+                            android:layout_width="150px"
+                            android:text="@string/shippingedQTY"/>
+
+                        <LinearLayout
+                            style="@style/border_bottom_style"/>
+
+                    </LinearLayout>
+
+                    <View
+                        style="@style/listviewverticalsplit"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/listviewcaption"
+                            android:layout_width="150px"
+                            android:text="@string/NOshippingedQTY"/>
+
+                        <LinearLayout
+                            style="@style/border_bottom_style"/>
+
+                    </LinearLayout>
+
+                    <View
+                        style="@style/listviewverticalsplit"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/listviewcaption"
+                            android:layout_width="150px"
+                            android:text="@string/ShippingPlanSeq"/>
+
+                        <LinearLayout
+                            style="@style/border_bottom_style"/>
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
             </LinearLayout>
 
+            <ListView
+                android:id="@+id/lv_PoList"
+                style="@style/mainListViewStyle"/>
+
         </LinearLayout>
 
-        <ListView
-            android:id="@+id/lv_PoList"
-            style="@style/mainListViewStyle"/>
+    </com.micube.control.controlUtil.CustomHorizontalScrollView>
 
-    </LinearLayout>
 
-</com.micube.control.controlUtil.CustomHorizontalScrollView>
+    <LinearLayout style="@style/GridMarginTopLayout"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingLeft="6px">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/BookingNo"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" : "/>
+
+                <TextView
+                    android:id="@+id/tv_BookingNo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="right">
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingLeft="6px">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/ShippingEndPlanDate"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" : "/>
+
+                <TextView
+                    android:id="@+id/tv_ShippingEndPlanDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="right">
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingLeft="6px">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/ContainerNo"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" : "/>
+
+                <TextView
+                    android:id="@+id/tv_ContainerNo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="right">
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingLeft="6px">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/SealNo"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" : "/>
+
+                <TextView
+                    android:id="@+id/tv_SealNo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="right">
+
+                    <!--<TextView-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:text="@string/ShipplanQTY"/>-->
+
+                    <!--<TextView-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:text=" : "/>-->
+
+                    <!--<TextView-->
+                    <!--android:id="@+id/tvshippl33anqty"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:paddingRight="6px"/>-->
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:orientation="horizontal"-->
+            <!--android:paddingLeft="6px">-->
+
+            <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="@string/Customer"/>-->
+
+            <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text=" : "/>-->
+
+            <!--<TextView-->
+            <!--android:id="@+id/tv_Customer"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"/>-->
+
+            <!--<LinearLayout-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="1"-->
+            <!--android:gravity="right">-->
+            <!--</LinearLayout>-->
+
+            <!--</LinearLayout>-->
+
+        </LinearLayout>
+
+    </ScrollView>
 
 </LinearLayout>

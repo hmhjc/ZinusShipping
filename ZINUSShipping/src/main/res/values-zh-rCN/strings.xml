@@ -158,10 +158,10 @@
     <string name="ConsumbleType">材料类型</string>
     <string name="TempInboundDate">待入库时间</string>
     <string name="ScheduleDate">计划时间</string>
-    <string name="ShippingPlan">上车计划</string>
+    <string name="ShippingPlan">装车计划</string>
     <string name="lotShipping">装车lot</string>
     <string name="ShippingPlanState">装车计划状态</string>
-    <string name="ShippingPlanNo">上车代码</string>
+    <string name="ShippingPlanNo">装车代码</string>
     <string name="SoNo">So号</string>
     <string name="PoNo">Po号</string>
     <string name="ContainerSpec">货柜规格</string>
@@ -169,7 +169,7 @@
     <string name="PlanEndTime">出货完成日</string>
     <string name="Shipping">出货</string>
     <string name="MianMenu">首页</string>
-    <string name="PlanDataOfShipping">出货计划日</string>
+    <string name="PlanDataOfShipping">截进场</string>
     <string name="LotNo">Lot No</string>
     <string name="product">产品</string>
     <string name="ContainerNo">货柜编号</string>
@@ -186,11 +186,14 @@
     <string name="BookingNo">提单号</string>
     <string name="PlanDate">预计装柜日期</string>
     <string name="ShippingPlanDate">预计装船日期</string>
-    <string name="ShippingEndPlanDate">入港截止日期</string>
+    <string name="ShippingEndPlanDate">截进场</string>
     <string name="ShippingEndDate">入港截止时间</string>
     <string name="setContainerNoAndSealNo">设置柜号和封箱号</string>
     <string name="productID">产品ID</string>
     <string name="SKU">SKU</string>
     <string name="trackOutTime">生产完成日</string>
+    <string name="ScanContainerTag">按货柜扫描</string>
+    <string name="shippingedQTY">上车数量</string>
+    <string name="NOshippingedQTY">未上车数量</string>
 
 </resources>

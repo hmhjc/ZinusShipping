@@ -299,8 +299,10 @@ public class SyncPC implements Runnable {
                 }
             } else {
                 Log.e("没有符合条件的", "111111111");
+                returnflag = false;
             }
         }else {
+            Log.e("查到了", "没有了");
             returnflag = false;
         }
         return returnflag;
@@ -345,7 +347,6 @@ public class SyncPC implements Runnable {
             Log.e("查到了", "111111111");
             while (cursorDatalist.moveToNext()) {
                 ShippingPlanDetailData uploadshipplandetail = new ShippingPlanDetailData();
-
                 uploadshipplandetail.setSHIPPINGPLANNO(getcursorData(cursorDatalist, Constant.SHIPPINGPLANNO));
                 uploadshipplandetail.setSHIPPINGPLANSEQ(getcursorData(cursorDatalist, Constant.SHIPPINGPLANSEQ));
                 uploadshipplandetail.setORDERTYPE(getcursorData(cursorDatalist, Constant.ORDERTYPE));

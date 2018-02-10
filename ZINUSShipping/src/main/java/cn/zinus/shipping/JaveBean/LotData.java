@@ -19,21 +19,46 @@ public class LotData implements Serializable {
     private String TRACKOUTTIME;
     private String PRODUCTDEFID;
     private String PRODUCTDEFNAME;
+    private String SHIPPINGPLANSEQ;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof LotData)) return false;
+
+        LotData data = (LotData) o;
+
+        return LOTID.equals(data.LOTID);
+    }
+
+    @Override
+    public int hashCode() {
+        return LOTID.hashCode();
+    }
 
     @Override
     public String toString() {
         return "LotData{" +
+                ", VALIDSTATE='" + VALIDSTATE + '\'' +
                 "LOTID='" + LOTID + '\'' +
                 ", PURCHASEORDERID='" + PURCHASEORDERID + '\'' +
                 ", LOTSTATE='" + LOTSTATE + '\'' +
-                ", VALIDSTATE='" + VALIDSTATE + '\'' +
                 ", QTY='" + QTY + '\'' +
                 ", RFID='" + RFID + '\'' +
                 ", ISPDASHIPPING='" + ISPDASHIPPING + '\'' +
                 ", TRACKOUTTIME='" + TRACKOUTTIME + '\'' +
                 ", PRODUCTDEFID='" + PRODUCTDEFID + '\'' +
                 ", PRODUCTDEFNAME='" + PRODUCTDEFNAME + '\'' +
+                ", SHIPPINGPLANSEQ='" + SHIPPINGPLANSEQ + '\'' +
                 '}';
+    }
+
+    public String getSHIPPINGPLANSEQ() {
+        return SHIPPINGPLANSEQ;
+    }
+
+    public void setSHIPPINGPLANSEQ(String SHIPPINGPLANSEQ) {
+        this.SHIPPINGPLANSEQ = SHIPPINGPLANSEQ;
     }
 
     public String getPRODUCTDEFID() {

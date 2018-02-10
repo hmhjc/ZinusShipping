@@ -461,7 +461,7 @@ public class MainNaviActivity extends BaseActivity
         mInboundFragment.jump(2);
     }
 
-    //stockcheckLotdetail数据变化之后，修改stockcheckdetail的数据
+    //ConsumeLotInbound数据变化之后，修改ConsumeInbound的数据
     @Subscribe
     public void onEventMainThread(Event.ConsumeInboundbyLotCheckEvent event) {
         mInboundFragment.mConsumeInboundFragment.updaCheckQtyByLot(event.getConsumeLotInboundData(),event.getSumqty());
@@ -473,8 +473,16 @@ public class MainNaviActivity extends BaseActivity
         mOutBoundFragment.mConsumeOutboundFragment.actionClearAll();
         mOutBoundFragment.mConsumeOutboundFragment.getConsumeOutboundByConsumeRequest(event.getConsumeRequestNo());
         mOutBoundFragment.mConsumeLotOutboundFragment.actionClearAll();
-        mOutBoundFragment.mConsumeLotOutboundFragment.getConsumeLotOutboundByConsumeRequest(event.getConsumeRequestNo());
+        //mOutBoundFragment.mConsumeLotOutboundFragment.getConsumeLotOutboundByConsumeRequest(event.getConsumeRequestNo());
         mOutBoundFragment.jump(1);
+    }
+
+    //查询ConsumeLotOutbound
+    @Subscribe
+    public void onEventMainThread(Event.ConsumeLotOutboundByConsumeDefIDEvent event) {
+        mOutBoundFragment.mConsumeLotOutboundFragment.actionClearAll();
+        mOutBoundFragment.mConsumeLotOutboundFragment.getConsumeLotOutboundByConsumeDefID(event.getConsumeOutboundData());
+        mOutBoundFragment.jump(2);
     }
 
     //查询StockCheck
@@ -498,18 +506,7 @@ public class MainNaviActivity extends BaseActivity
     //stockcheckLotdetail数据变化之后，修改stockcheckdetail的数据
     @Subscribe
     public void onEventMainThread(Event.StockCheckDetailbyLotCheckEvent event) {
-        mStockTakingFragment.mStockCheckDetailFragment.updaCheckQtyByLot(event.getStockCheckDeatilData(),event.getSumqty());
-    }
-
-
-
-
-    //查询ConsumeInbound
-    @Subscribe
-    public void onEventMainThread(Event.LotShippingByShippingPlanEvent event) {
-//        mShippingFragment.mLotShippingFragment.actionClearAll();
-//        mShippingFragment.mLotShippingFragment.getLotShippingByShippingPlan(event.getShippingPlanData());
-//        mShippingFragment.jump(1);
+        mStockTakingFragment.mStockCheckDetailFragment.updaCheckQtyByLot(event.getStockLotCheckDeatilData());
     }
 
     //刷新界面

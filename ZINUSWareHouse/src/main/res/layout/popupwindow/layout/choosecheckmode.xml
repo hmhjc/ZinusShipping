@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              android:weightSum="1">
+
+    <RelativeLayout
+        android:layout_width="235dp"
+        android:layout_height="270dp"
+        android:layout_weight="0.00"
+        android:background="@drawable/listviewtype">
+
+        <TextView
+            android:id="@+id/tvfqtytitle"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:paddingTop="5dp"
+            android:text="@string/checkmode"
+            />
+
+        <RadioGroup
+            android:id="@+id/checkmode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvfqtytitle"
+            android:layout_centerHorizontal="true"
+            android:orientation="vertical"
+            >
+
+            <RadioButton
+                android:id="@+id/CheckNoConfirm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/CheckNoConfirm"/>
+
+            <RadioButton
+                android:id="@+id/CheckConfirm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/CheckConfirm"/>
+
+            <RadioButton
+                android:id="@+id/FixQty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/fixQty"/>
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/tvscanmode"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/checkmode"
+            android:text="@string/scanmode"
+            />
+
+        <RadioGroup
+            android:id="@+id/scanmode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvscanmode"
+            android:layout_centerHorizontal="true"
+            android:orientation="vertical"
+            >
+
+            <RadioButton
+                android:id="@+id/rfid"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/CheckNoConfirm"/>
+
+            <RadioButton
+                android:id="@+id/barcode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/CheckConfirm"/>
+
+        </RadioGroup>
+
+        <Button
+            android:id="@+id/btnconfirm"
+            android:layout_width="70dp"
+            android:layout_height="30dp"
+            android:layout_below="@id/scanmode"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/button_bg"
+            android:text="@string/ok"/>
+
+    </RelativeLayout>
+</LinearLayout>

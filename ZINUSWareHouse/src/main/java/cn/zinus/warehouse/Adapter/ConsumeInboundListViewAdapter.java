@@ -25,7 +25,7 @@ public class ConsumeInboundListViewAdapter extends BaseAdapter {
     private List<ConsumeInboundData> listMap;
 
     public final class ListItemView {
-
+        public TextView tvspec_desc;
         public TextView tvconsuabledefnamme;
         public TextView tvunit;
         public TextView tvinqty;
@@ -64,6 +64,7 @@ public class ConsumeInboundListViewAdapter extends BaseAdapter {
         if (convertView == null) {
             listItemView = new ListItemView();
             convertView = mInflater.inflate(R.layout.lv_item_consumeinbound, null);
+            listItemView.tvspec_desc = (TextView) convertView.findViewById(R.id.tv_spec_desc);
             listItemView.tvconsuabledefnamme = (TextView) convertView.findViewById(R.id.tv_consuabledefnamme);
             listItemView.tvunit = (TextView) convertView.findViewById(R.id.tv_unit);
             listItemView.tvinqty = (TextView) convertView.findViewById(R.id.tv_inqty);
@@ -78,6 +79,7 @@ public class ConsumeInboundListViewAdapter extends BaseAdapter {
             listItemView = (ListItemView) convertView.getTag();
         }
         ConsumeInboundData data = listMap.get(position);
+        listItemView.tvspec_desc.setText(data.getSPEC_DESC());
         listItemView.tvconsuabledefnamme.setText(data.getCONSUMABLEDEFNAME());
         listItemView.tvunit.setText(data.getUNIT());
         listItemView.tvinqty.setText(data.getINQTY());

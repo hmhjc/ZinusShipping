@@ -3,16 +3,15 @@
               style="@style/listviewitem">
 
     <TextView
-        android:id="@+id/tv_ShipplanNo"
+        android:id="@+id/tv_BookingNo"
         style="@style/listviewcontext"/>
 
     <View
         style="@style/listviewverticalsplit"/>
 
     <TextView
-        android:id="@+id/tv_BookingNo"
+        android:id="@+id/tv_ShippingEndPlanDate"
         style="@style/listviewcontext"/>
-
     <View
         style="@style/listviewverticalsplit"/>
 
@@ -37,8 +36,9 @@
     <View
         style="@style/listviewverticalsplit"/>
 
+
     <TextView
-        android:id="@+id/tv_ShippingEndPlanDate"
+        android:id="@+id/tv_ShipplanNo"
         style="@style/listviewcontext"/>
 
     <View

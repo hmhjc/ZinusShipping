@@ -20,7 +20,25 @@ public class StockCheckDeatilData implements Serializable {
     private String CHECKQTY;
     private String VALIDSTATE;
     private String CONSUMEABLDEFNAME;
+    private String SPEC_DESC;
+    private String DESCRIPTION;
     private int backgroundColor;
+
+    public String getDESCRIPTION() {
+        return DESCRIPTION;
+    }
+
+    public void setDESCRIPTION(String DESCRIPTION) {
+        this.DESCRIPTION = DESCRIPTION;
+    }
+
+    public String getSPEC_DESC() {
+        return SPEC_DESC;
+    }
+
+    public void setSPEC_DESC(String SPEC_DESC) {
+        this.SPEC_DESC = SPEC_DESC;
+    }
 
     public int getBackgroundColor() {
         return backgroundColor;

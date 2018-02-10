@@ -29,6 +29,8 @@ public class SoundUtil {
 		suondMap.put(R.raw.ding, sp.load(context, R.raw.ding, 1));
 		suondMap.put(R.raw.msg, sp.load(context, R.raw.msg, 1));
 		suondMap.put(R.raw.pegconn, sp.load(context, R.raw.pegconn, 1));
+		suondMap.put(R.raw.waring, sp.load(context, R.raw.waring, 1));
+		suondMap.put(R.raw.success, sp.load(context, R.raw.success, 1));
 	}
 
 	public static void releaseSoundPool() {

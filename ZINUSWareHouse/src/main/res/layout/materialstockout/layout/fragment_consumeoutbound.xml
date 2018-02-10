@@ -80,7 +80,25 @@
 
                         <TextView
                             style="@style/listviewcaption"
-                            android:layout_width="350px"
+                            android:layout_width="200px"
+                            android:text="@string/Spec_Desc"/>
+
+                        <LinearLayout
+                            style="@style/border_bottom_style"/>
+
+                    </LinearLayout>
+
+                    <View
+                        style="@style/listviewverticalsplit"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/listviewcaption"
+                            android:layout_width="200px"
                             android:text="@string/consumabledefname"/>
 
                         <LinearLayout
@@ -117,7 +135,7 @@
                         <TextView
                             style="@style/listviewcaption"
                             android:layout_width="150px"
-                            android:text="@string/inqty"/>
+                            android:text="@string/outqty"/>
 
                         <LinearLayout
                             style="@style/border_bottom_style"/>
@@ -135,7 +153,43 @@
                         <TextView
                             style="@style/listviewcaption"
                             android:layout_width="150px"
-                            android:text="@string/PlanQty"/>
+                            android:text="@string/requsetQty"/>
+
+                        <LinearLayout
+                            style="@style/border_bottom_style"/>
+
+                    </LinearLayout>
+
+                    <View
+                        style="@style/listviewverticalsplit"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/listviewcaption"
+                            android:layout_width="150px"
+                            android:text="@string/fromQty"/>
+
+                        <LinearLayout
+                            style="@style/border_bottom_style"/>
+
+                    </LinearLayout>
+
+                    <View
+                        style="@style/listviewverticalsplit"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/listviewcaption"
+                            android:layout_width="150px"
+                            android:text="@string/toQty"/>
 
                         <LinearLayout
                             style="@style/border_bottom_style"/>

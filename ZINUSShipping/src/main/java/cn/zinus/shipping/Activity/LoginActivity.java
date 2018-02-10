@@ -4,14 +4,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -26,8 +26,13 @@ import cn.zinus.shipping.Config.AppConfig;
 import cn.zinus.shipping.R;
 import cn.zinus.shipping.SocketConnect.SyncPC;
 import cn.zinus.shipping.util.Constant;
+import cn.zinus.shipping.util.DBManger;
+import cn.zinus.shipping.util.MyDateBaseHelper;
 
 import static cn.zinus.shipping.Service.ShippingService.mainThreadFlag;
+import static cn.zinus.shipping.util.DBManger.getCursorData;
+import static cn.zinus.shipping.util.Utils.showToast;
+import static com.micube.Common.StringUtil.EncryptToString;
 
 
 /**
@@ -49,9 +54,9 @@ public class LoginActivity extends BaseActivity {
     ServerSocket serverSocket = null;
     final int SERVER_PORT = 10087;
     ArrayList<String> list;
+    MyDateBaseHelper mHelper;
+    private SQLiteDatabase db;
 
-    BufferedOutputStream out;
-    BufferedInputStream in;
     //endregion
 
     //region life cycle(生命周期)
@@ -111,9 +116,35 @@ public class LoginActivity extends BaseActivity {
     private void Login() {
         userID = mUserIDView.getText().toString();
         password = mPasswordView.getText().toString();
-        Intent intent = new Intent(LoginActivity.this, MainNaviActivity.class);
-        startActivity(intent);
-        this.finish();
+        password = EncryptToString(password,"SHA256");
+        mHelper = DBManger.getIntance(LoginActivity.this);
+        db = mHelper.getWritableDatabase();
+        boolean loginflag = false;
+        String selectDataListsql = String.format(this.getString(R.string.CheckUser), userID);
+        Log.e("CheckUser", selectDataListsql);
+        Cursor cursorDatalist = DBManger.selectDatBySql(db, selectDataListsql, null);
+        if (cursorDatalist != null) {
+            if (cursorDatalist.getCount() != 0) {
+                while (cursorDatalist.moveToNext()) {
+                    String username =  getCursorData(cursorDatalist, Constant.USERNAME);
+                    String seed = getCursorData(cursorDatalist, "SEED");
+                    String Password1 = getCursorData(cursorDatalist, "PASSWORD");
+                    password = EncryptToString(password+seed,"SHA256");
+                    if (Password1.equals(password)){
+                        AppConfig.getInstance().putString(Constant.UserID, userID);
+                        AppConfig.getInstance().putString(Constant.UserName, username);
+                        Intent intent = new Intent(LoginActivity.this, MainNaviActivity.class);
+                        startActivity(intent);
+                    }else {
+                        showToast(this, "用户名密码错误", 0);
+                        AppConfig.getInstance().putString(Constant.UserID, userID);
+                        AppConfig.getInstance().putString(Constant.UserName, username);
+                        Intent intent = new Intent(LoginActivity.this, MainNaviActivity.class);
+                        startActivity(intent);
+                    }
+                }
+            }
+        }
     }
 
     public static String getAppVersionName(Context context) {

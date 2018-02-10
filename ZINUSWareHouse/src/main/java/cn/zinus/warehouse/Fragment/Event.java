@@ -2,10 +2,9 @@ package cn.zinus.warehouse.Fragment;
 
 import cn.zinus.warehouse.JaveBean.ConsumeInboundData;
 import cn.zinus.warehouse.JaveBean.ConsumeLotInboundData;
-import cn.zinus.warehouse.JaveBean.ShippingPlanData;
+import cn.zinus.warehouse.JaveBean.ConsumeOutboundData;
 import cn.zinus.warehouse.JaveBean.StockCheckData;
 import cn.zinus.warehouse.JaveBean.StockCheckDeatilData;
-import cn.zinus.warehouse.JaveBean.StockLotCheckDeatilData;
 
 /**
  * EventBus
@@ -146,6 +145,19 @@ public class Event {
         }
     }
 
+    //单击ConsumeOutbound跳转到lot
+    public static class ConsumeLotOutboundByConsumeDefIDEvent {
+        private ConsumeOutboundData mConsumeOutboundData;
+
+        public ConsumeLotOutboundByConsumeDefIDEvent(ConsumeOutboundData mConsumeOutboundData) {
+            this.mConsumeOutboundData = mConsumeOutboundData;
+        }
+
+        public ConsumeOutboundData getConsumeOutboundData() {
+            return mConsumeOutboundData;
+        }
+    }
+
     //单击stockcheck跳转到stockcheckdetail
     public static class StockCheckDetailbyCheckMonthEvent {
         private StockCheckData mStockCheck;
@@ -174,33 +186,14 @@ public class Event {
 
     //stockcheckLotdetail数据变化之后，修改stockcheckdetail的数据
     public static class StockCheckDetailbyLotCheckEvent {
-        private StockLotCheckDeatilData mStockLotCheckDeatilData;
-        private String Sumqty;
+        private StockCheckDeatilData mStockLotCheckDeatilData;
 
-        public StockCheckDetailbyLotCheckEvent(StockLotCheckDeatilData mStockLotCheckDeatilData, String Sumqty) {
+        public StockCheckDetailbyLotCheckEvent(StockCheckDeatilData mStockLotCheckDeatilData) {
             this.mStockLotCheckDeatilData = mStockLotCheckDeatilData;
-            this.Sumqty = Sumqty;
         }
 
-        public StockLotCheckDeatilData getStockCheckDeatilData() {
+        public StockCheckDeatilData getStockLotCheckDeatilData() {
             return mStockLotCheckDeatilData;
-        }
-
-        public String getSumqty() {
-            return Sumqty;
-        }
-    }
-
-    //单击ShippingPlan跳转到LotShipping
-    public static class LotShippingByShippingPlanEvent {
-        private ShippingPlanData mShippingPlanData;
-
-        public LotShippingByShippingPlanEvent(ShippingPlanData mShippingPlanData) {
-            this.mShippingPlanData = mShippingPlanData;
-        }
-
-        public ShippingPlanData getShippingPlanData() {
-            return mShippingPlanData;
         }
     }
 

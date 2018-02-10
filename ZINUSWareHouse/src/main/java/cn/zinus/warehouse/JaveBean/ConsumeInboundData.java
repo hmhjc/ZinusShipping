@@ -27,8 +27,10 @@ public class ConsumeInboundData implements Serializable {
     private String ORDERCOMPANY;
     private String DIVERSIONQTY;
     private String DIVERSIONUNIT;
+    private String SPEC_DESC;
     private String RATE;
     private int backgroundColor;
+
 
     @Override
     public String toString() {
@@ -50,11 +52,19 @@ public class ConsumeInboundData implements Serializable {
                 ", ORDERCOMPANY='" + ORDERCOMPANY + '\'' +
                 ", DIVERSIONQTY='" + DIVERSIONQTY + '\'' +
                 ", DIVERSIONUNIT='" + DIVERSIONUNIT + '\'' +
+                ", SPEC_DESC='" + SPEC_DESC + '\'' +
                 ", RATE='" + RATE + '\'' +
                 ", backgroundColor=" + backgroundColor +
                 '}';
     }
 
+    public String getSPEC_DESC() {
+        return SPEC_DESC;
+    }
+
+    public void setSPEC_DESC(String SPEC_DESC) {
+        this.SPEC_DESC = SPEC_DESC;
+    }
     public String getRATE() {
         return RATE;
     }

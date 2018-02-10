@@ -18,6 +18,11 @@ android {
         }
     }
 
+    lintOptions{
+        checkReleaseBuilds false
+        abortOnError false
+    }
+
     sourceSets {
         main {
             res.srcDirs = [

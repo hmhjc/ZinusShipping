@@ -1,7 +1,10 @@
 package cn.zinus.shipping.Fragment;
 
-import cn.zinus.shipping.JaveBean.PODate;
+import java.util.ArrayList;
+
+import cn.zinus.shipping.JaveBean.ShippingCommonData;
 import cn.zinus.shipping.JaveBean.ShippingPlanData;
+import cn.zinus.shipping.JaveBean.ShippingPlanSeqListData;
 import cn.zinus.shipping.JaveBean.StockCheckData;
 
 /**
@@ -132,21 +135,39 @@ public class Event {
         }
     }
 
-    //单击ShippingPlanDetail的po，跳转到扫标签的画面
-    public static class LotShippingByPOEvent{
-        private PODate mPODate;
+    //选择，跳转到扫标签的画面
+    public static class LotShippingByContainerEvent {
+        private ArrayList<ShippingPlanSeqListData> mPlanSeqListData;
         private ShippingPlanData mShippingPlanData;
-        public LotShippingByPOEvent(ShippingPlanData mShippingPlanData,PODate mPODate){
-            this.mPODate = mPODate;
+        private ShippingCommonData mShippingCommonData;
+
+        public LotShippingByContainerEvent(ShippingPlanData mShippingPlanData, ArrayList<ShippingPlanSeqListData> mPlanSeqListData, ShippingCommonData mShippingCommonData){
+            this.mPlanSeqListData = mPlanSeqListData;
             this.mShippingPlanData = mShippingPlanData;
+            this.mShippingCommonData = mShippingCommonData;
         }
 
-        public PODate getPODate() {
-            return mPODate;
+        public ArrayList<ShippingPlanSeqListData> getPlanSeqListData() {
+            return mPlanSeqListData;
         }
 
         public ShippingPlanData getShippingPlanData() {
             return mShippingPlanData;
+        }
+        public ShippingCommonData getShippingCommonData() {
+            return mShippingCommonData;
+        }
+    }
+
+    //保存好以后,PlanDetail tab重新搜索一下
+    public static class ReSearchShippingPlanDetail {
+        private String ContainerSeq;
+        public ReSearchShippingPlanDetail(String ContainerSeq){
+            this.ContainerSeq = ContainerSeq ;
+        }
+
+        public String getContainerSeq() {
+            return ContainerSeq;
         }
     }
 

@@ -54,6 +54,9 @@ public class SyncPC implements Runnable {
     String stockcheckData;
     String stockcheckDetailData;
     String stocklotcheckDetailData;
+    String consumeRequestData;
+    String consumeOutboundData;
+    String consumeLotOutboundData;
 
     public SyncPC(Socket client, ArrayList<?> list, Context mContext) {
         this.client = client;
@@ -218,6 +221,7 @@ public class SyncPC implements Runnable {
 
                             //endregion
 
+                            //region 出库相关
                             //region UpdateStockout
                             case Constant.UPDATESTOCKOUTSTART:
                                 /**
@@ -258,9 +262,60 @@ public class SyncPC implements Runnable {
                                 String strSF_CONSUMELOTOUTBOUND = receiveFileFromSocket(in, out, lengthSF_CONSUMELOTOUTBOUND);
                                 Log.e("更新SF_CONSUMELOTOUTBOUND", strSF_CONSUMELOTOUTBOUND.length() + ":" + strSF_CONSUMELOTOUTBOUND);
                                 mUpdateSqlite.updateConsumeLotOutbound(strSF_CONSUMELOTOUTBOUND);
+                                out.write(Constant.SYNCSF_CONSUMABLELOT.getBytes());
+                                out.flush();
+                                break;
+                            case Constant.SYNCSF_CONSUMABLELOT:
+                                int lengthSF_CONSUMABLELOT = Integer.parseInt(resultStr);
+                                out.write(Constant.IYNCSF_CONSUMABLELOT.getBytes());
+                                out.flush();
+                                Log.e("更新SF_CONSUMABLELOT", resultStr);
+                                String strSF_CONSUMABLELOT = receiveFileFromSocket(in, out, lengthSF_CONSUMABLELOT);
+                                Log.e("更新SF_CONSUMABLELOT", strSF_CONSUMABLELOT.length() + ":" + strSF_CONSUMABLELOT);
+                                mUpdateSqlite.updateConsumableLot(strSF_CONSUMABLELOT);
                                 out.write(Constant.UPDATEEXIT.getBytes());
                                 out.flush();
                                 break;
+                            //endregion
+
+                            //region UploadStockOut
+                            case Constant.UPLOADSTOCKOUTSTART:
+                                consumeRequestData = getInboundOrderData();
+                                String consumeRequestData1 = Constant.UPLOADCONSUMEREQUESTINFO + consumeRequestData.getBytes("UTF8").length;
+                                Log.e("准备上传consumeRequest", consumeRequestData1);
+                                out.write(consumeRequestData1.getBytes());
+                                out.flush();
+                                break;
+                            case Constant.UPLOADCONSUMEREQUEST:
+                                Log.e("上传consumeRequest", consumeRequestData);
+                                out.write(consumeRequestData.getBytes("UTF8"));
+                                out.flush();
+                                break;
+                            case Constant.UPLOADCONSUMEOUTBOUNDINFO:
+                                consumeOutboundData = getConsumeInboundData();
+                                String consumeOutboundData1 = Constant.UPLOADCONSUMEOUTBOUNDINFO + consumeOutboundData.getBytes("UTF8").length;
+                                Log.e("准备上传consumeOutbound", consumeOutboundData1);
+                                out.write(consumeOutboundData1.getBytes());
+                                out.flush();
+                                break;
+                            case Constant.UPLOADCONSUMEOUTBOUND:
+                                Log.e("上传consumeOutbound", consumeOutboundData);
+                                out.write(consumeOutboundData.getBytes("UTF8"));
+                                out.flush();
+                                break;
+                            case Constant.UPLOADCONSUMELOTOUTBOUNDINFO:
+                                consumeLotOutboundData = getConsumeLotInboundData();
+                                String consumeLotOutboundData1 = Constant.UPLOADCONSUMELOTOUTBOUNDINFO + consumeLotOutboundData.getBytes("UTF8").length;
+                                Log.e("准备上传consumeLotOutbound", consumeLotOutboundData1);
+                                out.write(consumeLotOutboundData1.getBytes());
+                                out.flush();
+                                break;
+                            case Constant.UPLOADCONSUMELOTOUTBOUND:
+                                Log.e("上传consumeLotOutbound", consumeLotOutboundData);
+                                out.write(consumeLotOutboundData.getBytes("UTF8"));
+                                out.flush();
+                                break;
+                            //endregion
                             //endregion
 
                             //region 盘点相关
@@ -644,6 +699,7 @@ public class SyncPC implements Runnable {
                 uploadStockCheckDetail.setCHECKMONTH(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.CHECKMONTH)));
                 uploadStockCheckDetail.setUSERID(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.USERID)));
                 uploadStockCheckDetail.setUSERNAME(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.USERNAME)));
+                uploadStockCheckDetail.setDESCRIPTION(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.DESCRIPTION)));
                 if (uploadStockCheckDetail.getUSERNAME() == null)
                     uploadStockCheckDetail.setUSERNAME("");
                 stockCheckDetails.add(uploadStockCheckDetail);
@@ -676,6 +732,7 @@ public class SyncPC implements Runnable {
                 stockLotCheckDetail.setCHECKMONTH(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.CHECKMONTH)));
                 stockLotCheckDetail.setUSERID(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.USERID)));
                 stockLotCheckDetail.setUSERNAME(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.USERNAME)));
+                stockLotCheckDetail.setDESCRIPTION(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.DESCRIPTION)));
                 if (stockLotCheckDetail.getUSERNAME() == null)
                     stockLotCheckDetail.setUSERNAME("");
                 uploadStockLotCheckDetailArrayList.add(stockLotCheckDetail);

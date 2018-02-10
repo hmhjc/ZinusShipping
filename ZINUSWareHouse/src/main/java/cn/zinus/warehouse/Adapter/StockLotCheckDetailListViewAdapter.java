@@ -1,7 +1,6 @@
 package cn.zinus.warehouse.Adapter;
 
 import android.content.Context;
-import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -74,7 +73,7 @@ public class StockLotCheckDetailListViewAdapter extends BaseAdapter {
         listItemView.tvcheckqty.setText(data.getCHECKQTY());
         listItemView.tvqty.setText(data.getQTY());
         listItemView.tvcheckusername.setText(data.getUSERNAME());
-        listItemView.tvcheckqty.setTextColor(ContextCompat.getColor(mContext, data.getBackgroundColor()));
+//        listItemView.tvcheckqty.setTextColor(ContextCompat.getColor(mContext, data.getBackgroundColor()));
         return convertView;
     }
 

@@ -25,6 +25,7 @@ public class StockCheckDetailListViewAdapter extends BaseAdapter {
     private List<StockCheckDeatilData> listMap;
 
     public final class ListItemView {
+        public TextView tvspecdesc;
         public TextView tvconsuabledefnamme;
         public TextView tvWarehouseID;
         public TextView tvunit;
@@ -59,6 +60,7 @@ public class StockCheckDetailListViewAdapter extends BaseAdapter {
         if (convertView == null) {
             listItemView = new ListItemView();
             convertView = mInflater.inflate(R.layout.lv_item_stockcheckdetail, null);
+            listItemView.tvspecdesc = (TextView) convertView.findViewById(R.id.tv_spec_desc);
             listItemView.tvconsuabledefnamme = (TextView) convertView.findViewById(R.id.tv_consuabledefnamme);
             listItemView.tvWarehouseID = (TextView) convertView.findViewById(R.id.tv_WarehouseID);
             listItemView.tvunit = (TextView) convertView.findViewById(R.id.tv_unit);
@@ -69,6 +71,7 @@ public class StockCheckDetailListViewAdapter extends BaseAdapter {
             listItemView = (ListItemView) convertView.getTag();
         }
         StockCheckDeatilData data = listMap.get(position);
+        listItemView.tvspecdesc.setText(data.getSPEC_DESC());
         listItemView.tvconsuabledefnamme.setText(data.getCONSUMEABLDEFNAME());
         listItemView.tvWarehouseID.setText(data.getWAREHOUSEID());
         listItemView.tvunit.setText(data.getUNIT());

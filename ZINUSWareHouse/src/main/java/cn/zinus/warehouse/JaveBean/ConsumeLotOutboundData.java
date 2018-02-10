@@ -11,26 +11,18 @@ import java.io.Serializable;
 public class ConsumeLotOutboundData implements Serializable {
     private String CONSUMEREQNO;
     private String CONSUMABLELOTID;
-    private String UNIT;
+    private String CONSUMABLEDEFID;
+    private String CONSUMABLEDEFNAME;
+    private String CONSUMABLEDEFVERSION;
+    private String SPEC_DESC;
+    private String DEFAULTUNIT;
     private String OUTQTY;
     private String OUTBOUNDSTATE;
-    private String USERID;
-    private String OUTBOUNDDATE;
-    private String DESCRIPTION;
-    private String VALIDSTATE;
     private String WAREHOUSEID;
-    private String CONSUMABLEDEFID;
-    private String CONSUMABLEDEFVERSION;
-    private String CONSUMABLEDEFNAME;
+    private String FROMWAREHOUSEID;
+    private String TAGID;
+    private String TAGQTY;
     private int backgroundColor;
-
-    public int getBackgroundColor() {
-        return backgroundColor;
-    }
-
-    public void setBackgroundColor(int backgroundColor) {
-        this.backgroundColor = backgroundColor;
-    }
 
     public String getCONSUMABLEDEFNAME() {
         return CONSUMABLEDEFNAME;
@@ -56,12 +48,36 @@ public class ConsumeLotOutboundData implements Serializable {
         this.CONSUMABLELOTID = CONSUMABLELOTID;
     }
 
-    public String getUNIT() {
-        return UNIT;
+    public String getCONSUMABLEDEFID() {
+        return CONSUMABLEDEFID;
     }
 
-    public void setUNIT(String UNIT) {
-        this.UNIT = UNIT;
+    public void setCONSUMABLEDEFID(String CONSUMABLEDEFID) {
+        this.CONSUMABLEDEFID = CONSUMABLEDEFID;
+    }
+
+    public String getCONSUMABLEDEFVERSION() {
+        return CONSUMABLEDEFVERSION;
+    }
+
+    public void setCONSUMABLEDEFVERSION(String CONSUMABLEDEFVERSION) {
+        this.CONSUMABLEDEFVERSION = CONSUMABLEDEFVERSION;
+    }
+
+    public String getSPEC_DESC() {
+        return SPEC_DESC;
+    }
+
+    public void setSPEC_DESC(String SPEC_DESC) {
+        this.SPEC_DESC = SPEC_DESC;
+    }
+
+    public String getDEFAULTUNIT() {
+        return DEFAULTUNIT;
+    }
+
+    public void setDEFAULTUNIT(String DEFAULTUNIT) {
+        this.DEFAULTUNIT = DEFAULTUNIT;
     }
 
     public String getOUTQTY() {
@@ -80,38 +96,6 @@ public class ConsumeLotOutboundData implements Serializable {
         this.OUTBOUNDSTATE = OUTBOUNDSTATE;
     }
 
-    public String getUSERID() {
-        return USERID;
-    }
-
-    public void setUSERID(String USERID) {
-        this.USERID = USERID;
-    }
-
-    public String getOUTBOUNDDATE() {
-        return OUTBOUNDDATE;
-    }
-
-    public void setOUTBOUNDDATE(String OUTBOUNDDATE) {
-        this.OUTBOUNDDATE = OUTBOUNDDATE;
-    }
-
-    public String getDESCRIPTION() {
-        return DESCRIPTION;
-    }
-
-    public void setDESCRIPTION(String DESCRIPTION) {
-        this.DESCRIPTION = DESCRIPTION;
-    }
-
-    public String getVALIDSTATE() {
-        return VALIDSTATE;
-    }
-
-    public void setVALIDSTATE(String VALIDSTATE) {
-        this.VALIDSTATE = VALIDSTATE;
-    }
-
     public String getWAREHOUSEID() {
         return WAREHOUSEID;
     }
@@ -120,29 +104,35 @@ public class ConsumeLotOutboundData implements Serializable {
         this.WAREHOUSEID = WAREHOUSEID;
     }
 
-    public String getCONSUMABLEDEFID() {
-        return CONSUMABLEDEFID;
+    public String getFROMWAREHOUSEID() {
+        return FROMWAREHOUSEID;
     }
 
-    public void setCONSUMABLEDEFID(String CONSUMABLEDEFID) {
-        this.CONSUMABLEDEFID = CONSUMABLEDEFID;
+    public void setFROMWAREHOUSEID(String FROMWAREHOUSEID) {
+        this.FROMWAREHOUSEID = FROMWAREHOUSEID;
     }
 
-    public String getCONSUMABLEDEFVERSION() {
-        return CONSUMABLEDEFVERSION;
+    public String getTAGID() {
+        return TAGID;
     }
 
-    public void setCONSUMABLEDEFVERSION(String CONSUMABLEDEFVERSION) {
-        this.CONSUMABLEDEFVERSION = CONSUMABLEDEFVERSION;
+    public void setTAGID(String TAGID) {
+        this.TAGID = TAGID;
     }
 
-    public String getREQUESTQTY() {
-        return REQUESTQTY;
+    public String getTAGQTY() {
+        return TAGQTY;
     }
 
-    public void setREQUESTQTY(String REQUESTQTY) {
-        this.REQUESTQTY = REQUESTQTY;
+    public void setTAGQTY(String TAGQTY) {
+        this.TAGQTY = TAGQTY;
     }
 
-    private String REQUESTQTY;
+    public int getBackgroundColor() {
+        return backgroundColor;
+    }
+
+    public void setBackgroundColor(int backgroundColor) {
+        this.backgroundColor = backgroundColor;
+    }
 }

@@ -9,42 +9,29 @@ import java.io.Serializable;
  */
 
 public class ConsumeOutboundData implements Serializable {
-    private String CONSUMABLEDEFID;
-    private String CONSUMABLEDEFVERSION;
-    private String CONSUMABLEDEFNAME;
-    private String WAREHOUSEID;
+
     private String CONSUMEREQNO;
-    private String UNIT;
-    private String OUTBOUNDSTATE;
-    private String USERID;
+    private String CONSUMABLEDEFID;
+    private String CONSUMABLEDEFNAME;
+    private String CONSUMABLEDEFVERSION;
+    private String SPEC_DESC;
+    private String WAREHOUSEID;
     private String FROMWAREHOUSEID;
-    private String VALIDSTATE;
+    private String TOQTY;
+    private String UNIT;
+    private String FROMQTY;
     private String REQUESTQTY;
     private String OUTQTY;
+    private String CONSUMABLETYPE;
+    private String WAREHOUSEOWNERSHIPTYPE;
     private int backgroundColor;
 
-    public int getBackgroundColor() {
-        return backgroundColor;
+    public String getCONSUMEREQNO() {
+        return CONSUMEREQNO;
     }
 
-    public void setBackgroundColor(int backgroundColor) {
-        this.backgroundColor = backgroundColor;
-    }
-
-    public String getFROMWAREHOUSEID() {
-        return FROMWAREHOUSEID;
-    }
-
-    public void setFROMWAREHOUSEID(String FROMWAREHOUSEID) {
-        this.FROMWAREHOUSEID = FROMWAREHOUSEID;
-    }
-
-    public String getCONSUMABLEDEFNAME() {
-        return CONSUMABLEDEFNAME;
-    }
-
-    public void setCONSUMABLEDEFNAME(String CONSUMABLEDEFNAME) {
-        this.CONSUMABLEDEFNAME = CONSUMABLEDEFNAME;
+    public void setCONSUMEREQNO(String CONSUMEREQNO) {
+        this.CONSUMEREQNO = CONSUMEREQNO;
     }
 
     public String getCONSUMABLEDEFID() {
@@ -55,12 +42,28 @@ public class ConsumeOutboundData implements Serializable {
         this.CONSUMABLEDEFID = CONSUMABLEDEFID;
     }
 
+    public String getCONSUMABLEDEFNAME() {
+        return CONSUMABLEDEFNAME;
+    }
+
+    public void setCONSUMABLEDEFNAME(String CONSUMABLEDEFNAME) {
+        this.CONSUMABLEDEFNAME = CONSUMABLEDEFNAME;
+    }
+
     public String getCONSUMABLEDEFVERSION() {
         return CONSUMABLEDEFVERSION;
     }
 
     public void setCONSUMABLEDEFVERSION(String CONSUMABLEDEFVERSION) {
         this.CONSUMABLEDEFVERSION = CONSUMABLEDEFVERSION;
+    }
+
+    public String getSPEC_DESC() {
+        return SPEC_DESC;
+    }
+
+    public void setSPEC_DESC(String SPEC_DESC) {
+        this.SPEC_DESC = SPEC_DESC;
     }
 
     public String getWAREHOUSEID() {
@@ -71,12 +74,20 @@ public class ConsumeOutboundData implements Serializable {
         this.WAREHOUSEID = WAREHOUSEID;
     }
 
-    public String getCONSUMEREQNO() {
-        return CONSUMEREQNO;
+    public String getFROMWAREHOUSEID() {
+        return FROMWAREHOUSEID;
     }
 
-    public void setCONSUMEREQNO(String CONSUMEREQNO) {
-        this.CONSUMEREQNO = CONSUMEREQNO;
+    public void setFROMWAREHOUSEID(String FROMWAREHOUSEID) {
+        this.FROMWAREHOUSEID = FROMWAREHOUSEID;
+    }
+
+    public String getTOQTY() {
+        return TOQTY;
+    }
+
+    public void setTOQTY(String TOQTY) {
+        this.TOQTY = TOQTY;
     }
 
     public String getUNIT() {
@@ -87,28 +98,12 @@ public class ConsumeOutboundData implements Serializable {
         this.UNIT = UNIT;
     }
 
-    public String getOUTBOUNDSTATE() {
-        return OUTBOUNDSTATE;
+    public String getFROMQTY() {
+        return FROMQTY;
     }
 
-    public void setOUTBOUNDSTATE(String OUTBOUNDSTATE) {
-        this.OUTBOUNDSTATE = OUTBOUNDSTATE;
-    }
-
-    public String getUSERID() {
-        return USERID;
-    }
-
-    public void setUSERID(String USERID) {
-        this.USERID = USERID;
-    }
-
-    public String getVALIDSTATE() {
-        return VALIDSTATE;
-    }
-
-    public void setVALIDSTATE(String VALIDSTATE) {
-        this.VALIDSTATE = VALIDSTATE;
+    public void setFROMQTY(String FROMQTY) {
+        this.FROMQTY = FROMQTY;
     }
 
     public String getREQUESTQTY() {
@@ -125,5 +120,29 @@ public class ConsumeOutboundData implements Serializable {
 
     public void setOUTQTY(String OUTQTY) {
         this.OUTQTY = OUTQTY;
+    }
+
+    public String getCONSUMABLETYPE() {
+        return CONSUMABLETYPE;
+    }
+
+    public void setCONSUMABLETYPE(String CONSUMABLETYPE) {
+        this.CONSUMABLETYPE = CONSUMABLETYPE;
+    }
+
+    public String getWAREHOUSEOWNERSHIPTYPE() {
+        return WAREHOUSEOWNERSHIPTYPE;
+    }
+
+    public void setWAREHOUSEOWNERSHIPTYPE(String WAREHOUSEOWNERSHIPTYPE) {
+        this.WAREHOUSEOWNERSHIPTYPE = WAREHOUSEOWNERSHIPTYPE;
+    }
+
+    public int getBackgroundColor() {
+        return backgroundColor;
+    }
+
+    public void setBackgroundColor(int backgroundColor) {
+        this.backgroundColor = backgroundColor;
     }
 }

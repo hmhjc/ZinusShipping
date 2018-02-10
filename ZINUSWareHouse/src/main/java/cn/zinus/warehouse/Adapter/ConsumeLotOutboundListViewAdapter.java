@@ -1,7 +1,6 @@
 package cn.zinus.warehouse.Adapter;
 
 import android.content.Context;
-import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,12 +24,9 @@ public class ConsumeLotOutboundListViewAdapter extends BaseAdapter {
     private List<ConsumeLotOutboundData> listMap;
 
     public final class ListItemView {
-        public TextView tvconsuabledefnamme;
         public TextView tvconsuablelotid;
         public TextView tvunit;
         public TextView tvOutqty;
-        public TextView tvRequestqty;
-
     }
 
     public ConsumeLotOutboundListViewAdapter(Context context, List<ConsumeLotOutboundData> listMap) {
@@ -60,22 +56,17 @@ public class ConsumeLotOutboundListViewAdapter extends BaseAdapter {
         if (convertView == null) {
             listItemView = new ListItemView();
             convertView = mInflater.inflate(R.layout.lv_item_consumelotoutbound, null);
-            listItemView.tvconsuabledefnamme = (TextView) convertView.findViewById(R.id.tv_consuabledefnamme);
             listItemView.tvconsuablelotid = (TextView) convertView.findViewById(R.id.tv_consuablelotid);
             listItemView.tvunit = (TextView) convertView.findViewById(R.id.tv_unit);
             listItemView.tvOutqty = (TextView) convertView.findViewById(R.id.tv_outqty);
-            listItemView.tvRequestqty = (TextView) convertView.findViewById(R.id.tv_requestqty);
             convertView.setTag(listItemView);
         } else {
             listItemView = (ListItemView) convertView.getTag();
         }
         ConsumeLotOutboundData data = listMap.get(position);
-        listItemView.tvconsuabledefnamme.setText(data.getCONSUMABLEDEFNAME());
         listItemView.tvconsuablelotid.setText(data.getCONSUMABLELOTID());
-        listItemView.tvunit.setText(data.getUNIT());
+        listItemView.tvunit.setText(data.getDEFAULTUNIT());
         listItemView.tvOutqty.setText(data.getOUTQTY());
-        listItemView.tvOutqty.setTextColor(ContextCompat.getColor(mContext, data.getBackgroundColor()));
-        listItemView.tvRequestqty.setText(data.getREQUESTQTY());
         return convertView;
     }
 

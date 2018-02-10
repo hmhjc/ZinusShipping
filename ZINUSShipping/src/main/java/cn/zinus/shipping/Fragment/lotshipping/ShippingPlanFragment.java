@@ -239,7 +239,7 @@ public class ShippingPlanFragment extends KeyDownFragment {
     }
     //endregion
 
-    //region searchPOlist
+    //region searchShippingPlanlist
     protected void UpDateShippingPlan() {
         String ShippingPlanState =((CodeData) spShippingPlanState.getSelectedItem()).getCODEID();
         String ShippingPlanFromDate = tvFromDate.getText().toString();

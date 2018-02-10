@@ -9,28 +9,24 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import cn.zinus.shipping.JaveBean.PODate;
 import cn.zinus.shipping.R;
 
 /**
  * Developer:Spring
- * DataTime :2017/12/30 10:03
- * Main Change:PO ListView Adapter
+ * DataTime :
+ * Main Change:
  */
 
-public class POListViewAdapter extends BaseAdapter {
+public class TestListViewAdapter extends BaseAdapter {
     private Context mContext;
     private LayoutInflater mInflater;
-    private List<PODate> listMap;
+    private List<String> listMap;
 
     public final class ListItemView {
-        public TextView tvPOID;
-        public TextView tvPOQTY;
-        public TextView tvContainerNo;
-        public TextView tvSealNo;
+        public TextView tvtag;
     }
 
-    public POListViewAdapter(Context context, List<PODate> listMap) {
+    public TestListViewAdapter(Context context, List<String> listMap) {
         this.mContext = context;
         this.mInflater = LayoutInflater.from(mContext);
         this.listMap = listMap;
@@ -56,20 +52,15 @@ public class POListViewAdapter extends BaseAdapter {
         ListItemView listItemView = null;
         if (convertView == null) {
             listItemView = new ListItemView();
-            convertView = mInflater.inflate(R.layout.lv_item_po, null);
-            listItemView.tvPOID= (TextView) convertView.findViewById(R.id.tv_POID);
-            listItemView.tvPOQTY= (TextView) convertView.findViewById(R.id.tv_poqty);
-            listItemView.tvContainerNo= (TextView) convertView.findViewById(R.id.tv_ContainerNo);
-            listItemView.tvSealNo= (TextView) convertView.findViewById(R.id.tv_SealNo);
+            convertView = mInflater.inflate(R.layout.lv_item_test, null);
+            listItemView.tvtag= (TextView) convertView.findViewById(R.id.tv_tag);
+
             convertView.setTag(listItemView);
         } else {
             listItemView = (ListItemView) convertView.getTag();
         }
-        PODate data = listMap.get(position);
-        listItemView.tvPOID.setText(data.getPOID());
-        listItemView.tvPOQTY.setText(data.getPOQTY());
-        listItemView.tvContainerNo.setText(data.getCONTAINERNO());
-        listItemView.tvSealNo.setText(data.getSEALNO());
+        listItemView.tvtag.setText(listMap.get(position));
         return convertView;
     }
 }
+

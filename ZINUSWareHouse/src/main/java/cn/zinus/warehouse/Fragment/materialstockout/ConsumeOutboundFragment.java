@@ -25,12 +25,15 @@ import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import cn.zinus.warehouse.Activity.MainNaviActivity;
 import cn.zinus.warehouse.Adapter.ConsumeOutboundListViewAdapter;
+import cn.zinus.warehouse.Fragment.Event;
 import cn.zinus.warehouse.Fragment.KeyDownFragment;
 import cn.zinus.warehouse.JaveBean.ConsumeOutboundData;
 import cn.zinus.warehouse.JaveBean.TagInfoData;
@@ -40,6 +43,8 @@ import cn.zinus.warehouse.util.DBManger;
 import cn.zinus.warehouse.util.MyDateBaseHelper;
 
 import static cn.zinus.warehouse.util.Constant.UPDATEUI;
+import static cn.zinus.warehouse.util.DBManger.getCursorData;
+import static cn.zinus.warehouse.util.Utils.showToast;
 
 /**
  * Created by Spring on 2017/2/18.
@@ -57,12 +62,12 @@ public class ConsumeOutboundFragment extends KeyDownFragment {
     private ListView mlvComsumeOutbound;
     private ConsumeOutboundListViewAdapter mConsumeOutboundListViewAdapter;
     private ArrayList<ConsumeOutboundData> mcomsumeOutboundDataList;
-     private ArrayList<String> IDlist;
     private TextView tvtagqty;
     private TextView tvConsumeRequestNo;
     private Handler handler = null;
     //数据库
     MyDateBaseHelper mHelper;
+    private SQLiteDatabase db;
     //endregion
 
     //region ◆ 생성자(Creator)
@@ -146,7 +151,6 @@ public class ConsumeOutboundFragment extends KeyDownFragment {
     //region initData
     private void initData() {
         mcomsumeOutboundDataList = new ArrayList<>();
-        IDlist = new ArrayList<>();
     }
     //endregion
 
@@ -167,8 +171,38 @@ public class ConsumeOutboundFragment extends KeyDownFragment {
                 return false;
             }
         });
+        mlvComsumeOutbound.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                if (isInconsumeLotOutbound(mcomsumeOutboundDataList.get(position).getCONSUMABLEDEFID()
+                        , mcomsumeOutboundDataList.get(position).getCONSUMABLEDEFVERSION()
+                ,mcomsumeOutboundDataList.get(position).getFROMWAREHOUSEID())) {
+                    EventBus.getDefault().post(new Event.ConsumeLotOutboundByConsumeDefIDEvent(mcomsumeOutboundDataList.get(position)));
+                } else {
+                    showToast(mContext, mContext.getString(R.string.isNormalConsume), 0);
+                }
+            }
+        });
     }
     //endregion
+
+    private boolean isInconsumeLotOutbound(String CONSUMABLEDEFID, String CONSUMABLEDEFVERSION,String WAREHOUSEID) {
+        //返回true说明是lot管理的资材，false说明不是lot管理的资材，需要长按修改数字
+        db = mHelper.getWritableDatabase();
+        boolean returnflag = false;
+        String selectDataListsql = String.format(mContext.getString(R.string.checkisInconsumeLotOutbound), CONSUMABLEDEFID, CONSUMABLEDEFVERSION,WAREHOUSEID);
+        Log.e("isInconsumeLotOutbound", selectDataListsql);
+        Cursor cursorDatalist = DBManger.selectDatBySql(db, selectDataListsql, null);
+        if (cursorDatalist != null) {
+            if (cursorDatalist.getCount() != 0) {
+                while (cursorDatalist.moveToNext()) {
+                    if (!getCursorData(cursorDatalist, Constant.COUNT).equals("0"))
+                        returnflag = true;
+                }
+            }
+        }
+        return returnflag;
+    }
 
     //region fixQty
     @SuppressLint("WrongConstant")
@@ -232,23 +266,33 @@ public class ConsumeOutboundFragment extends KeyDownFragment {
         if (cursorDatalist.getCount() != 0) {
             while (cursorDatalist.moveToNext()) {
                 ConsumeOutboundData consumeOutboundData = new ConsumeOutboundData();
-                consumeOutboundData.setCONSUMABLEDEFNAME(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.CONSUMABLEDEFNAME)));
-                consumeOutboundData.setUNIT(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.UNIT)));
-                consumeOutboundData.setREQUESTQTY(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.REQUESTQTY)));
-                if (cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.OUTQTY)).equals("null")||
-                        cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.OUTQTY)).equals("")) {
+                consumeOutboundData.setCONSUMEREQNO(getCursorData(cursorDatalist, Constant.CONSUMEREQNO).trim());
+                consumeOutboundData.setCONSUMABLEDEFID(getCursorData(cursorDatalist, Constant.CONSUMABLEDEFID).trim());
+                consumeOutboundData.setCONSUMABLEDEFNAME(getCursorData(cursorDatalist, Constant.CONSUMABLEDEFNAME).trim());
+                consumeOutboundData.setCONSUMABLEDEFVERSION(getCursorData(cursorDatalist, Constant.CONSUMABLEDEFVERSION).trim());
+                consumeOutboundData.setSPEC_DESC(getCursorData(cursorDatalist, Constant.SPEC_DESC).trim());
+                consumeOutboundData.setWAREHOUSEID(getCursorData(cursorDatalist, Constant.WAREHOUSEID).trim());
+                consumeOutboundData.setFROMWAREHOUSEID(getCursorData(cursorDatalist, Constant.FROMWAREHOUSEID).trim());
+                consumeOutboundData.setTOQTY(getCursorData(cursorDatalist, Constant.TOQTY).trim());
+                consumeOutboundData.setUNIT(getCursorData(cursorDatalist, Constant.UNIT).trim());
+                consumeOutboundData.setFROMQTY(getCursorData(cursorDatalist, Constant.FROMQTY).trim());
+                consumeOutboundData.setREQUESTQTY(getCursorData(cursorDatalist, Constant.REQUESTQTY).trim());
+                consumeOutboundData.setCONSUMABLETYPE(getCursorData(cursorDatalist, Constant.CONSUMABLETYPE).trim());
+                consumeOutboundData.setWAREHOUSEOWNERSHIPTYPE(getCursorData(cursorDatalist, Constant.WAREHOUSEOWNERSHIPTYPE).trim());
+                consumeOutboundData.setOUTQTY(getCursorData(cursorDatalist, Constant.OUTQTY).trim());
+                if (getCursorData(cursorDatalist, Constant.OUTQTY).trim().equals("null") ||
+                        getCursorData(cursorDatalist, Constant.OUTQTY).trim().equals("")) {
                     consumeOutboundData.setOUTQTY("0");
                 } else {
-                    consumeOutboundData.setOUTQTY(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.OUTQTY)));
+                    consumeOutboundData.setOUTQTY(getCursorData(cursorDatalist, Constant.OUTQTY).trim());
                 }
-                if (Integer.parseInt(consumeOutboundData.getOUTQTY()) > Integer.parseInt(consumeOutboundData.getREQUESTQTY())) {
+                if (Float.parseFloat(consumeOutboundData.getOUTQTY()) > Float.parseFloat(consumeOutboundData.getREQUESTQTY())) {
                     consumeOutboundData.setBackgroundColor(R.color.qtymore);
-                } else if (Integer.parseInt(consumeOutboundData.getOUTQTY()) == Integer.parseInt(consumeOutboundData.getREQUESTQTY())) {
+                } else if (Float.parseFloat(consumeOutboundData.getOUTQTY()) == Float.parseFloat(consumeOutboundData.getREQUESTQTY())) {
                     consumeOutboundData.setBackgroundColor(R.color.qtymatch);
                 } else {
                     consumeOutboundData.setBackgroundColor(R.color.qtyless);
                 }
-
                 mcomsumeOutboundDataList.add(consumeOutboundData);
             }
         }
@@ -268,7 +312,6 @@ public class ConsumeOutboundFragment extends KeyDownFragment {
     public void actionClearAll() {
         mcomsumeOutboundDataList.clear();
         mConsumeOutboundListViewAdapter.notifyDataSetChanged();
-        IDlist.clear();
         tvtagqty.setText("0");
         tvConsumeRequestNo.setText("");
         TagInfoData data = new TagInfoData();

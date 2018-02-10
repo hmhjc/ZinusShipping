@@ -11,7 +11,6 @@ import org.json.JSONObject;
 
 import cn.zinus.warehouse.JaveBean.AreaData;
 import cn.zinus.warehouse.JaveBean.CodeData;
-import cn.zinus.warehouse.JaveBean.ConsumableLotData;
 import cn.zinus.warehouse.JaveBean.ConsumabledefinitionData;
 import cn.zinus.warehouse.JaveBean.ConsumeStockData;
 import cn.zinus.warehouse.JaveBean.WareHouseData;
@@ -22,7 +21,6 @@ import cn.zinus.warehouse.util.MyDateBaseHelper;
 import static cn.zinus.warehouse.util.Constant.AREAID;
 import static cn.zinus.warehouse.util.Constant.CONSUMABLEDEFID;
 import static cn.zinus.warehouse.util.Constant.CONSUMABLEDEFVERSION;
-import static cn.zinus.warehouse.util.Constant.CONSUMABLELOTID;
 import static cn.zinus.warehouse.util.Constant.PLANTID;
 import static cn.zinus.warehouse.util.Constant.QTY;
 import static cn.zinus.warehouse.util.Constant.VALIDSTATE;
@@ -100,6 +98,7 @@ public class UpdateSqlite {
                         , jsonObject.getString(Constant.PLANQTY)
                         , jsonObject.getString(Constant.INQTY)
                         , jsonObject.getString(Constant.DIVERSIONQTY)
+                        , jsonObject.getString(Constant.SPEC_DESC)
                         , jsonObject.getString(Constant.RATE));
                 db.execSQL(insertSQL);
             }
@@ -118,8 +117,13 @@ public class UpdateSqlite {
         try {
             db.beginTransaction();
             JSONArray array = new JSONArray(resultStr);
+            String tagqty = "";
             for (int i = 0; i < array.length(); i++) {
                 JSONObject jsonObject = array.getJSONObject(i);
+                tagqty = jsonObject.getString(Constant.TAGQTY);
+                if (tagqty == null || tagqty.equals("")) {
+                    tagqty = "0";
+                }
                 String insertSQL = String.format(Constant.InsertIntoCONSUMELOTINBOUND
                         , jsonObject.getString(Constant.INBOUNDNO)
                         , jsonObject.getString(Constant.CONSUMABLELOTID)
@@ -138,7 +142,8 @@ public class UpdateSqlite {
                         , jsonObject.getString(Constant.DIVERSIONQTY)
                         , jsonObject.getString(Constant.RATE)
                         , jsonObject.getString(Constant.TAGID)
-                        , jsonObject.getString(Constant.TAGQTY));
+                        , jsonObject.getString(Constant.SPEC_DESC)
+                        , tagqty);
                 db.execSQL(insertSQL);
             }
             db.setTransactionSuccessful();
@@ -195,15 +200,20 @@ public class UpdateSqlite {
             for (int i = 0; i < array.length(); i++) {
                 JSONObject jsonObject = array.getJSONObject(i);
                 String insertShippingPlan = String.format(Constant.InsertIntoCONSUMEOUTBOUND
-                        , jsonObject.getString(Constant.CONSUMABLEDEFID)
-                        , jsonObject.getString(Constant.CONSUMABLEDEFVERSION)
-                        , jsonObject.getString(Constant.WAREHOUSEID)
                         , jsonObject.getString(Constant.CONSUMEREQNO)
-                        , jsonObject.getString(Constant.UNIT)
-                        , jsonObject.getString(Constant.OUTBOUNDSTATE)
+                        , jsonObject.getString(Constant.CONSUMABLEDEFID)
+                        , jsonObject.getString(Constant.CONSUMABLEDEFNAME)
+                        , jsonObject.getString(Constant.CONSUMABLEDEFVERSION)
+                        , jsonObject.getString(Constant.SPEC_DESC)
+                        , jsonObject.getString(Constant.WAREHOUSEID)
                         , jsonObject.getString(Constant.FROMWAREHOUSEID)
+                        , jsonObject.getString(Constant.TOQTY)
+                        , jsonObject.getString(Constant.UNIT)
+                        , jsonObject.getString(Constant.FROMQTY)
                         , jsonObject.getString(Constant.REQUESTQTY)
-                        , jsonObject.getString(Constant.OUTQTY));
+                        , jsonObject.getString(Constant.OUTQTY)
+                        , jsonObject.getString(Constant.CONSUMABLETYPE)
+                        , jsonObject.getString(Constant.WAREHOUSEOWNERSHIPTYPE));
                 db.execSQL(insertShippingPlan);
             }
             db.setTransactionSuccessful();
@@ -221,19 +231,26 @@ public class UpdateSqlite {
         try {
             db.beginTransaction();
             JSONArray array = new JSONArray(resultStr);
+            String tagqty = "";
             for (int i = 0; i < array.length(); i++) {
                 JSONObject jsonObject = array.getJSONObject(i);
+                tagqty = jsonObject.getString(Constant.TAGQTY);
+                if (tagqty == null || tagqty.equals("")) {
+                    tagqty = "0";
+                }
                 String insertShippingPlan = String.format(Constant.InsertIntoCONSUMELOTOUTBOUND
+                        , jsonObject.getString(Constant.CONSUMEREQNO)
                         , jsonObject.getString(Constant.CONSUMABLELOTID)
                         , jsonObject.getString(Constant.CONSUMABLEDEFID)
                         , jsonObject.getString(Constant.CONSUMABLEDEFVERSION)
-                        , jsonObject.getString(Constant.WAREHOUSEID)
-                        , jsonObject.getString(Constant.CONSUMEREQNO)
-                        , jsonObject.getString(Constant.UNIT)
-                        , jsonObject.getString(Constant.OUTBOUNDSTATE)
+                        , jsonObject.getString(Constant.SPEC_DESC)
+                        , jsonObject.getString(Constant.DEFAULTUNIT)
                         , jsonObject.getString(Constant.OUTQTY)
+                     //   , jsonObject.getString(Constant.OUTBOUNDSTATE)
+                        , jsonObject.getString(Constant.WAREHOUSEID)
+                        , jsonObject.getString(Constant.FROMWAREHOUSEID)
                         , jsonObject.getString(Constant.TAGID)
-                        , jsonObject.getString(Constant.TAGQTY));
+                        , tagqty);
                 db.execSQL(insertShippingPlan);
             }
             db.setTransactionSuccessful();
@@ -244,6 +261,35 @@ public class UpdateSqlite {
     }
 
     //endregion
+
+    //region Table_SF_CONSUMABLELOT
+    public void updateConsumableLot(String resultStr) {
+        Log.e("更新CONSUMABLELOT", resultStr);
+        try {
+            db.beginTransaction();
+            JSONArray array = new JSONArray(resultStr);
+            String tagqty = "";
+            for (int i = 0; i < array.length(); i++) {
+                JSONObject jsonObject = array.getJSONObject(i);
+                String insertShippingPlan = String.format(Constant.InsertIntoCONSUMABLELOT
+                        , jsonObject.getString(Constant.CONSUMABLELOTID)
+                        , jsonObject.getString(Constant.WAREHOUSEID)
+                        , jsonObject.getString(Constant.CONSUMABLEDEFID)
+                        , jsonObject.getString(Constant.CONSUMABLEDEFVERSION)
+                        , jsonObject.getString(Constant.CREATEDQTY)
+                        , jsonObject.getString(Constant.QTY)
+                        , jsonObject.getString(Constant.RFID));
+                db.execSQL(insertShippingPlan);
+            }
+            db.setTransactionSuccessful();
+            db.endTransaction();
+        } catch (JSONException e) {
+            Log.e("CONSUMABLELOT更新出错", e.getMessage().toString());
+        }
+    }
+
+    //endregion
+
     //endregion
 
     //region 盘点表更新
@@ -292,7 +338,9 @@ public class UpdateSqlite {
                         , jsonObject.getString(Constant.QTY)
                         , jsonObject.getString(Constant.USERID)
                         , jsonObject.getString(Constant.CHECKUNIT)
-                        , jsonObject.getString(Constant.CHECKQTY));
+                        , jsonObject.getString(Constant.CHECKQTY)
+                        , jsonObject.getString(Constant.SPEC_DESC)
+                        , jsonObject.getString(Constant.DESCRIPTION));
                 db.execSQL(insertShippingPlan);
             }
             db.setTransactionSuccessful();
@@ -330,7 +378,9 @@ public class UpdateSqlite {
                         , jsonObject.getString(Constant.CHECKQTY)
                         , jsonObject.getString(Constant.CONSUMABLELOTID)
                         , jsonObject.getString(Constant.TAGID)
-                        , tagqty);
+                        , tagqty
+                        , jsonObject.getString(Constant.SPEC_DESC)
+                        , jsonObject.getString(Constant.DESCRIPTION));
                 db.execSQL(insertShippingPlan);
             }
             db.setTransactionSuccessful();
@@ -475,55 +525,6 @@ public class UpdateSqlite {
             statement.executeInsert();
         } catch (Exception e) {
             Log.e("CONSUMESTOCK更新出错", e.getMessage().toString());
-        }
-    }
-    //endregion
-
-    //region Table_SF_CONSUMABLELOT
-    public void updateConsumableLot(String resultStr) {
-        Log.e("更新CONSUMABLELOT", resultStr);
-        try {
-            JSONArray array = new JSONArray(resultStr);
-            StringBuffer CONSUMABLELOT_insert = new StringBuffer();
-            CONSUMABLELOT_insert.append("INSERT OR REPLACE INTO " + Constant.SF_CONSUMABLELOT + "("
-                    + CONSUMABLEDEFID + ","
-                    + CONSUMABLEDEFVERSION + ","
-                    + WAREHOUSEID + ","
-                    + QTY + ","
-                    + Constant.CONSUMABLESTATE + ","
-                    + Constant.CREATEDQTY + ","
-                    + CONSUMABLELOTID + ")");
-            CONSUMABLELOT_insert.append(" VALUES( ?, ?, ?, ?, ?, ?, ?)");
-            for (int i = 0; i < array.length(); i++) {
-                ConsumableLotData consumableLotData = new ConsumableLotData();
-                JSONObject jsonObject = array.getJSONObject(i);
-                consumableLotData.setCONSUMABLEDEFID(jsonObject.getString(CONSUMABLEDEFID));
-                consumableLotData.setCONSUMABLEDEFVERSION(jsonObject.getString(CONSUMABLEDEFVERSION));
-                consumableLotData.setWAREHOUSEID(jsonObject.getString(WAREHOUSEID));
-                consumableLotData.setQTY(jsonObject.getString(QTY));
-                consumableLotData.setCONSUMABLESTATE(jsonObject.getString(Constant.CONSUMABLESTATE));
-                consumableLotData.setCREATEDQTY(jsonObject.getString(Constant.CREATEDQTY));
-                consumableLotData.setCONSUMABLELOTID(jsonObject.getString(CONSUMABLELOTID));
-                updateTableSF_CONSUMABLELOT(consumableLotData, CONSUMABLELOT_insert.toString());
-            }
-        } catch (JSONException e) {
-            Log.e("CONSUMABLELOT出错", e.getMessage().toString());
-        }
-    }
-
-    private void updateTableSF_CONSUMABLELOT(ConsumableLotData consumableLotData, String CONSUMABLELOT_insert) {
-        SQLiteStatement statement = db.compileStatement(CONSUMABLELOT_insert);
-        statement.bindString(1, consumableLotData.getCONSUMABLEDEFID());
-        statement.bindString(2, consumableLotData.getCONSUMABLEDEFVERSION());
-        statement.bindString(3, consumableLotData.getWAREHOUSEID());
-        statement.bindString(4, consumableLotData.getQTY());
-        statement.bindString(5, consumableLotData.getCONSUMABLESTATE());
-        statement.bindString(6, consumableLotData.getCREATEDQTY());
-        statement.bindString(7, consumableLotData.getCONSUMABLELOTID());
-        try {
-            statement.executeInsert();
-        } catch (Exception e) {
-            Log.e("CONSUMABLELOT更新出错", e.getMessage().toString());
         }
     }
     //endregion

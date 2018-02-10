@@ -212,5 +212,17 @@
     <string name="ORDERCOMPANY">订货公司号码</string>
     <string name="DiversionQTY">库存数量</string>
     <string name="DiversionUnit">库存单位</string>
+    <string name="Spec_Desc">资材描述</string>
+    <string name="CheckNoConfirm">CheckNoConfirm</string>
+    <string name="CheckConfirm">CheckConfirm</string>
+    <string name="scanmode">扫描模式</string>
+    <string name="checkmode">盘点模式</string>
+    <string name="outqty">出库数量</string>
+    <string name="requsetQty">领料数量</string>
+    <string name="fromQty">发料仓库存</string>
+    <string name="toQty">领料仓库存</string>
+    <string name="ConsumeLotOutboundSum">邀请出库数量</string>
+    <string name="ConsumedLotOutboundSum">已经出库数量</string>
+    <string name="noConsumedLotOutboundSum">剩余出库数量</string>
 
 </resources>

@@ -4,7 +4,10 @@ import android.app.DatePickerDialog;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -16,6 +19,8 @@ import android.widget.DatePicker;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import com.zebra.adc.decoder.Barcode2DWithSoft;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -35,6 +40,7 @@ import cn.zinus.warehouse.util.Constant;
 import cn.zinus.warehouse.util.DBManger;
 import cn.zinus.warehouse.util.MyDateBaseHelper;
 
+import static cn.zinus.warehouse.util.Constant.BARCODESCAN;
 import static cn.zinus.warehouse.util.DBManger.getCursorData;
 
 /**
@@ -47,10 +53,10 @@ public class InboundOrderFragment extends KeyDownFragment {
     static SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd");//设置日期格式
     //上下文
     private MainNaviActivity mContext;
-//    //ConsumeInboundStateSpinner
-//    protected Spinner spConsumeInboundState;
-//    private ArrayAdapter mConsumeInboundStateAdapter;
-//    private ArrayList<CodeData> ConsumeInboundStateList;
+    public Barcode2DWithSoft BaecodeReader;
+    private Thread thread;
+    private boolean threadStop = true;
+    Handler handler = null;
     //ConsumabledefIdSpinner
     protected Spinner spWarehouse;
     private ArrayAdapter mWarehouseAdapter;
@@ -100,7 +106,19 @@ public class InboundOrderFragment extends KeyDownFragment {
         super.onActivityCreated(savedInstanceState);
         initData();
         initview();
-        //UpDateShippingPlan();
+        BaecodeReader = mContext.mBarcode2DWithSoft;
+        handler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                switch (msg.what) {
+                    case BARCODESCAN:
+                        String INBOUNDNO = msg.obj + "";
+                        Log.e("入库单号",INBOUNDNO.trim());
+                        EventBus.getDefault().post(new Event.ConsumeInboundByOrderEvent(INBOUNDNO.trim()));
+                        break;
+                }
+            }
+        };
     }
 
     //endregion
@@ -132,26 +150,9 @@ public class InboundOrderFragment extends KeyDownFragment {
     //region initData
     private void initData() {
         //初始化Spinner数据
-        //region ConsumeInboundStateList
-//        ConsumeInboundStateList = new ArrayList<>();
-//        ConsumeInboundStateList.add(new CodeData("",getString(R.string.SpinnerDefault)));
-//        SQLiteDatabase db = mHelper.getWritableDatabase();
-//        String selectDataListsql = String.format(getString(R.string.codeSpinner),Constant.CONSUMEINBOUNDSTATE,AppConfig.getInstance().getLanuageType());
-//        Log.e("ConsumeInboundState", selectDataListsql);
-//        Cursor cursorDatalist = DBManger.selectDatBySql(db, selectDataListsql, null);
-//        if (cursorDatalist.getCount() != 0) {
-//            while (cursorDatalist.moveToNext()) {
-//                CodeData spinnerData = new CodeData();
-//                spinnerData.setCODEID(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.CODEID)));
-//                spinnerData.setDICTIONARYNAME(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.DICTIONARYNAME)));
-//                ConsumeInboundStateList.add(spinnerData);
-//            }
-//        }
-        //endregion
-
         //region WarehouseList
         WarehouseList = new ArrayList<>();
-        WarehouseList.add(new CodeData("",getString(R.string.SpinnerDefault)));
+        WarehouseList.add(new CodeData("", getString(R.string.SpinnerDefault)));
         String selectWarehouse = getString(R.string.WarehouseSpinner);
         Log.e("WarehouseSpinner", selectWarehouse);
         Cursor cursorWarehouse = DBManger.selectDatBySql(db, selectWarehouse, null);
@@ -164,30 +165,12 @@ public class InboundOrderFragment extends KeyDownFragment {
             }
         }
         //endregion
-
         mInboundOrderDataList = new ArrayList<>();
     }
     //endregion
 
     //region initview
     private void initview() {
-
-        //region ConsumeInboundStateSpinner
-//        spConsumeInboundState = (Spinner) getView().findViewById(R.id.sp_ConsumeInboundState);
-//        mConsumeInboundStateAdapter = new ArrayAdapter(mContext, android.R.layout.simple_list_item_1, ConsumeInboundStateList);
-//        spConsumeInboundState.setAdapter(mConsumeInboundStateAdapter);
-//        spConsumeInboundState.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                UpDateOrder();
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parent) {
-//
-//            }
-//        });
-        //endregion
 
         //region ConsumabledefIdSpinner
         spWarehouse = (Spinner) getView().findViewById(R.id.sp_Warehouse);
@@ -282,8 +265,8 @@ public class InboundOrderFragment extends KeyDownFragment {
 
     //region UpDateShippingPlan
     protected void UpDateOrder() {
-      //  String ConsumeInboundState =((CodeData) spConsumeInboundState.getSelectedItem()).getCODEID();
-        String WarehouseID =((CodeData)spWarehouse.getSelectedItem()).getCODEID();
+        //  String ConsumeInboundState =((CodeData) spConsumeInboundState.getSelectedItem()).getCODEID();
+        String WarehouseID = ((CodeData) spWarehouse.getSelectedItem()).getCODEID();
         String OrderFromDate = tvFromDate.getText().toString();
         String OrderToDate = tvToDate.getText().toString();
         getInboundOrder(WarehouseID, OrderFromDate, OrderToDate);
@@ -292,11 +275,11 @@ public class InboundOrderFragment extends KeyDownFragment {
 
     private void getInboundOrder(String WarehouseID, String orderFromDate, String orderToDate) {
         SQLiteDatabase db = mHelper.getWritableDatabase();
-        String selectDataListsql = String.format(getString(R.string.GetInboundOrderQuery),orderFromDate,orderToDate);
+        String selectDataListsql = String.format(getString(R.string.GetInboundOrderQuery), orderFromDate, orderToDate);
         if (!WarehouseID.equals("")) {
-            selectDataListsql = selectDataListsql + String.format(getString(R.string.gioConditionWAREHOUSEID),WarehouseID);
+            selectDataListsql = selectDataListsql + String.format(getString(R.string.gioConditionWAREHOUSEID), WarehouseID);
         }
-        selectDataListsql = selectDataListsql+getString(R.string.gioOrderBy);
+        selectDataListsql = selectDataListsql + getString(R.string.gioOrderBy);
         Log.e("InboundOrder语句", selectDataListsql);
         Cursor cursorDatalist = DBManger.selectDatBySql(db, selectDataListsql, null);
         mInboundOrderDataList.clear();
@@ -313,7 +296,7 @@ public class InboundOrderFragment extends KeyDownFragment {
                 inboundOrderData.setINBOUNDSTATE(getCursorData(cursorDatalist, Constant.INBOUNDSTATE).trim());
                 inboundOrderData.setSTATENAME(getCursorData(cursorDatalist, Constant.STATENAME).trim());
                 inboundOrderData.setCONSUMABLECOUNT(getCursorData(cursorDatalist, Constant.CONSUMABLECOUNT).trim());
-                Log.e("inboundOrderData",inboundOrderData.toString());
+                Log.e("inboundOrderData", inboundOrderData.toString());
                 mInboundOrderDataList.add(inboundOrderData);
             }
         }
@@ -372,6 +355,79 @@ public class InboundOrderFragment extends KeyDownFragment {
             }
         }
     };
+
+    //endregion
+
+    //region ◆ Barcode相关
+
+    @Override
+    public void myOnKeyDown() {
+        readBarcodeTag();
+    }
+
+    private void readBarcodeTag() {
+        if (BaecodeReader != null) {
+            BaecodeReader.setScanCallback(mScanCallback);
+        }
+
+        if (threadStop) {
+            boolean bContinuous = false;
+            thread = new DecodeThread(bContinuous, 100);
+            thread.start();
+            threadStop = false;
+        } else {
+            if (BaecodeReader != null) {
+                BaecodeReader.stopScan();
+            }
+            threadStop = true;
+        }
+    }
+
+    //region Barcode Thread Class
+    private class DecodeThread extends Thread {
+        private boolean isContinuous = false;
+        private long sleepTime = 1000;
+
+        public DecodeThread(boolean isContinuous, int sleep) {
+            this.isContinuous = isContinuous;
+            this.sleepTime = sleep;
+        }
+
+        @Override
+        public void run() {
+            super.run();
+            do {
+                BaecodeReader.scan();
+                if (isContinuous) {
+                    try {
+                        Thread.sleep(sleepTime);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            } while (isContinuous && !threadStop);
+        }
+    }
+    //endregion
+
+    //region BarCode CallBack(扫描到Barcode时的回调事件)
+    public Barcode2DWithSoft.ScanCallback mScanCallback = new Barcode2DWithSoft.ScanCallback() {
+        @Override
+        public void onScanComplete(int i, int length, byte[] data) {
+            if (length < 1) {
+                return;
+            }
+            BaecodeReader.stopScan();
+            String barcode = new String(data).trim();
+            if (!TextUtils.isEmpty(barcode)) {
+                Message msg = handler.obtainMessage();
+                msg.what = BARCODESCAN;
+                msg.obj = barcode;
+                handler.sendMessage(msg);
+            }
+        }
+    };
+    //endregion
 
     //endregion
 

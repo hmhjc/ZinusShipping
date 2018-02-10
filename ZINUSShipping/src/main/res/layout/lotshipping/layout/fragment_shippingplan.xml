@@ -102,7 +102,7 @@
                     <TextView
                         style="@style/listviewcaption"
                         android:layout_width="150px"
-                        android:text="@string/ShippingPlanNo"/>
+                        android:text="@string/BookingNo"/>
 
                     <LinearLayout
                         style="@style/border_bottom_style"/>
@@ -120,7 +120,7 @@
                     <TextView
                         style="@style/listviewcaption"
                         android:layout_width="150px"
-                        android:text="@string/BookingNo"/>
+                        android:text="@string/ShippingEndPlanDate"/>
 
                     <LinearLayout
                         style="@style/border_bottom_style"/>
@@ -192,7 +192,7 @@
                     <TextView
                         style="@style/listviewcaption"
                         android:layout_width="150px"
-                        android:text="@string/ShippingEndPlanDate"/>
+                        android:text="@string/ShippingPlanNo"/>
 
                     <LinearLayout
                         style="@style/border_bottom_style"/>

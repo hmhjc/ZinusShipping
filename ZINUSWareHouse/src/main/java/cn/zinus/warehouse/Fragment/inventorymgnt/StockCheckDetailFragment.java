@@ -40,7 +40,6 @@ import cn.zinus.warehouse.Fragment.Event;
 import cn.zinus.warehouse.Fragment.KeyDownFragment;
 import cn.zinus.warehouse.JaveBean.StockCheckData;
 import cn.zinus.warehouse.JaveBean.StockCheckDeatilData;
-import cn.zinus.warehouse.JaveBean.StockLotCheckDeatilData;
 import cn.zinus.warehouse.JaveBean.TagInfoData;
 import cn.zinus.warehouse.R;
 import cn.zinus.warehouse.util.Constant;
@@ -74,6 +73,7 @@ public class StockCheckDetailFragment extends KeyDownFragment {
     private View mViewFixQty;
     //   private EditText etTagID;
     Handler handler = null;
+    boolean _savePlanFlag = false;
     //数据库
     MyDateBaseHelper mHelper;
     private SQLiteDatabase db;
@@ -291,13 +291,14 @@ public class StockCheckDetailFragment extends KeyDownFragment {
         if (cursorDatalist.getCount() != 0) {
             while (cursorDatalist.moveToNext()) {
                 StockCheckDeatilData stockCheckDetailData = new StockCheckDeatilData();
-                stockCheckDetailData.setCONSUMEABLDEFNAME(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.CONSUMABLEDEFNAME)).trim());
-                stockCheckDetailData.setWAREHOUSEID(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.WAREHOUSEID)));
-                stockCheckDetailData.setUNIT(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.UNIT)));
-                stockCheckDetailData.setQTY(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.QTY)));
-                stockCheckDetailData.setCONSUMEABLDEFID(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.CONSUMABLEDEFID)));
-                stockCheckDetailData.setCONSUMEABLDEFVERSION(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.CONSUMABLEDEFVERSION)));
-                stockCheckDetailData.setCHECKMONTH(cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.CHECKMONTH)));
+                stockCheckDetailData.setCONSUMEABLDEFNAME(getCursorData(cursorDatalist, Constant.CONSUMABLEDEFNAME).trim());
+                stockCheckDetailData.setWAREHOUSEID(getCursorData(cursorDatalist, Constant.WAREHOUSEID).trim());
+                stockCheckDetailData.setUNIT(getCursorData(cursorDatalist, Constant.UNIT).trim());
+                stockCheckDetailData.setQTY(getCursorData(cursorDatalist, Constant.QTY).trim());
+                stockCheckDetailData.setCONSUMEABLDEFID(getCursorData(cursorDatalist, Constant.CONSUMABLEDEFID).trim());
+                stockCheckDetailData.setCONSUMEABLDEFVERSION(getCursorData(cursorDatalist, Constant.CONSUMABLEDEFVERSION).trim());
+                stockCheckDetailData.setCHECKMONTH(getCursorData(cursorDatalist, Constant.CHECKMONTH).trim());
+//                stockCheckDetailData.setSPEC_DESC(getCursorData(cursorDatalist, Constant.SPEC_DESC).trim());
                 if (cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.CHECKQTY)).equals("null") ||
                         cursorDatalist.getString(cursorDatalist.getColumnIndex(Constant.CHECKQTY)).equals("")) {
                     stockCheckDetailData.setCHECKQTY("0");
@@ -324,13 +325,27 @@ public class StockCheckDetailFragment extends KeyDownFragment {
     }
     //endregion
 
-    public void updaCheckQtyByLot(StockLotCheckDeatilData mStockLotCheckDeatilData, String Sumqty) {
+    public void updaCheckQtyByLot(StockCheckDeatilData mStockLotCheckDeatilData) {
+        String checkqty ="";
+        db = mHelper.getWritableDatabase();
+        String selectDataListsql = String.format(mContext.getString(R.string.GetStockDetailCheckQty),
+                mStockLotCheckDeatilData.getCONSUMEABLDEFID(),mStockLotCheckDeatilData.getCONSUMEABLDEFVERSION());
+        Cursor cursorDatalist = DBManger.selectDatBySql(db, selectDataListsql, null);
+        if (cursorDatalist != null) {
+            if (cursorDatalist.getCount() != 0) {
+                while (cursorDatalist.moveToNext()) {
+                    checkqty =getCursorData(cursorDatalist, Constant.CHECKQTY).trim();
+                }
+            } else {
+                Log.e("没有符合条件的", "111111111");
+            }
+        }
         for (int i = 0; i < mStockCheckDeatilDataArrayList.size(); i++) {
             StockCheckDeatilData data = mStockCheckDeatilDataArrayList.get(i);
-            if (data.getCONSUMEABLDEFID().equals(mStockLotCheckDeatilData.getCONSUMABLEDEFID()) &&
-                    data.getCONSUMEABLDEFVERSION().equals(mStockLotCheckDeatilData.getCONSUMABLEDEFVERSION())) {
+            if (data.getCONSUMEABLDEFID().equals(mStockLotCheckDeatilData.getCONSUMEABLDEFID()) &&
+                    data.getCONSUMEABLDEFVERSION().equals(mStockLotCheckDeatilData.getCONSUMEABLDEFVERSION())) {
                 //找到对应的stockcheckdetail的数据，修改ui
-                data.setCHECKQTY(Sumqty);
+                data.setCHECKQTY(checkqty);
                 mStockCheckDeatilDataArrayList.set(i, data);
                 mStockCheckDetailListViewAdapter.notifyDataSetChanged();
                 Message message = new Message();
@@ -353,10 +368,13 @@ public class StockCheckDetailFragment extends KeyDownFragment {
                 , new String[]{data.getWAREHOUSEID(), data.getCHECKMONTH()
                         , data.getCONSUMEABLDEFID(), data.getCONSUMEABLDEFVERSION()});
         //更新stockcheck的标志位
-        ContentValues values1 = new ContentValues();
-        values1.put(Constant.ISPDASAVE, "Y");
-        db.update(Constant.SF_STOCKCHECK, values1, "WAREHOUSEID = ? AND CHECKMONTH = ?"
-                , new String[]{data.getWAREHOUSEID(), data.getCHECKMONTH()});
+        if (!_savePlanFlag) {
+            ContentValues values1 = new ContentValues();
+            values1.put(Constant.ISPDASAVE, "Y");
+            _savePlanFlag = true;
+            db.update(Constant.SF_STOCKCHECK, values1, "WAREHOUSEID = ? AND CHECKMONTH = ?"
+                    , new String[]{data.getWAREHOUSEID(), data.getCHECKMONTH()});
+        }
     }
     //endregion
 

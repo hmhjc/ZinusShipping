@@ -37,6 +37,8 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -51,7 +53,7 @@ import cn.zinus.warehouse.R;
 import cn.zinus.warehouse.util.Constant;
 import cn.zinus.warehouse.util.DBManger;
 import cn.zinus.warehouse.util.MyDateBaseHelper;
-import cn.zinus.warehouse.util.Utils;
+import cn.zinus.warehouse.util.SoundUtil;
 
 import static cn.zinus.warehouse.util.Constant.RFIDSCAN;
 import static cn.zinus.warehouse.util.Constant.UPDATEUI;
@@ -78,24 +80,39 @@ public class StockLotCheckDetailFragment extends KeyDownFragment implements View
     //popwindow
     private PopupWindow mpopFixQty;
     private View mViewFixQty;
+    private String UserID;
+    private String localUsername;
 
-    private PopupWindow mpopConfirmQty;
-    private View mViewConfirmQty;
     //ListView
     private ListView mlvStockLotCheckDetail;
     private StockLotCheckDetailListViewAdapter mStockLotCheckDetailListViewAdapter;
+    //listview的数据源
     private ArrayList<StockLotCheckDeatilData> mStockLotCheckDeatilDataArrayList;
+    private HashSet<String> _mStockLotCheckDeatilDataHashSet;
+    //这个用来记录所有盘点的list,用来判断扫到的lot是不是符合条件
+    private HashSet<String> _mCountLotHashSet;
+    //这个用来记录扫过的lot,用来判断这个tag是否被扫描过,防止重复扫描
+    private HashSet<String> _mScanLotHashSet;
+    //这个用来记录盘点好的lot,扫二维码的时候确认是否存在
+    private HashSet<String> _mStockedLotHashSet;
     private ArrayList<StockLotCheckDeatilData> _mStockLotCheckDeatilDataArrayList;
+    //保存一次扫描周期的时候扫到的TAG数据
+    private ArrayList<String> _tempStockLotCheckDeatilDataArrayList;
+    //这个画面的计划信息
+    StockCheckDeatilData _stockCheckDeatilData;
+    private TextView tvSpec_Desc;
     private TextView tvConsumabledefId;
     private TextView tvlistSumQty;
     private TextView tvconsumabledefname;
     private TextView tvStockLotCheckedSum;
     private TextView tvCheckMonth;
     private TextView tvnoStockChectLotQTY;
+    private PopupWindow mpopConfirmQty;
+    private View mViewConfirmQty;
     //
     private EditText etTagID;
+    //扫描模式(1是RFID盘点,2是Barcode修改数据)
     private int BRFlag = 1;
-    private int FIXFlag = 1;
     // private Handler handler;
     private boolean threadStop = true;
     private Thread thread;
@@ -108,7 +125,6 @@ public class StockLotCheckDetailFragment extends KeyDownFragment implements View
     //数据库
     MyDateBaseHelper mHelper;
     SQLiteDatabase db;
-    boolean _savePlanFlag = false;
     //endregion
 
     //region ◆ 생성자(Creator)
@@ -121,7 +137,6 @@ public class StockLotCheckDetailFragment extends KeyDownFragment implements View
         mContext = (MainNaviActivity) getActivity();
         setHasOptionsMenu(true);
         mHelper = DBManger.getIntance(mContext);
-        db = mHelper.getWritableDatabase();
     }
     //endregion
 
@@ -148,26 +163,19 @@ public class StockLotCheckDetailFragment extends KeyDownFragment implements View
                         String tagid = msg.obj + "";
                         String tagID = hexStringToString(tagid);
                         if (tagID.length() == 12) {
-
-                            if (FIXFlag == 1) {
-                                Log.e("盘点模式", tagID);
-                                checkAndSearchWeb(tagID);
-                            } else {
-                                Log.e("修改数量模式", tagID);
-                                checkAndFixQTY(tagID);
-                            }
+//                            if (BRFlag == 1) {
+                            Log.e("扫到", tagID);
+                            checkAndSearchWeb(tagID);
+//                            } else {
+//                                checkAndFixQTY(tagID);
+//                            }
                         }
                         break;
                     case UPDATEUI:
                         int position = (Integer) msg.obj;
-                        if (position == -1) {
-                            //-1代表刚扫上标签，用EventBus来更新stockcheck的数据，并更新db
-                            updatestockcheckDetail(mStockLotCheckDeatilDataArrayList.get(mStockLotCheckDeatilDataArrayList.size() - 1));
-                        } else {
-                            mlvStockLotCheckDetail.setSelection(position);
-                            //修改好数量以后，用EventBus来更新stockcheck的数据，并更新db
-                            updatestockcheckDetail(mStockLotCheckDeatilDataArrayList.get(position));
-                        }
+                        mlvStockLotCheckDetail.setSelection(position);
+                        //修改好数量以后，用EventBus来更新stockcheck的数据，并更新db
+                        updatestockcheckDetail(mStockLotCheckDeatilDataArrayList.get(position));
                         break;
                 }
             }
@@ -204,6 +212,7 @@ public class StockLotCheckDetailFragment extends KeyDownFragment implements View
     //endregion
 
     //region onClick Event
+
     //region 按钮单击事件
     @Override
     public void onClick(View v) {
@@ -228,7 +237,6 @@ public class StockLotCheckDetailFragment extends KeyDownFragment implements View
             case R.id.btnrfid:
                 //选择R&B的popupwindow里面的RFID按钮
                 BRFlag = 1;
-                FIXFlag = 1;
                 showToast(mContext, "盘点模式", 0);
                 mivchoose.setImageResource(R.drawable.rfidicon);
                 if (BaecodeReader != null) {
@@ -239,8 +247,7 @@ public class StockLotCheckDetailFragment extends KeyDownFragment implements View
             case R.id.btnbarcode:
                 //选择R&B的popupwindow里面的Barcode按钮
                 showToast(mContext, "修改数据模式", 0);
-                //BRFlag = 2;
-                FIXFlag = 2;
+                BRFlag = 2;
                 mivchoose.setImageResource(R.drawable.fix);
                 mpopChooseBorR.dismiss();
                 break;
@@ -270,12 +277,19 @@ public class StockLotCheckDetailFragment extends KeyDownFragment implements View
     private void initData() {
         mStockLotCheckDeatilDataArrayList = new ArrayList<>();
         _mStockLotCheckDeatilDataArrayList = new ArrayList<>();
+        _tempStockLotCheckDeatilDataArrayList = new ArrayList<>();
+        _mScanLotHashSet = new HashSet<>();
+        _mCountLotHashSet = new HashSet<>();
+        _mStockedLotHashSet = new HashSet<>();
+        UserID = AppConfig.getInstance().getString(Constant.UserID, null);
+        localUsername = AppConfig.getInstance().getString(Constant.UserName, null);
     }
     //endregion
 
     //region initView()
     private void initview() {
         etTagID = (EditText) getView().findViewById(R.id.etTagID);
+        tvSpec_Desc = (TextView) getView().findViewById(R.id.tv_spec_desc);
         tvConsumabledefId = (TextView) getView().findViewById(R.id.tv_ConsumabledefId);
         tvlistSumQty = (TextView) getView().findViewById(R.id.tv_listSumQty);
         tvconsumabledefname = (TextView) getView().findViewById(R.id.tv_consumabledefname);
@@ -309,14 +323,16 @@ public class StockLotCheckDetailFragment extends KeyDownFragment implements View
         Button btnConfirm = (Button) mViewFixQty.findViewById(R.id.btnfqty);
         TextView tvRFID = (TextView) mViewFixQty.findViewById(R.id.tv_consumablelotid);
         final EditText etFixQty = (EditText) mViewFixQty.findViewById(R.id.etfqty);
-        etFixQty.setText(stockLotCheckDeatilData.getTAGQTY() + "");
+        etFixQty.setText(stockLotCheckDeatilData.getCHECKQTY() + "");
         etFixQty.setSelection(etFixQty.length());
         String a = stockLotCheckDeatilData.getCONSUMABLELOTID();
         tvRFID.setText(a);
         btnConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Float preqty = Float.parseFloat(stockLotCheckDeatilData.getCHECKQTY());
                 stockLotCheckDeatilData.setCHECKQTY(etFixQty.getText().toString());
+                Float nowqty = Float.parseFloat(stockLotCheckDeatilData.getCHECKQTY());
                 if (Float.parseFloat(stockLotCheckDeatilData.getCHECKQTY()) > Float.parseFloat(stockLotCheckDeatilData.getQTY())) {
                     stockLotCheckDeatilData.setBackgroundColor(R.color.qtymore);
                 } else if (Float.parseFloat(stockLotCheckDeatilData.getCHECKQTY()) == Float.parseFloat(stockLotCheckDeatilData.getQTY())) {
@@ -335,6 +351,9 @@ public class StockLotCheckDetailFragment extends KeyDownFragment implements View
                 Message message = new Message();
                 message.what = UPDATEUI;
                 message.obj = position;
+                Bundle bundle = new Bundle();
+                bundle.putFloat("CHANGEQTY", nowqty - preqty);  //往Bundle中存放数据
+                message.setData(bundle);
                 handler.sendMessage(message);
                 setQTYInfo();
                 mpopFixQty.dismiss();
@@ -365,122 +384,142 @@ public class StockLotCheckDetailFragment extends KeyDownFragment implements View
     //endregion
 
     //region openPopWindowToConfirmQTY
-    @SuppressLint("WrongConstant")
-    private void openPopWindowToConfirmQTY(View view, final StockLotCheckDeatilData stockLotCheckDeatilData) {
-
-        Button btnConfirm = (Button) mViewConfirmQty.findViewById(R.id.btnfqty);
-        TextView tvRFID = (TextView) mViewConfirmQty.findViewById(R.id.tv_consumablelotid);
-        final EditText etFixQty = (EditText) mViewConfirmQty.findViewById(R.id.etfqty);
-        etFixQty.setText(stockLotCheckDeatilData.getTAGQTY() + "");
-        etFixQty.setSelection(etFixQty.length());
-        tvRFID.setText(stockLotCheckDeatilData.getTAGID());
-
-        btnConfirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                stockLotCheckDeatilData.setCHECKQTY(etFixQty.getText().toString());
-                if (Float.parseFloat(stockLotCheckDeatilData.getCHECKQTY()) > Float.parseFloat(stockLotCheckDeatilData.getQTY())) {
-                    stockLotCheckDeatilData.setBackgroundColor(R.color.qtymore);
-                } else if (Float.parseFloat(stockLotCheckDeatilData.getCHECKQTY()) == Float.parseFloat(stockLotCheckDeatilData.getQTY())) {
-                    stockLotCheckDeatilData.setBackgroundColor(R.color.qtymatch);
-                } else {
-                    stockLotCheckDeatilData.setBackgroundColor(R.color.qtyless);
-                }
-                String localUserid = AppConfig.getInstance().getString(Constant.UserID, null);
-                String localUsername = AppConfig.getInstance().getString(Constant.UserName, null);
-                if (!stockLotCheckDeatilData.getUSERID().equals(localUserid)) {
-                    stockLotCheckDeatilData.setUSERID(localUserid);
-                    stockLotCheckDeatilData.setUSERNAME(localUsername);
-                }
-                mStockLotCheckDeatilDataArrayList.add(stockLotCheckDeatilData);
-                mStockLotCheckDetailListViewAdapter.notifyDataSetChanged();
-                Message message = new Message();
-                message.what = UPDATEUI;
-                message.obj = -1;
-                setQTYInfo();
-                handler.sendMessage(message);
-                mpopConfirmQty.dismiss();
-            }
-        });
-        mpopConfirmQty = new PopupWindow(mViewConfirmQty, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
-        mpopConfirmQty.setBackgroundDrawable(new ColorDrawable(0x00000000));
-        mpopConfirmQty.setTouchable(true);
-        mpopConfirmQty.setSoftInputMode(PopupWindow.INPUT_METHOD_NEEDED);
-        mpopConfirmQty.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-        mpopConfirmQty.setTouchInterceptor(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                return false;
-                // 这里如果返回true的话，touch事件将被拦截
-                // 拦截后 PopupWindow的onTouchEvent不被调用，这样点击外部区域无法dismiss
-            }
-        });
-        mpopConfirmQty.showAtLocation(view, Gravity.CENTER, 0, 0);
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
-            public void run() {
-                InputMethodManager inputManager = (InputMethodManager) etFixQty.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-                inputManager.showSoftInput(etFixQty, 0);
-            }
-        }, 500);
-    }
+//    @SuppressLint("WrongConstant")
+//    private void openPopWindowToConfirmQTY(View view, final StockLotCheckDeatilData stockLotCheckDeatilData) {
+//
+//        Button btnConfirm = (Button) mViewConfirmQty.findViewById(R.id.btnfqty);
+//        TextView tvRFID = (TextView) mViewConfirmQty.findViewById(R.id.tv_consumablelotid);
+//        final EditText etFixQty = (EditText) mViewConfirmQty.findViewById(R.id.etfqty);
+//        etFixQty.setText(stockLotCheckDeatilData.getTAGQTY() + "");
+//        etFixQty.setSelection(etFixQty.length());
+//        tvRFID.setText(stockLotCheckDeatilData.getTAGID());
+//
+//        btnConfirm.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                stockLotCheckDeatilData.setCHECKQTY(etFixQty.getText().toString());
+//                if (Float.parseFloat(stockLotCheckDeatilData.getCHECKQTY()) > Float.parseFloat(stockLotCheckDeatilData.getQTY())) {
+//                    stockLotCheckDeatilData.setBackgroundColor(R.color.qtymore);
+//                } else if (Float.parseFloat(stockLotCheckDeatilData.getCHECKQTY()) == Float.parseFloat(stockLotCheckDeatilData.getQTY())) {
+//                    stockLotCheckDeatilData.setBackgroundColor(R.color.qtymatch);
+//                } else {
+//                    stockLotCheckDeatilData.setBackgroundColor(R.color.qtyless);
+//                }
+//                String localUserid = AppConfig.getInstance().getString(Constant.UserID, null);
+//                String localUsername = AppConfig.getInstance().getString(Constant.UserName, null);
+//                if (!stockLotCheckDeatilData.getUSERID().equals(localUserid)) {
+//                    stockLotCheckDeatilData.setUSERID(localUserid);
+//                    stockLotCheckDeatilData.setUSERNAME(localUsername);
+//                }
+//                mStockLotCheckDeatilDataArrayList.add(stockLotCheckDeatilData);
+//                mStockLotCheckDetailListViewAdapter.notifyDataSetChanged();
+//                Message message = new Message();
+//                message.what = UPDATEUI;
+//                message.obj = -1;
+//                setQTYInfo();
+//                handler.sendMessage(message);
+//                mpopConfirmQty.dismiss();
+//            }
+//        });
+//        mpopConfirmQty = new PopupWindow(mViewConfirmQty, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+//        mpopConfirmQty.setBackgroundDrawable(new ColorDrawable(0x00000000));
+//        mpopConfirmQty.setTouchable(true);
+//        mpopConfirmQty.setSoftInputMode(PopupWindow.INPUT_METHOD_NEEDED);
+//        mpopConfirmQty.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+//        mpopConfirmQty.setTouchInterceptor(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                return false;
+//                // 这里如果返回true的话，touch事件将被拦截
+//                // 拦截后 PopupWindow的onTouchEvent不被调用，这样点击外部区域无法dismiss
+//            }
+//        });
+//        mpopConfirmQty.showAtLocation(view, Gravity.CENTER, 0, 0);
+//        Timer timer = new Timer();
+//        timer.schedule(new TimerTask() {
+//            public void run() {
+//                InputMethodManager inputManager = (InputMethodManager) etFixQty.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+//                inputManager.showSoftInput(etFixQty, 0);
+//            }
+//        }, 500);
+//    }
     //endregion
 
-    //region getStockLotCheckDetailbystockCheckDeatilData
+    //region 进入这个画面的方法
     public void getStockLotCheckDetailbystockCheckDeatilData(StockCheckDeatilData stockCheckDeatilData) {
+        _stockCheckDeatilData = stockCheckDeatilData;
+        _mCountLotHashSet.clear();
+        _mScanLotHashSet.clear();
+        _mStockedLotHashSet.clear();
+        //按照盘点月份,盘点仓库库,查询所有能盘点的
         String selectDataListsql = String.format(getString(R.string.GetStockLotCheckDetailQuery)
-                , stockCheckDeatilData.getCONSUMEABLDEFID(), stockCheckDeatilData.getCONSUMEABLDEFVERSION());
+                , stockCheckDeatilData.getCHECKMONTH(), stockCheckDeatilData.getWAREHOUSEID());
         Log.e("StockLotCheckDetail", selectDataListsql);
-        Cursor cursorDatalist = DBManger.selectDatBySql(db, selectDataListsql, null);
-        mStockLotCheckDeatilDataArrayList.clear();
-        _mStockLotCheckDeatilDataArrayList.clear();
-        if (cursorDatalist.getCount() != 0) {
-            while (cursorDatalist.moveToNext()) {
-                StockLotCheckDeatilData stockLotCheckDeatilData = new StockLotCheckDeatilData();
-                stockLotCheckDeatilData.setWAREHOUSEID(getCursorData(cursorDatalist, Constant.WAREHOUSEID).trim());
-                stockLotCheckDeatilData.setCHECKMONTH(getCursorData(cursorDatalist, Constant.CHECKMONTH).trim());
-                stockLotCheckDeatilData.setCONSUMABLEDEFNAME(getCursorData(cursorDatalist, Constant.CONSUMABLEDEFNAME).trim());
-                stockLotCheckDeatilData.setCONSUMABLEDEFID(getCursorData(cursorDatalist, Constant.CONSUMABLEDEFID).trim());
-                stockLotCheckDeatilData.setCONSUMABLEDEFVERSION(getCursorData(cursorDatalist, Constant.CONSUMABLEDEFVERSION).trim());
-                stockLotCheckDeatilData.setUNIT(getCursorData(cursorDatalist, Constant.UNIT).trim());
-                stockLotCheckDeatilData.setQTY(getCursorData(cursorDatalist, Constant.QTY).trim());
-                stockLotCheckDeatilData.setUSERID(getCursorData(cursorDatalist, Constant.USERID).trim());
-                stockLotCheckDeatilData.setUSERNAME(getCursorData(cursorDatalist, Constant.USERNAME).trim());
-                stockLotCheckDeatilData.setCHECKUNIT(getCursorData(cursorDatalist, Constant.CHECKUNIT).trim());
-                stockLotCheckDeatilData.setCONSUMABLELOTID(getCursorData(cursorDatalist, Constant.CONSUMABLELOTID).trim());
-                stockLotCheckDeatilData.setTAGID(getCursorData(cursorDatalist, Constant.TAGID).trim());
-                stockLotCheckDeatilData.setTAGQTY(getCursorData(cursorDatalist, Constant.TAGQTY).trim());
-                if (getCursorData(cursorDatalist, Constant.CHECKQTY).trim().equals("null") ||
-                        getCursorData(cursorDatalist, Constant.CHECKQTY).trim().equals("")) {
-                    stockLotCheckDeatilData.setCHECKQTY("0");
-                } else {
-                    stockLotCheckDeatilData.setCHECKQTY(getCursorData(cursorDatalist, Constant.CHECKQTY).trim());
+        db = mHelper.getWritableDatabase();
+        if (db.isOpen()) {
+            try {
+                db.beginTransaction();
+                Cursor cursorDatalist = DBManger.selectDatBySql(db, selectDataListsql, null);
+                mStockLotCheckDeatilDataArrayList.clear();
+                _mStockLotCheckDeatilDataArrayList.clear();
+                if (cursorDatalist.getCount() != 0) {
+                    Date now = new Date();
+                    Log.e("时间测试", df.format(now));
+                    while (cursorDatalist.moveToNext()) {
+                        StockLotCheckDeatilData stockLotCheckDeatilData = new StockLotCheckDeatilData();
+                        stockLotCheckDeatilData.setUNIT(getCursorData(cursorDatalist, Constant.UNIT).trim());
+                        stockLotCheckDeatilData.setQTY(getCursorData(cursorDatalist, Constant.QTY).trim());
+                        stockLotCheckDeatilData.setUSERID(getCursorData(cursorDatalist, Constant.USERID).trim());
+                        stockLotCheckDeatilData.setUSERNAME(getCursorData(cursorDatalist, Constant.USERNAME).trim());
+                        stockLotCheckDeatilData.setCHECKUNIT(getCursorData(cursorDatalist, Constant.CHECKUNIT).trim());
+                        stockLotCheckDeatilData.setCONSUMABLELOTID(getCursorData(cursorDatalist, Constant.CONSUMABLELOTID).trim());
+                        stockLotCheckDeatilData.setTAGID(getCursorData(cursorDatalist, Constant.CONSUMABLELOTID).trim());
+                        stockLotCheckDeatilData.setTAGQTY(getCursorData(cursorDatalist, Constant.TAGQTY).trim());
+                        stockLotCheckDeatilData.setCHECKQTY(getCursorData(cursorDatalist, Constant.CHECKQTY).trim());
+                        if (Float.parseFloat(stockLotCheckDeatilData.getCHECKQTY()) > Float.parseFloat(stockLotCheckDeatilData.getQTY())) {
+                            stockLotCheckDeatilData.setBackgroundColor(R.color.qtymore);
+                        } else if (Float.parseFloat(stockLotCheckDeatilData.getCHECKQTY()) == Float.parseFloat(stockLotCheckDeatilData.getQTY())) {
+                            stockLotCheckDeatilData.setBackgroundColor(R.color.qtymatch);
+                        } else {
+                            stockLotCheckDeatilData.setBackgroundColor(R.color.qtyless);
+                        }
+                        //添加所有能扫描标签的列表
+                        _mCountLotHashSet.add(getCursorData(cursorDatalist, Constant.CONSUMABLELOTID).trim());
+                        Log.e("列表添加", stockLotCheckDeatilData.getCONSUMABLELOTID());
+                        if (!stockLotCheckDeatilData.getCHECKQTY().equals("0")) {
+                            //已经盘过的数据添加到list中
+                            Log.e("盘点到的LOT", stockLotCheckDeatilData.getCONSUMABLELOTID());
+                            mStockLotCheckDeatilDataArrayList.add(stockLotCheckDeatilData);
+                            _mStockedLotHashSet.add(stockLotCheckDeatilData.getTAGID());
+                            _mScanLotHashSet.add(stockLotCheckDeatilData.getTAGID());
+                        }
+                        //_mStockLotCheckDeatilDataArrayList.add(stockLotCheckDeatilData);
+                    }
+                    Log.e("时间测试", df.format(now));
+                    //循环完以后更新UI
+                    mStockLotCheckDetailListViewAdapter.notifyDataSetChanged();
                 }
-                if (Float.parseFloat(stockLotCheckDeatilData.getCHECKQTY()) > Float.parseFloat(stockLotCheckDeatilData.getQTY())) {
-                    stockLotCheckDeatilData.setBackgroundColor(R.color.qtymore);
-                } else if (Float.parseFloat(stockLotCheckDeatilData.getCHECKQTY()) == Float.parseFloat(stockLotCheckDeatilData.getQTY())) {
-                    stockLotCheckDeatilData.setBackgroundColor(R.color.qtymatch);
-                } else {
-                    stockLotCheckDeatilData.setBackgroundColor(R.color.qtyless);
-                }
-              //  Log.e("stockLotCheckDeatilData", stockLotCheckDeatilData.toString());
-                if (!stockLotCheckDeatilData.getCHECKQTY().equals("0")) {
-                    mStockLotCheckDeatilDataArrayList.add(stockLotCheckDeatilData);
-                }
-                _mStockLotCheckDeatilDataArrayList.add(stockLotCheckDeatilData);
+                //设置公共数据
+                tvStockLotCheckedSum.setText(_mCountLotHashSet.size() + "");
+                tvConsumabledefId.setText(stockCheckDeatilData.getCONSUMEABLDEFID());
+                tvSpec_Desc.setText(stockCheckDeatilData.getSPEC_DESC());
+                tvconsumabledefname.setText(stockCheckDeatilData.getCONSUMEABLDEFNAME());
+                tvCheckMonth.setText(stockCheckDeatilData.getCHECKMONTH());
+                setQTYInfo();
+            } catch (Exception e) {
+                showToast(mContext, e.getMessage(), 0);
+            } finally {
+                db.setTransactionSuccessful();
+                db.endTransaction();
             }
-            mStockLotCheckDetailListViewAdapter.notifyDataSetChanged();
         }
-        setQTYInfo();
-        tvStockLotCheckedSum.setText(_mStockLotCheckDeatilDataArrayList.size() + "");
-        tvConsumabledefId.setText(stockCheckDeatilData.getCONSUMEABLDEFID());
-        tvconsumabledefname.setText(stockCheckDeatilData.getCONSUMEABLDEFNAME());
-        tvCheckMonth.setText(stockCheckDeatilData.getCHECKMONTH());
     }
 
     private void setQTYInfo() {
         tvlistSumQty.setText(mStockLotCheckDeatilDataArrayList.size() + "");
-        tvnoStockChectLotQTY.setText((_mStockLotCheckDeatilDataArrayList.size() - mStockLotCheckDeatilDataArrayList.size()) + "");
+        tvnoStockChectLotQTY.setText(
+                Integer.parseInt(tvStockLotCheckedSum.getText().toString())
+                        - Integer.parseInt(tvlistSumQty.getText().toString()) + "");
     }
     //endregion
 
@@ -489,6 +528,7 @@ public class StockLotCheckDetailFragment extends KeyDownFragment implements View
         if (BRFlag == 1) {
             if (!scanFlag) {
                 scanFlag = true;
+                _tempStockLotCheckDeatilDataArrayList.clear();
                 if (mContext.mRFIDWithUHF.startInventoryTag((byte) 0, (byte) 0)) {
                     myDialog = new ProgressDialog(mContext);
                     myDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -512,7 +552,7 @@ public class StockLotCheckDetailFragment extends KeyDownFragment implements View
                     });
                     new TagThread(50).start();
                 } else {
-                    Log.e("扫描出问题了", "重啟");
+                    SoundUtil.play(R.raw.waring, 0);
                     showToast(mContext, "扫描模块异常，请再按一次", 0);
                     mContext.freeUHF();
                     mContext.initUHF();
@@ -521,7 +561,11 @@ public class StockLotCheckDetailFragment extends KeyDownFragment implements View
                 stopInventory();
             }
         } else if (BRFlag == 2) {
-            readBarcodeTag();
+            if (!scanFlag) {
+                readBarcodeTag();
+            } else {
+                BaecodeReader.stopScan();
+            }
         }
     }
     //endregion
@@ -544,44 +588,17 @@ public class StockLotCheckDetailFragment extends KeyDownFragment implements View
     }
     //endregion
 
-    //region checkAndSearchWeb
+    //region 扫描到以后的逻辑
     private void checkAndSearchWeb(String tagID) {
-        //第一次盘点
-        int tagposition = findTagInDBList(tagID);
-        if (tagposition == -2) {
-            //已经盘点过的返回-2
-            showToast(mContext, tagID + "已经盘点过了", 0);
-        } else if (tagposition == -1) {
-            Log.e("indexhand", tagID + "不在这个list里面");
-            showToast(mContext, tagID + "不是这个列表里面的标签", 0);
-        } else {
-            Log.e("indexhand", tagID + "在列表里，替换Inqty的值");
-            //扫到一个新的lot，打开PopWindow
-            //stopInventory();
-            //openPopWindowToConfirmQTY(getView(), _mStockLotCheckDeatilDataArrayList.get(tagposition));
-            StockLotCheckDeatilData stockLotCheckDeatilData =  _mStockLotCheckDeatilDataArrayList.get(tagposition);
-            stockLotCheckDeatilData.setCHECKQTY("1");
-            if (Float.parseFloat(stockLotCheckDeatilData.getCHECKQTY()) > Float.parseFloat(stockLotCheckDeatilData.getQTY())) {
-                stockLotCheckDeatilData.setBackgroundColor(R.color.qtymore);
-            } else if (Float.parseFloat(stockLotCheckDeatilData.getCHECKQTY()) == Float.parseFloat(stockLotCheckDeatilData.getQTY())) {
-                stockLotCheckDeatilData.setBackgroundColor(R.color.qtymatch);
-            } else {
-                stockLotCheckDeatilData.setBackgroundColor(R.color.qtyless);
-            }
-            String localUserid = AppConfig.getInstance().getString(Constant.UserID, null);
-            String localUsername = AppConfig.getInstance().getString(Constant.UserName, null);
-            if (!stockLotCheckDeatilData.getUSERID().equals(localUserid)) {
-                stockLotCheckDeatilData.setUSERID(localUserid);
-                stockLotCheckDeatilData.setUSERNAME(localUsername);
-            }
-            mStockLotCheckDeatilDataArrayList.add(stockLotCheckDeatilData);
-            mStockLotCheckDetailListViewAdapter.notifyDataSetChanged();
-            Message message = new Message();
-            message.what = UPDATEUI;
-            message.obj = -1;
-            setQTYInfo();
-            handler.sendMessage(message);
-        }
+        //1:_mScanLotHashSet.add()返回false,说明这个tagID已经扫描过了,忽略
+        if (!_mScanLotHashSet.add(tagID)) return;
+        //2:_mCountLotHashSet里面没有的话,说明这个tagid不存在,忽略
+        if (!_mCountLotHashSet.contains(tagID)) return;
+        //3:说明这个tag第一次扫到,且在盘点列表里面,添加到临时的变量里面
+        Log.e("临时变量",tagID);
+        _tempStockLotCheckDeatilDataArrayList.add(tagID);
+        _mStockedLotHashSet.add(tagID);
+        SoundUtil.play(R.raw.ding, 0);
     }
     //endregion
 
@@ -590,38 +607,14 @@ public class StockLotCheckDetailFragment extends KeyDownFragment implements View
         //修改数据模式下，扫描到列表里的tag的时候就会弹出popwindow
         int tagposition = findTagInList(tagID);
         if (tagposition == -1) {
-            Log.e("indexhand", tagID + "不在这个list里面");
-            showToast(mContext, tagID + "是没有盘点过的标签", 0);
+            showToast(mContext, tagID + "不在已经盘点的列表里面", 0);
         } else {
-            Log.e("indexhand", tagID + "在列表里，替换Inqty的值");
-            //扫到一个新的lot，打开PopWindow
-            stopInventory();
+            //打开修改数量的画面
+            //stopInventory();
             fixQty(getView(), tagposition, mStockLotCheckDeatilDataArrayList.get(tagposition));
         }
     }
-    //endregion
 
-    //region findTagInDBList
-    //找第一次扫描的
-    private int findTagInDBList(String tagid) {
-        int returnint = -1;
-        for (int i = 0; i < _mStockLotCheckDeatilDataArrayList.size(); i++) {
-            StockLotCheckDeatilData dbdata = _mStockLotCheckDeatilDataArrayList.get(i);
-            if (dbdata.getTAGID().equals(tagid)) {
-                //说明是这个资材的标签,现在确认一下有没有被
-                returnint = i;
-                for (int j = 0; j < mStockLotCheckDeatilDataArrayList.size(); j++) {
-                    StockLotCheckDeatilData listdata = mStockLotCheckDeatilDataArrayList.get(j);
-                    if (listdata.getTAGID().equals(tagid)) {
-                        returnint = -2;
-                        break;
-                    }
-                }
-                break;
-            }
-        }
-        return returnint;
-    }
     //endregion
 
     //region findTagInList
@@ -629,8 +622,8 @@ public class StockLotCheckDetailFragment extends KeyDownFragment implements View
         int returnint = -1;
         for (int i = 0; i < mStockLotCheckDeatilDataArrayList.size(); i++) {
             StockLotCheckDeatilData data = mStockLotCheckDeatilDataArrayList.get(i);
-            Log.e("list中的数据", data.toString());
-            if (data.getTAGID().equals(tagid)) {
+            //Log.e("list中的数据", data.toString());
+            if (data.getCONSUMABLELOTID().equals(tagid)) {
                 returnint = i;
                 break;
             }
@@ -650,9 +643,6 @@ public class StockLotCheckDetailFragment extends KeyDownFragment implements View
         if (mStockLotCheckDeatilDataArrayList.size() > 0) {
             mStockLotCheckDeatilDataArrayList.clear();
         }
-        if (_mStockLotCheckDeatilDataArrayList.size() > 0) {
-            _mStockLotCheckDeatilDataArrayList.clear();
-        }
         mStockLotCheckDetailListViewAdapter.notifyDataSetChanged();
         tvConsumabledefId.setText("");
         tvlistSumQty.setText("0");
@@ -666,37 +656,81 @@ public class StockLotCheckDetailFragment extends KeyDownFragment implements View
 
     //region updatestockcheckDetail
     private void updatestockcheckDetail(StockLotCheckDeatilData data) {
-        try {
-            //先保存数据库的数据CHECKQTY
-            ContentValues values = new ContentValues();
-            Log.e("保存了", data.toString());
-            values.put(Constant.CHECKQTY, data.getCHECKQTY());
-            values.put(Constant.USERID, AppConfig.getInstance().getString(Constant.UserID, null));
-            db.update(Constant.SF_STOCKLOTCHECKDETAIL, values, "WAREHOUSEID = ? AND CHECKMONTH = ?" +
-                            " AND CONSUMABLEDEFID = ? AND CONSUMABLEDEFVERSION = ? AND CONSUMABLELOTID = ?"
-                    , new String[]{data.getWAREHOUSEID(), data.getCHECKMONTH()
-                            , data.getCONSUMABLEDEFID(), data.getCONSUMABLEDEFVERSION(), data.getCONSUMABLELOTID()});
-            //第一次修改数据的时候把STOCKCHECK表的标志位改成Y
-            if (!_savePlanFlag) {
-                ContentValues values1 = new ContentValues();
-                values1.put(Constant.ISPDASAVE, "Y");
-                _savePlanFlag = true;
-                db.update(Constant.SF_STOCKCHECK, values1, "WAREHOUSEID = ? AND CHECKMONTH = ?"
-                        , new String[]{data.getWAREHOUSEID(), data.getCHECKMONTH()});
+        db = mHelper.getWritableDatabase();
+        if (db.isOpen()) {
+            try {
+                db.beginTransaction();
+                ContentValues values = new ContentValues();
+                values.put(Constant.CHECKQTY, data.getCHECKQTY());
+                values.put(Constant.TAGQTY, data.getCHECKQTY());
+                values.put(Constant.USERID, AppConfig.getInstance().getString(Constant.UserID, null));
+                db.update(Constant.SF_STOCKLOTCHECKDETAIL, values, "WAREHOUSEID = ? AND CHECKMONTH = ?" +
+                                " AND CONSUMABLEDEFID = ? AND CONSUMABLEDEFVERSION = ? AND CONSUMABLELOTID = ?"
+                        , new String[]{_stockCheckDeatilData.getWAREHOUSEID(), _stockCheckDeatilData.getCHECKMONTH()
+                                , _stockCheckDeatilData.getCONSUMEABLDEFID(), _stockCheckDeatilData.getCONSUMEABLDEFVERSION()
+                                , data.getCONSUMABLELOTID()});
+                //修改总数
+                EventBus.getDefault().post(new Event.StockCheckDetailbyLotCheckEvent(_stockCheckDeatilData));
+            } catch (Exception e) {
+                showToast(mContext, e.getMessage(), 0);
+            } finally {
+                db.setTransactionSuccessful();
+                db.endTransaction();
+
             }
-            //查询SF_STOCKLOTCHECKDETAIL表的总数，来修改SF_STOCKCHECKDETAIL表的内容
-            String selectDataListsql = String.format(getString(R.string.GetStockCheckDetailQTYQuery)
-                    , data.getCONSUMABLEDEFID(), data.getCONSUMABLEDEFVERSION());
-            Log.e("GetStockCheckDetailQTY", selectDataListsql);
-            Cursor cursorDatalist = DBManger.selectDatBySql(db, selectDataListsql, null);
-            if (cursorDatalist.getCount() != 0) {
-                while (cursorDatalist.moveToNext()) {
-                    String SUMqty = getCursorData(cursorDatalist, "SUM");
-                    EventBus.getDefault().post(new Event.StockCheckDetailbyLotCheckEvent(data, SUMqty));
+        }
+    }
+
+    //endregion
+
+    //region updateFirststockcheckDetail
+    private void updateFirststockcheckDetail() {
+        //取出临时变量的tagid,更新UI,插入数据库
+        db = mHelper.getWritableDatabase();
+        if (db.isOpen()) {
+            try {
+                db.beginTransaction();
+                for (String tagid : _tempStockLotCheckDeatilDataArrayList) {
+                    //按tagid查询数据库的内容
+                    String selectDataListsql = String.format(getString(R.string.GetStockLotCheckDetailByTagQuery), tagid);
+                    Cursor cursorDatalist = DBManger.selectDatBySql(db, selectDataListsql, null);
+                    if (cursorDatalist.getCount() != 0) {
+                        while (cursorDatalist.moveToNext()) {
+                            StockLotCheckDeatilData data = new StockLotCheckDeatilData();
+                            data.setCONSUMABLELOTID(getCursorData(cursorDatalist, Constant.CONSUMABLELOTID).trim());
+                            data.setUNIT(getCursorData(cursorDatalist, Constant.UNIT).trim());
+                            data.setQTY(getCursorData(cursorDatalist, Constant.QTY).trim());
+                            data.setTAGID(getCursorData(cursorDatalist, Constant.CONSUMABLELOTID).trim());
+                            data.setCHECKQTY(getCursorData(cursorDatalist, Constant.TAGQTY).trim());
+                            data.setUSERID(UserID);
+                            data.setUSERNAME(localUsername);
+                            Log.e("LOT数据", data.getCONSUMABLELOTID());
+                            mStockLotCheckDeatilDataArrayList.add(data);
+                            ContentValues values = new ContentValues();
+                            values.put(Constant.CHECKQTY, data.getCHECKQTY());
+                            values.put(Constant.USERID, UserID);
+                            db.update(Constant.SF_STOCKLOTCHECKDETAIL, values,
+                                    "WAREHOUSEID = ? AND CHECKMONTH = ?" +
+                                            " AND CONSUMABLEDEFID = ? AND CONSUMABLEDEFVERSION = ?" +
+                                            "AND CONSUMABLELOTID = ?"
+                                    , new String[]{_stockCheckDeatilData.getWAREHOUSEID()
+                                            , _stockCheckDeatilData.getCHECKMONTH()
+                                            , _stockCheckDeatilData.getCONSUMEABLDEFID()
+                                            , _stockCheckDeatilData.getCONSUMEABLDEFVERSION()
+                                            , data.getCONSUMABLELOTID()});
+                        }
+                    }
                 }
+                setQTYInfo();
+                mStockLotCheckDetailListViewAdapter.notifyDataSetChanged();
+
+            } catch (Exception e) {
+                showToast(mContext, e.getMessage(), 0);
+            } finally {
+                db.setTransactionSuccessful();
+                db.endTransaction();
+                EventBus.getDefault().post(new Event.StockCheckDetailbyLotCheckEvent(_stockCheckDeatilData));
             }
-        } catch (Exception e) {
-            Utils.showToast(mContext, e.getMessage(), 0);
         }
     }
     //endregion
@@ -753,9 +787,8 @@ public class StockLotCheckDetailFragment extends KeyDownFragment implements View
             }
             BaecodeReader.stopScan();
             String barcode = new String(data).trim();
-            //Log.e("barcode", barcode);
             if (!TextUtils.isEmpty(barcode)) {
-                checkAndSearchWeb(barcode);
+                checkAndFixQTY(barcode);
             }
         }
     };
@@ -768,7 +801,7 @@ public class StockLotCheckDetailFragment extends KeyDownFragment implements View
     //region RFID Thread Class
     class TagThread extends Thread {
 
-        private int mBetween = 80;
+        private int mBetween = 100;
 
         public TagThread(int iBetween) {
             mBetween = iBetween;
@@ -803,7 +836,7 @@ public class StockLotCheckDetailFragment extends KeyDownFragment implements View
     private void stopInventory() {
 
         if (scanFlag) {
-
+            updateFirststockcheckDetail();
             scanFlag = false;
             if (myDialog != null) {
                 myDialog.dismiss();

@@ -41,7 +41,7 @@ public class InboundFragment extends KeyDownFragment {
     public MyNoSlideViewPager viewPager;
     protected List<KeyDownFragment> lstFrg = new ArrayList<KeyDownFragment>();
     protected List<String> lstTitles = new ArrayList<String>();
-    public InboundOrderFragment mOutboundOrderFragment;
+    public InboundOrderFragment mInboundOrderFragment;
     public ConsumeInboundFragment mConsumeInboundFragment;
     public ConsumeLotInboundFragment mConsumeLotInboundFragment;
     private MainNaviActivity mContext;
@@ -142,7 +142,7 @@ public class InboundFragment extends KeyDownFragment {
 
     //region initViewPageData
     private void initViewPageData() {
-        lstFrg.add(mOutboundOrderFragment);
+        lstFrg.add(mInboundOrderFragment);
         lstFrg.add(mConsumeInboundFragment);
         lstFrg.add(mConsumeLotInboundFragment);
         lstTitles.add(getString(R.string.Order));
@@ -159,7 +159,7 @@ public class InboundFragment extends KeyDownFragment {
 
     //region initview
     private void initview() {
-        mOutboundOrderFragment = new InboundOrderFragment();
+        mInboundOrderFragment = new InboundOrderFragment();
         mConsumeInboundFragment = new ConsumeInboundFragment();
         mConsumeLotInboundFragment = new ConsumeLotInboundFragment();
     }
@@ -184,7 +184,9 @@ public class InboundFragment extends KeyDownFragment {
     @Override
     public void myOnKeyDown() {
         //当前页面是Item的时候才触发
-        if (viewPager.getCurrentItem() == 1) {
+        if (viewPager.getCurrentItem() == 0) {
+            mInboundOrderFragment.myOnKeyDown();
+        } else if (viewPager.getCurrentItem() == 1) {
             mConsumeInboundFragment.myOnKeyDown();
         } else if (viewPager.getCurrentItem() == 2) {
             mConsumeLotInboundFragment.myOnKeyDown();

@@ -57,6 +57,8 @@ public class Constant {
     public static final String LASTTXNHISTKEY = "LASTTXNHISTKEY";
     public static final String LASTGROUPHISTKEY = "LASTGROUPHISTKEY";
     public static final String VALIDSTATE = "VALIDSTATE";
+    public static final String USERNAME = "USERNAME";
+    public static final String UserName = "UserName";
 
     //SF_CODE表
     public static final String SF_CODE = "SF_CODE";
@@ -169,10 +171,14 @@ public class Constant {
     public static final String SHIPPINGENDDATE  = "SHIPPINGENDDATE";
     public static final String TRACKOUTTIME  = "TRACKOUTTIME";
     public static final String COUNT  = "COUNT";
+    public static final String CUSTOMERNAME = "CUSTOMERNAME";
+
 
     //SF_SHIPPINGPLANDETAIL
     public static final String SF_SHIPPINGPLANDETAIL = "SF_SHIPPINGPLANDETAIL";
     public static final String COMPLETETIME = "COMPLETETIME";
+    public static final String SHIPPINGEDQTY = "SHIPPINGEDQTY";
+    public static final String NOSHIPPINGEDQTY = "NOSHIPPINGEDQTY";
 
 
     public static final String SF_CONSUMESTOCK = "SF_CONSUMESTOCK";
@@ -217,15 +223,21 @@ public class Constant {
     public static final String VALID = "Valid";
     public static final String INVALID = "Invalid";
 
+    public static final String DELETESHIPPINGPLAN ="DELETE  FROM SF_SHIPPINGPLAN";
+
     public static final String InsertIntoSHIPPINGPLAN ="INSERT OR REPLACE INTO SF_SHIPPINGPLAN (" +
             "SHIPPINGPLANNO ,CUSTOMERID ,BOOKINGNO ,PLANDATE ,SHIPPINGPLANDATE,SHIPPINGENDPLANDATE ,SHIPPINGENDDATE ,STATE ,ISPDASHIPPING) "
             +"VALUES( '%1$s', '%2$s', '%3$s', '%4$s' ,'%5$s', '%6$s', '%7$s', '%8$s', '%9$s') ";
+
+    public static final String DELETESHIPPINGPLANDETAIL ="DELETE  FROM SF_SHIPPINGPLANDETAIL";
 
     public static final String InsertIntoSHIPPINGPLANDETAIL ="INSERT OR REPLACE INTO SF_SHIPPINGPLANDETAIL (" +
             "SHIPPINGPLANNO ,SHIPPINGPLANSEQ ,ORDERTYPE ,ORDERNO ,LINENO , PRODUCTDEFID, PRODUCTDEFVERSION ," +
             "CONTAINERSEQ ,POID ,CONTAINERSPEC ,CONTAINERNO ,SEALNO ,COMPLETETIME,PLANQTY  ,STATE ,WORKINGSHIFT,AREAID ,PRODUCTDEFNAME ) "
             +"VALUES( '%1$s', '%2$s', '%3$s', '%4$s' ,'%5$s', '%6$s', '%7$s', '%8$s', '%9$s'," +
             "'%10$s', '%11$s', '%12$s', '%13$s', '%14$s' ,'%15$s', '%16$s', '%17$s', '%18$s') ";
+
+    public static final String DELETESHIPPINGLOT ="DELETE  FROM SF_SHIPPINGLOT";
 
     public static final String InsertIntoSHIPPINGLOT ="INSERT OR REPLACE INTO SF_SHIPPINGLOT (" +
             "SHIPPINGPLANNO,\n" +
@@ -243,14 +255,18 @@ public class Constant {
             "SHIPPINGDATE)"
             +"VALUES( '%1$s', '%2$s', '%3$s', '%4$s' ,'%5$s', '%6$s', '%7$s', '%8$s', '%9$s','%10$s', '%11$s', '%12$s', '%13$s') ";
 
+    public static final String DELETELOT ="DELETE  FROM SF_LOT";
+
     public static final String InsertIntoLOT ="INSERT OR REPLACE INTO SF_LOT (" +
             "LOTID\n" +
             ",PURCHASEORDERID\n" +
-            ",LOTSTATE\n" +
             ",RFID\n" +
             ",QTY\n" +
+            ",PRODUCTDEFID\n" +
+            ",PRODUCTDEFNAME\n" +
+            ",PRODUCTDEFVERSION\n" +
             ",TRACKOUTTIME)"
-            +"VALUES( '%1$s', '%2$s', '%3$s', '%4$s' ,'%5$s', '%6$s') ";
+            +"VALUES( '%1$s', '%2$s', '%3$s', '%4$s' ,'%5$s', '%6$s','%7$s', '%8$s') ";
 
     //通过USB Socket通信
     public static final int SOCKETLENGTH = 3;

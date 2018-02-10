@@ -334,6 +334,7 @@ public class ConsumeInboundFragment extends KeyDownFragment {
                 consumeInboundData.setRATE(getCursorData(cursorDatalist, Constant.RATE).trim());
                 consumeInboundData.setINQTY(getCursorData(cursorDatalist, Constant.INQTY).trim());
                 consumeInboundData.setDIVERSIONQTY(getCursorData(cursorDatalist, Constant.DIVERSIONQTY).trim());
+                consumeInboundData.setSPEC_DESC(getCursorData(cursorDatalist, Constant.SPEC_DESC).trim());
                 if (Float.parseFloat(consumeInboundData.getINQTY()) > Float.parseFloat(consumeInboundData.getPLANQTY())) {
                     consumeInboundData.setBackgroundColor(R.color.qtymore);
                 } else if (Float.parseFloat(consumeInboundData.getINQTY()) == Float.parseFloat(consumeInboundData.getPLANQTY())) {

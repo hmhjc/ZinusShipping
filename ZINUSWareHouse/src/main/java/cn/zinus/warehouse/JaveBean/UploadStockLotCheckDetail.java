@@ -29,6 +29,15 @@ public class UploadStockLotCheckDetail implements Serializable {
     private String CHECKMONTH;
     private String USERID;
     private String USERNAME;
+    private String DESCRIPTION;
+
+    public String getDESCRIPTION() {
+        return DESCRIPTION;
+    }
+
+    public void setDESCRIPTION(String DESCRIPTION) {
+        this.DESCRIPTION = DESCRIPTION;
+    }
 
     public String getCONSUMABLELOTID() {
         return CONSUMABLELOTID;

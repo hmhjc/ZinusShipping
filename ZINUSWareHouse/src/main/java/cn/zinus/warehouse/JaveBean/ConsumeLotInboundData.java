@@ -31,6 +31,7 @@ public class ConsumeLotInboundData implements Serializable {
     private String DIVERSIONUNIT;
     private String ORDERCOMPANY;
     private String RATE;
+    private String SPEC_DESC;
 
     @Override
     public String toString() {
@@ -57,7 +58,16 @@ public class ConsumeLotInboundData implements Serializable {
                 ", DIVERSIONUNIT='" + DIVERSIONUNIT + '\'' +
                 ", ORDERCOMPANY='" + ORDERCOMPANY + '\'' +
                 ", RATE='" + RATE + '\'' +
+                ", SPEC_DESC='" + SPEC_DESC + '\'' +
                 '}';
+    }
+
+    public String getSPEC_DESC() {
+        return SPEC_DESC;
+    }
+
+    public void setSPEC_DESC(String SPEC_DESC) {
+        this.SPEC_DESC = SPEC_DESC;
     }
 
     public String getRATE() {

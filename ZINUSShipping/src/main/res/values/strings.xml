@@ -107,8 +107,6 @@
     <string name="Start">Start</string>
     <string name="Stop"/>
     <string name="Qty">Qty</string>
-    <string name="rfid_title_single">Tab1</string>
-    <string name="rfid_title_Mult">Tab2</string>
     <string name="FromDate">From Date</string>
     <string name="ToDate">To Date</string>
     <string name="WEBURL">http://192.168.1.68:7010/do</string>
@@ -121,7 +119,7 @@
     <string name="ItemID">Item ID</string>
     <string name="Unit">Unit</string>
     <string name="ItemName">Item Name</string>
-    <string name="PlanQty">Plan Qty</string>
+    <string name="PlanQty">计划数量</string>
     <string name="RealQty">Real Qty</string>
     <string name="OrderQty">Order Qty</string>
     <string name="ScanQty">Scan Qty</string>
@@ -141,11 +139,8 @@
     <string name="prompt_password">Password</string>
     <string name="action_login">Sign in</string>
     <string name="action_sign_in_short">Sign in</string>
-    <string name="error_invalid_email">This email address is invalid</string>
-    <string name="error_invalid_password">This password is too short</string>
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>
-    <string name="shared">Shared</string>
     <string name="Bulk">Bulk</string>
     <string name="LOCSUMQTY">Location Qty</string>
     <string name="TagCnt">Tag Count</string>
@@ -157,7 +152,6 @@
     <string name="MaxQty">Max. Qty</string>
     <string name="MinQty">Min. Qty</string>
     <string name="CodeID">Code ID</string>
-    <string name="CheckYM">Check Order</string>
     <string name="startData">Start Data</string>
     <string name="EndData">End Data</string>
     <string name="OriQty">Origin Qty</string>
@@ -174,8 +168,6 @@
     <string name="MainMenu">Main Menu</string>
     <string name="Scaning">Scanning</string>
     <string name="Message">Message</string>
-    <string name="IP">IP</string>
-    <string name="URI">URI</string>
     <string name="ExportNo">Export No</string>
     <string name="SystemVolume">System Volume</string>
     <string name="NotificationVolume">Notification Volume</string>
@@ -203,15 +195,16 @@
 				                          ORDER BY SHIPPINGPLANSEQ
     </string>
 
-    <string name="ContainerSEQSpinner">SELECT SHIPPINGPLANNO                                     \n
-                                      , SHIPPINGPLANSEQ                                           \n
-                                      , CONTAINERSEQ                                            \n
+    <string name="ContainerSEQSpinner">SELECT                                      \n
+                                        CONTAINERSEQ                                            \n
 				                      , CONTAINERSEQ || \' (QTY : \' || SUM(PLANQTY) || \')\' AS CODENAME  \n
-                                      FROM SF_SHIPPINGPLANDETAIL
-				                      WHERE 1 = 1
-				                        AND SHIPPINGPLANNO = \'%1$s\'
-				                        AND SHIPPINGPLANSEQ = \'%2$s\'
-				                        GROUP BY SHIPPINGPLANNO, SHIPPINGPLANSEQ, CONTAINERSEQ
+                                      , MAX(CONTAINERNO) AS CONTAINERNO
+                                      , MAX(SEALNO) AS SEALNO
+                                      FROM SF_SHIPPINGPLANDETAIL                                   \n
+				                      WHERE 1 = 1                                   \n
+				                        AND SHIPPINGPLANNO = \'%1$s\'                                   \n
+				                        GROUP BY SHIPPINGPLANNO , CONTAINERSEQ                                   \n
+                                        ORDER BY CAST(CONTAINERSEQ AS INTEGER)
     </string>
 
     <!--StockCheck-->
@@ -284,8 +277,8 @@
                                                    SHIPPINGENDDATE,STATE                         \n
                                             FROM SF_SHIPPINGPLAN                                  \n
                                             WHERE 1=1                                             \n
-                                            AND PLANDATE &gt; \'%1$s\'                          \n
-                                            AND PLANDATE &lt; \'%2$s\'                          \n
+                                            AND SHIPPINGENDPLANDATE &gt; \'%1$s\'                          \n
+                                            AND SHIPPINGENDPLANDATE &lt; \'%2$s\'                          \n
     </string>
 
     <string name="GetShippingPlanQueryNormal">SELECT SHIPPINGPLANNO,BOOKINGNO,CUSTOMERID,PLANDATE,  \n
@@ -294,60 +287,78 @@
                                             FROM SF_SHIPPINGPLAN                                  \n
                                             WHERE 1=1                                             \n
                                             AND STATE = \'%1$s\'                               \n
-                                            AND PLANDATE &gt; \'%2$s\'                          \n
-                                            AND PLANDATE &lt; \'%3$s\'                          \n
+                                            AND SHIPPINGENDPLANDATE &gt; \'%2$s\'                          \n
+                                            AND SHIPPINGENDPLANDATE &lt; \'%3$s\'                          \n
     </string>
     <string name="gspOrderBy">ORDER BY SHIPPINGPLANNO</string>
 
-    <string name="GetPOQuery"> SELECT SHIPPINGPLANNO                                   \n
-			           	            , SHIPPINGPLANSEQ                                   \n
-			           	            , CONTAINERSEQ                                   \n
-			           	            , POID                                   \n
-                                    , PRODUCTDEFID                            \n
-                                    , PRODUCTDEFVERSION                            \n
-                                    , PRODUCTDEFNAME                      \n
-                                    , ORDERNO                                     \n
-                                    , ORDERTYPE                                     \n
-                                    , LINENO                                      \n
-			           	            , SUM(PLANQTY) AS QTY                                   \n
-                                    , MAX(CONTAINERNO) AS CONTAINERNO                            \n
-                                    , MAX(SEALNO) AS SEALNO                                 \n
-			           	       FROM SF_SHIPPINGPLANDETAIL                                   \n
+    <string name="GetPlanSeqQuery">SELECT A.*,(A.PLANQTY - A.SHIPPINGEDQTY) AS NOSHIPPINGEDQTY FROM (  \n
+                                SELECT                                    \n
+                                     SPD.SHIPPINGPLANSEQ                                   \n
+			           	            ,SPD.POID                                   \n
+			           	            ,SPD.PLANQTY                                   \n
+                                    ,SPD.CONTAINERNO                            \n
+                                    ,SPD.SEALNO                                 \n
+                                    ,SPD.PRODUCTDEFID                            \n
+                                    ,SPD.PRODUCTDEFVERSION                            \n
+                                    ,SPD.PRODUCTDEFNAME                      \n
+                                    ,SPD.ORDERNO                                  \n
+                                    ,SPD.ORDERTYPE                                  \n
+                                    ,SPD.LINENO                                  \n
+                                    ,CASE WHEN SUM(SL.QTY) IS NULL THEN \'0\' ELSE SUM(SL.QTY) END AS SHIPPINGEDQTY   \n
+			           	       FROM SF_SHIPPINGPLANDETAIL SPD                                  \n
+                               LEFT JOIN SF_SHIPPINGLOT SL ON SL.SHIPPINGPLANNO = SPD.SHIPPINGPLANNO      \n
+														  AND SL.CONTAINERSEQ = SPD.CONTAINERSEQ      \n
+													      AND SL.SHIPPINGPLANSEQ = SPD. SHIPPINGPLANSEQ      \n
+                                                          AND SL.VALIDSTATE = \'Valid\'                       \n
 			           	       WHERE 1 = 1                                   \n
-			           	       AND SHIPPINGPLANNO = \'%1$s\'                                   \n
-			           	       AND SHIPPINGPLANSEQ = \'%2$s\'                                   \n
-			           	       AND CONTAINERSEQ = \'%3$s\'                                   \n
-			           	       GROUP BY SHIPPINGPLANNO, SHIPPINGPLANSEQ, CONTAINERSEQ, POID
+			           	       AND SPD.SHIPPINGPLANNO = \'%1$s\'                                   \n
+			           	       AND SPD.CONTAINERSEQ = \'%2$s\'                                   \n
+                               GROUP BY SPD.SHIPPINGPLANSEQ                                     \n
+			           	       ORDER BY CAST(SPD.SHIPPINGPLANSEQ AS INTEGER), SPD.POID,SPD.PRODUCTDEFID ) A    \n
     </string>
 
-    <string name="GetlOTNoShippingQuery">SELECT  A.LOTID,A.RFID ,A.QTY,A.TRACKOUTTIME               \n
-                                           FROM SF_LOT A                                          \n
-                                        WHERE 1=1                                                 \n
-                                        AND A.PURCHASEORDERID = \'%1$s\'                          \n
-                                        AND A.LOTID NOT IN (SELECT LOTID FROM SF_SHIPPINGLOT       \n
-                                                               WHERE VALIDSTATE = \'Valid\' )     \n
-                                        ORDER BY A.LOTID                                          \n
+    <string name="GetlOTNoShippingQuery">SELECT       \n
+                                                L.LOTID      \n
+                                              , L.PURCHASEORDERID      \n
+                                              , L.QTY      \n
+                                              , L.TRACKOUTTIME      \n
+                                              , L.RFID      \n
+                                              , L.PRODUCTDEFID      \n
+                                              , L.PRODUCTDEFNAME      \n
+                                              , L.SHIPPINGPLANSEQ      \n
+                                              FROM SF_LOT L      \n
+                                              WHERE L.SHIPPINGPLANNO = \'%1$s\'       \n
+                                              AND L.CONTAINERSEQ = \'%2$s\'      \n
+                                              AND L.SHIPPINGPLANSEQ = \'%3$s\'      \n
+                                              AND L.LOTID NOT IN (SELECT LOTID FROM SF_SHIPPINGLOT         \n
+                                                                     WHERE VALIDSTATE = \'Valid\' )        \n
+                                              ORDER BY L.LOTID                          \n
     </string>
 
-    <string name="GetlOTShippingQuery">SELECT  A.LOTID,A.RFID ,A.QTY,A.TRACKOUTTIME               \n
-                                           FROM SF_LOT A                                          \n
-                                        WHERE 1=1                                                 \n
-                                        AND A.PURCHASEORDERID = \'%1$s\'                          \n
-                                        AND A.LOTID IN (SELECT LOTID FROM SF_SHIPPINGLOT           \n
-                                                                WHERE VALIDSTATE = \'Valid\' )     \n
-                                        ORDER BY A.LOTID                                          \n
-    </string>
-
-    <string name="GetlOTShipedQuery">SELECT SL.LOTID,SL.PRODUCTDEFID,L.TRACKOUTTIME,SL.QTY    \n
-                                           FROM SF_SHIPPINGLOT SL                           \n
-                                     LEFT JOIN SF_LOT L ON L.LOTID = SL.LOTID                            \n
-                                        WHERE 1=1                                                  \n
-                                        AND SL.SHIPPINGPLANNO  =\'%1$s\'                      \n
-                                        AND SL.SHIPPINGPLANSEQ  = \'%2$s\'                     \n
-                                        AND SL.CONTAINERSEQ  = \'%3$s\'                           \n
-                                        AND SL.POID  = \'%4$s\'                           \n
-                                        AND SL.VALIDSTATE = \'Valid\'                              \n
-                                        ORDER BY SL.LOTID                                          \n
+    <string name="GetlOTShippingQuery">    SELECT       \n
+                                                L.LOTID      \n
+                                              , L.PURCHASEORDERID      \n
+                                              , L.QTY      \n
+                                              , L.TRACKOUTTIME      \n
+                                              , L.RFID      \n
+                                              , L.PRODUCTDEFID      \n
+                                              , L.PRODUCTDEFNAME      \n
+                                              , CASE WHEN L.LOTID IN (     \n
+                                                    SELECT LOTID      \n
+                                                            FROM SF_SHIPPINGLOT        \n
+                                                    WHERE VALIDSTATE = \'Valid\' )      \n
+                                              THEN \'Valid\' ELSE \'Invalid\' END AS VALIDSTATE     \n
+                                              FROM SF_LOT L      \n
+                                              WHERE 1=1       \n
+                                              AND L.QTY > 0      \n
+                                              AND (L.PURCHASEORDERID || L.PRODUCTDEFID) IN         \n
+														(SELECT         \n
+														 SPD.POID || SPD.PRODUCTDEFID        \n
+														FROM SF_SHIPPINGPLANDETAIL SPD        \n
+														WHERE SPD.SHIPPINGPLANNO IN ( \'%1$s\')        \n
+                                                        AND SPD.CONTAINERSEQ IN ( \'%2$s\')        \n
+														)        \n
     </string>
 
     <string name="GetShippinglOTQuery">SELECT  A.LOTID,A.RFID ,B.CONTAINERNO ,                    \n
@@ -376,14 +387,19 @@
                                                    ,SHIPPINGENDDATE,STATE                          \n
                                                  FROM SF_SHIPPINGPLAN                              \n
                                            WHERE 1=1                                               \n
-                                           AND ISPDASHIPPING = \'Y\'                               \n
+                                            AND SHIPPINGPLANNO IN                          \n
+                                            (                          \n
+                                            SELECT DISTINCT SHIPPINGPLANNO                          \n
+                                            FROM SF_SHIPPINGPLANDETAIL                          \n
+                                            WHERE ISPDASHIPPING = \'Y\'                          \n
+                                            )                               \n
     </string>
 
     <string name="GetUploadShipplanDetailQuery"> SELECT SPD.SHIPPINGPLANNO,SPD.SHIPPINGPLANSEQ,SPD.CONTAINERSEQ    \n
                                                   ,SPD.POID,SPD.CONTAINERSPEC,SPD.CONTAINERNO,SPD.SEALNO    \n
                                                   ,SPD.COMPLETETIME,SPD.PLANQTY,SPD.PRODUCTDEFNAME    \n
                                                   ,SPD.ORDERTYPE,SPD.ORDERNO,SPD.LINENO,SPD.PRODUCTDEFID,SPD.PRODUCTDEFVERSION    \n
-                                                  ,SPL.QTY AS LOADEDQTY   \n
+                                                  ,IFNULL(SPL.QTY,\'0\') AS LOADEDQTY   \n
                                                   FROM SF_SHIPPINGPLANDETAIL SPD   \n
                                                   LEFT JOIN (                                            \n
                                                                                SELECT SHIPPINGPLANNO   \n
@@ -398,12 +414,12 @@
                                                                                    ON SPL.SHIPPINGPLANNO = SPD.SHIPPINGPLANNO     \n
                                                                                   AND SPL.SHIPPINGPLANSEQ = SPD.SHIPPINGPLANSEQ     \n
                                                                                   AND SPL.CONTAINERSEQ = SPD.CONTAINERSEQ     \n
-                                                                                   WHERE SPD.SHIPPINGPLANNO IN (SELECT SHIPPINGPLANNO      \n
-                                                                                   FROM SF_SHIPPINGPLAN      \n
-                                                                                   WHERE ISPDASHIPPING = \'Y\')     \n
+                                                                                   WHERE 1=1                                \n
+                                                                                    AND SPD.ISPDASHIPPING = \'Y\'           \n
+                                                                                ORDER BY SPD.CONTAINERSEQ            \n
     </string>
 
-    <string name="GetUploadlOTShipQuery"> SELECT SL.*,SPD.PRODUCTDEFNAME,L.TRACKOUTTIME FROM                              \n
+    <string name="GetUploadlOTShipQuery"> SELECT DISTINCT SL.*,SPD.PRODUCTDEFNAME,L.TRACKOUTTIME FROM                              \n
                                           SF_SHIPPINGLOT SL                           \n
                                           LEFT JOIN SF_LOT L ON L.LOTID = SL.LOTID                 \n
                                           INNER JOIN SF_SHIPPINGPLANDETAIL SPD                 \n
@@ -411,15 +427,110 @@
                                           AND SPD.SHIPPINGPLANSEQ = SL.SHIPPINGPLANSEQ                  \n
                                           AND SPD.CONTAINERSEQ = SL.CONTAINERSEQ                  \n
                                           AND SPD.POID = SL.POID                  \n
-                                          WHERE SL.SHIPPINGPLANNO IN (SELECT SHIPPINGPLANNO    \n
-                                                                             FROM SF_SHIPPINGPLAN    \n
-                                                                             WHERE  ISPDASHIPPING = \'Y\')    \n
+                                          AND SPD.ISPDASHIPPING = \'Y\'  \n
     </string>
 
-    <string name="checkShippingIsAllUpload"> SELECT COUNT(*)    AS COUNT                            \n
-                                                 FROM SF_SHIPPINGPLAN                              \n
+    <string name="checkShippingIsAllUpload"> SELECT COUNT(*)  AS COUNT                         \n
+                                                 FROM SF_SHIPPINGPLANDETAIL                              \n
                                            WHERE 1=1                                               \n
                                            AND ISPDASHIPPING = \'Y\'                               \n
+    </string>
+
+    <string name="CheckUser"> SELECT USERNAME,PASSWORD,SEED                           \n
+                                                 FROM SF_USER                              \n
+                                           WHERE 1=1                                               \n
+                                           AND USERID = \'%1$s\'                         \n
+    </string>
+
+    <string name="GetShippingByTagIDQuery">
+                                                SELECT                        \n
+                                                SPD.SHIPPINGPLANNO,                        \n
+                                                SPD.SHIPPINGPLANSEQ,                        \n
+                                                SPD.ORDERTYPE,                        \n
+                                                SPD.ORDERNO,                        \n
+                                                SPD.LINENO,                        \n
+                                                L.PRODUCTDEFID,                        \n
+                                                L.PRODUCTDEFNAME,
+                                                L.PRODUCTDEFVERSION,                        \n
+                                                SPD.CONTAINERSEQ,                        \n
+                                                L.PURCHASEORDERID,                        \n
+                                                L.LOTID,                        \n
+                                                L.RFID,                        \n
+                                                L.TRACKOUTTIME,                        \n
+                                                L.QTY,                        \n
+                                                datetime(CURRENT_TIMESTAMP,\'localtime\') AS SHIPPINGDATE,                        \n
+                                                \'Valid\' AS VALIDSTATE                        \n
+                                            FROM                        \n
+                                                 SF_SHIPPINGPLANDETAIL SPD                        \n
+                                                INNER JOIN SF_LOT L                        \n
+                                                WHERE  1=1      \n
+                                                AND L.RFID = \'%1$s\'      \n
+                                                AND (SPD.POID || SPD.PRODUCTDEFID) = (      \n
+                                                SELECT PURCHASEORDERID ||PRODUCTDEFID  FROM SF_LOT WHERE RFID = \'%1$s\'      \n
+                                                )      \n
+                                                AND SPD.CONTAINERSEQ =  \'%2$s\'     \n
+                                                AND L.LOTID NOT IN (      \n
+                                                SELECT LOTID FROM SF_SHIPPINGLOT      \n
+                                                WHERE VALIDSTATE = \'Valid\'      \n
+                                                )               \n
+    </string>
+
+
+    <string name="InsertIntoShippingLotQuery">
+                                     INSERT INTO SF_SHIPPINGLOT                           \n
+                                        (                           \n
+                                        SHIPPINGPLANNO,                           \n
+                                        SHIPPINGPLANSEQ,                           \n
+                                        ORDERTYPE,                           \n
+                                        ORDERNO,                           \n
+                                        LINENO,                           \n
+                                        PRODUCTDEFID,                           \n
+                                        PRODUCTDEFVERSION,                           \n
+                                        CONTAINERSEQ,                           \n
+                                        POID,                           \n
+                                        LOTID,                           \n
+                                        QTY,                           \n
+                                        SHIPPINGDATE,                           \n
+                                        VALIDSTATE                            \n
+                                        )                            \n
+                                        SELECT                             \n
+                                        SPD.SHIPPINGPLANNO,                            \n
+                                        SPD.SHIPPINGPLANSEQ,                            \n
+                                        SPD.ORDERTYPE,                            \n
+                                        SPD.ORDERNO,                            \n
+                                        SPD.LINENO,                            \n
+                                        L.PRODUCTDEFID,                            \n
+                                        L.PRODUCTDEFVERSION,                            \n
+                                        SPD.CONTAINERSEQ,                            \n
+                                        L.PURCHASEORDERID,                            \n
+                                        L.LOTID,                            \n
+                                        L.QTY,                            \n
+                                        datetime(CURRENT_TIMESTAMP,\'localtime\') AS SHIPPINGDATE,       \n
+                                        \'Valid\' AS VALIDSTATE       \n
+                                         FROM        \n
+                                         SF_SHIPPINGPLANDETAIL SPD       \n
+                                        INNER JOIN SF_LOT L       \n
+                                        WHERE  1=1       \n
+                                        AND L.RFID = \'%1$s\'       \n
+                                        and (SPD.POID || SPD.PRODUCTDEFID) = (       \n
+                                        SELECT PURCHASEORDERID ||PRODUCTDEFID  FROM SF_LOT WHERE RFID = \'%1$s\'         \n
+                                        )         \n
+                                        AND L.LOTID NOT IN (         \n
+                                        SELECT LOTID FROM SF_SHIPPINGLOT         \n
+                                        WHERE VALIDSTATE = \'Valid\'         \n
+                                        )         \n
+                                        limit 0,1         \n
+    </string>
+
+    <string name="UpdateShippingPlanDetailQuery">
+                                     UPDATE SF_SHIPPINGPLANDETAIL     \n
+                                                 SET ISPDASHIPPING = \'Y\'     \n
+                                             WHERE 1=1     \n
+                                             AND SHIPPINGPLANNO = \'%1$s\'     \n
+                                             AND CONTAINERSEQ = \'%2$s\'     \n
+                                             AND SHIPPINGPLANSEQ IN (     \n
+                                             SELECT SHIPPINGPLANSEQ  FROM SF_SHIPPINGLOT WHERE LOTID = \'%3$s\'     \n
+                                                )     \n
     </string>
 
     <string name="ChangeLanguage">ChangeLanguage</string>
@@ -454,7 +565,7 @@
     <string name="ConsumbleType">ConsumbleType</string>
     <string name="TempInboundDate">TempInboundDate</string>
     <string name="ScheduleDate">ScheduleDate</string>
-    <string name="ShippingPlan">ShippingPlan</string>
+    <string name="ShippingPlan">装车计划</string>
     <string name="lotShipping">lotShipping</string>
     <string name="ShippingPlanState">ShippingPlanState</string>
     <string name="ShippingPlanNo">ShippingPlanNo</string>
@@ -465,29 +576,32 @@
     <string name="PlanEndTime">PlanEndTime</string>
     <string name="Shipping">Shipping</string>
     <string name="MianMenu">MianMenu</string>
-    <string name="PlanDataOfShipping">Data</string>
+    <string name="PlanDataOfShipping">截进场</string>
     <string name="LotNo">LotNo</string>
     <string name="product">product</string>
-    <string name="ContainerNo">ContainerNo</string>
-    <string name="SealNo">SealNo</string>
+    <string name="ContainerNo">货柜号</string>
+    <string name="SealNo">封箱号</string>
     <string name="LotQty">LotQty</string>
     <string name="TagQty">TagQty</string>
     <string name="noContainerAndSealNo"/>
     <string name="removeshipping">removeshipping</string>
-    <string name="ShippingPlanSeq">ShippingPlanSeq</string>
+    <string name="ShippingPlanSeq">计划序号</string>
     <string name="ContainerSeq">ContainerSeq</string>
     <string name="ShippedQTY">ShippedQTY</string>
     <string name="ShipplanQTY">ShipplanQTY</string>
     <string name="ShippingPlanDetail">ShippingPlanDetail</string>
-    <string name="BookingNo">BookingNo</string>
+    <string name="BookingNo">提单号</string>
     <string name="PlanDate">PlanDate</string>
     <string name="ShippingPlanDate">ShippingPlanDate</string>
-    <string name="ShippingEndPlanDate">ShippingEndPlanDate</string>
+    <string name="ShippingEndPlanDate">截进场</string>
     <string name="ShippingEndDate">ShippingEndDate</string>
-    <string name="setContainerNoAndSealNo">setContainerNoAndSealNo</string>
+    <string name="setContainerNoAndSealNo">设置柜号和封箱号</string>
     <string name="productID">productID</string>
-    <string name="SKU">productName</string>
+    <string name="SKU">SKU</string>
     <string name="trackOutTime">trackOutTime</string>
+    <string name="ScanContainerTag">按货柜扫描</string>
+    <string name="shippingedQTY">上车数量</string>
+    <string name="NOshippingedQTY">未上车数量</string>
 
 
 </resources>

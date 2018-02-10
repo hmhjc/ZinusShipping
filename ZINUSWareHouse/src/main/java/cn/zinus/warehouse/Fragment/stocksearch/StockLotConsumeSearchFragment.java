@@ -205,23 +205,11 @@ public class StockLotConsumeSearchFragment extends KeyDownFragment {
     }
     //endregion
 
-    //region public void setenable(boolean flag)
-    public void setenable(boolean flag) {
-        if (flag) {
-            mlvStockCheck.setEnabled(true);
-        } else {
-            mlvStockCheck.setEnabled(false);
-        }
-    }
-    //endregion
-
     //region UpDateShippingPlan
     protected void UpDateOrder() {
         String ConsumeOutboundState = spStockCheckState.getSelectedItem().toString();
         String OrderFromDate = tvCheckMonth.getText().toString();
-
         getStockCheck(ConsumeOutboundState, OrderFromDate);
-        //    EventBus.getDefault().post(new Event.InboundClearOrderItemEvent());
     }
 
     private void getStockCheck(String ConsumeIOutboundState, String orderFromDate) {

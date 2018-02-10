@@ -204,5 +204,8 @@
     <string name="productID">productID</string>
     <string name="SKU">productName</string>
     <string name="trackOutTime">trackOutTime</string>
+    <string name="ScanContainerTag">按货柜扫描</string>
+    <string name="shippingedQTY">上车数量</string>
+    <string name="NOshippingedQTY">未上车数量</string>
 
 </resources>

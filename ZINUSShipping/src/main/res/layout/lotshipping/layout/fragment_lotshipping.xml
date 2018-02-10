@@ -170,7 +170,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/ShippingPlanNo"/>
+                    android:text="@string/BookingNo"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -178,7 +178,7 @@
                     android:text=" : "/>
 
                 <TextView
-                    android:id="@+id/tv_shippingPlanNo"
+                    android:id="@+id/tv_BookingNo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
@@ -217,7 +217,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/ShippingPlanSeq"/>
+                    android:text="@string/ShippingEndPlanDate"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -225,7 +225,7 @@
                     android:text=" : "/>
 
                 <TextView
-                    android:id="@+id/tv_ShippingPlanSeq"
+                    android:id="@+id/tv_ShippingEndPlanDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
@@ -264,7 +264,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/ContainerSeq"/>
+                    android:text="@string/ContainerNo"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -272,7 +272,7 @@
                     android:text=" : "/>
 
                 <TextView
-                    android:id="@+id/tv_ContainerSeq"
+                    android:id="@+id/tv_ContainerNo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
@@ -310,7 +310,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/PoNo"/>
+                    android:text="@string/SealNo"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -318,7 +318,7 @@
                     android:text=" : "/>
 
                 <TextView
-                    android:id="@+id/tv_PoNo"
+                    android:id="@+id/tv_SealNo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 

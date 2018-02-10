@@ -3,6 +3,15 @@
               style="@style/listviewitem">
 
     <TextView
+        android:id="@+id/tv_spec_desc"
+        style="@style/listviewcontext"
+        android:layout_width="300px"
+        />
+
+    <View
+        style="@style/listviewverticalsplit"/>
+
+    <TextView
         android:id="@+id/tv_consuabledefnamme"
         style="@style/listviewcontext"
         android:layout_width="200px"
